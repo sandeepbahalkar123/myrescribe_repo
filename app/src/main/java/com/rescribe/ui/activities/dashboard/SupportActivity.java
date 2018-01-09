@@ -17,6 +17,7 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
@@ -47,6 +48,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
+import static com.rescribe.util.RescribeConstants.DRAWABLE;
 
 /**
  * Created by jeetal on 3/11/17.
@@ -54,6 +56,7 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 
 @RuntimePermissions
 public class SupportActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener {
+    private static final String TAG = "SupportActivity";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -67,6 +70,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     private AppDBHelper appDBHelper;
     private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +85,16 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
         int chatCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
         //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount +chatCount;
+        int notificationCount = appCount + invCount + medCount + chatCount;
         bottomMenus.clear();
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
             BottomMenu bottomMenu = new BottomMenu();
-            bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
+            int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+            if (resourceId > 0)
+                bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
+            else
+                CommonMethods.Log(TAG, "Resource does not exist");
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.support)));
@@ -99,12 +107,18 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl().getUrl();
+                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
                     }
                     if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-                        bottomSheetMenu.setIconImageUrl(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl());
+
+                        int resourceId = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                        if (resourceId > 0)
+                            bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceId));
+                        else
+                            CommonMethods.Log(TAG, "Resource does not exist");
+
                         bottomSheetMenu.setNotificationCount(notificationCount);
 
                         //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
@@ -123,6 +137,7 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     }
 
     private void initialize() {
+        mContext = SupportActivity.this;
         appDBHelper = new AppDBHelper(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");

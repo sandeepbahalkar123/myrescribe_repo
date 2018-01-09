@@ -10,10 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 
@@ -21,6 +17,7 @@ import java.util.ArrayList;
 
 public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.ListViewHolder> {
 
+    private static final String DRAWABLE = "drawable";
     private final Context mContext;
     private OnBottomMenuClickListener mBottomMenuListClickListener;
     private ArrayList<BottomMenu> bottomMenus;
@@ -64,18 +61,8 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             }
         });
 
-        RequestOptions options = new RequestOptions();
-        options.dontAnimate();
-        options.centerInside();
+        holder.menuBottomIcon.setImageDrawable(bottomMenu.getMenuIcon());
 
-        if (bottomMenu.getMenuIcon().getTime().isEmpty()) {
-            options.diskCacheStrategy(DiskCacheStrategy.NONE);
-            options.skipMemoryCache(true);
-        } else options.signature(new ObjectKey(bottomMenu.getMenuIcon().getTime()));
-
-        Glide.with(holder.menuBottomIcon.getContext())
-                .load(bottomMenu.getMenuIcon().getUrl()).apply(options)
-                .into(holder.menuBottomIcon);
 //for app logo
         if (bottomMenu.isAppIcon()) {
             holder.bottomMenuName.setVisibility(View.GONE);

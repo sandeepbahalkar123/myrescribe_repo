@@ -1,16 +1,15 @@
 package com.heinrichreimersoftware.materialdrawer.app_logo;
 
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.IconImage;
 
 
 public class BottomSheetMenu implements Parcelable {
 
 
     private String name;
-    private IconImage iconImageUrl;
+    private Drawable iconImageUrl;
     private int notificationCount;
 
    // private ClickEvent clickEvent;
@@ -32,7 +31,7 @@ public class BottomSheetMenu implements Parcelable {
 
     protected BottomSheetMenu(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.iconImageUrl = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
+        this.iconImageUrl = ((Drawable) in.readValue((String.class.getClassLoader())));
         this.notificationCount = ((int) in.readValue((String.class.getClassLoader())));
     }
 
@@ -47,11 +46,11 @@ public class BottomSheetMenu implements Parcelable {
         this.name = name;
     }
 
-    public IconImage getIconImageUrl() {
+    public Drawable getIconImageUrl() {
         return iconImageUrl;
     }
 
-    public void setIconImageUrl(IconImage iconImageUrl) {
+    public void setIconImageUrl(Drawable iconImageUrl) {
         this.iconImageUrl = iconImageUrl;
     }
 

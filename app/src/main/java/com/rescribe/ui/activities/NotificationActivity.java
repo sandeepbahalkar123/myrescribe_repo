@@ -23,6 +23,7 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.adapters.NotificationAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -54,6 +55,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
+import static com.rescribe.util.RescribeConstants.DRAWABLE;
 
 public class NotificationActivity extends BottomMenuActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener, BottomMenuAdapter.OnBottomMenuClickListener {
 
@@ -109,7 +111,13 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         if (dashboardBottomMenuLists != null) {
             for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
                 BottomMenu bottomMenu = new BottomMenu();
-                bottomMenu.setMenuIcon(dashboardBottomMenuList.getIconImageUrl());
+
+                int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                if (resourceId > 0)
+                    bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
+                else
+                    CommonMethods.Log(TAG, "Resource does not exist");
+
                 bottomMenu.setMenuName(dashboardBottomMenuList.getName());
                 bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
                 bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.alerts)));
@@ -165,19 +173,19 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         final ArrayList<Medication> medi = new ArrayList<>();
 
         for (int i = 0; i < medicationList.size(); i++) {
-            if (mContext.getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(mMedicineSlot)) {
+            if (getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(mMedicineSlot)) {
                 if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.breakfast_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.breakfast_before))) {
                     medi.add(medicationList.get(i));
                 }
-            } else if (mContext.getResources().getString(R.string.lunch_medication).equalsIgnoreCase(mMedicineSlot)) {
+            } else if (getResources().getString(R.string.lunch_medication).equalsIgnoreCase(mMedicineSlot)) {
                 if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.lunch_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.lunch_before))) {
                     medi.add(medicationList.get(i));
                 }
-            } else if (mContext.getResources().getString(R.string.dinner_medication).equalsIgnoreCase(mMedicineSlot)) {
+            } else if (getResources().getString(R.string.dinner_medication).equalsIgnoreCase(mMedicineSlot)) {
                 if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.dinner_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.dinner_before))) {
                     medi.add(medicationList.get(i));
                 }
-            } else if (mContext.getResources().getString(R.string.snacks_medication).equalsIgnoreCase(mMedicineSlot)) {
+            } else if (getResources().getString(R.string.snacks_medication).equalsIgnoreCase(mMedicineSlot)) {
                 if (medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.snacks_after)) || medicationList.get(i).getMedicinSlot().equalsIgnoreCase(getString(R.string.snacks_before))) {
                     medi.add(medicationList.get(i));
                 }
@@ -189,13 +197,13 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 mHeaderLayoutParent.setVisibility(View.VISIBLE);
                 String slotMedicine = "";
 
-                if (mContext.getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(mMedicineSlot)) {
+                if (getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(mMedicineSlot)) {
                     slotMedicine = getString(R.string.smallcasebreakfast);
-                } else if (mContext.getResources().getString(R.string.lunch_medication).equalsIgnoreCase(mMedicineSlot)) {
+                } else if (getResources().getString(R.string.lunch_medication).equalsIgnoreCase(mMedicineSlot)) {
                     slotMedicine = getString(R.string.smallcaselunch);
-                } else if (mContext.getResources().getString(R.string.dinner_medication).equalsIgnoreCase(mMedicineSlot)) {
+                } else if (getResources().getString(R.string.dinner_medication).equalsIgnoreCase(mMedicineSlot)) {
                     slotMedicine = getString(R.string.smallcasedinner);
-                } else if (mContext.getResources().getString(R.string.snacks_medication).equalsIgnoreCase(mMedicineSlot)) {
+                } else if (getResources().getString(R.string.snacks_medication).equalsIgnoreCase(mMedicineSlot)) {
                     slotMedicine = getString(R.string.smallcasesnacks);
                 }
                 mSlotTextView.setText(mMedicineSlot);

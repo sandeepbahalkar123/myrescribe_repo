@@ -6,7 +6,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.IconImage;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 
 import java.util.ArrayList;
@@ -16,9 +15,9 @@ public class DashboardDataModel implements Parcelable {
     @SerializedName("doctorList")
     @Expose
     private ArrayList<DoctorList> doctorList = new ArrayList<DoctorList>();
-    @SerializedName("cardBgImageUrlList")
+    /*@SerializedName("cardBgImageUrlList")
     @Expose
-    private ArrayList<IconImage> cardBgImageUrlList = new ArrayList<IconImage>();
+    private ArrayList<String> cardBgImageUrlList = new ArrayList<String>();
     @SerializedName("dashboardMenuList")
     @Expose
     private ArrayList<DashboardMenuList> dashboardMenuList = new ArrayList<DashboardMenuList>();
@@ -27,7 +26,7 @@ public class DashboardDataModel implements Parcelable {
     private ArrayList<DashboardBottomMenuList> dashboardBottomMenuList = new ArrayList<DashboardBottomMenuList>();
     @SerializedName("dashboardLeftSideDrawerMenuList")
     @Expose
-    private ArrayList<DashboardLeftSideDrawerMenuList> dashboardLeftSideDrawerMenuList = new ArrayList<DashboardLeftSideDrawerMenuList>();
+    private ArrayList<DashboardLeftSideDrawerMenuList> dashboardLeftSideDrawerMenuList = new ArrayList<DashboardLeftSideDrawerMenuList>();*/
     public final static Creator<DashboardDataModel> CREATOR = new Creator<DashboardDataModel>() {
 
 
@@ -46,10 +45,10 @@ public class DashboardDataModel implements Parcelable {
 
     protected DashboardDataModel(Parcel in) {
         in.readList(this.doctorList, (DoctorList.class.getClassLoader()));
-        in.readList(this.cardBgImageUrlList, (IconImage.class.getClassLoader()));
-        in.readList(this.dashboardMenuList, (DashboardMenuList.class.getClassLoader()));
-        in.readList(this.dashboardBottomMenuList, (DashboardBottomMenuList.class.getClassLoader()));
-        in.readList(this.dashboardLeftSideDrawerMenuList, (DashboardLeftSideDrawerMenuList.class.getClassLoader()));
+//        in.readList(this.cardBgImageUrlList, (String.class.getClassLoader()));
+//        in.readList(this.dashboardMenuList, (DashboardMenuList.class.getClassLoader()));
+//        in.readList(this.dashboardBottomMenuList, (DashboardBottomMenuList.class.getClassLoader()));
+//        in.readList(this.dashboardLeftSideDrawerMenuList, (DashboardLeftSideDrawerMenuList.class.getClassLoader()));
     }
 
     public DashboardDataModel() {
@@ -63,11 +62,11 @@ public class DashboardDataModel implements Parcelable {
         this.doctorList = doctorList;
     }
 
-    public ArrayList<IconImage> getCardBgImageUrlList() {
+    /*public ArrayList<String> getCardBgImageUrlList() {
         return cardBgImageUrlList;
     }
 
-    public void setCardBgImageUrlList(ArrayList<IconImage> cardBgImageUrlList) {
+    public void setCardBgImageUrlList(ArrayList<String> cardBgImageUrlList) {
         this.cardBgImageUrlList = cardBgImageUrlList;
     }
 
@@ -93,14 +92,14 @@ public class DashboardDataModel implements Parcelable {
 
     public void setDashboardLeftSideDrawerMenuList(ArrayList<DashboardLeftSideDrawerMenuList> dashboardLeftSideDrawerMenuList) {
         this.dashboardLeftSideDrawerMenuList = dashboardLeftSideDrawerMenuList;
-    }
+    }*/
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(doctorList);
-        dest.writeList(cardBgImageUrlList);
-        dest.writeList(dashboardMenuList);
-        dest.writeList(dashboardBottomMenuList);
-        dest.writeList(dashboardLeftSideDrawerMenuList);
+//        dest.writeList(cardBgImageUrlList);
+//        dest.writeList(dashboardMenuList);
+//        dest.writeList(dashboardBottomMenuList);
+//        dest.writeList(dashboardLeftSideDrawerMenuList);
     }
 
     public int describeContents() {

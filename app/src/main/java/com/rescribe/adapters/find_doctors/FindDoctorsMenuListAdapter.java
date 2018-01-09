@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
 import com.rescribe.model.dashboard_api.ClickOption;
@@ -24,12 +24,15 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.util.RescribeConstants.DRAWABLE;
+
 /**
  * Created by jeetal on 24/11/17.
  */
 
 public class FindDoctorsMenuListAdapter extends RecyclerView.Adapter<FindDoctorsMenuListAdapter.ListViewHolder> {
 
+    private static final String TAG = "FindDoctorsMLAdapter";
     private IOnMenuClickListener onMenuClickListener;
     private ArrayList<ClickOption> mClickOptionList;
     private Context mContext;
@@ -62,20 +65,12 @@ public class FindDoctorsMenuListAdapter extends RecyclerView.Adapter<FindDoctors
         });
 
         //------------
-        if (clickOption.getIconImageUrl() != null) {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.dontAnimate();
-
-            if (clickOption.getIconImageUrl().getTime().isEmpty()) {
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
-            } else
-                requestOptions.signature(new ObjectKey(clickOption.getIconImageUrl().getTime()));
-
-            Glide.with(mContext)
-                    .load(clickOption.getIconImageUrl().getUrl())
-                    .apply(requestOptions)
-                    .into(holder.serviceIcon);
+        int resourceId = mContext.getResources().getIdentifier(clickOption.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+        if (resourceId > 0) {
+            holder.serviceIcon.setImageResource(resourceId);
+        } else {
+            // Do something is the resource does not exist
+            CommonMethods.Log(TAG, "Resource not found");
         }
         //--------------
     }

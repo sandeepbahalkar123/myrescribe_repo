@@ -30,7 +30,6 @@ public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.
     public ShowReviewsAdapter(Context mContext, ArrayList<Review> dataList) {
         this.mDataList = dataList;
         this.mContext = mContext;
-
     }
 
     @Override

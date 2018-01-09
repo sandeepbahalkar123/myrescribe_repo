@@ -24,7 +24,6 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -758,7 +757,7 @@ public class CommonMethods {
         return abbreviation;
     }
 
-    public static int getServices(String caseStudyName, Context mContext) {
+    /*public static int getServices(String caseStudyName, Context mContext) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.gynecologist;
@@ -778,7 +777,7 @@ public class CommonMethods {
             abbreviation = R.drawable.ambulance;
 
         return abbreviation;
-    }
+    }*/
 
 
     public static Date convertStringToDate(String dateString, String dateFormat) {

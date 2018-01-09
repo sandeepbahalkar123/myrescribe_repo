@@ -16,14 +16,12 @@ import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.adapters.find_doctors.FindDoctorCategoryAdapter;
 import com.rescribe.adapters.find_doctors.FindDoctorsMenuListAdapter;
@@ -44,6 +42,7 @@ import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActi
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -58,6 +57,9 @@ import butterknife.OnClick;
  */
 
 public class FindDoctorsActivity extends AppCompatActivity implements HelperResponse, IOnMenuClickListener {
+
+    private static final String FOLDER_PATH = "images/dashboard/menu/finddoctors/android/";
+    private String density;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -116,9 +118,12 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_doctors_layout);
         ButterKnife.bind(this);
-        mContext = FindDoctorsActivity.this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
+        mContext = FindDoctorsActivity.this;
+        density = CommonMethods.getDeviceResolution(mContext) + "/";
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
@@ -126,7 +131,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
             if (mReceivedDashboardMenuListData != null) {
                 title.setText(mReceivedDashboardMenuListData.getName());
-
 
 
             } else if (value != null)
@@ -160,14 +164,13 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
                 requestOptions.centerCrop();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
 
-                if (clickEvent1.getBgImageUrl().getTime().isEmpty()) {
-                    requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                    requestOptions.skipMemoryCache(true);
-                } else requestOptions.signature(new ObjectKey(clickEvent1.getBgImageUrl().getTime()));
-
+                String imageURL = Config.BASE_URL + FOLDER_PATH + density + clickEvent1.getBgImageUrl();
+                
                 Glide.with(this)
-                        .load(clickEvent1.getBgImageUrl().getUrl())
+                        .load(imageURL)
                         .apply(requestOptions)
                         .into(imgGroupPhoto);
             }
@@ -287,7 +290,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
 
-    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered, R.id.complaintsImageView,R.id.favouriteDoctors,R.id.recentlyvisitedTextView,R.id.sponsoredDoctors})
+    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered, R.id.complaintsImageView, R.id.favouriteDoctors, R.id.recentlyvisitedTextView, R.id.sponsoredDoctors})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.viewAllFavorite:
@@ -316,10 +319,10 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 break;
             case R.id.favouriteDoctors:
                 /*if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3) {*/
-                    Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                    viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                    viewAllFavorite.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.favorite));
-                    startActivity(viewAllFavorite);
+                Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                viewAllFavorite.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.favorite));
+                startActivity(viewAllFavorite);
                 /*} else {
 
                 }
@@ -327,11 +330,11 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 break;
             case R.id.recentlyvisitedTextView:
               /*  if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3) {*/
-                    Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                    viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                    viewAllRecentVisited.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.recently_visit_doctor));
+                Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                viewAllRecentVisited.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.recently_visit_doctor));
 
-                    startActivity(viewAllRecentVisited);
+                startActivity(viewAllRecentVisited);
                 /*} else {
 
                 }*/
@@ -339,10 +342,10 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 break;
             case R.id.sponsoredDoctors:
                /* if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3) {*/
-                    Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctor.class);
-                    viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                    viewAllSponsered.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.sponsored_doctor));
-                    startActivity(viewAllSponsered);
+                Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+                viewAllSponsered.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.sponsored_doctor));
+                startActivity(viewAllSponsered);
                /* } else {
 
                 }

@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.adapters.health_repository.HealthRepositoryAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -28,6 +27,7 @@ import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +38,8 @@ import butterknife.ButterKnife;
 
 public class HealthRepository extends AppCompatActivity implements IOnMenuClickListener {
 
+    private static final String FOLDER_PATH = "images/dashboard/menu/healthrepository/android/";
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.img_group_photo)
@@ -46,27 +48,26 @@ public class HealthRepository extends AppCompatActivity implements IOnMenuClickL
     RecyclerView healthRepositoryListView;
     @BindView(R.id.title)
     CustomTextView title;
-    private AppDBHelper appDBHelper;
     private Context mContext;
     private HealthRepositoryAdapter mHealthRepositoryAdapter;
     private DashboardMenuList mReceivedDashboardMenuListData;
-
+    private String density;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.health_respository_base_layout);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
-               title.setText(mReceivedDashboardMenuListData.getName());
+                title.setText(mReceivedDashboardMenuListData.getName());
             else if (value != null)
                 title.setText(value);
         }
@@ -86,7 +87,9 @@ public class HealthRepository extends AppCompatActivity implements IOnMenuClickL
 
     private void initialize() {
         mContext = HealthRepository.this;
-        appDBHelper = new AppDBHelper(HealthRepository.this);
+
+        density = CommonMethods.getDeviceResolution(mContext) + "/";
+
         //------Load background image : START------
         ClickEvent clickEvent1 = mReceivedDashboardMenuListData.getClickEvent();
         if (clickEvent1 != null) {
@@ -94,15 +97,13 @@ public class HealthRepository extends AppCompatActivity implements IOnMenuClickL
 
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
 
-                if (clickEvent1.getBgImageUrl().getTime().isEmpty()) {
-                    requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                    requestOptions.skipMemoryCache(true);
-                } else
-                    requestOptions.signature(new ObjectKey(clickEvent1.getBgImageUrl().getTime()));
+                String imageURL = Config.BASE_URL + FOLDER_PATH + density + clickEvent1.getBgImageUrl();
 
                 Glide.with(this)
-                        .load(clickEvent1.getBgImageUrl().getUrl())
+                        .load(imageURL)
                         .apply(requestOptions)
                         .into(imgGroupPhoto);
             }

@@ -6,7 +6,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.IconImage;
 
 public class DashboardBottomMenuList implements Parcelable {
 
@@ -15,10 +14,10 @@ public class DashboardBottomMenuList implements Parcelable {
     private String name;
     @SerializedName("iconImageUrl")
     @Expose
-    private IconImage iconImageUrl;
+    private String iconImageUrl = "";
     @SerializedName("selectedIconImageUrl")
     @Expose
-    private IconImage selectedIconImageUrl;
+    private String selectedIconImageUrl = "";
     @SerializedName("clickEvent")
     @Expose
     private ClickEvent clickEvent;
@@ -36,8 +35,8 @@ public class DashboardBottomMenuList implements Parcelable {
 
     protected DashboardBottomMenuList(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.iconImageUrl = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
-        this.selectedIconImageUrl = ((IconImage) in.readValue((IconImage.class.getClassLoader())));
+        this.iconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
+        this.selectedIconImageUrl = ((String) in.readValue((String.class.getClassLoader())));
         this.clickEvent = ((ClickEvent) in.readValue((ClickEvent.class.getClassLoader())));
     }
 
@@ -52,19 +51,19 @@ public class DashboardBottomMenuList implements Parcelable {
         this.name = name;
     }
 
-    public IconImage getIconImageUrl() {
+    public String getIconImageUrl() {
         return iconImageUrl;
     }
 
-    public void setIconImageUrl(IconImage iconImageUrl) {
+    public void setIconImageUrl(String iconImageUrl) {
         this.iconImageUrl = iconImageUrl;
     }
 
-    public IconImage getSelectedIconImageUrl() {
+    public String getSelectedIconImageUrl() {
         return selectedIconImageUrl;
     }
 
-    public void setSelectedIconImageUrl(IconImage selectedIconImageUrl) {
+    public void setSelectedIconImageUrl(String selectedIconImageUrl) {
         this.selectedIconImageUrl = selectedIconImageUrl;
     }
 

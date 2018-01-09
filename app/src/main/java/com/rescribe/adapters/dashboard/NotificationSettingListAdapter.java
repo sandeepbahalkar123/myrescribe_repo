@@ -58,14 +58,10 @@ public class NotificationSettingListAdapter extends RecyclerView.Adapter<Notific
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
 
-            if (clickOption.getIconImageUrl().getTime().isEmpty()) {
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);
-            } else
-                requestOptions.signature(new ObjectKey(clickOption.getIconImageUrl().getTime()));
-
             Glide.with(mContext)
-                    .load(clickOption.getIconImageUrl().getUrl())
+                    .load(clickOption.getIconImageUrl())
                     .apply(requestOptions)
                     .into(holder.menuIcon);
         }

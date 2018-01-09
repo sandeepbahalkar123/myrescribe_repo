@@ -405,7 +405,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                     mLocationContentRecycleView.setLayoutManager(layoutManager);
                     mLocationContentRecycleView.setHasFixedSize(true);
                     mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
-                    mLocationContentRecycleView.setNestedScrollingEnabled(false);
+                    mLocationContentRecycleView.setNestedScrollingEnabled(true);
 
                 } else mLocationView.setVisibility(View.GONE);
 

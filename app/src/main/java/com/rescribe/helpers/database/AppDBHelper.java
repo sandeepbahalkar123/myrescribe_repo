@@ -617,6 +617,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         mainList.addAll(unreadChatMessagesList());
         mainList.addAll(doGetAppUnreadReceivedNotificationMessage());
 
+
         RescribeApplication.setAppUnreadNotificationMessageList(mContext, mainList);
     }
 

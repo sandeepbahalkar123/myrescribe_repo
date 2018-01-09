@@ -106,7 +106,8 @@ public class NotificationService extends Service implements HelperResponse {
         //---- Save notification in db---
         String timeStamp = CommonMethods.getCurrentDate() + " " + notificationTime;
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
-        int id = medication.getId();
+        int id =(int)System.currentTimeMillis(); // medication.getMedicineId();
+
 
         medication.setUnreadNotificationMessageDataID("" + id);
         medication.setUnreadNotificationMessageDataTimeStamp(timeStamp);

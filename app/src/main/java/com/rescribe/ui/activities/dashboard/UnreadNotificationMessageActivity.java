@@ -38,6 +38,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -115,6 +116,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private UnreadSavedNotificationMessageData mClickedUnreadInvestigationMessageData;
     private boolean isMedicationLoadMoreFooterClickedPreviously = false;
     public boolean isAllListEmpty = true;
+    Calendar c = Calendar.getInstance();
+    int hour24 = c.get(Calendar.HOUR_OF_DAY);
+    int Min = c.get(Calendar.MINUTE);
+    private String mealTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +137,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
+        mealTime = CommonMethods.getMealTime(hour24, Min, this);
         initializeChatListView();
         initializeAppointmentsListView();
         initializeInvestigationListView();
@@ -185,12 +191,25 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (medicationAlertList.isEmpty()) {
             mOnGoingMedicationListViewLayout.setVisibility(View.GONE);
         } else {
+            //sortListByMealTime(medicationAlertList);
             isAllListEmpty = false;
             mMedicationToNotificationHelper = new RespondToNotificationHelper(this, this);
             mOnGoingMedicationListViewLayout.setVisibility(View.VISIBLE);
             setMedicationAlertListAdapter(medicationAlertList, isMedicationLoadMoreFooterClickedPreviously);
         }
     }
+
+   /* private ArrayList<UnreadSavedNotificationMessageData> sortListByMealTime(ArrayList<UnreadSavedNotificationMessageData> medicationAlertList) {
+        ArrayList<UnreadSavedNotificationMessageData> sortedMealTimeWiseList = new ArrayList<>();
+        for(int i =0;i<medicationAlertList.size();i++){
+            UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = new UnreadSavedNotificationMessageData();
+            if(medicationAlertList.get(i).getNotificationMessage().contains(mealTime)){
+                unreadSavedNotificationMessageData = medicationAlertList.get(i);
+                sortedMealTimeWiseList.add(unreadSavedNotificationMessageData);
+            }
+        }
+        return sortedMealTimeWiseList;
+    }*/
 
     private void setAppointmentAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
 

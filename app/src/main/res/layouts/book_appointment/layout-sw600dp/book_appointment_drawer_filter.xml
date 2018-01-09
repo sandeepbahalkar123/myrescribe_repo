@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/hideMainLayout"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp56"
@@ -54,14 +56,15 @@
 
         </RelativeLayout>
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -101,40 +104,41 @@
                         android:visibility="visible">
 
                         <LinearLayout
-                            android:layout_weight="1"
-                            android:gravity="left"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="left"
                             android:orientation="vertical">
 
                             <com.rescribe.ui.customesViews.CustomTextView
                                 style="@style/drawer_filter_header_layout"
-                                android:text="@string/sort"
-                                android:layout_marginStart="@dimen/dp8"
                                 android:layout_marginLeft="@dimen/dp8"
-                                android:textSize="@dimen/sp14"
+                                android:layout_marginStart="@dimen/dp8"
+                                android:text="@string/sort"
                                 android:textColor="@color/tagColor"
+                                android:textSize="@dimen/sp14"
                                 app:customFont="@string/roboto_regular" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_weight="0.5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_weight="0.5"
                             android:orientation="vertical">
 
                             <com.rescribe.ui.customesViews.CustomTextView
                                 android:id="@+id/chooseOptionForSort"
                                 style="@style/drawer_filter_header_layout"
-                                android:text="@string/choose_one_option"
                                 android:drawablePadding="@dimen/dp16"
                                 android:drawableRight="@drawable/sorting_arrow"
                                 android:gravity="right|end|center_vertical"
+                                android:text="@string/choose_one_option"
                                 android:textColor="@color/choose_option_color"
                                 app:customFont="@string/roboto_regular" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -225,9 +229,8 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
                 <LinearLayout
-
+                    android:id="@+id/clinicFeesView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
@@ -255,7 +258,6 @@
                             android:visibility="gone" />
 
                     </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/clinicFeesContentView"
                         android:layout_width="match_parent"
@@ -278,6 +280,7 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dp14"
                             android:orientation="horizontal">
 
                             <com.rescribe.ui.customesViews.CustomTextView
@@ -305,15 +308,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp40"
                             android:minHeight="@dimen/dp40"
-                            app:max_value="100" />
+                            app:max_value="2500"
+                            app:min_value="250" />
+
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
+                    android:id="@+id/distanceView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:id="@+id/distanceHeaderView"
@@ -426,10 +434,12 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="gone"
+                    android:id="@+id/availabilityView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:id="@+id/availabilityHeaderView"
@@ -561,6 +571,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/locationView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -613,15 +624,30 @@
                             tools:listitem="@layout/case_details_row" />
                     </LinearLayout>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/sortRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:visibility="visible" />
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/showSortLayout"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp56"
@@ -686,17 +712,7 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp1"
-            android:background="@color/divider" />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/sortRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:visibility="visible"/>
+
+
     </LinearLayout>
 </LinearLayout>

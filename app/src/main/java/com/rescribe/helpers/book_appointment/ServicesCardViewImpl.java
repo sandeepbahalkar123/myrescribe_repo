@@ -42,7 +42,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         mHardCodedTitle = mContext.getString(R.string.doctor);
     }
 
-
+  //onClick of whole card view // searchType Doctor then myappointment doctors will be shown to book appointment
     @Override
     public void onClickOfCardView(Bundle bundleData) {
         String searchType = bundleData.getString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH);
@@ -65,11 +65,13 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 intent.putExtras(bundleData);
                 mParentActivity.startActivity(intent);
             } else {
+                //for MyAppointment category doctor confirmAppointment page will open
                 Intent intent = new Intent(mParentActivity, ConfirmAppointmentActivity.class);
                 intent.putExtras(bundleData);
                 mParentActivity.startActivity(intent);
             }
         } else {
+            // for category other than MyAppointment Detail page will open
             Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
             intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);
             if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
@@ -83,7 +85,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             mParentActivity.startActivity(intent);
         }
     }
-
+    // All favourite clicks managed here
     @Override
     public void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite, HelperResponse helperResponse) {
         userSelectedDoctorListDataObject = doctorListObject;
@@ -93,7 +95,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     @Override
     public void onClickOfTotalCount(Bundle bundleData) {
         String nameOfCategoryType = bundleData.getString(mContext.getString(R.string.clicked_item_data));
-
+// for MyAppointment doctor from dashboard and book appointment horizontal list
         if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.my_appointments));
@@ -107,7 +109,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         } else {
-            // for sponcered and recent visited doctor list.
+            // for sponsered and recent visited doctor list.
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
             bundleData.putString(mContext.getString(R.string.toolbarTitle), nameOfCategoryType);
 
@@ -115,7 +117,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             mParentActivity.startActivity(intent);
         }
     }
-
+   //onclick of GetToken button
     @Override
     public void onClickedOfTokenNumber(Bundle bundleData) {
         userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
@@ -135,7 +137,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         intent.putExtras(bundleData);
         mParentActivity.startActivity(intent);
     }
-
+//onClick of BookAppointment button
     @Override
     public void onClickedOfBookButton(Bundle bundleData) {
 
@@ -156,7 +158,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         mParentActivity.startActivity(intent);
     }
 
-
+//Sort doctorList CategoryWise
     public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName, int size) {
         ArrayList<DoctorList> temp = new ArrayList<>();
         if (mReceivedDoctorDataList != null)
@@ -237,7 +239,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return status;
     }
 
-
+// function to sort out doctors from pick speciality from bookAppointment page
     public ArrayList<DoctorList> filterDocListBySpeciality(String selectedSpeciality) {
 
         ArrayList<DoctorList> dataList = new ArrayList<>();
@@ -269,11 +271,11 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
         return dataList;
     }
-
+  // get whole doctor list using this function
     public static DoctorList getUserSelectedDoctorListDataObject() {
         return userSelectedDoctorListDataObject;
     }
-
+   //set doctor list using this function
     public static void setUserSelectedDoctorListDataObject(DoctorList userSelectedDoctorListDataObject) {
         ServicesCardViewImpl.userSelectedDoctorListDataObject = userSelectedDoctorListDataObject;
     }
@@ -286,7 +288,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return mReceivedDoctorDataList;
     }
 
-
+//Sort Unique doctors by docId
     public static ArrayList<DoctorList> getDoctorListByUniqueDocIDs(ArrayList<DoctorList> mReceivedDoctorDataList) {
         ArrayList<DoctorList> dataList = new ArrayList<>();
         for (DoctorList listObject :

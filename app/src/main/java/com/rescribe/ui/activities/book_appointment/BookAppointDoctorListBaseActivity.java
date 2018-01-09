@@ -138,7 +138,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 bundle.putString(getString(R.string.title), title);
             }
         }
-        //------
+        //------ This Activity is base for RecentVisitDoctorFragment
         mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
         //-----------
@@ -181,7 +181,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }, 100);
 
     }
-
+  //BottomMenu is Set here // BottomMenu is shown on Bookappointment page only i it opens from bottomMenuBar otherwise it is hidden
     private void setBottomMenu() {
 
         int appCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
@@ -223,7 +223,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 break;
             }
         }
-
+      //on click of logo bottomSheetAdapter is opened , for that purpose adapter of bottomSheet is set
         setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
     }
 
@@ -236,7 +236,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             case R.id.title:
                 break;
             case R.id.locationTextView:
-                //    BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
+                //User can choose location of his choice
                 Intent start = new Intent(this, BookAppointFindLocation.class);
                 start.putExtra(getString(R.string.opening_mode), getString(R.string.book_appointment));
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
@@ -255,6 +255,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }
     }
 
+    //on bottom Menu clicks are managed here
     @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {
         String menuName = bottomMenu.getMenuName();
@@ -275,7 +276,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }
         super.onBottomMenuClick(bottomMenu);
     }
-
+  //on click of logo bottomsheet  dialog opens and on click of profileImage ProfileAcivity is opened
     @Override
     public void onProfileImageClick() {
         Intent intent = new Intent(this, ProfileActivity.class);
@@ -284,12 +285,13 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         super.onProfileImageClick();
     }
 
+    //on click of drawer apply button
     @Override
     public void onApply(Bundle b, boolean drawerRequired) {
         mDrawerLayout.closeDrawers();
         mRecentVisitDoctorFragment.onApplyClicked(b);
     }
-
+    //on click of drawer reset button
     @Override
     public void onReset(boolean drawerRequired) {
 
@@ -305,6 +307,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     }
 
+    //Clicks of Bottomsheet dialog are managed here
     @Override
     public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
         if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.vital_graph))) {

@@ -399,7 +399,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             slotType = RescribeConstants.BREAK_FAST;
         }
         //-------------
-        String presDate = CommonMethods.getCurrentDate();
+        String presDate = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         //-------------
         mMedicationToNotificationHelper.doRespondToNotificationForNotificationAdapter(
                 Integer.valueOf(RescribePreferencesManager.getString(

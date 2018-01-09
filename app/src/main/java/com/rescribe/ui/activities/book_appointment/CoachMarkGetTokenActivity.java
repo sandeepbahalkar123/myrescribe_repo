@@ -30,6 +30,7 @@ public class CoachMarkGetTokenActivity extends AppCompatActivity {
         setContentView(R.layout.coach_mark_activity);
         ButterKnife.bind(this);
         initialize();
+        //Coachmark is shown only once on click of book or getToken
 
     }
 

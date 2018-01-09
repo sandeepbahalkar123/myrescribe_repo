@@ -38,6 +38,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -78,11 +79,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     RecyclerView mInvestigationsListView;
     @BindView(R.id.unreadTokenNotificationListView)
     RecyclerView mUnreadTokenNotificationListView;
-    //----------
-
     @BindView(R.id.onGoingMedicationListView)
     RecyclerView mOnGoingMedicationListView;
-    //------------
     @BindView(R.id.onGoingMedicationListViewLayout)
     LinearLayout mOnGoingMedicationListViewLayout;
     @BindView(R.id.investigationsListViewLayout)
@@ -103,11 +101,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     CustomTextView mInvestigationFirstMessageTimeStamp;
     @BindView(R.id.doctorConnectFirstMessageTimeStamp)
     CustomTextView mDoctorConnectFirstMessageTimeStamp;
-
     @BindView(R.id.emptyListMessageView)
     ImageView emptyListMessageView;
-
-    //-----------
     private UnreadAppointmentNotificationAlert mAppointmentNotificationAlertAdapter;
     private UnreadAppointmentNotificationAlert mInvestigationNotificationAlertAdapter;
     private UnreadChatNotificationList mUnreadChatNotificationListAdapter;
@@ -115,16 +110,16 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private SectionedRecyclerViewAdapter mUnreadMedicationNotificationAdapter;
     private ArrayList<UnreadSavedNotificationMessageData> mUnreadMedicationNotificationMessageDataList;
     private String mMedicationCheckBoxClickedData;
-    //--------------
     private DoctorDataHelper mDoctorDataHelper;
     private RespondToNotificationHelper mMedicationToNotificationHelper;
-
-    //-------
     private InvestigationHelper mInvestigationHelper;
     private UnreadSavedNotificationMessageData mClickedUnreadInvestigationMessageData;
-    //-------
     private boolean isMedicationLoadMoreFooterClickedPreviously = false;
     public boolean isAllListEmpty = true;
+    Calendar c = Calendar.getInstance();
+    int hour24 = c.get(Calendar.HOUR_OF_DAY);
+    int Min = c.get(Calendar.MINUTE);
+    private String mealTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +137,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
+        mealTime = CommonMethods.getMealTime(hour24, Min, this);
         initializeChatListView();
         initializeAppointmentsListView();
         initializeInvestigationListView();
@@ -195,11 +191,25 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (medicationAlertList.isEmpty()) {
             mOnGoingMedicationListViewLayout.setVisibility(View.GONE);
         } else {
+            //sortListByMealTime(medicationAlertList);
+            isAllListEmpty = false;
             mMedicationToNotificationHelper = new RespondToNotificationHelper(this, this);
             mOnGoingMedicationListViewLayout.setVisibility(View.VISIBLE);
             setMedicationAlertListAdapter(medicationAlertList, isMedicationLoadMoreFooterClickedPreviously);
         }
     }
+
+   /* private ArrayList<UnreadSavedNotificationMessageData> sortListByMealTime(ArrayList<UnreadSavedNotificationMessageData> medicationAlertList) {
+        ArrayList<UnreadSavedNotificationMessageData> sortedMealTimeWiseList = new ArrayList<>();
+        for(int i =0;i<medicationAlertList.size();i++){
+            UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = new UnreadSavedNotificationMessageData();
+            if(medicationAlertList.get(i).getNotificationMessage().contains(mealTime)){
+                unreadSavedNotificationMessageData = medicationAlertList.get(i);
+                sortedMealTimeWiseList.add(unreadSavedNotificationMessageData);
+            }
+        }
+        return sortedMealTimeWiseList;
+    }*/
 
     private void setAppointmentAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
 
@@ -408,12 +418,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             slotType = RescribeConstants.BREAK_FAST;
         }
         //-------------
-        String presDate = CommonMethods.getCurrentDate();
+        String presDate = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         //-------------
         mMedicationToNotificationHelper.doRespondToNotificationForNotificationAdapter(
                 Integer.valueOf(RescribePreferencesManager.getString(
                         RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this)),
-                slotType, medication.getMedicineId(), presDate, 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition);
+                medication.getMedicinSlot(), medication.getMedicineId(), presDate, 0, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition);
 
     }
 

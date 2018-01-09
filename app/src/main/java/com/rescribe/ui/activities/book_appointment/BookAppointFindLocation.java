@@ -29,7 +29,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,18 +56,15 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
-
 import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
 public class BookAppointFindLocation extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -152,9 +148,9 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
 
     private void init(Bundle savedInstanceState) {
 
-        // Location
-
+        // Api client is connected to get location
         buildGoogleApiClient();
+        // To Known last updates of Location
         updateValuesFromBundle(savedInstanceState);
 
         mAutocompleteTextView.setThreshold(2);
@@ -164,12 +160,12 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
 
         // End Location
-
+        //Api call
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetRecentlyVisitedDoctorPlacesData();
 
     }
-
+  //on start Typing field places adapter is set to show suggestions of location
     private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -194,7 +190,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
             getAddress(place.getLatLng().latitude, place.getLatLng().longitude, true);
         }
     };
-
+ //To get desired location as per business requirement
     private String getArea(Address obj) {
 
         if (obj.getThoroughfare() != null)
@@ -221,7 +217,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 break;
         }
     }
-
+   //Get desired address as per current location or by selection of address
     public void getAddress(double lat, double lng, boolean isFromAutoCompleteTextLocation) {
         Geocoder geocoder = new Geocoder(BookAppointFindLocation.this, Locale.getDefault());
         try {

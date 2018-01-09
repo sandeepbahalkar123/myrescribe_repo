@@ -310,26 +310,6 @@ public class DoctorDataHelper implements ConnectionListener {
 
     public void doGetRecentlyVisitedDoctorPlacesData() {
 
-/*    try  {
-=======
-        try {
->>>>>>> riteshP
-            InputStream is = mContext.getAssets().open("spinner_doctor.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "dashboard" + json);
-
-            Gson gson = new Gson();
-            RecentVisitedBaseModel mRecentVisitedBaseModel = gson.fromJson(json, RecentVisitedBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, mRecentVisitedBaseModel, RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
-
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         if (userSelectedLocationInfo.get(mContext.getString(R.string.location)) != null) {
             String locationReceived = userSelectedLocationInfo.get(mContext.getString(R.string.location));

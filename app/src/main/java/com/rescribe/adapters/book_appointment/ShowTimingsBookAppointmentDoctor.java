@@ -50,7 +50,7 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
 
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
-        TimeSlotsInfoList.TimeSlotData timeSlotData = mDataList.get(position);
+        final TimeSlotsInfoList.TimeSlotData timeSlotData = mDataList.get(position);
 
         String fromTime = timeSlotData.getFromTime();
 
@@ -85,9 +85,12 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
                         if (fromTime.equalsIgnoreCase(mSelectedTimeSlot)) {
                             mSelectedTimeSlot = "";
                             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.tab_white));
+                            holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
+
                         } else {
                             mSelectedTimeSlot = fromTime;
                             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_round_rectangle));
+                            holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                             notifyDataSetChanged();
                         }
                     }
@@ -98,8 +101,15 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
         if (timeSlotData.getFromTime().equalsIgnoreCase(mSelectedTimeSlot)) {
             mSelectedTimeSlot = timeSlotData.getFromTime();
             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_round_rectangle));
+            holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.white));
         } else {
             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.tab_white));
+            if (timeSlotData.isAvailable()) {
+                holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
+            } else {
+                holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.Gray));
+            }
+
         }
 
         holder.view.setTag("" + position);

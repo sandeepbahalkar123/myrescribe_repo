@@ -20,7 +20,6 @@ public class CustomSpinnerAdapter extends BaseAdapter {
     Context mContext;
     ArrayList<String> mSelectedOption;
 
-
     public CustomSpinnerAdapter(Context context, ArrayList<String> spinner_data, int textColor) {
         this.mContext = context;
         this.mSelectedOption = spinner_data;

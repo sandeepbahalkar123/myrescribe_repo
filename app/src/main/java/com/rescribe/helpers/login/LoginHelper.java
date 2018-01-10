@@ -137,7 +137,7 @@ public class LoginHelper implements ConnectionListener {
 
     // ActiveStatus
     public void doActiveStatus(ActiveRequest activeRequest) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.ACTIVE_STATUS, Request.Method.POST, false);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.ACTIVE_STATUS, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setPostParams(activeRequest);
         mConnectionFactory.setUrl(Config.ACTIVE);

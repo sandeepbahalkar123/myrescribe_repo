@@ -125,25 +125,9 @@ public class DashboardHelper implements ConnectionListener {
     }
 
     public void doGetDashboard(String currentCity) {
-    /*  try  {
-            InputStream is = mContext.getAssets().open("dashboard.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "dashboard" + json);
-
-            Gson gson = new Gson();
-            DashBoardBaseModel bookAppointmentBaseModel = gson.fromJson(json, DashBoardBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_DASHBOARD_API);
-
-        } catch(IOException ex){
-            ex.printStackTrace();
-        }*/
 
         String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue;

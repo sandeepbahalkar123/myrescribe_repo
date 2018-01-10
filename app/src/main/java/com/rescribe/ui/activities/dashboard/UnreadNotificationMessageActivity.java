@@ -39,6 +39,7 @@ import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -227,6 +228,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         }
         mAppointmentsFirstMessageTimeStamp.setVisibility(View.VISIBLE);
         //------------
+        Collections.reverse(appAlertList);
         mAppointmentNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()) {
             @Override

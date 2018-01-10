@@ -105,7 +105,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     CustomTextView mAvailFri;
     @BindView(R.id.availSat)
     CustomTextView mAvailSat;
-    //-----
     @BindView(R.id.clinicFeesSeekBar)
     CrystalRangeSeekbar mClinicFeesSeekBar;
     DoctorDataHelper doctorDataHelper;
@@ -114,7 +113,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     CustomTextView mClinicFeesSeekBarMinValue;
     @BindView(R.id.clinicFeesSeekBarMaxValue)
     CustomTextView mClinicFeesSeekBarMaxValue;
-
     @BindView(R.id.distanceSeekBarMinValue)
     CustomTextView mDistanceSeekBarMinValue;
     @BindView(R.id.distanceSeekBarMaxValue)

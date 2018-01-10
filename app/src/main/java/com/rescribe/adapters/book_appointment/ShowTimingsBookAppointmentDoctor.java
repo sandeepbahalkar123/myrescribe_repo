@@ -109,7 +109,6 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
             } else {
                 holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.Gray));
             }
-
         }
 
         holder.view.setTag("" + position);

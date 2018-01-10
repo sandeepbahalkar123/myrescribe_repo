@@ -37,9 +37,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_1_copy"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/rectangle_1_copy"
             android:orientation="vertical">
 
             <LinearLayout
@@ -83,13 +83,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <TableLayout
+                    <LinearLayout
                         android:id="@+id/table"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp" />
+                        android:orientation="vertical"/>
 
                     <View
                         android:id="@+id/adapter_divider"
@@ -107,10 +105,10 @@
             android:id="@+id/imageUrl"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:border_width="1dp"
-            app:shadow="true"
+            android:layout_gravity="center_horizontal"
             app:border="true"
-            android:layout_gravity="center_horizontal"/>
+            app:border_width="1dp"
+            app:shadow="true" />
 
     </FrameLayout>
 

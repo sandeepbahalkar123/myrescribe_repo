@@ -105,16 +105,16 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
         TextView slotTime = (TextView) convertView.findViewById(R.id.slotTime);
         ImageView slotImage = (ImageView) convertView.findViewById(R.id.slotImage);
         if (mContext.getString(R.string.morning).equalsIgnoreCase(slotList.getSlotName())) {
-            slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.breakfast_normal));
+            slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.breakfast));
         }
         if (mContext.getString(R.string.afternoon).equalsIgnoreCase(slotList.getSlotName())) {
-            slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.lunch_highlighted));
+            slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.lunch));
         }
         if (mContext.getString(R.string.evening).equalsIgnoreCase(slotList.getSlotName())) {
-            slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.snacks));
+            slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.evening));
         }
         if (mContext.getString(R.string.night).equalsIgnoreCase(slotList.getSlotName())) {
-            slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.night_dinner));
+            slotImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dinner));
         }
         slotTime.setText(slotList.getSlotDescription());
         slotName.setText(slotList.getSlotName());

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +17,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +42,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     private RelativeLayout bottomSheetMenu;
     private FrameLayout bottomSheetMenuLayout;
     public boolean isOpen;
-    private TableLayout tableLayout;
+    private LinearLayout linearTableLayout;
     private int mPosition;
     private CircularImageView imageUrl;
     private TextView mPatientName;
@@ -65,7 +57,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         super.setContentView(R.layout.bottom_menu_activity);
 
         mFrame = (FrameLayout) findViewById(R.id.activityView);
-        tableLayout = (TableLayout) findViewById(R.id.table);
+        linearTableLayout = (LinearLayout) findViewById(R.id.table);
         bottomSheetMenuLayout = (FrameLayout) findViewById(R.id.bottomSheetMenuLayout);
         bottomSheetMenu = (RelativeLayout) findViewById(R.id.bottomSheetMenu);
         mPatientName = (TextView) findViewById(R.id.patientName);
@@ -129,7 +121,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
                 .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
         imageUrl.setImageDrawable(drawable);
 
-        tableLayout.removeAllViews();
+        linearTableLayout.removeAllViews();
 
         List<BottomSheetMenu> bottomSheetMenus = new ArrayList<>();
         int size = this.bottomSheetMenus.size();
@@ -138,20 +130,25 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
             mPosition = position;
             bottomSheetMenus.add(this.bottomSheetMenus.get(position));
             if (bottomSheetMenus.size() == 3 && position < 3) {
-                tableLayout.addView(addTableRow(bottomSheetMenus, position));
+                linearTableLayout.addView(addTableRow(bottomSheetMenus, position, getResources().getDimensionPixelSize(R.dimen.dp28)));
                 bottomSheetMenus.clear();
             } else if (bottomSheetMenus.size() == 2 && position >= 3) {
-                tableLayout.addView(addTableRow(bottomSheetMenus, position));
+                linearTableLayout.addView(addTableRow(bottomSheetMenus, position, getResources().getDimensionPixelSize(R.dimen.dp45)));
                 bottomSheetMenus.clear();
             }
         }
     }
 
-    private View addTableRow(final List<BottomSheetMenu> bottomSheetMenus, final int groupPosition) {
-        TableRow tableRow = new TableRow(this);
+    private View addTableRow(final List<BottomSheetMenu> bottomSheetMenus, final int groupPosition, int padding) {
+        LinearLayout layout2 = new LinearLayout(this);
+        layout2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        layout2.setOrientation(LinearLayout.HORIZONTAL);
+        layout2.setPadding(padding, 0, padding, 0);
+
         for (int i = 0; i < bottomSheetMenus.size(); i++) {
             final BottomSheetMenu bottomSheetMenu = bottomSheetMenus.get(i);
-            View item = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_menu_item_list, tableRow, false);
+            View item = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_menu_item_list, layout2, false);
+
             TextView bottomMenuName = (TextView) item.findViewById(R.id.menuName);
             ImageView menuBottomIcon = (ImageView) item.findViewById(R.id.menuImage);
             TextView badgeView = (TextView) item.findViewById(R.id.showCount);
@@ -176,10 +173,9 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
             menuBottomIcon.setImageDrawable(bottomSheetMenu.getIconImageUrl());
 
-            tableRow.setGravity(Gravity.CENTER);
-            tableRow.addView(item);
+            layout2.addView(item);
         }
-        return tableRow;
+        return layout2;
     }
 
     public void setBadgeCount(int count) {

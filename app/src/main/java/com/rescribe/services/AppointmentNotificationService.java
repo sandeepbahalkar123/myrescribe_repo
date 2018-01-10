@@ -17,7 +17,6 @@ import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.notification.AppointmentHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.my_records.VisitDate;
 import com.rescribe.model.notification.AppointmentsNotificationData;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
 import com.rescribe.notification.AppointmentAlarmTask;
@@ -161,8 +160,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
                 Comparator<AppointmentsNotificationData> comparator = new Comparator<AppointmentsNotificationData>() {
                     @Override
                     public int compare(AppointmentsNotificationData o1, AppointmentsNotificationData o2) {
-                        Date m1Date = CommonMethods.convertStringToDate(o1.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss);
-                        Date m2Date = CommonMethods.convertStringToDate(o2.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss);
+                        Date m1Date = CommonMethods.convertStringToDate(o1.getAptDate() + "_" + o1.getAptTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN + "_" + RescribeConstants.DATE_PATTERN.HH_mm_ss);
+                        Date m2Date = CommonMethods.convertStringToDate(o2.getAptDate() + "_" + o2.getAptTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN + "_" + RescribeConstants.DATE_PATTERN.HH_mm_ss);
                         return m1Date.compareTo(m2Date);
                     }
                 };

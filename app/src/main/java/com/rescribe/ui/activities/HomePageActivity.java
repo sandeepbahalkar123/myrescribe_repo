@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -80,6 +81,7 @@ import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -91,11 +93,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
 import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocation.REQUEST_CHECK_SETTINGS;
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
@@ -468,17 +472,20 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-        custom_progress_bar.setVisibility(View.GONE);
+        if (mOldDataTag.equals(TASK_DASHBOARD_API))
+            custom_progress_bar.setVisibility(View.GONE);
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        custom_progress_bar.setVisibility(View.GONE);
+        if (mOldDataTag.equals(TASK_DASHBOARD_API))
+            custom_progress_bar.setVisibility(View.GONE);
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        custom_progress_bar.setVisibility(View.GONE);
+        if (mOldDataTag.equals(TASK_DASHBOARD_API))
+            custom_progress_bar.setVisibility(View.GONE);
     }
 
 
@@ -757,7 +764,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         if (locationReceived.equalsIgnoreCase(previousLocationReceived)) {
             Log.d(TAG, "DASHBOARD API NOT CALLED");
-
         } else {
             Log.d(TAG, "DASHBOARD API  CALLED");
             if (locationReceived.equals("")) {

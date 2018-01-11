@@ -16,10 +16,13 @@ import android.widget.Button;
 import com.rescribe.R;
 import com.rescribe.adapters.filter.FilterDoctorsAdapter;
 import com.rescribe.model.filter.DoctorData;
+import com.rescribe.model.filter.DoctorSpecialityData;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +74,16 @@ public class SelectDoctorsFragment extends Fragment {
 
             doctorList = getArguments().getParcelableArrayList(RescribeConstants.DOCTORS_LIST);
         }
+        Comparator<DoctorData> comparator = new Comparator<DoctorData>() {
+            @Override
+            public int compare(DoctorData o1, DoctorData o2) {
+                String m1 = o1.getDoctorName() ;
+                String m2 = o2.getDoctorName();
+                return m2.compareTo(m1);
+            }
+        };
 
+        Collections.sort(doctorList, Collections.reverseOrder(comparator));
         // off recyclerView Animation
 
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();

@@ -110,7 +110,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     int pager_margin;
     private FindDoctorCategoryAdapter mRecentlyVisitedDoctors;
     private ServicesCardViewImpl mServicesCardViewImpl;
-    private DoctorDataHelper mDoctorDataHelper;
     private DashboardMenuList mReceivedDashboardMenuListData;
 
     @Override
@@ -181,7 +180,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         //------------
         pager_padding = getResources().getDimensionPixelSize(R.dimen.dp28);
         pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
-        mDoctorDataHelper = new DoctorDataHelper(this, this);
+        DoctorDataHelper mDoctorDataHelper = new DoctorDataHelper(this, this);
         mDoctorDataHelper.doGetComplaintsList();
         SpannableString contentViewAllFavorite = new SpannableString(viewAllFavorite.getText().toString());
         contentViewAllFavorite.setSpan(new UnderlineSpan(), 0, contentViewAllFavorite.length(), 0);

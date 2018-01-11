@@ -26,6 +26,7 @@
         android:id="@+id/bottomSheetMenuLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp38"
         android:layout_above="@+id/bottomMenuListRecyclerView"
         android:clickable="true"
         android:focusable="true"
@@ -105,8 +106,8 @@
 
         <com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView
             android:id="@+id/imageUrl"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
             app:border_width="1dp"
             app:shadow="true"
             app:border="true"

@@ -60,5 +60,8 @@
     <dimen name="sp12">12sp</dimen>
     <dimen name="dp16">16dp</dimen>
     <dimen name="bottom_sheet_icon_size">32dp</dimen>
+    <dimen name="dp60">60dp</dimen>
+    <dimen name="dp30">30dp</dimen>
+    <dimen name="dp38">38dp</dimen>
 
 </resources>

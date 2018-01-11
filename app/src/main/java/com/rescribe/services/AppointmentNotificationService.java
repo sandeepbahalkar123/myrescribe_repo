@@ -25,6 +25,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -170,7 +171,18 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
                 for (int index = 0; index < aptList.size(); index++) {
                     AppointmentsNotificationData aptListObject = aptList.get(index);
-                    customNotification(aptListObject, index);
+                    Date dateOfApp = CommonMethods.convertStringToDate(aptListObject.getAptDate() + "_" + aptListObject.getAptTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN + "_" + RescribeConstants.DATE_PATTERN.HH_mm_ss);
+                    Date today = CommonMethods.convertStringToDate(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN + "_" + RescribeConstants.DATE_PATTERN.HH_mm_ss), RescribeConstants.DATE_PATTERN.UTC_PATTERN + "_" + RescribeConstants.DATE_PATTERN.HH_mm_ss);
+
+                    Calendar next48Hr = Calendar.getInstance();
+                    next48Hr.setTime(today);
+                    next48Hr.add(Calendar.DAY_OF_YEAR, 2);
+                    Date next48HrDate = next48Hr.getTime();
+
+                    boolean inRange = dateOfApp.before(next48HrDate);
+
+                    if (inRange)
+                        customNotification(aptListObject, index);
                 }
 
             }

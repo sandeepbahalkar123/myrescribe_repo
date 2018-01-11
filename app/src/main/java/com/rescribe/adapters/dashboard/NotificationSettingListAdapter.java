@@ -2,7 +2,6 @@ package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.switch_button.SwitchButton;
-import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 
@@ -50,7 +47,7 @@ public class NotificationSettingListAdapter extends RecyclerView.Adapter<Notific
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, final int position) {
+    public void onBindViewHolder(final ListViewHolder holder, final int position) {
 
         final ClickOption clickOption = clickOptionList.get(position);
         holder.textName.setText(clickOption.getName());
@@ -59,40 +56,23 @@ public class NotificationSettingListAdapter extends RecyclerView.Adapter<Notific
         if (clickOption.getIconImageUrl() != null) {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.dontAnimate();
-
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
             Glide.with(mContext)
                     .load(clickOption.getIconImageUrl())
                     .apply(requestOptions)
                     .into(holder.menuIcon);
         }
-        //--------------
-        holder.radioSwitch.setOnClickListener(new View.OnClickListener() {
+
+        holder.radioSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                SwitchButton v1 = (SwitchButton) v;
-                listener.onClick(clickOption, v1.isChecked());
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                listener.onClick(clickOption, holder.radioSwitch.isChecked());
             }
         });
 
-       /* holder.radioSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SwitchButton v1 = (SwitchButton) buttonView;
-                listener.onClick(clickOption, v1.isChecked());
-            }
-        });*/
-        holder.radioSwitch.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                SwitchButton v1 = (SwitchButton) v;
-                listener.onClick(clickOption, v1.isChecked());
-                return false;
-            }
-        });
         holder.radioSwitch.setAnimationDuration(250);
-        holder.radioSwitch.setChecked(RescribePreferencesManager.getBoolean(clickOption.getName(), mContext));
+        holder.radioSwitch.setCheckedNoEvent(RescribePreferencesManager.getBoolean(clickOption.getName(), mContext));
 
     }
 

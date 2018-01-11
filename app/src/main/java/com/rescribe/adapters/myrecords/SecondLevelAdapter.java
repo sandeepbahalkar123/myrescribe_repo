@@ -25,15 +25,10 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
     private final int mColor;
     private final String mInvestigationText;
     private int mBgColor;
-    private ArrayList<MyRecordReports> mChildOriginalList;
     private ArrayList<MyRecordReports> mChildListDataHeader;
     private HashMap<MyRecordReports, ArrayList<MyRecordReports.MyRecordReportList>> mChildListDataChild;
 
-    private Context context;
-
     public SecondLevelAdapter(Context context, ArrayList<MyRecordReports> mOriginalList, int color, int bgColor) {
-        this.context = context;
-        this.mChildOriginalList = mOriginalList;
         this.mColor = color;
         this.mBgColor = bgColor;
 

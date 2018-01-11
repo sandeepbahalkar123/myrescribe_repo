@@ -182,7 +182,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             bookAppointmentButton.setVisibility(View.GONE);
             doctorAppointmentDate.setVisibility(View.VISIBLE);
             tokenNo.setVisibility(View.GONE);
-            SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a));
+            SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a).toUpperCase());
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             doctorAppointmentDate.setText(content);
             if (clinicDataList.size() > 0) {

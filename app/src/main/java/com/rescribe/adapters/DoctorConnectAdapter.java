@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -43,7 +42,6 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
 
     private Context mContext;
     private ArrayList<ChatDoctor> chatDoctors;
-    private ColorGenerator mColorGenerator;
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
@@ -74,7 +72,6 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
     public DoctorConnectAdapter(Context mContext, ArrayList<ChatDoctor> chatDoctors) {
         this.chatDoctors = chatDoctors;
         this.mContext = mContext;
-        mColorGenerator = ColorGenerator.MATERIAL;
     }
 
     @Override
@@ -106,7 +103,7 @@ public class DoctorConnectAdapter extends RecyclerView.Adapter<DoctorConnectAdap
         //-----------
 
         holder.onlineStatusTextView.setText(chatDoctor.getOnlineStatus());
-        holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? "Rs 255/-" : "FREE");
+        holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? String.valueOf(chatDoctor.getAmount()) + "/-" : "FREE");
 
         String doctorName = chatDoctor.getDoctorName();
         if (doctorName.contains("Dr. ")) {

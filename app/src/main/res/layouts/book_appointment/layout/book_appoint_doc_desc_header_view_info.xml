@@ -12,6 +12,7 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/dp5"
         android:paddingLeft="@dimen/dp10"
+        android:focusableInTouchMode="true"
         android:paddingRight="@dimen/dp10">
 
         <RelativeLayout
@@ -83,14 +84,6 @@
 
                     </LinearLayout>
 
-
-                    <!-- <TextView
-                         android:layout_marginTop="@dimen/dp4"
-                        android:layout_marginLeft="@dimen/dp8"
-                         android:layout_marginRight="@dimen/dp8"
-                         android:layout_width="match_parent"
-                         android:layout_height="@dimen/dp1"
-                         android:background="@color/tagColor" />-->
                     <ImageView
                         android:id="@+id/ruppeeShadow"
                         android:layout_width="wrap_content"
@@ -129,7 +122,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_toRightOf="@+id/thumbnail"
                 android:layout_weight="1"
                 android:gravity="center|left"
                 android:orientation="vertical"
@@ -140,7 +132,6 @@
                     android:id="@+id/clinicName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/thumbnail"
                     android:layout_marginTop="1dip"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp16"
@@ -154,7 +145,6 @@
                     android:id="@+id/doctorName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/thumbnail"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp16"
                     android:typeface="sans"
@@ -166,8 +156,6 @@
                     android:id="@+id/doctorSpecialization"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/doctorName"
-                    android:layout_toRightOf="@+id/thumbnail"
                     android:gravity="right"
                     android:textColor="@color/dose_completed"
                     android:textSize="@dimen/sp13"
@@ -207,7 +195,6 @@
                     android:layout_height="10dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dp3"
-                    android:layout_toRightOf="@+id/doctorRating"
                     android:stepSize="0.5"
                     tools:rating="3.5" />
 
@@ -254,7 +241,7 @@
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/docPracticesLocationCount"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/black"
@@ -284,11 +271,13 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingLeft="@dimen/dp5">
+                android:paddingLeft="@dimen/dp5"
+                android:paddingStart="@dimen/dp5">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:padding="@dimen/dp1"
                     android:src="@drawable/location_with_bottom_blue_circle_" />
             </LinearLayout>
 
@@ -297,7 +286,6 @@
                 style="@style/SpinnerTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dp4"
                 android:spinnerMode="dropdown" />
 
         </LinearLayout>
@@ -340,11 +328,12 @@
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorExperience"
-                android:layout_width="@dimen/dp0"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center|left"
-                android:paddingLeft="@dimen/dp5"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingStart="@dimen/dp10"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp15"
                 app:customFont="@string/roboto_regular"

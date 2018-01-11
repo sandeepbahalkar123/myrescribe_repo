@@ -46,13 +46,10 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<MyRecordInfoAndReports, ArrayList<MyRecordReports>> mListDataChild;
 
-    private ArrayList<MyRecordInfoAndReports> mOriginalList;
     private Context context;
-    private String doctorName = "";
 
     public ThreeLevelListAdapter(Context context, ArrayList<MyRecordInfoAndReports> mOriginalList) {
         this.context = context;
-        this.mOriginalList = mOriginalList;
 
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
@@ -133,11 +130,23 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         MyRecordInfoAndReports group = getGroup(groupPosition);
 
         MyRecordDoctorInfo dataObject = group.getMyRecordDoctorInfo();
+        String doctorName = "";
         if (dataObject.getDoctorName().contains("Dr.")) {
             doctorName = dataObject.getDoctorName();
         } else {
             doctorName = "Dr. " + dataObject.getDoctorName();
         }
+
+
+        int newHeightWidth;
+        if (groupPosition == 0)
+            newHeightWidth = groupViewHolder.circularBulletMainElement.getContext().getResources().getDimensionPixelSize(R.dimen.dp28); // New height in pixels
+        else
+            newHeightWidth = groupViewHolder.circularBulletMainElement.getContext().getResources().getDimensionPixelSize(R.dimen.dp14); // New height in pixels
+
+        groupViewHolder.circularBulletMainElement.requestLayout();
+        groupViewHolder.circularBulletMainElement.getLayoutParams().height = newHeightWidth;
+        groupViewHolder.circularBulletMainElement.getLayoutParams().width = newHeightWidth;
 
         groupViewHolder.doctorName.setText(doctorName);
         groupViewHolder.doctorAddress.setText(dataObject.getAddress());
@@ -147,8 +156,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.sideBarView.setBackgroundColor(dataObject.getSideBarViewColor());
 
         //--------
-        String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), RescribeConstants.DATE_PATTERN.MMM_YYYY,
-                RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE).toLowerCase();
         Date date = CommonMethods.convertStringToDate(dataObject.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -176,6 +183,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             //--- this is done to keep same bgColor for group n child and sub-childes.
             dataObject.setRowColor(ContextCompat.getColor(context, R.color.divider));
             groupViewHolder.footerDividerView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            groupViewHolder.footerDividerViewHalf.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             //----------------
         } else {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
@@ -185,6 +193,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             //--- this is done to keep same bgColor for group n child and sub-childes.
             dataObject.setRowColor(ContextCompat.getColor(context, R.color.white));
             groupViewHolder.footerDividerView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+            groupViewHolder.footerDividerViewHalf.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
             //----------------
 
         }
@@ -330,6 +339,8 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         TextView footerSideBarView;
         @BindView(R.id.footerBarLayout)
         LinearLayout footerBarLayout;
+        @BindView(R.id.footerDividerViewHalf)
+        View footerDividerViewHalf;
         @BindView(R.id.footerDividerView)
         TextView footerDividerView;
 

@@ -12,7 +12,7 @@
         android:childDivider="@color/transparent"
         android:divider="@null"
         android:groupIndicator="@null"
-        android:visibility="visible"></ExpandableListView>
+        android:visibility="visible"/>
 
     <RelativeLayout
         android:id="@+id/emptyListView"

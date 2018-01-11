@@ -41,6 +41,9 @@ public class ChatDoctor implements Parcelable, CustomResponse {
     @SerializedName("unreadMessages")
     @Expose
     private int unreadMessages;
+    @SerializedName("amount")
+    @Expose
+    private int amount;
 
     public final static Creator<ChatDoctor> CREATOR = new Creator<ChatDoctor>() {
 
@@ -60,6 +63,7 @@ public class ChatDoctor implements Parcelable, CustomResponse {
             instance.lastChatTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.unreadMessages = ((int) in.readValue((Integer.class.getClassLoader())));
             instance.docAppointmentType = ((String) in.readValue((String.class.getClassLoader())));
+            instance.amount = ((int) in.readValue((Integer.class.getClassLoader())));
 
             return instance;
         }
@@ -150,6 +154,14 @@ public class ChatDoctor implements Parcelable, CustomResponse {
         this.docAppointmentType = docAppointmentType;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(doctorName);
@@ -161,6 +173,7 @@ public class ChatDoctor implements Parcelable, CustomResponse {
         dest.writeValue(lastChatTime);
         dest.writeValue(unreadMessages);
         dest.writeValue(docAppointmentType);
+        dest.writeValue(amount);
     }
 
     public int describeContents() {

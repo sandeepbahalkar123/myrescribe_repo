@@ -36,7 +36,6 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
     HashMap<String, String> userSelectedLocationInfo;
-    private BookAppointDoctorDescriptionFragment mBookAppointDoctorDescriptionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
         if (extras != null) {
             title.setText(extras.getString(getString(R.string.toolbarTitle)));
         }
-        mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(extras);
+        BookAppointDoctorDescriptionFragment mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(extras);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.viewContainer, mBookAppointDoctorDescriptionFragment);

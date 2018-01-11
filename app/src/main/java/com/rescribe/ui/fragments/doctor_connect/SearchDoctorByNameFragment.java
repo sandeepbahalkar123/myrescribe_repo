@@ -38,7 +38,6 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     Unbinder unbinder;
     @BindView(R.id.displayNote)
     CustomTextView displayNote;
-    private View mRootView;
     private ArrayList<ChatDoctor> mReceivedList;
     private DoctorSearchByNameAdapter doctorSearchByNameAdapter;
     private String mClickedSpecialityOfDoctor;
@@ -61,7 +60,7 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
+        View mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedSpecialityOfDoctor = arguments.getString(getString(R.string.clicked_item_data));

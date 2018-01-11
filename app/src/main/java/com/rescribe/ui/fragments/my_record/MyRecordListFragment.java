@@ -92,7 +92,7 @@ public class MyRecordListFragment extends Fragment {
                 if (monthArrayListHashMap != null) {
                     ArrayList<MyRecordInfoAndReports> formattedDoctorList = monthArrayListHashMap.get(mMonthName);
                     if (formattedDoctorList != null) {
-                        if (formattedDoctorList.size() == 0) {
+                        if (formattedDoctorList.isEmpty()) {
                             mExpandMyRecordListView.setVisibility(View.GONE);
                             mEmptyListView.setVisibility(View.VISIBLE);
                         } else {

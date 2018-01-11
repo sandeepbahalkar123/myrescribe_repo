@@ -9,36 +9,6 @@
     android:orientation="vertical"
     tools:ignore="MissingTranslation">
 
-<!--
-    <RelativeLayout
-        android:id="@+id/doubtMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:gravity="bottom|center"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/clickHere"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/clickHere"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/dp10"
-            android:paddingLeft="@dimen/dp12"
-            android:paddingRight="@dimen/dp12"
-            android:paddingTop="@dimen/dp10"
-            android:text="@string/clickhere"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp12"
-            app:customFont="@string/roboto_bold" />
-    </RelativeLayout>
--->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,7 +31,6 @@
             android:id="@+id/recyclerViewLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/pickSpeciality"
             android:orientation="horizontal">
 
             <ImageView
@@ -76,7 +45,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/bookAppointSpecialityListView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginLeft="@dimen/dp6"

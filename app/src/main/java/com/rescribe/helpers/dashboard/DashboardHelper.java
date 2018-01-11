@@ -1,8 +1,10 @@
 package com.rescribe.helpers.dashboard;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
+import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
@@ -24,6 +26,8 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -126,17 +130,37 @@ public class DashboardHelper implements ConnectionListener {
 
     public void doGetDashboard(String currentCity) {
 
+
         String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue;
         if (currentCity != null) {
-            String dateAndTime = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(),RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD)+"&time="+CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
-            url = url + mContext.getString(R.string.city) + currentCity.trim()+"&date="+dateAndTime;
+            String dateAndTime = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD) + "&time=" + CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
+            url = url + mContext.getString(R.string.city) + currentCity.trim() + "&date=" + dateAndTime;
         }
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);
+
+
+        //---
+        /*try {
+            InputStream is = mContext.getAssets().open("temp_dashboard_data.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            Log.e(TAG, "temp_dashboard_data" + json);
+
+            DashBoardBaseModel slotListBaseModel = new Gson().fromJson(json, DashBoardBaseModel.class);
+            onResponse(ConnectionListener.RESPONSE_OK, slotListBaseModel, RescribeConstants.TASK_DASHBOARD_API);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }*/
+        //---
     }
 
     public void doGetSavedArticles() {

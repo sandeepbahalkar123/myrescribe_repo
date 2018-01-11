@@ -43,6 +43,7 @@
                     android:layout_marginTop="@dimen/dp4"
                     android:padding="@dimen/dp6"
                     android:scaleX="-1"
+                    android:visibility="invisible"
                     android:src="@drawable/right_arrow_book_appointment" />
 
                 <com.rescribe.ui.customesViews.CustomTextView

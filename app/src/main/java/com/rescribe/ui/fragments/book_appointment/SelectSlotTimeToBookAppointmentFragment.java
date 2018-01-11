@@ -646,23 +646,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 grid.show(getFragmentManager(), getResources().getString(R.string.select_date_text));
                 break;
             case R.id.leftArrow:
-                //------------
-                Date receivedDate = CommonMethods.convertStringToDate(this.mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-                Calendar cc = Calendar.getInstance();
-                cc.setTime(receivedDate); // Now use today date.
-                cc.add(Calendar.DATE, -1); // subtracting 1 days
-                receivedDate = cc.getTime();
-                //-----------
-                String formattedCurrentDateString = CommonMethods.formatDateTime(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DD_MM_YYYY, RescribeConstants.DATE);
-                SimpleDateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
-                String receivedDateString = dateFormat.format(receivedDate);
-                //------------
-                Date currentDate = new Date();
-                //------------
 
-                if ((currentDate.getTime() < receivedDate.getTime()) || (formattedCurrentDateString.equalsIgnoreCase(receivedDateString))) {
-                    onDateSet(mDatePickerDialog, cc.get(Calendar.YEAR), cc.get(Calendar.MONTH), cc.get(Calendar.DAY_OF_MONTH));
-                }
+                isShowPreviousDayLeftArrow(true);
                 break;
 
             case R.id.rightArrow:
@@ -680,10 +665,34 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 if (mMaxDateRange.getTime() >= date.getTime()) {
                     onDateSet(mDatePickerDialog, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
                 }
+
                 break;
         }
     }
 
+    private void isShowPreviousDayLeftArrow(boolean isCallOnDateSet) {
+
+        mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+        //------------
+        Date receivedDate = CommonMethods.convertStringToDate(this.mSelectedTimeSlotDate, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+        Calendar cc = Calendar.getInstance();
+        cc.setTime(receivedDate); // Now use today date.
+        cc.add(Calendar.DATE, -1); // subtracting 1 days
+        receivedDate = cc.getTime();
+        //-----------
+        String formattedCurrentDateString = CommonMethods.formatDateTime(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DD_MM_YYYY, RescribeConstants.DATE);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, Locale.US);
+        String receivedDateString = dateFormat.format(receivedDate);
+        //------------
+        Date currentDate = new Date();
+        //------------
+        if ((currentDate.getTime() < receivedDate.getTime()) || (formattedCurrentDateString.equalsIgnoreCase(receivedDateString))) {
+            if (isCallOnDateSet)
+                onDateSet(mDatePickerDialog, cc.get(Calendar.YEAR), cc.get(Calendar.MONTH), cc.get(Calendar.DAY_OF_MONTH));
+        } else {
+            mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
+        }
+    }
 
     private void changeViewBasedOnAppointmentType() {
         if (mSelectedClinicDataObject != null) {
@@ -726,7 +735,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 appointmentTypeIsTokenButton.setVisibility(View.GONE);
                 appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
                 //----
-                mPreviousDayLeftArrow.setVisibility(View.VISIBLE);
+                mPreviousDayLeftArrow.setVisibility(View.INVISIBLE);
                 mNextDayRightArrow.setVisibility(View.VISIBLE);
                 mSelectDateTime.setEnabled(true);
                 //------------
@@ -837,9 +846,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
             changeViewBasedOnAppointmentType();
         } else {
+            //-- TO SHOW LEFT ARROW FOR NAVIGATION TO PREVIOUS DATE.
+            if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.book))) {
+                isShowPreviousDayLeftArrow(false);
+            }
             mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
         }
-
     }
 
     public void showTokenStatusMessageBox(final int tokenNumber, String message, final String mSelectedTimeStampForNewT, final int mDocId, final int mLocationId) {

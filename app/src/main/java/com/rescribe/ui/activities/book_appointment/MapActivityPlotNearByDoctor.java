@@ -238,7 +238,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                 doctorList.setCategoryName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getCategoryName());
                 doctorList.setCategorySpeciality(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getCategorySpeciality());
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, DoctorDescriptionBaseActivity.class);
-                intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
+                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
                 intent.putExtra(getString(R.string.clicked_item_data), doctorList);
                 ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorList);
                 startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
@@ -297,7 +297,6 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
 
                 }
             }, RescribeConstants.TIME_STAMPS.FIVE_FIFTY);
-
 
         } else {
             super.onBackPressed();

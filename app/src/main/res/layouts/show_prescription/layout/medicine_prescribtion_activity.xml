@@ -112,16 +112,14 @@
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/frequencyString"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/dp8"
-                    android:layout_weight="0.5"
-                    android:gravity="right"
+                    android:layout_gravity="right"
                     android:paddingRight="@dimen/dp10"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp14"
                     app:customFont="@string/roboto_bold"
-                    tools:text="1-1-1-1-1-1" />
+                    tools:text="1-1-1-1-1-1-1" />
 
 
                 <LinearLayout
@@ -134,16 +132,15 @@
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/days"
-                        android:layout_width="0dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp8"
-                        android:layout_weight="0.5"
                         android:gravity="right"
                         android:textColor="@color/black"
                         android:textSize="@dimen/sp14"
                         android:textStyle="bold"
                         app:customFont="@string/roboto_bold"
-                        tools:text="14 days" />
+                        tools:text="1456 days" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -153,6 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                tools:visibility="visible"
                 android:visibility="gone">
 
 
@@ -191,6 +189,7 @@
                 android:id="@+id/expandPrescriptionView"
                 layout="@layout/expanded_medicine_prescribtion_layout"
                 android:layout_width="match_parent"
+                tools:visibility="visible"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 

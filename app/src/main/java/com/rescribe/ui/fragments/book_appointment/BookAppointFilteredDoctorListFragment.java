@@ -131,8 +131,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private void doGetReceivedListBasedOnClickedItemData() {
         //------------
 
-
-
         if (getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mReceivedList = mServicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
             mLocationFab.setVisibility(View.VISIBLE);

@@ -55,15 +55,14 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
         final PrescriptionModel prescriptionDataObject = mPrescriptionData.get(position);
         if (prescriptionDataObject.getInstruction().equals("")) {
-            holder.mHighlightedInstructionView.setVisibility(View.INVISIBLE);
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-            );
-            param.setMargins(0,0,0,10);
-            holder.showMedicineLayout.setLayoutParams(param);
-
+            holder.mHighlightedInstructionView.setVisibility(View.GONE);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)holder.showMedicineLayout.getLayoutParams();
+            params.setMargins(0, 0, 0,mContext.getResources().getDimensionPixelSize(R.dimen.dp26) );
+            holder.showMedicineLayout.setLayoutParams(params);
         } else {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)holder.showMedicineLayout.getLayoutParams();
+            params.setMargins(0, 0, 0,0 );
+            holder.showMedicineLayout.setLayoutParams(params);
             holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
             holder.mTextViewhightlightInstructions.setText(prescriptionDataObject.getInstruction());
         }

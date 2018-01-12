@@ -11,7 +11,7 @@
         android:layout_height="@dimen/dp05"
         android:layout_marginTop="@dimen/dp6"
         android:background="@color/divider"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/expandedMedicineDoseLayout"

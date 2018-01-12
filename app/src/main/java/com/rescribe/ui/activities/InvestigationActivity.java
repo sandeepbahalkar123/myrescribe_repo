@@ -93,7 +93,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 onBackPressed();
             }
         });
-
+      //  toolbar.setTitle(getString(R.string.investigation_reports));
         mContext = InvestigationActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 

@@ -70,7 +70,7 @@
     <string name="read_more_text"><u>Read more</u></string>
     <string name="read_less">&#160;<u>
         less</u></string>
-    <string name="title_activity_investigation">Investigation</string>
+    <string name="title_activity_investigation">Investigation Reports</string>
     <string name="title_activity_selected_docs">Selected Documents</string>
     <string name="upload">Upload</string>
     <string name="adddocs">Add Documents</string>
@@ -379,6 +379,8 @@
     <string name="appointment_confirmation">Appointment Confirmation</string>
     <string name="appointment_time_has_lapsed">Appointment time has lapsed.</string>
     <string name="get_token_msg">Sorry, currently there is no other token number available. Would you like to get notified as soon as any token number for today is available?</string>
+    <string name="investigation_reports">Investigation Reports</string>
+    <string name="search_doctor">Search Doctor</string>
 
     <!--************************-->
 </resources>

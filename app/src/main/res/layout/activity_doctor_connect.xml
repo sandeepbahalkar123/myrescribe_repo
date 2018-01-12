@@ -56,7 +56,7 @@
                     android:textSize="@dimen/sp16"
                     android:visibility="gone"
                     app:deleteButtonRes="@drawable/close"
-                    app:hintText="@string/search" />
+                    app:hintText="@string/search_doctor" />
 
                 <TextView
                     android:id="@+id/whiteUnderLine"

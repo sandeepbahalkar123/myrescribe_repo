@@ -172,7 +172,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         }
 
 
-        if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+     /*   if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
             feesToPaid.setVisibility(View.INVISIBLE);
 
             bookAppointmentButton.setVisibility(View.GONE);
@@ -185,7 +185,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
                 clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
             }
-        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
+        } else */if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))||doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
 
             if (doctorObject.getClinicDataList().size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
@@ -322,7 +322,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getCategoryName());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
                 b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
-                b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
+                b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, RescribeConstants.SEARCH_DOCTORS);
                 mServicesCardViewClickListener.onClickOfCardView(b);
             }
         });

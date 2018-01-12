@@ -63,6 +63,9 @@
     <dimen name="dp25">25dp</dimen>
     <dimen name="dp22">22dp</dimen>
     <dimen name="dp62">64dp</dimen>
+    <dimen name="dp200">200dp</dimen>
+    <dimen name="dp70">70dp</dimen>
+    <dimen name="dp75">75dp</dimen>
 
 
     <!--End Switch Button-->

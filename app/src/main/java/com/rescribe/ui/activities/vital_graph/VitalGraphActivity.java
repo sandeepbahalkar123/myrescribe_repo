@@ -21,9 +21,13 @@ import com.rescribe.model.vital_graph.vital_all_list.VitalGraphBaseModel;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphData;
 import com.rescribe.model.vital_graph.vital_all_list.VitalGraphList;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -145,6 +149,8 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
                 } else {
                     isDataListViewVisible(true);
                     mReceivedList = graphList;
+                    Collections.sort(mReceivedList, new DateWiseComparator());
+
                     VitalGraphAdapter vitalGraphAdapter = new VitalGraphAdapter(this, mReceivedList);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(VitalGraphActivity.this);
                     mRecyclerView.setLayoutManager(mLayoutManager);
@@ -155,6 +161,19 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
                     mRecyclerView.setAdapter(vitalGraphAdapter);
                 }
             }
+        }
+    }
+
+    //-- Sort date in descending order
+    private class DateWiseComparator implements Comparator<VitalGraphData> {
+
+        public int compare(VitalGraphData m1, VitalGraphData m2) {
+
+            //possibly check for nulls to avoid NullPointerException
+            //  String s = CommonMethods.formatDateTime(m1.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+            Date m1Date = CommonMethods.convertStringToDate(m1.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date m2Date = CommonMethods.convertStringToDate(m2.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            return m2Date.compareTo(m1Date);
         }
     }
 

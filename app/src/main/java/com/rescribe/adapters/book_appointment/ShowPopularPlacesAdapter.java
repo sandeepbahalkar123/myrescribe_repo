@@ -46,7 +46,12 @@ public class ShowPopularPlacesAdapter extends RecyclerView.Adapter<ShowPopularPl
 
         final AreaList doctorObject = mDataList.get(position);
         holder.popularPlaceName.setText(doctorObject.getArea());
-        holder.countOfDoctors.setText("" + doctorObject.getDoctorCount());
+        if(doctorObject.getDoctorCount()==1) {
+            holder.countOfDoctors.setText("" + doctorObject.getDoctorCount() + " " + mContext.getString(R.string.doctor));
+        }else{
+            holder.countOfDoctors.setText("" + doctorObject.getDoctorCount() + " " + mContext.getString(R.string.doctors));
+
+        }
         holder.popularLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

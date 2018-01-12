@@ -16,13 +16,10 @@
         <com.rescribe.ui.customesViews.CircularImageView
             android:id="@+id/doctorImg"
             android:layout_width="0dp"
-            android:layout_marginBottom="@dimen/dp4"
-            android:layout_marginTop="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp12"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp16"
-            android:layout_weight="0.5"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:layout_weight="0.5" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -32,7 +29,7 @@
             android:orientation="vertical"
             android:paddingTop="@dimen/dp4"
             android:paddingBottom="@dimen/dp4"
-            android:paddingLeft="@dimen/dp16">
+            android:paddingLeft="@dimen/dp10">
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorSpecialization"

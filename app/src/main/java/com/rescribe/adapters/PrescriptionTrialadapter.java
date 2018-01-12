@@ -9,25 +9,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.rescribe.R;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
- * Created by jeetal on 10/5/17.
+ * Created by jeetal on 11/1/18.
  */
 
-public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionListAdapter.ListViewHolder> {
+public class PrescriptionTrialadapter extends RecyclerView.Adapter<PrescriptionTrialadapter.ListViewHolder> {
 
     private List<PrescriptionModel> mPrescriptionData;
     private Context mContext;
@@ -35,7 +37,8 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     private List<PrescriptionModel> mSearchListByMedicineName;
 
-    public PrescriptionListAdapter(Context context, List<PrescriptionModel> dataSet) {
+
+    public PrescriptionTrialadapter(Context context, List<PrescriptionModel> dataSet) {
         this.mPrescriptionData = dataSet;
         this.mContext = context;
         this.mSearchListByMedicineName = new ArrayList<>();
@@ -44,25 +47,27 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
     }
 
     @Override
-    public PrescriptionListAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PrescriptionTrialadapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.medicine_prescribtion_activity, parent, false);
-        return new PrescriptionListAdapter.ListViewHolder(view);
+        return new PrescriptionTrialadapter.ListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final PrescriptionListAdapter.ListViewHolder holder, final int position) {
+    public void onBindViewHolder(final PrescriptionTrialadapter.ListViewHolder holder, final int position) {
 
         final PrescriptionModel prescriptionDataObject = mPrescriptionData.get(position);
+
         if (prescriptionDataObject.getInstruction().equals("")) {
-            holder.mHighlightedInstructionView.setVisibility(View.GONE);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)holder.showMedicineLayout.getLayoutParams();
-            params.setMargins(0, 0, 0,mContext.getResources().getDimensionPixelSize(R.dimen.dp26) );
-            holder.showMedicineLayout.setLayoutParams(params);
+            holder.mHighlightedInstructionView.setVisibility(View.INVISIBLE);
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            );
+            param.setMargins(0, 0, 0, 10);
+            holder.showMedicineLayout.setLayoutParams(param);
+
         } else {
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)holder.showMedicineLayout.getLayoutParams();
-            params.setMargins(0, 0, 0,0 );
-            holder.showMedicineLayout.setLayoutParams(params);
             holder.mHighlightedInstructionView.setVisibility(View.VISIBLE);
             holder.mTextViewhightlightInstructions.setText(prescriptionDataObject.getInstruction());
         }
@@ -107,73 +112,139 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             }
         });
         //condition check for before after dosage slot wise
-        if(prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.break_fast))){
-            if(!prescriptionDataObject.getBreakfastAfter().isEmpty()){
-                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
-                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getBreakfastAfter() + " " + mContext.getString(R.string.after) + " " +mContext.getString(R.string.breakfast));
-
-            }else if(!prescriptionDataObject.getBreakfastBefore().isEmpty()){
-                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
-                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getBreakfastBefore() + " " +  mContext.getString(R.string.before) + " " +mContext.getString(R.string.breakfast));
-            }else{
+        if (prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.break_fast))) {
+            if (!prescriptionDataObject.getBreakfastAfter().isEmpty() || !prescriptionDataObject.getBreakfastBefore().isEmpty()) {
+                String durationOfBreakFast = "";
+                String doseQuantityBreakfast = "";
+                if (!prescriptionDataObject.getBreakfastAfter().isEmpty()) {
+                    holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
+                    holder.mShowDoseAndSlot.setText(prescriptionDataObject.getBreakfastAfter() + " " + mContext.getString(R.string.after) + " " + mContext.getString(R.string.breakfast));
+                    durationOfBreakFast = mContext.getString(R.string.after) + " " + mContext.getString(R.string.breakfast);
+                    doseQuantityBreakfast = prescriptionDataObject.getBreakfastAfter();
+                } else if (!prescriptionDataObject.getBreakfastBefore().isEmpty()) {
+                    holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
+                    holder.mShowDoseAndSlot.setText(prescriptionDataObject.getBreakfastBefore() + " " + mContext.getString(R.string.before) + " " + mContext.getString(R.string.breakfast));
+                    durationOfBreakFast = mContext.getString(R.string.before) + " " + mContext.getString(R.string.breakfast);
+                    doseQuantityBreakfast = prescriptionDataObject.getBreakfastBefore();
+                }
+                if (doseQuantityBreakfast.isEmpty()) {
+                    holder.mShowMorningDosage.setVisibility(View.GONE);
+                } else {
+                    holder.mShowMorningDosage.setVisibility(View.VISIBLE);
+                }
+                //if current timeOfDosage is within breakfast timeOfDosage ie. 7 am to 11 am then breakfast image highlighted with circular background
+                holder.mShowMorningFullFormOfDose.setText(doseQuantityBreakfast + " " + durationOfBreakFast);
+            } else {
                 holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.INVISIBLE);
             }
 
-        }else if(prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.mlunch))){
-            if(!prescriptionDataObject.getLunchAfter().isEmpty()){
-                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
-                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getLunchAfter() + " " + mContext.getString(R.string.after) + " " +mContext.getString(R.string.lunch));
+        } else if (prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.mlunch))) {
+            if (!prescriptionDataObject.getLunchAfter().isEmpty() || !prescriptionDataObject.getLunchBefore().isEmpty()) {
+                String durationOfLunch = "";
+                String doseQuantityLunch = "";
+                if (!prescriptionDataObject.getLunchAfter().isEmpty()) {
+                    holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
+                    holder.mShowDoseAndSlot.setText(prescriptionDataObject.getLunchAfter() + " " + mContext.getString(R.string.after) + " " + mContext.getString(R.string.lunch));
+                    durationOfLunch = mContext.getString(R.string.after) + " " + mContext.getString(R.string.lunch);
+                    doseQuantityLunch = prescriptionDataObject.getLunchAfter();
 
-            }else if(!prescriptionDataObject.getLunchBefore().isEmpty()){
-                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
-                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getLunchBefore() + " " +  mContext.getString(R.string.before) + " " +mContext.getString(R.string.lunch));
-            }else{
+                } else if (!prescriptionDataObject.getLunchBefore().isEmpty()) {
+                    holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
+                    holder.mShowDoseAndSlot.setText(prescriptionDataObject.getLunchBefore() + " " + mContext.getString(R.string.before) + " " + mContext.getString(R.string.lunch));
+                    durationOfLunch = mContext.getString(R.string.before) + " " + mContext.getString(R.string.lunch);
+                    doseQuantityLunch = prescriptionDataObject.getLunchBefore();
+                }
+                if (doseQuantityLunch.isEmpty()) {
+                    holder.mShowAfternoonDosage.setVisibility(View.GONE);
+
+                } else {
+                    holder.mShowAfternoonDosage.setVisibility(View.VISIBLE);
+                }
+
+                holder.mShowAfterNoonFullFormOfDose.setText(doseQuantityLunch + " " + durationOfLunch);
+            } else {
                 holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.INVISIBLE);
 
             }
 
-        }else if(prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.msnacks))){
-            if(!prescriptionDataObject.getSnacksAfter().isEmpty()){
-                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
-                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getSnacksAfter() + " " + mContext.getString(R.string.after) + " " +mContext.getString(R.string.snacks));
+        } else if (prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.msnacks))) {
+            if(!prescriptionDataObject.getSnacksAfter().isEmpty()||!prescriptionDataObject.getSnacksBefore().isEmpty()){
+                String durationOfEvening = "";
+                String doseQuantityEvening = "";
+                if (!prescriptionDataObject.getSnacksAfter().isEmpty()) {
+                    holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
+                    holder.mShowDoseAndSlot.setText(prescriptionDataObject.getSnacksAfter() + " " + mContext.getString(R.string.after) + " " + mContext.getString(R.string.snacks));
+                    durationOfEvening = mContext.getString(R.string.after) + " " + mContext.getString(R.string.snacks);
+                    doseQuantityEvening = prescriptionDataObject.getSnacksAfter();
 
-            }else if(!prescriptionDataObject.getSnacksBefore().isEmpty()){
-                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
-                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getSnacksBefore() + " " +  mContext.getString(R.string.before) + " " +mContext.getString(R.string.snacks));
-            }else{
+                } else if (!prescriptionDataObject.getSnacksBefore().isEmpty()) {
+                    holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
+                    holder.mShowDoseAndSlot.setText(prescriptionDataObject.getSnacksBefore() + " " + mContext.getString(R.string.before) + " " + mContext.getString(R.string.snacks));
+                    durationOfEvening = mContext.getString(R.string.before) + " " + mContext.getString(R.string.snacks);
+                    doseQuantityEvening = prescriptionDataObject.getSnacksBefore();
+                }
+                if (doseQuantityEvening.isEmpty()) {
+                    holder.mShowEveningDosage.setVisibility(View.GONE);
+                } else {
+                    holder.mShowEveningDosage.setVisibility(View.VISIBLE);
+                }
+
+
+                holder.mEveningDose.setText(doseQuantityEvening + " " + durationOfEvening);
+            } else {
                 holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.INVISIBLE);
 
             }
-        }else if(prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.mdinner))){
-            if(!prescriptionDataObject.getDinnerAfter().isEmpty()){
-                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
-                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getDinnerAfter() + " " + mContext.getString(R.string.after) + " " +mContext.getString(R.string.dinner));
+        } else if (prescriptionDataObject.getMealTime().equalsIgnoreCase(mContext.getString(R.string.mdinner))) {
+            if(!prescriptionDataObject.getDinnerAfter().isEmpty()||!prescriptionDataObject.getDinnerBefore().isEmpty()){
+                String doseQuantityDinner = "";
+                String durationOfDinner = "";
+                if (!prescriptionDataObject.getDinnerAfter().isEmpty()) {
+                    holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
+                    holder.mShowDoseAndSlot.setText(prescriptionDataObject.getDinnerAfter() + " " + mContext.getString(R.string.after) + " " + mContext.getString(R.string.dinner));
+                    doseQuantityDinner = prescriptionDataObject.getDinnerAfter();
+                    durationOfDinner = mContext.getString(R.string.after) + " " + mContext.getString(R.string.dinner);
 
-            }else if(!prescriptionDataObject.getDinnerBefore().isEmpty()){
-                holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
-                holder.mShowDoseAndSlot.setText(prescriptionDataObject.getDinnerBefore() + " " +  mContext.getString(R.string.before) + " " +mContext.getString(R.string.dinner));
-            }else{
+
+                } else if (!prescriptionDataObject.getDinnerBefore().isEmpty()) {
+                    holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.VISIBLE);
+                    holder.mShowDoseAndSlot.setText(prescriptionDataObject.getDinnerBefore() + " " + mContext.getString(R.string.before) + " " + mContext.getString(R.string.dinner));
+                    doseQuantityDinner = prescriptionDataObject.getDinnerBefore();
+                    durationOfDinner = mContext.getString(R.string.before) + " " + mContext.getString(R.string.dinner);
+
+                }
+                if (doseQuantityDinner.isEmpty()) {
+                    holder.mShowDinnerDosage.setVisibility(View.GONE);
+                } else {
+                    holder.mShowDinnerDosage.setVisibility(View.VISIBLE);
+                }
+
+
+                holder.mShowNightFullFormOfDose.setText(doseQuantityDinner + " " + durationOfDinner);
+
+            }
+           else {
                 holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.INVISIBLE);
 
             }
-        }else if(prescriptionDataObject.getMealTime().equals("")){
+        } else if (prescriptionDataObject.getMealTime().equals("")) {
             holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.INVISIBLE);
         }
         //-split medicineName at 15th, if long string-----------
         medicineType = prescriptionDataObject.getMedicineTypeName();
 
-        holder.mTextviewNameOfMedicine.setText(medicineType.charAt(0)+". "+prescriptionDataObject.getMedicineName());
+        holder.mTextviewNameOfMedicine.setText(medicineType.charAt(0) + ". " + prescriptionDataObject.getMedicineName());
         //holder.mDays.setText(prescriptionDataObject.getDays()+" "+mContext.getString(R.string.days));
-        holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(),CommonMethods.getFormattedDate(prescriptionDataObject.getEndDate(),RescribeConstants.DATE_PATTERN.UTC_PATTERN,RescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
+        holder.mDays.setText(calculateDays(CommonMethods.getCurrentDateTime(), CommonMethods.getFormattedDate(prescriptionDataObject.getEndDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.DD_MM_YYYY)));
         holder.mDoseAge.setText(prescriptionDataObject.getDosage());
-        holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionDataObject.getMedicineTypeName(), mContext, ContextCompat.getColor(mContext,R.color.tagColor)));
+        holder.mMedicineType.setBackgroundDrawable(CommonMethods.getMedicineTypeImage(prescriptionDataObject.getMedicineTypeName(), mContext, ContextCompat.getColor(mContext, R.color.tagColor)));
 
-        setPrescriptionDosageData(holder, position);
+        // setPrescriptionDosageData(holder, position);
 
 
     }
 
-    private void setPrescriptionDosageData(ListViewHolder holder, int position) {
+    private void setPrescriptionDosageData(PrescriptionTrialadapter.ListViewHolder holder, int position) {
 
         final PrescriptionModel prescriptionData = mPrescriptionData.get(position);
         String quantityOfDose = "";
@@ -186,11 +257,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         String doseQuantity = "";
         //  **************************BreakFast********************************************
         if (!prescriptionData.getBreakfastBefore().isEmpty()) {
-            quantityOfDose = prescriptionData.getDosage();
-            durationOfBreakFast = mContext.getString(R.string.before) + " " + mContext.getString(R.string.breakfast);
-            timeOfDosage = mContext.getString(R.string.before);
-            doseQuantity = prescriptionData.getBreakfastBefore();
-            showSlotLabel = mContext.getString(R.string.break_fast);
+
 
         }
         if (!prescriptionData.getBreakfastAfter().isEmpty()) {
@@ -406,10 +473,10 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             e.printStackTrace();
         }
         if (delta > 0) {
-            return delta + " "+mContext.getString(R.string.days);
+            return delta + " " + mContext.getString(R.string.days);
         } else {
             delta *= -1;
-            return delta+ " "+mContext.getString(R.string.days);
+            return delta + " " + mContext.getString(R.string.days);
         }
 
     }

@@ -559,7 +559,7 @@ public class CommonMethods {
                 abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_jelly);
             }
         } else if (medicineTypeName.equalsIgnoreCase("local application")) {
-            abbreviation = ContextCompat.getDrawable(context, R.drawable.jelly);// not found
+            abbreviation = ContextCompat.getDrawable(context, R.drawable.defaulticon);// not found
             if (isReqUnread) {
                 abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_jelly);
             }
@@ -593,7 +593,7 @@ public class CommonMethods {
             if (isReqUnread) {
                 abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_nasalspray);
             }
-        } else if (medicineTypeName.equalsIgnoreCase("ointment/powder")) {
+        } else if (medicineTypeName.equalsIgnoreCase("powder")) {
             abbreviation = ContextCompat.getDrawable(context, R.drawable.ointmentpowder);
             if (isReqUnread) {
                 abbreviation = ContextCompat.getDrawable(context, R.drawable.unread_notification_ointmentpowder);
@@ -622,39 +622,39 @@ public class CommonMethods {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.commonicon;
-        if (caseStudyName.equalsIgnoreCase("complaint"))
+        if (caseStudyName.contains("complaint"))
             abbreviation = R.drawable.complaints;
-        else if (caseStudyName.equalsIgnoreCase("vitals"))
+        else if (caseStudyName.contains("vital"))
             abbreviation = R.drawable.vitals;
-        else if (caseStudyName.equalsIgnoreCase("remark"))
+        else if (caseStudyName.contains("remark"))
             abbreviation = R.drawable.remarks;
-        else if (caseStudyName.equalsIgnoreCase("diagnosis"))
+        else if (caseStudyName.contains("diagnosis"))
             abbreviation = R.drawable.diagnosis;
-        else if (caseStudyName.equalsIgnoreCase("prescriptions"))
+        else if (caseStudyName.contains("prescription"))
             abbreviation = R.drawable.prescription;
-        else if (caseStudyName.equalsIgnoreCase("investigations"))
+        else if (caseStudyName.contains("investigation"))
             abbreviation = R.drawable.investigations;
-        else if (caseStudyName.equalsIgnoreCase("advice"))
+        else if (caseStudyName.contains("advice"))
             abbreviation = R.drawable.advice; // not found
-        else if (caseStudyName.equalsIgnoreCase("treatment plan"))
+        else if (caseStudyName.contains("treatment plan"))
             abbreviation = R.drawable.treatment_plan; // not found
-        else if (caseStudyName.equalsIgnoreCase("surgery"))
+        else if (caseStudyName.contains("surgery"))
             abbreviation = R.drawable.surgery; // not found
-        else if (caseStudyName.equalsIgnoreCase("vaccination"))
+        else if (caseStudyName.contains("vaccination"))
             abbreviation = R.drawable.vaccination; // not found
-        else if (caseStudyName.equalsIgnoreCase("general precautions"))
+        else if (caseStudyName.contains("general precaution"))
             abbreviation = R.drawable.generalprecautions; // not found
-        else if (caseStudyName.equalsIgnoreCase("pre-operative precautions"))
+        else if (caseStudyName.contains("pre-operative precaution"))
             abbreviation = R.drawable.preoperativeprecautions; // not found
-        else if (caseStudyName.equalsIgnoreCase("post-operative care"))
+        else if (caseStudyName.contains("post-operative care"))
             abbreviation = R.drawable.postoperativecare; // not found
-        else if (caseStudyName.equalsIgnoreCase("pain score"))
+        else if (caseStudyName.contains("pain score"))
             abbreviation = R.drawable.painscore; // not found
-        else if (caseStudyName.equalsIgnoreCase("exercise"))
+        else if (caseStudyName.contains("exercise"))
             abbreviation = R.drawable.exercise; // not found
-        else if (caseStudyName.equalsIgnoreCase("findings"))
+        else if (caseStudyName.contains("finding"))
             abbreviation = R.drawable.finding; // not found
-        else if (caseStudyName.equalsIgnoreCase("allergies"))
+        else if (caseStudyName.contains("allergie"))
             abbreviation = R.drawable.allergy; // not found
 
         return abbreviation;

@@ -33,12 +33,9 @@ public class MyRecordListFragment extends Fragment {
     RelativeLayout mEmptyListView;
 
     private Context mContext;
-    private MyRecordsActivity mParentActivity;
     private String mMonthName;
     private int lastExpandedPosition = -1;
     private String mYear;
-    private ThreeLevelListAdapter mAdapter;
-    private String mInvestigationText;
 
     public MyRecordListFragment() {
         // Required empty public constructor
@@ -56,7 +53,6 @@ public class MyRecordListFragment extends Fragment {
             mMonthName = arguments.getString(RescribeConstants.MONTH);
             mYear = arguments.getString(RescribeConstants.YEAR);
         }
-        mInvestigationText = getString(R.string.investigation);
         mExpandMyRecordListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -98,7 +94,7 @@ public class MyRecordListFragment extends Fragment {
                         } else {
                             mEmptyListView.setVisibility(View.GONE);
                             mExpandMyRecordListView.setVisibility(View.VISIBLE);
-                            mAdapter = new ThreeLevelListAdapter(mContext, formattedDoctorList);
+                            ThreeLevelListAdapter mAdapter = new ThreeLevelListAdapter(mContext, formattedDoctorList);
                             mExpandMyRecordListView.setAdapter(mAdapter);
                         }
                     } else {

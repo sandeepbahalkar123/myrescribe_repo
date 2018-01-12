@@ -41,7 +41,7 @@
                 android:layout_marginBottom="@dimen/dp10"
                 android:layout_marginLeft="@dimen/dp16"
                 android:layout_marginRight="@dimen/dp16"
-                android:focusableInTouchMode="true"
+                android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
                 <LinearLayout

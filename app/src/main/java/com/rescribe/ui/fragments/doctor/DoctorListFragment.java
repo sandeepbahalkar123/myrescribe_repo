@@ -29,7 +29,6 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
     RecyclerView mDoctorListView;
     DoctorListAdapter showDoctorListAdapter;
     private View mRootView;
-    private DoctorListActivity mParentActivity;
     private String mMonthName;
     private String mYear;
     private RelativeLayout mEmptyListView;
@@ -45,7 +44,6 @@ public class DoctorListFragment extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.globle_recycle_viewlist, container, false);
         init();
-        mParentActivity = (DoctorListActivity) getActivity();
 
         Bundle arguments = getArguments();
         if (arguments != null) {

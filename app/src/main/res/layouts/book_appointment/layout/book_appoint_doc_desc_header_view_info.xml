@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/dp5"
         android:paddingLeft="@dimen/dp10"
-        android:focusableInTouchMode="true"
         android:paddingRight="@dimen/dp10">
 
         <RelativeLayout

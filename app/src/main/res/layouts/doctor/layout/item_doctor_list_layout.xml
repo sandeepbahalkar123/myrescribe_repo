@@ -18,7 +18,7 @@
             android:id="@+id/sideBarView"
             android:layout_width="@dimen/dp4"
             android:layout_height="match_parent"
-            android:background="@color/Red" />
+            android:background="@color/tagColor" />
 
         <LinearLayout
             android:id="@+id/parentDataContainer"
@@ -92,8 +92,8 @@
                     android:id="@+id/thumbnail"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/dp5"
                     android:layout_marginLeft="@dimen/dp5"
+                    android:layout_marginRight="@dimen/dp5"
                     android:padding="3dip">
 
                     <com.rescribe.ui.customesViews.CircularImageView
@@ -111,7 +111,9 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center|left"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingEnd="@dimen/dp12"
+                    android:paddingRight="@dimen/dp12">
 
                     <!-- Title Of Song-->
                     <com.rescribe.ui.customesViews.CustomTextView
@@ -140,8 +142,9 @@
                         android:id="@+id/doctorAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:gravity="left"
-                        android:maxLines="4"
+                        android:maxLines="3"
                         android:textColor="@color/dose_completed"
                         android:textSize="@dimen/sp12"
                         android:textStyle="bold"
@@ -155,19 +158,23 @@
         android:id="@+id/footerBarLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
+        tools:layout_height="@dimen/dp40"
         android:orientation="horizontal"
-        android:visibility="visible">
+        tools:visibility="visible"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/footerSideBarView"
             android:layout_width="@dimen/dp4"
             android:layout_height="match_parent"
-            android:background="@color/white" />
+            android:background="@color/tagColor" />
 
         <LinearLayout
+            android:id="@+id/footerDividerViewLeft"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:background="@color/divider"
             android:paddingLeft="@dimen/dp6"
             android:paddingStart="@dimen/dp6">
 
@@ -182,6 +189,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <View
+                    android:id="@+id/footerDividerViewHalfLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/barView"/>
+
                 <TextView
                     android:id="@+id/barView"
                     android:layout_width="@dimen/dp1"
@@ -190,7 +203,7 @@
                     android:background="@color/recentblue" />
 
                 <View
-                    android:id="@+id/footerDividerViewHalf"
+                    android:id="@+id/footerDividerViewHalfRight"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/barView"
@@ -204,7 +217,7 @@
                 android:layout_weight="0.9">
 
                 <TextView
-                    android:id="@+id/footerDividerView"
+                    android:id="@+id/footerDividerViewRight"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white" />

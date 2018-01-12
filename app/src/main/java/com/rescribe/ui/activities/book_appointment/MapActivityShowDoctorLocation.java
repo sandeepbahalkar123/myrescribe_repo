@@ -42,7 +42,6 @@ public class MapActivityShowDoctorLocation extends AppCompatActivity implements 
     @BindView(R.id.showlocation)
     CustomTextView showlocation;
     public static Bundle args;
-    private GoogleMap mMap;
     Address p1 = null;
     String address;
     Intent intent;
@@ -86,14 +85,13 @@ public class MapActivityShowDoctorLocation extends AppCompatActivity implements 
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
         p1 = getLocationFromAddress(intent.getStringExtra(getString(R.string.address)));
         if (p1 != null) {
             LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(currentLocation).title(address).icon(getMarkerIcon("#04abdf")));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), RescribeConstants.ZOOM_CAMERA_VALUE));
+            googleMap.addMarker(new MarkerOptions().position(currentLocation).title(address).icon(getMarkerIcon("#04abdf")));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), RescribeConstants.ZOOM_CAMERA_VALUE));
         }
     }
 

@@ -40,7 +40,7 @@
             android:elevation="@dimen/dp8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
+            android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
 
             <ImageView

@@ -90,13 +90,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
         if (group.getParentCaptionName().startsWith(mInvestigationText)) {
             childGroupViewHolder.secondLevelAttachmentIcon.setVisibility(View.GONE);
             childGroupViewHolder.secondLevelUpDownArrow.setVisibility(View.VISIBLE);
-          /*  if (isExpanded) {
-                childGroupViewHolder.headerName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.up_arrow, 0, 0, 0);
-            } else {
-                childGroupViewHolder.headerName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.down_arrow, 0, 0, 0);
-            }
-            childGroupViewHolder.headerName.setCompoundDrawablePadding(Math.round(context.getResources().getDimension(R.dimen.dp4)));
-        */
+
             if (isExpanded) {
                 childGroupViewHolder.secondLevelUpDownArrow.setImageResource(R.drawable.spinner_icon_down);
             } else {

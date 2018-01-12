@@ -26,6 +26,7 @@
         android:id="@+id/bottomSheetMenuLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp38"
         android:layout_above="@+id/bottomMenuListRecyclerView"
         android:clickable="true"
         android:focusable="true"
@@ -83,17 +84,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:id="@+id/table"
+                    <ScrollView
+                        android:id="@+id/tableLinearScroll"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"/>
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/tableLinearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+
+                    </ScrollView>
 
                     <View
                         android:id="@+id/adapter_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/table"
+                        android:layout_below="@+id/tableLinearScroll"
                         android:layout_marginTop="16dp"
                         android:background="@color/divider"
                         android:visibility="gone" />
@@ -103,8 +111,8 @@
 
         <com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView
             android:id="@+id/imageUrl"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
             android:layout_gravity="center_horizontal"
             app:border="true"
             app:border_width="1dp"

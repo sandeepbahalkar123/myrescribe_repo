@@ -65,5 +65,8 @@
     <dimen name="dp28">28dp</dimen>
     <dimen name="dp50">50dp</dimen>
     <dimen name="dp45">48dp</dimen>
+    <dimen name="dp60">60dp</dimen>
+    <dimen name="dp30">30dp</dimen>
+    <dimen name="dp38">38dp</dimen>
 
 </resources>

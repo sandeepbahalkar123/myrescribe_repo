@@ -45,7 +45,7 @@
         app:fab_fabRippleColor="#FFF"
         app:fab_menu="@menu/fab_vector"
 
-        app:fab_miniFabBackgroundColor="@color/tagColor"
+        app:fab_miniFabBackgroundColor="#0075A5"
         app:fab_miniFabBackgroundColorList="@array/colors"
         app:fab_miniFabDrawableTint="@color/white"
         app:fab_miniFabDrawableTintList="@array/white_array"

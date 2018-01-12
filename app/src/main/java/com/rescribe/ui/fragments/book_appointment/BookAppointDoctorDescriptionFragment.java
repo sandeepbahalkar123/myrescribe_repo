@@ -127,7 +127,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     View servicesLine;
     @BindView(R.id.ruppeeShadow)
     ImageView ruppeeShadow;
-    private View mRootView;
     Unbinder unbinder;
     private DoctorList mClickedDoctorObject;
     private DoctorDataHelper mDoctorDataHelper;
@@ -136,8 +135,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private ClinicData clinicData;
     private BottomSheetDialog mBottomSheetDialog;
     private ColorGenerator mColorGenerator;
-    int spinnePos;
-    private String clinicNameSpinner;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -147,7 +144,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.book_appoint_doc_description_new, container, false);
+        View mRootView = inflater.inflate(R.layout.book_appoint_doc_description_new, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -290,7 +287,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
             mClinicNameSpinner.setAdapter(arrayAdapter);
             for(int i = 0 ;i < mClickedDoctorObject.getClinicDataList().size() ;i++){
-                clinicNameSpinner = mClickedDoctorObject.getNameOfClinicString();
+                String clinicNameSpinner = mClickedDoctorObject.getNameOfClinicString();
                 if(clinicNameSpinner.equalsIgnoreCase(mClickedDoctorObject.getClinicDataList().get(i).getClinicName()))
                 mClinicNameSpinner.setSelection(i);
             }

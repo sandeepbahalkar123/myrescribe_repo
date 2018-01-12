@@ -45,7 +45,7 @@ public class ProfileActivity extends DrawerActivity {
         // TODO : HARDEDCODED will get remove once done with APIs.
         addProfile(new DrawerProfile()
                 .setId(1)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile_big))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext))
                 .setDescription(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext))
@@ -54,7 +54,7 @@ public class ProfileActivity extends DrawerActivity {
 
         addProfile(new DrawerProfile()
                 .setId(2)
-                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile))
+                .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile_big))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName("Mr. Sandeep Deshmukh ")
                 .setDescription("8201888897")

@@ -25,6 +25,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
     private final ArrayList<UnreadSavedNotificationMessageData> mOriginalReceivedList;
     private final Context mContext;
     private final OnNotificationItemClicked listener;
+    private final String userName;
     private UnreadNotificationMessageActivity parentActivity;
     private ArrayList<UnreadSavedNotificationMessageData> mListToBeUsed;
 
@@ -36,6 +37,8 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         mListToBeUsed = new ArrayList<>();
         addSingleElementToList();
         this.listener = listener;
+
+        userName = "Dear " + CommonMethods.toCamelCase(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext)) + ", ";
     }
 
     @Override
@@ -97,7 +100,7 @@ public class UnreadAppointmentNotificationAlert extends RecyclerView.Adapter<Unr
         //----------
 
         if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT)) {
-            holder.text.setText(unreadNotificationMessageData.getNotificationMessage());
+            holder.text.setText(userName + unreadNotificationMessageData.getNotificationMessage());
         } else if (unreadNotificationMessageData.getNotificationMessageType().equalsIgnoreCase(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT)) {
             holder.text.setText(unreadNotificationMessageData.getNotificationMessage());
         }

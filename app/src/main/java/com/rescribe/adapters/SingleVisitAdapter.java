@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -89,7 +88,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 //set data and UI for vitals
                 convertView = inflater.inflate(R.layout.vitals_main_activity, null);
                 convertView.setTag(headerName);
-                TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
+                TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.tableLinearLayout);
                 View divider = convertView.findViewById(R.id.adapter_divider);
                 tableLayout.removeAllViews();
                 mPosition = 0;

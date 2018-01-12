@@ -42,7 +42,6 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnectChatAdapter.ListViewHolder> {
 
     private final AppDBHelper appDBHelper;
-    private ColorGenerator mColorGenerator;
     private Context mContext;
     private ArrayList<ChatDoctor> chatLists;
 
@@ -78,7 +77,6 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
     public DoctorConnectChatAdapter(Context mContext, ArrayList<ChatDoctor> chatList) {
         this.chatLists = chatList;
         this.mContext = mContext;
-        mColorGenerator = ColorGenerator.MATERIAL;
         appDBHelper = new AppDBHelper(mContext);
     }
 

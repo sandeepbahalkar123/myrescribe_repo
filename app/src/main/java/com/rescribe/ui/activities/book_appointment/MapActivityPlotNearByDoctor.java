@@ -1,24 +1,18 @@
 package com.rescribe.ui.activities.book_appointment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,6 +40,7 @@ import com.rescribe.util.RescribeConstants;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,10 +64,8 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
     CustomTextView showlocation;
     private GoogleMap mMap;
     Address p1 = null;
-    ArrayList<DoctorList> mDoctorLists;
-    private Intent mIntent;
+    HashMap<String, ArrayList<DoctorList>> mLocations = new HashMap<>();
     HashMap<String, String> mUserSelectedLocationInfo;
-    private Context mContext;
     TextView mDoctorName;
     TextView mDoctorRating;
     TextView mDoctorReviews;
@@ -92,10 +85,21 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
     }
 
     private void init() {
-        mContext = MapActivityPlotNearByDoctor.this;
-        mDoctorLists = new ArrayList<>();
         mUserSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-        mDoctorLists = getIntent().getExtras().getParcelableArrayList(getString(R.string.doctor_data));
+        ArrayList<DoctorList> mDoctorLists = getIntent().getExtras().getParcelableArrayList(getString(R.string.doctor_data));
+
+        if (mDoctorLists != null) {
+            for (DoctorList doctorList : mDoctorLists) {
+                if (mLocations.containsKey(doctorList.getAddressOfDoctorString()))
+                    mLocations.get(doctorList.getAddressOfDoctorString()).add(doctorList);
+                else {
+                    ArrayList<DoctorList> mDoctorL = new ArrayList<>();
+                    mDoctorL.add(doctorList);
+                    mLocations.put(doctorList.getAddressOfDoctorString(), mDoctorL);
+                }
+            }
+        }
+
         bookAppointmentBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,8 +147,8 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                for (int index = 0; index < mDoctorLists.size(); index++) {
-                    DoctorList doctorList = mDoctorLists.get(index);
+                for (Map.Entry<String, ArrayList<DoctorList>> entry : mLocations.entrySet()) {
+                    DoctorList doctorList = entry.getValue().get(0);
                     p1 = getLocationFromAddress(doctorList.getAddressOfDoctorString());
                     if (p1 != null) {
                         LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
@@ -161,10 +165,10 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                         }
                         doctorNameText.setText(doctorList.getDocName());
 
-                        mMap.addMarker(new MarkerOptions().position(currentLocation).title(String.valueOf(index)).icon(BitmapDescriptorFactory.fromBitmap(CommonMethods.createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
+                        mMap.addMarker(new MarkerOptions().position(currentLocation).title(entry.getKey()).icon(BitmapDescriptorFactory.fromBitmap(CommonMethods.createDrawableFromView(MapActivityPlotNearByDoctor.this, itemView))));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), RescribeConstants.ZOOM_CAMERA_VALUE));
-                    } else
-                        CommonMethods.showToast(MapActivityPlotNearByDoctor.this, getString(R.string.address_not_found));
+                    }/* else
+                        CommonMethods.showToast(MapActivityPlotNearByDoctor.this, getString(R.string.address_not_found));*/
                 }
             }
         }, 100);
@@ -197,7 +201,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                     R.anim.slide_up_animation);
             mShowDocDetailBottomSheet.startAnimation(slideUpAnimation);
         }
-        init_modal_bottomsheet(marker);
+        init_modal_bottomsheet(mLocations.get(marker.getTitle()).get(0));
 
         return true;
     }
@@ -213,49 +217,34 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
     }
 
     // On map marker click display details of doctor on bottom dialog
-    public void init_modal_bottomsheet(final Marker marker) {
+    public void init_modal_bottomsheet(final DoctorList doctorL) {
         // Map activity direscted to doctor description page
         mMoreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                DoctorList doctorList = new DoctorList();
-                doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
-                doctorList.setAboutDoctor(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAboutDoctor());
-                doctorList.setDegree(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDegree());
-                doctorList.setDocId(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocId());
-                doctorList.setDocName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
-                doctorList.setDoctorImageUrl(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDoctorImageUrl());
-                doctorList.setExperience(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getExperience());
-                doctorList.setFavourite(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getFavourite());
-                doctorList.setWaitingTime(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getWaitingTime());
-                doctorList.setDocSpeciality(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocSpeciality());
-                doctorList.setLongitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude());
-                doctorList.setLatitude(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude());
-                doctorList.setAddressOfDoctorString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getAddressOfDoctorString());
-                doctorList.setClinicDataList(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getClinicDataList());
-                doctorList.setNameOfClinicString(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getNameOfClinicString());
-                doctorList.setCategoryName(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getCategoryName());
-                doctorList.setCategorySpeciality(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getCategorySpeciality());
-                Intent intent = new Intent(MapActivityPlotNearByDoctor.this, DoctorDescriptionBaseActivity.class);
-                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
-                intent.putExtra(getString(R.string.clicked_item_data), doctorList);
-                ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorList);
-                startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+                try {
+                    DoctorList doctorList= (DoctorList) doctorL.clone();
+                    Intent intent = new Intent(MapActivityPlotNearByDoctor.this, DoctorDescriptionBaseActivity.class);
+                    intent.putExtra(getString(R.string.toolbarTitle), title.getText().toString());
+                    intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+                    ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorList);
+                    startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         try {
-            if (mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating() == 0) {
+
+            if (doctorL.getRating() == 0) {
                 mDoctorRating.setVisibility(View.GONE);
                 mRatingBar.setVisibility(View.GONE);
             } else {
                 mDoctorRating.setVisibility(View.VISIBLE);
                 mRatingBar.setVisibility(View.VISIBLE);
-                mDoctorRating.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
-                mRatingBar.setRating((float) mDoctorLists.get(Integer.parseInt(marker.getTitle())).getRating());
+                mDoctorRating.setText("" + doctorL.getRating());
+                mRatingBar.setRating((float) doctorL.getRating());
             }
-
-
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -264,7 +253,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
             public void onClick(View v) {
 
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + mUserSelectedLocationInfo.get(getString(R.string.latitude)) + "," + mUserSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLatitude() + "," + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getLongitude()));
+                        Uri.parse("http://maps.google.com/maps?saddr=" + mUserSelectedLocationInfo.get(getString(R.string.latitude)) + "," + mUserSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + doctorL.getLatitude() + "," + mLocations.get(doctorL.getLongitude())));
                 startActivity(intent);
             }
         });
@@ -275,12 +264,11 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapActivityPlotNearByDoctor.this, ShowReviewListActivity.class);
-                intent.putExtra(getString(R.string.doctorId), String.valueOf(mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocId()));
+                intent.putExtra(getString(R.string.doctorId), doctorL.getDocId());
                 startActivity(intent);
-
             }
         });
-        mDoctorName.setText("" + mDoctorLists.get(Integer.parseInt(marker.getTitle())).getDocName());
+        mDoctorName.setText("" + doctorL.getDocName());
 
     }
 

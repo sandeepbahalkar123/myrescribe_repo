@@ -95,7 +95,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     FloatingActionButton leftFab;
     @BindView(R.id.viewDoctorPager)
     LinearLayout viewDoctorPager;
-    private View mRootView;
     Unbinder unbinder;
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
@@ -103,7 +102,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private DoctorDataHelper mDoctorDataHelper;
     private ServicesCardViewImpl mServiceCardDataViewBuilder;
     private DoctorServicesModel mReceivedDoctorServicesModel;
-    private String mReceivedTitle;
     private ShowDoctorViewPagerAdapter mRecentVisitedDoctorPagerAdapter;
     private String mUserSelectedLocation;
     private boolean isLocationChanged;
@@ -126,7 +124,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.recent_visit_doctor, container, false);
+        View mRootView = inflater.inflate(R.layout.recent_visit_doctor, container, false);
         //  hideSoftKeyboard();
         unbinder = ButterKnife.bind(this, mRootView);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -145,7 +143,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         doConfigureDataListViewVisibility(false, false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mReceivedTitle = arguments.getString(getString(R.string.title));
+            String mReceivedTitle = arguments.getString(getString(R.string.title));
         }
 
         mServiceCardDataViewBuilder = new ServicesCardViewImpl(this.getContext(), (BookAppointDoctorListBaseActivity) getActivity());

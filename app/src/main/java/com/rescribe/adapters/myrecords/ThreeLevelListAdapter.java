@@ -46,13 +46,10 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<MyRecordInfoAndReports, ArrayList<MyRecordReports>> mListDataChild;
 
-    private ArrayList<MyRecordInfoAndReports> mOriginalList;
     private Context context;
-    private String doctorName = "";
 
     public ThreeLevelListAdapter(Context context, ArrayList<MyRecordInfoAndReports> mOriginalList) {
         this.context = context;
-        this.mOriginalList = mOriginalList;
 
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
@@ -133,11 +130,23 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         MyRecordInfoAndReports group = getGroup(groupPosition);
 
         MyRecordDoctorInfo dataObject = group.getMyRecordDoctorInfo();
+        String doctorName = "";
         if (dataObject.getDoctorName().contains("Dr.")) {
             doctorName = dataObject.getDoctorName();
         } else {
             doctorName = "Dr. " + dataObject.getDoctorName();
         }
+
+
+        int newHeightWidth;
+        if (groupPosition == 0)
+            newHeightWidth = groupViewHolder.circularBulletMainElement.getContext().getResources().getDimensionPixelSize(R.dimen.dp28); // New height in pixels
+        else
+            newHeightWidth = groupViewHolder.circularBulletMainElement.getContext().getResources().getDimensionPixelSize(R.dimen.dp14); // New height in pixels
+
+        groupViewHolder.circularBulletMainElement.requestLayout();
+        groupViewHolder.circularBulletMainElement.getLayoutParams().height = newHeightWidth;
+        groupViewHolder.circularBulletMainElement.getLayoutParams().width = newHeightWidth;
 
         groupViewHolder.doctorName.setText(doctorName);
         groupViewHolder.doctorAddress.setText(dataObject.getAddress());
@@ -147,8 +156,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.sideBarView.setBackgroundColor(dataObject.getSideBarViewColor());
 
         //--------
-        String timeToShow = CommonMethods.formatDateTime(dataObject.getDate(), RescribeConstants.DATE_PATTERN.MMM_YYYY,
-                RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE).toLowerCase();
         Date date = CommonMethods.convertStringToDate(dataObject.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -170,21 +177,30 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         if (groupPosition % 2 == 1) {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+            groupViewHolder.footerDividerViewLeft.setBackgroundColor(isExpanded ? ContextCompat.getColor(context, R.color.divider) : ContextCompat.getColor(context, R.color.white));
+
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
 
             //--- this is done to keep same bgColor for group n child and sub-childes.
             dataObject.setRowColor(ContextCompat.getColor(context, R.color.divider));
-            groupViewHolder.footerDividerView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            groupViewHolder.footerDividerViewHalfRight.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            groupViewHolder.footerDividerViewRight.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             //----------------
         } else {
+
+            boolean isLast = groupPosition == mListDataHeader.size() - 1;
+
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            groupViewHolder.footerDividerViewLeft.setBackgroundColor((isExpanded || isLast) ? ContextCompat.getColor(context, R.color.white) : ContextCompat.getColor(context, R.color.divider));
+
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
 
             //--- this is done to keep same bgColor for group n child and sub-childes.
             dataObject.setRowColor(ContextCompat.getColor(context, R.color.white));
-            groupViewHolder.footerDividerView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+            groupViewHolder.footerDividerViewHalfRight.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+            groupViewHolder.footerDividerViewRight.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
             //----------------
 
         }
@@ -229,7 +245,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         int color;
         int bgColor = dataObject.getRowColor();
         if (groupPosition % 2 == 1) {
-
             color = ContextCompat.getColor(context, R.color.darkblue);
         } else {
             color = ContextCompat.getColor(context, R.color.recentblue);
@@ -250,14 +265,10 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         secondLevelELV.setDividerHeight(0);
 
         secondLevelELV.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            int previousGroup = -1;
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                /* TO open single child group at a time.
-                if (groupPosition != previousGroup)
-                    secondLevelELV.collapseGroup(previousGroup);
-                previousGroup = groupPosition;*/
+
                 SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
                 MyRecordReports childGroup = adapter.getGroup(groupPosition);
                 if (childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigation)) || childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigations))) {
@@ -326,12 +337,21 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         LinearLayout parentDataContainer;
         @BindView(R.id.sideBarView)
         TextView sideBarView;
+
         @BindView(R.id.footerSideBarView)
         TextView footerSideBarView;
+
+        @BindView(R.id.footerDividerViewHalfRight)
+        View footerDividerViewHalfRight;
+
+        @BindView(R.id.footerDividerViewRight)
+        TextView footerDividerViewRight;
+
         @BindView(R.id.footerBarLayout)
         LinearLayout footerBarLayout;
-        @BindView(R.id.footerDividerView)
-        TextView footerDividerView;
+
+        @BindView(R.id.footerDividerViewLeft)
+        LinearLayout footerDividerViewLeft;
 
         GroupViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -25,7 +25,7 @@
             android:paddingLeft="@dimen/dp6">
 
             <View
-                android:layout_width="@dimen/dp0"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:visibility="visible" />
@@ -46,7 +46,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="@dimen/dp0"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dp5"
@@ -54,7 +54,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="@dimen/dp0"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp5"
                     android:layout_weight="5"

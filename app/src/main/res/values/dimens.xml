@@ -3,7 +3,6 @@
     <dimen name="horizontal_margin">26dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="spinner_curve">3dp</dimen>
-    <dimen name="dp0">0dp</dimen>
     <dimen name="dp05">0.5dp</dimen>
     <dimen name="dp1">1dp</dimen>
     <dimen name="dp2">2dp</dimen>
@@ -66,7 +65,8 @@
     <dimen name="dp200">200dp</dimen>
     <dimen name="dp70">70dp</dimen>
     <dimen name="dp75">75dp</dimen>
-
+    <dimen name="myrecords_height">120dp</dimen>
+    <dimen name="dp32">32dp</dimen>
 
     <!--End Switch Button-->
 </resources>

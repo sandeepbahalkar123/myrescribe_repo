@@ -25,15 +25,10 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
     private final int mColor;
     private final String mInvestigationText;
     private int mBgColor;
-    private ArrayList<MyRecordReports> mChildOriginalList;
     private ArrayList<MyRecordReports> mChildListDataHeader;
     private HashMap<MyRecordReports, ArrayList<MyRecordReports.MyRecordReportList>> mChildListDataChild;
 
-    private Context context;
-
     public SecondLevelAdapter(Context context, ArrayList<MyRecordReports> mOriginalList, int color, int bgColor) {
-        this.context = context;
-        this.mChildOriginalList = mOriginalList;
         this.mColor = color;
         this.mBgColor = bgColor;
 
@@ -95,13 +90,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
         if (group.getParentCaptionName().startsWith(mInvestigationText)) {
             childGroupViewHolder.secondLevelAttachmentIcon.setVisibility(View.GONE);
             childGroupViewHolder.secondLevelUpDownArrow.setVisibility(View.VISIBLE);
-          /*  if (isExpanded) {
-                childGroupViewHolder.headerName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.up_arrow, 0, 0, 0);
-            } else {
-                childGroupViewHolder.headerName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.down_arrow, 0, 0, 0);
-            }
-            childGroupViewHolder.headerName.setCompoundDrawablePadding(Math.round(context.getResources().getDimension(R.dimen.dp4)));
-        */
+
             if (isExpanded) {
                 childGroupViewHolder.secondLevelUpDownArrow.setImageResource(R.drawable.spinner_icon_down);
             } else {

@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TableLayout
-        android:id="@+id/table"
+        android:id="@+id/tableLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -18,7 +18,7 @@
         android:id="@+id/adapter_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/table"
+        android:layout_below="@+id/tableLinearLayout"
         android:layout_marginTop="16dp"
         android:background="@color/divider"
         android:visibility="gone" />

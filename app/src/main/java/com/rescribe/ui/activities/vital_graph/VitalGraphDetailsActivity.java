@@ -240,6 +240,12 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 //--------
                 mGraphCard.getAxisLeft().setGridColor(Color.TRANSPARENT);
                 mGraphCard.getXAxis().setGridColor(Color.TRANSPARENT);
+                mGraphCard.getXAxis().setAxisLineWidth(2.0f);
+                mGraphCard.getAxisRight().setAxisLineWidth(2.0f);
+                mGraphCard.getAxisLeft().setAxisLineWidth(2.0f);
+                mGraphCard.getAxisLeft().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
+                mGraphCard.getAxisRight().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
+                mGraphCard.getXAxis().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
                 mGraphCard.getAxisRight().setGridColor(Color.TRANSPARENT); // left y-axis
                 //--------
                 mGraphCard.getDescription().setEnabled(false);
@@ -273,6 +279,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 XAxis xAxis = mGraphCard.getXAxis();
                 xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
                 xAxis.setValueFormatter(formatter);
+
                 //---------
 
             }
@@ -361,6 +368,12 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mGraphCard.getXAxis().setTextColor(Color.WHITE);
                 mGraphCard.getAxisRight().setTextColor(Color.TRANSPARENT);
                 //--------
+                mGraphCard.getXAxis().setAxisLineWidth(2.0f);
+                mGraphCard.getAxisRight().setAxisLineWidth(2.0f);
+                mGraphCard.getAxisLeft().setAxisLineWidth(2.0f);
+                mGraphCard.getAxisLeft().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
+                mGraphCard.getAxisRight().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
+                mGraphCard.getXAxis().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
                 mGraphCard.getAxisLeft().setGridColor(Color.TRANSPARENT);
                 mGraphCard.getAxisRight().setGridColor(Color.TRANSPARENT);
                 mGraphCard.getXAxis().setGridColor(Color.TRANSPARENT);

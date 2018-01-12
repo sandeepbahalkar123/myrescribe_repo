@@ -207,7 +207,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (mSortByClinicAndDoctorNameAdapter.isListByClinicName()) {
                     Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                     intent.putExtra(getString(R.string.doctor_data), mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName());
-                    intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.location));
+                    intent.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                     startActivity(intent);
                 } else {
                     //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
@@ -227,7 +227,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     }
                     Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                     intent.putExtra(getString(R.string.doctor_data), doctorListByClinics);
-                    intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.location));
+                    intent.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                     startActivity(intent);
                 }
                 break;

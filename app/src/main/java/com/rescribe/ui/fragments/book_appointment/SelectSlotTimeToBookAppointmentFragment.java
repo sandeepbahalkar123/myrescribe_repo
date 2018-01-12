@@ -614,7 +614,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intentObjectMap.putExtra(getString(R.string.toolbarTitle), getString(R.string.location));
+                intentObjectMap.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentObjectMap);

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.adapters.book_appointment.BookAppointFilteredDocListAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
@@ -50,8 +50,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     @BindView(R.id.leftFab)
     FloatingActionButton mLocationFab;
     Unbinder unbinder;
-    private View mRootView;
-    BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
+    BookAppointFilteredDocListAdapter mBookAppointFilteredDocListAdapterAdapter;
     private ArrayList<DoctorList> mReceivedList = new ArrayList<>();
     private DoctorDataHelper mDoctorDataHelper;
     private String mClickedItemDataTypeValue;
@@ -71,7 +70,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.filtered_doc_viewlist_with_bottom_fab_margin, container, false);
+        View mRootView = inflater.inflate(R.layout.filtered_doc_viewlist_with_bottom_fab_margin, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
 
         init(getArguments());
@@ -181,7 +180,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             isDataListViewVisible(false);
         } else {
             isDataListViewVisible(true);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(getActivity(), mReceivedList, mServicesCardViewImpl, this, mClickedItemDataTypeValue, mReceivedTitle);
+            mBookAppointFilteredDocListAdapterAdapter = new BookAppointFilteredDocListAdapter(getActivity(), mReceivedList, mServicesCardViewImpl, this, mClickedItemDataTypeValue, mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mDoctorListView.setLayoutManager(layoutManager);
             mDoctorListView.setHasFixedSize(true);
@@ -189,7 +188,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             RecyclerView.ItemAnimator animator = mDoctorListView.getItemAnimator();
             if (animator instanceof SimpleItemAnimator)
                 ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
-            mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapter);
+            mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapterAdapter);
         }
     }
 
@@ -214,7 +213,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mBookAppointFilteredDocListAdapter.updateClickedItemFavImage();
+                    mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
                 }
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:

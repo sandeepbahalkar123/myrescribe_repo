@@ -102,7 +102,7 @@ public class BottomSheetMenuAdapter extends RecyclerView.Adapter<BottomSheetMenu
         ListViewHolder(View view) {
             super(view);
             this.view = view;
-           tableLayout = (TableLayout) view.findViewById(R.id.tableLinearLayout);
+           tableLayout = (TableLayout) view.findViewById(R.id.table);
 
         }
     }

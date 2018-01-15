@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -24,9 +23,9 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp18"
-                tools:text="sfdfsdgffghghg"
                 android:visibility="visible"
-                app:customFont="@string/roboto_bold" />
+                app:customFont="@string/roboto_bold"
+                tools:text="sfdfsdgffghghg" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
@@ -37,10 +36,10 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:elevation="@dimen/dp8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:descendantFocusability="blocksDescendants"
+            android:elevation="@dimen/dp8"
             android:orientation="vertical">
 
             <ImageView

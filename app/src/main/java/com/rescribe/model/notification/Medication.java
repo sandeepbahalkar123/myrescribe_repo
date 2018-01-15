@@ -1,6 +1,8 @@
 
 package com.rescribe.model.notification;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
@@ -15,7 +17,7 @@ public class Medication implements CustomResponse {
     private String medicineName;
     @SerializedName("medicineId")
     @Expose
-    private Integer medicineId;
+    private int medicineId;
     @SerializedName("medicineTypeName")
     @Expose
     private String medicineTypeName;
@@ -167,11 +169,11 @@ public class Medication implements CustomResponse {
         this.medicineName = medicineName;
     }
 
-    public Integer getMedicineId() {
+    public int getMedicineId() {
         return medicineId;
     }
 
-    public void setMedicineId(Integer medicineId) {
+    public void setMedicineId(int medicineId) {
         this.medicineId = medicineId;
     }
 
@@ -223,4 +225,5 @@ public class Medication implements CustomResponse {
     public void setUnreadNotificationMessageDataTimeStamp(String unreadNotificationMessageDataTimeStamp) {
         this.unreadNotificationMessageDataTimeStamp = unreadNotificationMessageDataTimeStamp;
     }
+
 }

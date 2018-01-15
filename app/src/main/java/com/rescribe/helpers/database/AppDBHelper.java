@@ -575,7 +575,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATA, jsonDataObject);
         contentValues.put(TIME_STAMP, timeStamp);
 
-        if (isExist(id))
+        if (isExist(id, type))
             db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{id, type});
         else
             db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
@@ -585,9 +585,9 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    private boolean isExist(String id) {
+    private boolean isExist(String id, String type) {
         SQLiteDatabase db = getReadableDatabase();
-        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE + " where " + COLUMN_ID + " = " + id;
+        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE + " where " + COLUMN_ID + " = " + id + " AND " + NOTIFICATION_MSG_TYPE + " = '" + type +  "'";
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
         cursor.close();
@@ -651,13 +651,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
     private int getUnreadNotificationCount() {
         SQLiteDatabase db = getReadableDatabase();
         String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE;
-        Cursor cursor = db.rawQuery(countQuery, null);
-        return cursor.getCount();
-    }
-
-    private int getUnreadNotificationCount(String type) {
-        SQLiteDatabase db = getReadableDatabase();
-        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE + " where " + NOTIFICATION_MSG_TYPE + " = " + type;
         Cursor cursor = db.rawQuery(countQuery, null);
         return cursor.getCount();
     }

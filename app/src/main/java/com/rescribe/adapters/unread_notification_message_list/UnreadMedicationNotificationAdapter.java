@@ -32,20 +32,21 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
     private final OnMedicationNotificationEventClick mListener;
     private UnreadNotificationMessageActivity parentActivity;
     private String mTimeStamp;
-    private boolean isDisplayMoreElementsView;
+    private String mId;
     private Context mContext;
-    String title;
-    ArrayList<Medication> list;
+    private String title;
+    private ArrayList<Medication> list;
 
-    public UnreadMedicationNotificationAdapter(SectionParameters builder, Context mContext, String groupName, ArrayList<Medication> list, boolean isDisplayMoreElementsView, String timeStamp, OnMedicationNotificationEventClick listener) {
+    public UnreadMedicationNotificationAdapter(SectionParameters builder, Context mContext, String groupName, ArrayList<Medication> list, String timeStamp, OnMedicationNotificationEventClick listener) {
 
         super(builder);
 
         this.mContext = mContext;
         this.parentActivity = (UnreadNotificationMessageActivity) mContext;
-        this.isDisplayMoreElementsView = isDisplayMoreElementsView;
         this.mListener = listener;
-        this.mTimeStamp = timeStamp;
+        String[] timeId = timeStamp.split("\\|");
+        this.mTimeStamp = timeId[0];
+        this.mId = timeId[1];
         String hveUTaken = mContext.getString(R.string.have_u_taken);
         String dinnerMed = mContext.getString(R.string.dinner_medication);
         String lunchMed = mContext.getString(R.string.lunch_medication);
@@ -104,7 +105,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
                 item.setTabSelected(cb.isChecked());
                 list.get(position).setTabSelected(cb.isChecked());
 
-                mListener.onMedicationCheckBoxClicked(item, title, position);
+                mListener.onMedicationCheckBoxClicked(item, title, position, mId);
             }
         });
 
@@ -237,7 +238,6 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
     public interface OnMedicationNotificationEventClick {
         public void onMedicationLoadMoreFooterClicked();
-
-        public void onMedicationCheckBoxClicked(Medication medication, String title, int position);
+        public void onMedicationCheckBoxClicked(Medication medication, String title, int position, String mId);
     }
 }

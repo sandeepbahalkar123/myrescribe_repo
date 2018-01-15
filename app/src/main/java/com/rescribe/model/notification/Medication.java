@@ -44,17 +44,6 @@ public class Medication implements CustomResponse {
     private boolean isLunchExpanded = false;
     private boolean isDinnerExpanded = false;
 
-
-    //--This is done to fix in unread notification message update
-    // NO USED OF ANYWHERE OTHER THAN THIS--
-    @SerializedName("unreadNotificationMessageDataID")
-    @Expose
-    private String unreadNotificationMessageDataID;
-    @SerializedName("unreadNotificationMessageDataTimeStamp")
-    @Expose
-    private String unreadNotificationMessageDataTimeStamp;
-    //----
-
     public boolean isBreakFastExpanded() {
         return isBreakFastExpanded;
     }
@@ -208,22 +197,4 @@ public class Medication implements CustomResponse {
     public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
-
-
-    public String getUnreadNotificationMessageDataID() {
-        return unreadNotificationMessageDataID;
-    }
-
-    public void setUnreadNotificationMessageDataID(String unreadNotificationMessageDataID) {
-        this.unreadNotificationMessageDataID = unreadNotificationMessageDataID;
-    }
-
-    public String getUnreadNotificationMessageDataTimeStamp() {
-        return unreadNotificationMessageDataTimeStamp;
-    }
-
-    public void setUnreadNotificationMessageDataTimeStamp(String unreadNotificationMessageDataTimeStamp) {
-        this.unreadNotificationMessageDataTimeStamp = unreadNotificationMessageDataTimeStamp;
-    }
-
 }

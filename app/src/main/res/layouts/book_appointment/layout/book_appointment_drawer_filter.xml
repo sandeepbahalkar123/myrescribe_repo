@@ -37,6 +37,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="@string/filter"
+                android:focusableInTouchMode="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp22"
                 app:customFont="@string/roboto_bold" />
@@ -63,7 +64,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
                 <LinearLayout

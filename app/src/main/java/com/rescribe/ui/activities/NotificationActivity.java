@@ -302,7 +302,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
 
-        List<Medication> notificationDataList = null;
+        ArrayList<Medication> notificationDataList;
         NotificationData notificationDataForHeader = new NotificationData();
         List<NotificationData> notificationListForAdapter = new ArrayList<>();
         List<NotificationData> notificationListForHeader = new ArrayList<>();

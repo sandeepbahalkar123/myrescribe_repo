@@ -214,21 +214,6 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".services.InvestigationNotificationService" />
-        <service android:name=".services.AppointmentNotificationService" />
-        <service android:name=".services.NotificationService" />
-
-        <!-- Common Broadcast Receiver -->
-        <receiver android:name=".broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver" />
-        <receiver android:name=".broadcast_receivers.ClickOnNotificationReceiver" />
-        <!-- End -->
-
-        <receiver android:name=".broadcast_receivers.StartUpBootReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".ui.activities.ChatActivity"
             android:label="@string/title_activity_chat"

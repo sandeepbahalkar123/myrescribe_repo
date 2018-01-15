@@ -28,6 +28,7 @@ import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadS
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.model.notification.Medication;
+import com.rescribe.model.notification.NotificationData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
@@ -41,9 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,10 +50,7 @@ import butterknife.OnClick;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
-import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
-import static com.rescribe.notification.DosesAlarmTask.LUNCH_NOTIFICATION_ID;
 import static com.rescribe.singleton.RescribeApplication.clearNotification;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
@@ -120,7 +116,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
     int Min = c.get(Calendar.MINUTE);
-    private String mealTime;
+    private HashMap<String, String> medicNotificationTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +134,6 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     private void initialize() {
-        mealTime = CommonMethods.getMealTime(hour24, Min, this);
         initializeChatListView();
         initializeAppointmentsListView();
         initializeInvestigationListView();
@@ -397,28 +392,11 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     @Override
-    public void onMedicationCheckBoxClicked(Medication medication, String header, int mHeaderPosition) {
-        //--------------
-        String dinnerMed = getString(R.string.dinner_medication).toString();
-        String lunchMed = getString(R.string.lunch_medication).toString();
-        String snacks_med = getString(R.string.snacks_medication).toString();
-        String breakfast_med = getString(R.string.breakfast_medication).toString();
+    public void onMedicationCheckBoxClicked(Medication medication, String header, int mHeaderPosition, String mId) {
 
-        //---- Save notification in db---
-        String unreadNotificationMessageData = medication.getUnreadNotificationMessageDataID();
-        mMedicationCheckBoxClickedData = unreadNotificationMessageData + "|" + header + "|" + new Gson().toJson(medication);
-        //-------
+//        Ganesh
+        mMedicationCheckBoxClickedData = mId + "|" + header + "|" + new Gson().toJson(medication);
 
-        String slotType;
-        if (header.endsWith(dinnerMed)) {
-            slotType = RescribeConstants.DINNER;
-        } else if (header.endsWith(lunchMed)) {
-            slotType = RescribeConstants.LUNCH;
-        } else if (header.endsWith(snacks_med)) {
-            slotType = RescribeConstants.SNACKS;
-        } else {
-            slotType = RescribeConstants.BREAK_FAST;
-        }
         //-------------
         String presDate = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
         //-------------
@@ -433,39 +411,27 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
         mUnreadMedicationNotificationAdapter.removeAllSections();
 
-        TreeSet<String> mainActualHeaderList = configureHeaderMapList(mUnreadMedicationNotificationMessageDataList, true);
+        HashMap<String, ArrayList<Medication>> stringArrayListHashMap = configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
+        Map.Entry<String, ArrayList<Medication>> entry = stringArrayListHashMap.entrySet().iterator().next();
 
-        String firstElementKey = mainActualHeaderList.first();
-        HashMap<String, ArrayList<Medication>> stringArrayListHashMap = new HashMap<>();
-        //-----if isReqAllElement==false, and find actual size of Group header list-------
-        HashSet<String> formattedSet = new HashSet<>();
-        if (!isRequiredAllElements) {
-            if (!mainActualHeaderList.isEmpty()) {
-                formattedSet.add(mainActualHeaderList.first());
-                stringArrayListHashMap = configureGroupChildMapList(formattedSet, mUnreadMedicationNotificationMessageDataList);
-            }
-        } else {
-            formattedSet.addAll(mainActualHeaderList);
-            stringArrayListHashMap = configureGroupChildMapList(formattedSet, mUnreadMedicationNotificationMessageDataList);
-        }
+        if (isRequiredAllElements)
+            stringArrayListHashMap = configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
+
         //------ Show timeStamp of first element in header view------
-        if (firstElementKey != null) {
-            ArrayList<Medication> medications = stringArrayListHashMap.get(firstElementKey);
-            if (!medications.isEmpty()) {
-                Medication medication = medications.get(0);
-                //---------
-                String formattedDate = CommonMethods.getFormattedDate(medication.getUnreadNotificationMessageDataTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-                String time = CommonMethods.formatDateTime(medication.getUnreadNotificationMessageDataTimeStamp(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
-                String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
-                if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
-                    mOnGoingMedicationFirstMessageTimeStamp.setText(time);
-                } else {
-                    mOnGoingMedicationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
-                }
-                mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
-                //---------
-            }
+        ArrayList<Medication> medications = stringArrayListHashMap.get(entry.getKey());
+        //---------
+
+        String date = medicNotificationTime.get(entry.getKey().split("\\|")[0]);
+
+        String formattedDate = CommonMethods.getFormattedDate(date, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String time = CommonMethods.formatDateTime(date, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+        if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+            mOnGoingMedicationFirstMessageTimeStamp.setText(time);
+        } else {
+            mOnGoingMedicationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
         }
+        mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
         //------------
 
         int count = 0;
@@ -474,18 +440,14 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             SectionParameters build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                     .headerResourceId(R.layout.tablet_notification_item_header)
                     .build();
-            if (!isRequiredAllElements && mainActualHeaderList.size() > 1) {
+            if (!isRequiredAllElements && stringArrayListHashMap.size() > 1) {
                 build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                         .headerResourceId(R.layout.tablet_notification_item_header)
                         .footerResourceId(R.layout.more_item_textview)
                         .build();
             }
 
-            ArrayList<Medication> medications = stringArrayListHashMap.get(key);
-
-            Medication medication = medications.get(0);
-
-            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, medications, !isRequiredAllElements, medication.getUnreadNotificationMessageDataTimeStamp(), this));
+            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, medications, medicNotificationTime.get(key), this));
             if (!isRequiredAllElements) {
                 break;
             }
@@ -504,54 +466,19 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
 
-    private HashMap<String, ArrayList<Medication>> configureGroupChildMapList(HashSet<String> listDataGroup, ArrayList<UnreadSavedNotificationMessageData> dataArrayList) {
+    private HashMap<String, ArrayList<Medication>> configureGroupChildMapList(ArrayList<UnreadSavedNotificationMessageData> dataArrayList) {
         Gson gson = new Gson();
         HashMap<String, ArrayList<Medication>> listDataChild = new HashMap<>();
-        //-- set child data
-        for (String groupName : listDataGroup) {
-            ArrayList<Medication> temp = new ArrayList<>();
+        medicNotificationTime = new HashMap<>();
 
-            for (UnreadSavedNotificationMessageData dataObject : dataArrayList) {
-                String notificationMessage = dataObject.getNotificationMessage();
-                if (notificationMessage.equalsIgnoreCase(groupName)) {
-                    Medication medication = gson.fromJson(dataObject.getNotificationData(), Medication.class);
-//                    if (!isExist(temp, medication))
-                    temp.add(medication);
-                }
-            }
-
-            listDataChild.put(groupName, temp);
+        for (UnreadSavedNotificationMessageData unreadSavedNotificationMessageData : dataArrayList) {
+            NotificationData notificationData = gson.fromJson(unreadSavedNotificationMessageData.getNotificationData(), NotificationData.class);
+            listDataChild.put(unreadSavedNotificationMessageData.getNotificationMessage(), notificationData.getMedication());
+            medicNotificationTime.put(unreadSavedNotificationMessageData.getNotificationMessage(), unreadSavedNotificationMessageData.getNotificationTimeStamp() + "|" + unreadSavedNotificationMessageData.getId());
         }
-        //------
+
         return listDataChild;
     }
-
-    /*private boolean isExist(ArrayList<Medication> temp, Medication medication) {
-        boolean isExist = false;
-        for (int index = 0; index < temp.size(); index++) {
-            int medicineId = temp.get(index).getMedicineId();
-            if (medicineId == medication.getMedicineId()) {
-                isExist = true;
-                break;
-            }
-        }
-        return isExist;
-    }*/
-
-    private TreeSet<String> configureHeaderMapList(ArrayList<UnreadSavedNotificationMessageData> dataArrayList, boolean isRequiredAllElements) {
-
-        TreeSet<String> listDataGroup = new TreeSet<>();
-
-        //--- set header data
-        for (UnreadSavedNotificationMessageData dataObject :
-                dataArrayList) {
-            listDataGroup.add(dataObject.getNotificationMessage());
-            if (!isRequiredAllElements)
-                break;
-        }
-        return listDataGroup;
-    }
-    //&&&&&&&&&&&&************** MEDICATION END------------------
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
@@ -564,34 +491,23 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
             ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
 
-            //--******* get keys,value pair for data to delete:START --
-            TreeSet<String> groupHeader = configureHeaderMapList(medicationAlertList, true);
-            HashMap<String, ArrayList<Medication>> groupHeaderAndMap = configureGroupChildMapList(new HashSet<String>(groupHeader), medicationAlertList);
+            HashMap<String, ArrayList<Medication>> groupHeaderAndMap = configureGroupChildMapList(medicationAlertList);
             //--******* get keys,value pair for data to delete:END --
             //--******* ITERATE AND DELETE MEDICATION with isTABselected=true : START
             for (Map.Entry<String, ArrayList<Medication>> entry : groupHeaderAndMap.entrySet()) {
                 ArrayList<Medication> value = entry.getValue();
-                ArrayList<String> tempArryForId = new ArrayList<>();
+                ArrayList<Integer> tempArryForId = new ArrayList<>();
                 for (Medication dataObject : value) {
                     if (dataObject.isTabSelected()) {
-                        tempArryForId.add(dataObject.getUnreadNotificationMessageDataID());
+                        tempArryForId.add(dataObject.getMedicineId());
                     }
                 }
                 if (tempArryForId.size() == value.size()) {
 
-                    String slot = entry.getKey();
+                    clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, split[0]);
 
-                    if (slot.contains(getResources().getString(R.string.breakfast_medication)))
-                        clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, String.valueOf(BREAKFAST_NOTIFICATION_ID));
-                    else if (slot.contains(getResources().getString(R.string.lunch_medication)))
-                        clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, String.valueOf(LUNCH_NOTIFICATION_ID));
-                    else if (slot.contains(getResources().getString(R.string.snacks_medication)))
-                        clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, String.valueOf(EVENING_NOTIFICATION_ID));
-                    else if (slot.contains(getResources().getString(R.string.dinner_medication)))
-                        clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, String.valueOf(DINNER_NOTIFICATION_ID));
-
-                    for (String idsToDelete : tempArryForId) {
-                        int unReadCount = appDBHelper.deleteUnreadReceivedNotificationMessage(Integer.parseInt(idsToDelete), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+                    for (int idsToDelete : tempArryForId) {
+                        int unReadCount = appDBHelper.deleteUnreadReceivedNotificationMessage(idsToDelete, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
                         if (unReadCount == 0) {
                             isAllListEmpty = true;
                             showMessage();

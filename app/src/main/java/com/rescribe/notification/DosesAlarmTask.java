@@ -25,10 +25,10 @@ import java.util.Calendar;
  */
 public class DosesAlarmTask implements Runnable {
 
-    public static final int BREAKFAST_NOTIFICATION_ID = 0;
-    public static final int LUNCH_NOTIFICATION_ID = 1;
-    public static final int DINNER_NOTIFICATION_ID = 2;
-    public static final int EVENING_NOTIFICATION_ID = 3;
+    public static final int BREAKFAST_NOTIFICATION_ID = 999999990;
+    public static final int LUNCH_NOTIFICATION_ID = 999999991;
+    public static final int DINNER_NOTIFICATION_ID = 999999992;
+    public static final int EVENING_NOTIFICATION_ID = 999999993;
 
     // The time selected for the alarm
     private final String time[];

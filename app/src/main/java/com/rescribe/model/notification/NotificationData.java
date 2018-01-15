@@ -7,6 +7,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationData implements CustomResponse{
@@ -16,7 +17,7 @@ public class NotificationData implements CustomResponse{
     private String prescriptionDate;
     @SerializedName("medication")
     @Expose
-    private List<Medication> medication = null;
+    private ArrayList<Medication> medication = null;
     private boolean isExpanded = false;
     private boolean isLunchThere = true;
     private boolean isDinnerThere = true;
@@ -28,6 +29,8 @@ public class NotificationData implements CustomResponse{
     private boolean isSnacksExpanded = false;
     private String date;
     private boolean isTabSelected = false;
+
+    private String notifyTime;
 
     public boolean isExpanded() {
         return isExpanded;
@@ -129,12 +132,19 @@ public class NotificationData implements CustomResponse{
         this.prescriptionDate = prescriptionDate;
     }
 
-    public List<Medication> getMedication() {
+    public ArrayList<Medication> getMedication() {
         return medication;
     }
 
-    public void setMedication(List<Medication> medication) {
+    public void setMedication(ArrayList<Medication> medication) {
         this.medication = medication;
     }
 
+    public String getNotifyTime() {
+        return notifyTime;
+    }
+
+    public void setNotifyTime(String notifyTime) {
+        this.notifyTime = notifyTime;
+    }
 }

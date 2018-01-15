@@ -491,9 +491,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
 
                 //------
                 ArrayList<String> temp = new ArrayList<>();
-                Iterator it = mSelectedDays.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry pair = (Map.Entry) it.next();
+                for (Object o : mSelectedDays.entrySet()) {
+                    Map.Entry pair = (Map.Entry) o;
                     if ((boolean) pair.getValue()) {
                         temp.add((String) pair.getKey());
                     }

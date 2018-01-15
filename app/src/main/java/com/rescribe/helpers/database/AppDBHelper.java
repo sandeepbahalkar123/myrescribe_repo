@@ -429,11 +429,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return myRecordsData;
     }
 
-    public Cursor getAllMyRecordsData() {
-        SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select * from " + MY_RECORDS_TABLE, null);
-    }
-
     public int deleteMyRecords() {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(MY_RECORDS_TABLE, null, null);
@@ -465,16 +460,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
         cursor.close();
         return cnt;
     }
-
-    /*public int unreadMessageCount() {
-        // Return Total Count
-        SQLiteDatabase db = getReadableDatabase();
-        String countQuery = "select * from " + MESSAGE_TABLE;
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int cnt = cursor.getCount();
-        cursor.close();
-        return cnt;
-    }*/
 
     public ArrayList<MQTTMessage> getUnreadMessagesById(int id) {
         SQLiteDatabase db = getReadableDatabase();

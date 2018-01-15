@@ -623,19 +623,6 @@
                             tools:listitem="@layout/case_details_row" />
                     </LinearLayout>
                 </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp1"
-                    android:background="@color/divider" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/sortRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:divider="@null"
-                    android:dividerHeight="0dp"
-                    android:visibility="visible" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
@@ -712,6 +699,18 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/divider" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sortRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:divider="@null"
+            android:dividerHeight="0dp"/>
 
     </LinearLayout>
 </LinearLayout>

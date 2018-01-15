@@ -104,7 +104,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     CustomTextView favouriteDoctors;
     @BindView(R.id.title)
     CustomTextView title;
-    private FindDoctorsMenuListAdapter mFindDoctorsAdapter;
     private Context mContext;
     int pager_padding;
     int pager_margin;
@@ -200,7 +199,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         //-------------
         ClickEvent clickEvent = mReceivedDashboardMenuListData.getClickEvent();
         if (clickEvent != null) {
-            mFindDoctorsAdapter = new FindDoctorsMenuListAdapter(mContext, clickEvent.getClickOptions(), this);
+            FindDoctorsMenuListAdapter mFindDoctorsAdapter = new FindDoctorsMenuListAdapter(mContext, clickEvent.getClickOptions(), this);
             listView.setAdapter(mFindDoctorsAdapter);
 
         }

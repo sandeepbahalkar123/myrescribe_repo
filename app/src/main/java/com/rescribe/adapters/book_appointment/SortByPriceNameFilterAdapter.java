@@ -29,7 +29,7 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
     private String desc = "desc";
     private String selectedSortedOptionLabel = "";//
 
-    String[] sortOptions = new String[]{"Star" + ratings + lowToHigh,
+    private String[] sortOptions = new String[]{"Star" + ratings + lowToHigh,
             "Star" + ratings + highToLow,
             "Doctor" + fees + lowToHigh,
             "Doctor" + fees + highToLow

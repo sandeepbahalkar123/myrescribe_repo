@@ -13,6 +13,24 @@ import java.io.Serializable;
  */
 
 public class AptList implements CustomResponse, Serializable{
+
+    @SerializedName("hospital_pat_id")
+    @Expose
+    private String hospital_pat_id;
+
+    @SerializedName("doc_id")
+    @Expose
+    private String doc_id;
+    @SerializedName("locationId")
+    @Expose
+    private String locationId;
+    @SerializedName("doctorDegree")
+    @Expose
+    private String doctorDegree;
+    @SerializedName("docPhone")
+    @Expose
+    private String docPhone;
+
     @SerializedName("aptId")
     @Expose
     private String id;
@@ -88,7 +106,7 @@ public class AptList implements CustomResponse, Serializable{
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-     //the time which is coming in aptTime is time of appointment
+    //the time which is coming in aptTime is time of appointment
     public String getAptDate() {
         if (aptDate.contains("T")) {
             String date[] = aptDate.split("T");

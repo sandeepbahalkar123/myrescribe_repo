@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.AppointmentAdapter;
 import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
 
 import java.util.ArrayList;
 
@@ -20,7 +22,7 @@ import java.util.ArrayList;
  * Created by jeetal on 19/7/17.
  */
 
-public class AppointmentFragment extends Fragment {
+public class AppointmentFragment extends Fragment implements AppointmentAdapter.OnClickOfAppointmentClickListener {
 
     private static final String DATA = "DATA";
     private AppointmentActivity mParentActivity;
@@ -28,6 +30,7 @@ public class AppointmentFragment extends Fragment {
     private RecyclerView mAppointmentListView;
     private RelativeLayout mEmptyListView;
     private String mAppointmentTypeName;
+    private Bundle bundleData;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -84,8 +87,18 @@ public class AppointmentFragment extends Fragment {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mAppointmentListView.setLayoutManager(layoutManager);
                 mAppointmentListView.setHasFixedSize(true);
-                mAppointmentListView.setAdapter(new AppointmentAdapter(getActivity(), appointmentList, mAppointmentTypeName));
+                mAppointmentListView.setAdapter(new AppointmentAdapter(getActivity(), appointmentList, mAppointmentTypeName, this));
             }
         }
+    }
+
+    @Override
+    public void setOnClickofAppointmentLayout(AptList mAptListObject) {
+        bundleData = new Bundle();
+        Intent intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);
+        bundleData.putSerializable(getString(R.string.clicked_item_data), mAptListObject);
+        intent.putExtras(bundleData);
+        startActivity(intent);
+
     }
 }

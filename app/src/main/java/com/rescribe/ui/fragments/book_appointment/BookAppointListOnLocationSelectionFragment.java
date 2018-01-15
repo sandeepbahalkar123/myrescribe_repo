@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
 import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
@@ -30,7 +28,6 @@ import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppoin
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointListOnLocationSelection;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
-import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.RescribeConstants;

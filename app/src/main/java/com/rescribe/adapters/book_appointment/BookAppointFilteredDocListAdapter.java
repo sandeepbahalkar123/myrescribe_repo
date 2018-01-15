@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppointFilteredDocList.ListViewHolder> {
+public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<BookAppointFilteredDocListAdapter.ListViewHolder> {
 
     private String mReceivedTitleForView;
     private String mClickedItemDataTypeValue;
@@ -45,7 +43,7 @@ public class BookAppointFilteredDocList extends RecyclerView.Adapter<BookAppoint
     private ServicesCardViewImpl mOnFilterDocListClickListener;
     private ImageView mClickedItemFavImageView;
 
-    public BookAppointFilteredDocList(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnFilterDocListClickListener, HelperResponse helperResponse, String mClickedItemDataValue, String mReceivedTitleForView) {
+    public BookAppointFilteredDocListAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnFilterDocListClickListener, HelperResponse helperResponse, String mClickedItemDataValue, String mReceivedTitleForView) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mOnFilterDocListClickListener = mOnFilterDocListClickListener;

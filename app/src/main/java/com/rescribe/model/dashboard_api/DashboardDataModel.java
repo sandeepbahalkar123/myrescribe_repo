@@ -16,9 +16,8 @@ public class DashboardDataModel implements Parcelable {
     @Expose
     private ArrayList<DoctorList> doctorList = new ArrayList<DoctorList>();
     private int index;
+
     public final static Creator<DashboardDataModel> CREATOR = new Creator<DashboardDataModel>() {
-
-
         @SuppressWarnings({
                 "unchecked"
         })
@@ -46,6 +45,15 @@ public class DashboardDataModel implements Parcelable {
     public void setDoctorList(ArrayList<DoctorList> doctorList) {
         this.doctorList = doctorList;
     }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(doctorList);
     }

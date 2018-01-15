@@ -57,7 +57,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         super.setContentView(R.layout.bottom_menu_activity);
 
         mFrame = (FrameLayout) findViewById(R.id.activityView);
-        linearTableLayout = (LinearLayout) findViewById(R.id.tableLinearLayout);
+        linearTableLayout = (LinearLayout) findViewById(R.id.table);
         bottomSheetMenuLayout = (FrameLayout) findViewById(R.id.bottomSheetMenuLayout);
         bottomSheetMenu = (RelativeLayout) findViewById(R.id.bottomSheetMenu);
         mPatientName = (TextView) findViewById(R.id.patientName);

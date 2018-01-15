@@ -88,7 +88,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 //set data and UI for vitals
                 convertView = inflater.inflate(R.layout.vitals_main_activity, null);
                 convertView.setTag(headerName);
-                TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.tableLinearLayout);
+                TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
                 View divider = convertView.findViewById(R.id.adapter_divider);
                 tableLayout.removeAllViews();
                 mPosition = 0;

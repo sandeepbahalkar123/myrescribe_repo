@@ -42,8 +42,6 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
     CustomTextView displayNote;
     @BindView(R.id.fragmentContainer)
     RelativeLayout fragmentContainer;
-    private View mRootView;
-    private DoctorConnectSearchAdapter doctorConnectAdapter;
     private OnAddFragmentListener mListener;
     private ArrayList<DoctorSpeciality> searchDataModelList;
 
@@ -62,7 +60,7 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
+        View mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -85,7 +83,7 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
             mRecyclerView.setVisibility(View.VISIBLE);
             pickSpeciality.setVisibility(View.VISIBLE);
             displayNote.setVisibility(View.VISIBLE);
-            doctorConnectAdapter = new DoctorConnectSearchAdapter(getActivity(), this, searchDataModelList);
+            DoctorConnectSearchAdapter doctorConnectAdapter = new DoctorConnectSearchAdapter(getActivity(), this, searchDataModelList);
             mRecyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
             mRecyclerView.setLayoutManager(layoutManager);

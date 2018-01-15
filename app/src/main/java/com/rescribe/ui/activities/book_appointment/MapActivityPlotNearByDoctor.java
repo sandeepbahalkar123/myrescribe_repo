@@ -32,6 +32,7 @@ import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
+import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -64,7 +65,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
     CustomTextView showlocation;
     private GoogleMap mMap;
     Address p1 = null;
-    HashMap<String, ArrayList<DoctorList>> mLocations = new HashMap<>();
+    HashMap<String, DashboardDataModel> mLocations = new HashMap<>();
     HashMap<String, String> mUserSelectedLocationInfo;
     TextView mDoctorName;
     TextView mDoctorRating;
@@ -91,11 +92,11 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
         if (mDoctorLists != null) {
             for (DoctorList doctorList : mDoctorLists) {
                 if (mLocations.containsKey(doctorList.getAddressOfDoctorString()))
-                    mLocations.get(doctorList.getAddressOfDoctorString()).add(doctorList);
+                    mLocations.get(doctorList.getAddressOfDoctorString()).getDoctorList().add(doctorList);
                 else {
-                    ArrayList<DoctorList> mDoctorL = new ArrayList<>();
-                    mDoctorL.add(doctorList);
-                    mLocations.put(doctorList.getAddressOfDoctorString(), mDoctorL);
+                    DashboardDataModel dashboardDataModel = new DashboardDataModel();
+                    dashboardDataModel.getDoctorList().add(doctorList);
+                    mLocations.put(doctorList.getAddressOfDoctorString(), dashboardDataModel);
                 }
             }
         }
@@ -147,8 +148,8 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                for (Map.Entry<String, ArrayList<DoctorList>> entry : mLocations.entrySet()) {
-                    DoctorList doctorList = entry.getValue().get(0);
+                for (Map.Entry<String, DashboardDataModel> entry : mLocations.entrySet()) {
+                    DoctorList doctorList = entry.getValue().getDoctorList().get(0);
                     p1 = getLocationFromAddress(doctorList.getAddressOfDoctorString());
                     if (p1 != null) {
                         LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());
@@ -201,7 +202,17 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                     R.anim.slide_up_animation);
             mShowDocDetailBottomSheet.startAnimation(slideUpAnimation);
         }
-        init_modal_bottomsheet(mLocations.get(marker.getTitle()).get(0));
+
+        DashboardDataModel dashboardDataModel = mLocations.get(marker.getTitle());
+        init_modal_bottomsheet(dashboardDataModel.getDoctorList().get(dashboardDataModel.getIndex()));
+
+        int size = dashboardDataModel.getDoctorList().size();
+        int index = dashboardDataModel.getIndex() + 1;
+
+        if (size < index)
+            dashboardDataModel.setIndex(index);
+        else
+            dashboardDataModel.setIndex(0);
 
         return true;
     }

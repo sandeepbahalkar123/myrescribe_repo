@@ -510,18 +510,33 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         //-- set child data
         for (String groupName : listDataGroup) {
             ArrayList<Medication> temp = new ArrayList<>();
+
             for (UnreadSavedNotificationMessageData dataObject : dataArrayList) {
                 String notificationMessage = dataObject.getNotificationMessage();
                 if (notificationMessage.equalsIgnoreCase(groupName)) {
                     Medication medication = gson.fromJson(dataObject.getNotificationData(), Medication.class);
+//                    if (!isExist(temp, medication))
                     temp.add(medication);
                 }
             }
+
             listDataChild.put(groupName, temp);
         }
         //------
         return listDataChild;
     }
+
+    /*private boolean isExist(ArrayList<Medication> temp, Medication medication) {
+        boolean isExist = false;
+        for (int index = 0; index < temp.size(); index++) {
+            int medicineId = temp.get(index).getMedicineId();
+            if (medicineId == medication.getMedicineId()) {
+                isExist = true;
+                break;
+            }
+        }
+        return isExist;
+    }*/
 
     private TreeSet<String> configureHeaderMapList(ArrayList<UnreadSavedNotificationMessageData> dataArrayList, boolean isRequiredAllElements) {
 
@@ -537,7 +552,6 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         return listDataGroup;
     }
     //&&&&&&&&&&&&************** MEDICATION END------------------
-
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {

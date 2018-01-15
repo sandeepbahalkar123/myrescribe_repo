@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
-import com.rescribe.adapters.book_appointment.BookAppointFilteredDocList;
+import com.rescribe.adapters.book_appointment.BookAppointFilteredDocListAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
@@ -36,7 +36,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     RecyclerView showDoctorList;
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
-    private BookAppointFilteredDocList mBookAppointFilteredDocListAdapter;
+    private BookAppointFilteredDocListAdapter mBookAppointFilteredDocListAdapterAdapter;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private Context mContext;
     private ArrayList<DoctorList> mDoctorCategoryList;
@@ -85,30 +85,30 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
 
             if (mDoctorCategoryList.size() != 0) {
                 emptyListView.setVisibility(View.GONE);
-                mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);
+                mBookAppointFilteredDocListAdapterAdapter = new BookAppointFilteredDocListAdapter(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 showDoctorList.setLayoutManager(layoutManager);
                 showDoctorList.setHasFixedSize(true);
-                showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+                showDoctorList.setAdapter(mBookAppointFilteredDocListAdapterAdapter);
             } else {
                 emptyListView.setVisibility(View.VISIBLE);
             }
 
         } else if (getString(R.string.recently_visit_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
-            mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);
+            mBookAppointFilteredDocListAdapterAdapter = new BookAppointFilteredDocListAdapter(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             showDoctorList.setLayoutManager(layoutManager);
             showDoctorList.setHasFixedSize(true);
-            showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+            showDoctorList.setAdapter(mBookAppointFilteredDocListAdapterAdapter);
         }  else if (getString(R.string.sponsored_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
             if (mDoctorCategoryList.size() != 0) {
-                mBookAppointFilteredDocListAdapter = new BookAppointFilteredDocList(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);
+                mBookAppointFilteredDocListAdapterAdapter = new BookAppointFilteredDocListAdapter(this, mDoctorCategoryList, mServicesCardViewImpl, this, mReceivedTitle, mReceivedTitle);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 showDoctorList.setLayoutManager(layoutManager);
                 showDoctorList.setHasFixedSize(true);
-                showDoctorList.setAdapter(mBookAppointFilteredDocListAdapter);
+                showDoctorList.setAdapter(mBookAppointFilteredDocListAdapterAdapter);
             } else {
                 emptyListView.setVisibility(View.VISIBLE);
             }
@@ -134,7 +134,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
                     //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mBookAppointFilteredDocListAdapter.updateClickedItemFavImage();
+                    mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
 
                 }
                 break;

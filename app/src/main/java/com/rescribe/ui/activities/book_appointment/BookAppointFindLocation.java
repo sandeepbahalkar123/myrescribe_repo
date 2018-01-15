@@ -117,9 +117,6 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     private Context mContext;
 
     DoctorDataHelper mDoctorDataHelper;
-    private ShowPopularPlacesAdapter mShowPopularPlacesAdapter;
-    private RecentPlacesAdapter mRecentPlacesAdapter;
-    private String locationString;
     private String mOpeningMode;
 
     @Override
@@ -233,6 +230,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 System.out.println("obj.getAdminArea()" + obj.getAdminArea());
                 System.out.println("obj.getCountryName()" + obj.getCountryName());
                 LatLng location = new LatLng(lat, lng);
+                String locationString;
                 if (obj.getLocality().equals(null)) {
                     locationString = getArea(obj);
                 } else {
@@ -280,7 +278,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                     int spacing = 20; // 50px
                     boolean includeEdge = true;
                     popularPlacesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-                    mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(), this);
+                    ShowPopularPlacesAdapter mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(), this);
                     popularPlacesRecyclerView.setAdapter(mShowPopularPlacesAdapter);
                     popularPlacesRecyclerView.setNestedScrollingEnabled(false);
                 } else {
@@ -288,7 +286,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 }
                 if (recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList().size() > 0) {
                     recentlyVisitedPlaces.setVisibility(View.VISIBLE);
-                    mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
+                    RecentPlacesAdapter mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
                     LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                     recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
                     recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);

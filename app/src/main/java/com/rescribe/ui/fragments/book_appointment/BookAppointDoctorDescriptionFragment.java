@@ -440,7 +440,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intentObjectMap.putExtra(getString(R.string.toolbarTitle), getString(R.string.location));
+                intentObjectMap.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intentObjectMap);

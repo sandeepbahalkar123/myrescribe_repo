@@ -19,6 +19,7 @@
     <color name="tagColor">#04abdf</color>
     <color name="statusbar">#0077a7</color>
     <color name="white">#ffffff</color>
+    <color name="graph_color">#1ecaff</color>
     <color name="opacitywhite">#CCffffff</color>
     <color name="clickHere">#3676a3</color>
     <color name="colorPrimary">#3F51B5</color>

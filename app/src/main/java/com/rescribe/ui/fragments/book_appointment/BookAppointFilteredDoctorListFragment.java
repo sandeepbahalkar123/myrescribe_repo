@@ -311,7 +311,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
                 intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.filter));
-                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.location));
+                intent.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
                 startActivityForResult(intent, RescribeConstants.DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE);
                 break;
         }

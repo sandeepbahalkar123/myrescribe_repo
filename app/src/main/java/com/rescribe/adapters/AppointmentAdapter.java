@@ -45,13 +45,15 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private ArrayList<AptList> appointmentsList;
     private int imageSize;
     private Bundle bundleData;
+    private OnClickOfAppointmentClickListener mOnClickOfAppointmentClickListener;
 
 
-    public AppointmentAdapter(final Context mContext, ArrayList<AptList> appointmentsList, String appointmentType) {
+    public AppointmentAdapter(final Context mContext, ArrayList<AptList> appointmentsList, String appointmentType,OnClickOfAppointmentClickListener mOnClickOfAppointmentClickListener) {
 
         this.mAppointmentType = appointmentType;
         this.appointmentsList = appointmentsList;
         this.mContext = mContext;
+        this.mOnClickOfAppointmentClickListener = mOnClickOfAppointmentClickListener;
         setColumnNumber(mContext, 2);
     }
 
@@ -153,11 +155,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
               holder.appointmentItemLayout.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                      bundleData = new Bundle();
-                      Intent intent = new Intent(mContext, ConfirmAppointmentActivity.class);
-                      bundleData.putSerializable(mContext.getString(R.string.clicked_item_data), appointment);
-                      intent.putExtras(bundleData);
-                      mContext.startActivity(intent);
+                      mOnClickOfAppointmentClickListener.setOnClickofAppointmentLayout(appointment);
+
                   }
               });
         }
@@ -199,6 +198,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         for (int i = -2; i > -6; i--)
             preWeekDays.add(CommonMethods.getCalculatedDate(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, i));
         return preWeekDays;
+    }
+    public interface OnClickOfAppointmentClickListener {
+        void setOnClickofAppointmentLayout(AptList mAptListObject);
     }
 
 }

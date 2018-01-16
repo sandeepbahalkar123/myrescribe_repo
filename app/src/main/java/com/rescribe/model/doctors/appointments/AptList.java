@@ -13,13 +13,28 @@ import java.io.Serializable;
  */
 
 public class AptList implements CustomResponse, Serializable{
+
+    @SerializedName("hospital_pat_id")
+    @Expose
+    private String hospital_pat_id;
+    @SerializedName("doc_id")
+    @Expose
+    private int doc_id;
+    @SerializedName("locationId")
+    @Expose
+    private String locationId;
+    @SerializedName("doctorDegree")
+    @Expose
+    private String doctorDegree;
+    @SerializedName("docPhone")
+    @Expose
+    private String docPhone;
     @SerializedName("aptId")
     @Expose
-    private String id;
+    private int id;
     @SerializedName("doctorName")
     @Expose
     private String doctorName;
-
     @SerializedName("specialization")
     @Expose
     private String specialization;
@@ -40,6 +55,17 @@ public class AptList implements CustomResponse, Serializable{
     @SerializedName("aptTime")
     @Expose
     private String aptTime;
+    @SerializedName("clinic_name")
+    @Expose
+    private String clinic_name;
+
+    public String getClinic_name() {
+        return clinic_name;
+    }
+
+    public void setClinic_name(String clinic_name) {
+        this.clinic_name = clinic_name;
+    }
 
     public String getAptTime() {
         return aptTime;
@@ -49,11 +75,11 @@ public class AptList implements CustomResponse, Serializable{
         this.aptTime = aptTime;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -88,7 +114,7 @@ public class AptList implements CustomResponse, Serializable{
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-     //the time which is coming in aptTime is time of appointment
+    //the time which is coming in aptTime is time of appointment
     public String getAptDate() {
         if (aptDate.contains("T")) {
             String date[] = aptDate.split("T");
@@ -108,5 +134,44 @@ public class AptList implements CustomResponse, Serializable{
 
     public void setAppointmentType(String appointmentType) {
         this.appointmentType = appointmentType;
+    }
+    public String getHospital_pat_id() {
+        return hospital_pat_id;
+    }
+
+    public void setHospital_pat_id(String hospital_pat_id) {
+        this.hospital_pat_id = hospital_pat_id;
+    }
+
+    public int getDoc_id() {
+        return doc_id;
+    }
+
+    public void setDoc_id(int doc_id) {
+        this.doc_id = doc_id;
+    }
+
+    public String getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getDoctorDegree() {
+        return doctorDegree;
+    }
+
+    public void setDoctorDegree(String doctorDegree) {
+        this.doctorDegree = doctorDegree;
+    }
+
+    public String getDocPhone() {
+        return docPhone;
+    }
+
+    public void setDocPhone(String docPhone) {
+        this.docPhone = docPhone;
     }
 }

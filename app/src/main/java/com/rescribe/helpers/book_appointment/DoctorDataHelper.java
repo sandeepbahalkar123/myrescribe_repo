@@ -1,15 +1,12 @@
 package com.rescribe.helpers.book_appointment;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.book_appointment.ServicesModel;
 import com.rescribe.model.book_appointment.complaints.request_complaints.DoctorListByComplaintModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
@@ -18,7 +15,8 @@ import com.rescribe.model.book_appointment.doctor_data.request_model.BookAppoint
 import com.rescribe.model.book_appointment.doctor_data.request_model.RequestDoctorListBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.request_model.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
-import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.book_appointment.request_appointment_confirmation.RequestAppointmentConfirmationModel;
+import com.rescribe.model.book_appointment.request_cancel_appointment.RequestCancelAppointment;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -28,8 +26,6 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 
 /**
@@ -95,6 +91,10 @@ public class DoctorDataHelper implements ConnectionListener {
                 } else if (mOldDataTag == RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else if (mOldDataTag == RescribeConstants.TASK_CONFIRM_APPOINTMENT) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                } else if (mOldDataTag == RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -275,7 +275,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER);
     }
 
-    public void getTimeSlotToBookAppointmentWithDoctor(String docId, String locationID, String date, boolean isReqDoctorData, String taskID) {
+    public void getTimeSlotToBookAppointmentWithDoctor(String docId, int locationID, String date, boolean isReqDoctorData, String taskID) {
 
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, taskID, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
@@ -422,5 +422,41 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION);
 
     }
+    public void doConfirmAppointmentRequest(int docId, int locationID, String date,String fromTime, String toTime,int slotId) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CONFIRM_APPOINTMENT, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+
+        RequestAppointmentConfirmationModel mRequestAppointmentConfirmationModel = new RequestAppointmentConfirmationModel();
+        mRequestAppointmentConfirmationModel.setDocId(docId);
+        mRequestAppointmentConfirmationModel.setFromTime(fromTime);
+        mRequestAppointmentConfirmationModel.setLocationId(locationID);
+        mRequestAppointmentConfirmationModel.setToTime(toTime);
+        mRequestAppointmentConfirmationModel.setDate(date);
+        mRequestAppointmentConfirmationModel.setSlotId(slotId);
+        mRequestAppointmentConfirmationModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+
+        mConnectionFactory.setPostParams(mRequestAppointmentConfirmationModel);
+        mConnectionFactory.setUrl(Config.CONFIRM_APPOINTMENT);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_CONFIRM_APPOINTMENT);
+
+    }
+
+    public void doCancelResheduleAppointmentRequest(int aptId, int status, String type) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
+
+        RequestCancelAppointment mRequestCancelAppointment= new RequestCancelAppointment();
+        mRequestCancelAppointment.setAptId(aptId);
+        mRequestCancelAppointment.setStatus(4);
+        mRequestCancelAppointment.setType(type);
+        mRequestCancelAppointment.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+
+        mConnectionFactory.setPostParams(mRequestCancelAppointment);
+        mConnectionFactory.setUrl(Config.CANCEL_RESCHDULE_APPOINTMENT);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT);
+
+    }
+
+
 
 }

@@ -13,11 +13,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.Common;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.request_appointment_confirmation.ResponseAppointmentConfirmationModel;
+import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -32,7 +40,7 @@ import butterknife.OnClick;
  * Created by jeetal on 28/12/17.
  */
 
-public class ConfirmAppointmentActivity extends AppCompatActivity {
+public class ConfirmAppointmentActivity extends AppCompatActivity implements HelperResponse {
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
     @BindView(R.id.title)
@@ -80,6 +88,8 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
     LinearLayout buttonLayout;
     private DoctorList mDoctorObject;
     private String mobileNo = "";
+    private DoctorDataHelper mDoctorDataHelper;
+    String callType ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +102,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
 
     private void initialize() {
         mContext = ConfirmAppointmentActivity.this;
+        mDoctorDataHelper = new DoctorDataHelper(this, this);
         SpannableString location = new SpannableString(getString(R.string.location) + ":");
         location.setSpan(new UnderlineSpan(), 0, location.length(), 0);
         locationText.setText(location);
@@ -103,15 +114,29 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mDoctorObject = extras.getParcelable(getString(R.string.clicked_item_data));
+            callType = extras.getString(RescribeConstants.CALL_FROM_DASHBOARD);
         }
         if (mDoctorObject != null) {
             doctorName.setText(mDoctorObject.getDocName());
-            clinicName.setText(mDoctorObject.getClinicDataList().get(0).getClinicName());
             aboutDoctor.setText(mDoctorObject.getDegree());
-            clinicAddress.setText(mDoctorObject.getClinicDataList().get(0).getClinicAddress());
+            clinicAddress.setText(mDoctorObject.getAddressOfDoctorString());
+            if (!mDoctorObject.getAddressOfDoctorString().isEmpty()) {
+
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.staticmap);
+                requestOptions.error(R.drawable.staticmap);
+                requestOptions.centerCrop();
+
+                Glide.with(mContext)
+                        .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x300")
+                        .into(locationImageView);
+            }
+            if (!mDoctorObject.getNameOfClinicString().isEmpty()) {
+                clinicName.setText(mDoctorObject.getNameOfClinicString());
+            }
             if (mobileNo.equals("")) {
                 phoneNumberLayout.setVisibility(View.GONE);
-            }else{
+            } else {
                 phoneNumberLayout.setVisibility(View.VISIBLE);
             }
             if (!mDoctorObject.getAptTime().isEmpty() && !mDoctorObject.getAptDate().isEmpty()) {
@@ -122,17 +147,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
                 String dateToShow = dateValueToShow + ", " + ordinal + " " + CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "MMM yyyy").toUpperCase() + " @" + timeToShow;
                 showTimedate.setText(dateToShow);
             }
-            if (!mDoctorObject.getClinicDataList().get(0).getClinicAddress().isEmpty()) {
 
-                RequestOptions requestOptions = new RequestOptions();
-                requestOptions.placeholder(R.drawable.staticmap);
-                requestOptions.error(R.drawable.staticmap);
-                requestOptions.centerCrop();
-
-                Glide.with(mContext)
-                        .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getClinicDataList().get(0).getClinicAddress() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getClinicDataList().get(0).getClinicAddress() + "&zoom=12&size=640x300")
-                        .into(locationImageView);
-            }
             // mobileNumber.setText(mDoctorObject.);
 
         }
@@ -143,21 +158,84 @@ public class ConfirmAppointmentActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cancelButton:
-
+                mDoctorDataHelper.doCancelResheduleAppointmentRequest(mDoctorObject.getAptId(), 4, RescribeConstants.CANCEL_TYPE);
                 break;
             case R.id.rescheduleButton:
+                mDoctorDataHelper.doCancelResheduleAppointmentRequest(mDoctorObject.getAptId(), 4, RescribeConstants.RESHEDULE_TYPE);
+
                 break;
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
                 break;
             case R.id.locationImageView:
-                if(mDoctorObject!=null) {
+                if (mDoctorObject != null) {
                     Intent intent = new Intent(mContext, MapsActivity.class);
-                    intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getClinicDataList().get(0).getClinicAddress());
+                    intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getAddressOfDoctorString());
                     intent.putExtra(RescribeConstants.DOCTOR_NAME, mDoctorObject.getDocName());
                     mContext.startActivity(intent);
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT)) {
+            ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
+            if(mResponseAppointmentConfirmationModel.getCommon()!=null)
+                if(mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
+                    if (mResponseAppointmentConfirmationModel.getCommon().getStatusMessage().contains("Rescheduled")) {
+                        if(mDoctorObject.isTypedashboard()){
+                            Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
+                            intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                            intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mDoctorObject);
+                            startActivity(intent1);
+                            Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            finish();
+
+                        }
+                    } else if (mResponseAppointmentConfirmationModel.getCommon().getStatusMessage().contains("Cancelled")) {
+                        if(mDoctorObject.isTypedashboard()) {
+                            Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(mContext, AppointmentActivity.class);
+                            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                           /* Intent intentObject = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
+                            Bundle b = new Bundle();
+                            b.putString(getString(R.string.toolbarTitle), "");
+                            b.putInt(getString(R.string.selected_clinic_data_position), mSelectedClinicDataPosition);
+                            intentObject.putExtras(b);
+                            startActivity(intentObject);*/
+                          finish();
+
+                        }
+
+                    } else {
+                        Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+        }
+
+
+
+    @Override
+    public void onParseError(String mOldDataTag, String errorMessage) {
+
+    }
+
+    @Override
+    public void onServerError(String mOldDataTag, String serverErrorMessage) {
+
+    }
+
+    @Override
+    public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+
     }
 }

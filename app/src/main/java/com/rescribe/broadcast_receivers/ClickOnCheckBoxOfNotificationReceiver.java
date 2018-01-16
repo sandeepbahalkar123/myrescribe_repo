@@ -102,6 +102,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
                 else {
                     Intent intentNotification = new Intent(mContext, AppointmentActivity.class);
                     intentNotification.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
+                    intentNotification.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
                     intentNotification.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, intent.getBundleExtra(RescribeConstants.APPOINTMENT_MESSAGE));
                     intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                             Intent.FLAG_ACTIVITY_CLEAR_TOP);

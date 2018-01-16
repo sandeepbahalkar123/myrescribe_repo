@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +12,11 @@ import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.AppointmentAdapter;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -20,7 +24,7 @@ import java.util.ArrayList;
  * Created by jeetal on 19/7/17.
  */
 
-public class AppointmentFragment extends Fragment {
+public class AppointmentFragment extends Fragment implements AppointmentAdapter.OnClickOfAppointmentClickListener {
 
     private static final String DATA = "DATA";
     private AppointmentActivity mParentActivity;
@@ -28,6 +32,7 @@ public class AppointmentFragment extends Fragment {
     private RecyclerView mAppointmentListView;
     private RelativeLayout mEmptyListView;
     private String mAppointmentTypeName;
+    private Bundle bundleData;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -84,8 +89,29 @@ public class AppointmentFragment extends Fragment {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mAppointmentListView.setLayoutManager(layoutManager);
                 mAppointmentListView.setHasFixedSize(true);
-                mAppointmentListView.setAdapter(new AppointmentAdapter(getActivity(), appointmentList, mAppointmentTypeName));
+                mAppointmentListView.setAdapter(new AppointmentAdapter(getActivity(), appointmentList, mAppointmentTypeName, this));
             }
         }
+    }
+
+    @Override
+    public void setOnClickofAppointmentLayout(AptList mAptListObject) {
+        bundleData = new Bundle();
+        DoctorList mDoctorList = new DoctorList();
+        mDoctorList.setDocName(mAptListObject.getDoctorName());
+        mDoctorList.setAptDate(mAptListObject.getAptDate());
+        mDoctorList.setAptTime(mAptListObject.getAptTime());
+        mDoctorList.setDegree(mAptListObject.getDoctorDegree());
+        mDoctorList.setAptId(mAptListObject.getId());
+        mDoctorList.setDocId(mAptListObject.getDoc_id());
+        mDoctorList.setNameOfClinicString(mAptListObject.getClinic_name());
+        mDoctorList.setAddressOfDoctorString(mAptListObject.getAddress());
+        mDoctorList.setDocPhone(mAptListObject.getDocPhone());
+        mDoctorList.setTypedashboard(true);
+        Intent intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);
+        bundleData.putParcelable(getString(R.string.clicked_item_data), mDoctorList);
+        intent.putExtras(bundleData);
+        startActivity(intent);
+
     }
 }

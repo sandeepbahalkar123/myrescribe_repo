@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -53,6 +54,7 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetails;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.request_appointment_confirmation.ResponseAppointmentConfirmationModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.doctor_connect.ChatDoctor;
@@ -193,7 +195,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.book_appoint_doc_desc_select_time_slot, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
-        init();
         return mRootView;
     }
 
@@ -486,6 +487,38 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 CommonBaseModelContainer temp2 = (CommonBaseModelContainer) customResponse;
                 CommonMethods.showToast(getActivity(), temp2.getCommonRespose().getStatusMessage());
                 break;
+            case RescribeConstants.TASK_CONFIRM_APPOINTMENT:
+                if(customResponse!=null) {
+                    ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel)customResponse;
+                    if(mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
+
+                        bundleData = new Bundle();
+
+
+                        mClickedDoctorObject.setTypedashboard(false);
+                        mClickedDoctorObject.setAptId(mResponseAppointmentConfirmationModel.getAptList().getId());
+                        mClickedDoctorObject.setDocId(mResponseAppointmentConfirmationModel.getAptList().getDoc_id());
+                        mClickedDoctorObject.setDocPhone(mResponseAppointmentConfirmationModel.getAptList().getDocPhone());
+                        mClickedDoctorObject.setDegree(mResponseAppointmentConfirmationModel.getAptList().getDoctorDegree());
+                        mClickedDoctorObject.setDocName(mResponseAppointmentConfirmationModel.getAptList().getDoctorName());
+                        mClickedDoctorObject.setDoctorImageUrl(mResponseAppointmentConfirmationModel.getAptList().getImageUrl());
+                        mClickedDoctorObject.setAptTime(mResponseAppointmentConfirmationModel.getAptList().getAptTime());
+                        mClickedDoctorObject.setAptDate(mResponseAppointmentConfirmationModel.getAptList().getAptDate());
+                        mClickedDoctorObject.setNameOfClinicString(mResponseAppointmentConfirmationModel.getAptList().getClinic_name());
+                        mClickedDoctorObject.setAddressOfDoctorString(mResponseAppointmentConfirmationModel.getAptList().getAddress());
+                        bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                        Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
+                        intentObject.putExtras(bundleData);
+                        startActivity(intentObject);
+                        //This is done to call api for token slot when user clicks on cancel button of confirmpage.
+                        mDoctorDataHelper = null;
+
+                    }else{
+                        Toast.makeText(mContext,mResponseAppointmentConfirmationModel.getCommon().getStatusMessage() , Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+
         }
     }
 
@@ -513,8 +546,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-
+        init();
         if (mDoctorDataHelper == null) {
+
 
             mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
 
@@ -528,7 +562,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom)) {
                 mConfirmedTokenMainLayout.setVisibility(View.GONE);
                 mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
-                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "7", mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
+                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), 0, mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
 
                 if (fcmTokenData != null) {
                     showTokenStatusMessageBox(fcmTokenData.getTokenNumber(), fcmTokenData.getMsg(), null, fcmTokenData.getDocId(), fcmTokenData.getLocationId());
@@ -586,11 +620,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     if (RescribeConstants.BLANK.equalsIgnoreCase(mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot()) || mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot() == null) {
                         CommonMethods.showToast(getContext(), getString(R.string.time_select_err));
                     } else {
-                        bundleData = new Bundle();
+
+                        mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedDateAndTime().getFromTime(), mSelectSlotToBookAppointmentAdapter.getSelectedDateAndTime().getToTime(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSelectedDateAndTime().getSlotId()));
+                       /* bundleData = new Bundle();
+                        mClickedDoctorObject.setNameOfClinicString(mClickedDoctorObject.getClinicDataList().get(0).getClinicName());
+                        mClickedDoctorObject.setAddressOfDoctorString(mClickedDoctorObject.getClinicDataList().get(0).getClinicAddress());
                         bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
                         Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
                         intentObject.putExtras(bundleData);
-                        startActivity(intentObject);
+                        startActivity(intentObject);*/
                     }
                 }
 
@@ -743,7 +781,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
                 mMaxDateRange = calendar.getTime();
                 //------------
-                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(),mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
             } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
                 //------------
                 Calendar calendar = Calendar.getInstance();
@@ -799,7 +837,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     //--------
 
                     mSelectDateTime.setEnabled(true);
-                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+                    mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
                 }
             }
         }
@@ -850,7 +888,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.book))) {
                 isShowPreviousDayLeftArrow(false);
             }
-            mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), "" + mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+            mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
         }
     }
 

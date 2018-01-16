@@ -159,6 +159,8 @@ public class RescribeConstants {
 
     //-----------------
     public static final String TASK_DO_SKIP_INVESTIGATION = RescribeConstants.BLANK + 57;
+    public static final String TASK_CONFIRM_APPOINTMENT = RescribeConstants.BLANK + 58;
+    public static final String TASK_CANCEL_RESCHEDULE_APPOINTMENT = RescribeConstants.BLANK + 59;
 
     //-----------------
 
@@ -220,6 +222,10 @@ public class RescribeConstants {
     public static final String DIASTOLIC_HINT = "88";
     public static final String PICK_SPECAILITY = "pick_speciality";
     public static final String SORT_BY_SPECIALITY = "sort_by_speciality";
+    public static final String CANCEL_TYPE = "cancel";
+    public static final String RESHEDULE_TYPE = "reschedule";
+    public static final String CALL_FROM_DASHBOARD = "dashboard";
+    public static final String DASHBOARD_CALL_CONFIRMATION_PAGE = "dashboard_call";
 
 
     public static class USER_STATUS {

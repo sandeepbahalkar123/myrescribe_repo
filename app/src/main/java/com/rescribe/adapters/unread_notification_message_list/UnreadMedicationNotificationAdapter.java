@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.notification.Medication;
-import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -30,42 +29,26 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
     private final OnMedicationNotificationEventClick mListener;
-    private UnreadNotificationMessageActivity parentActivity;
     private String mTimeStamp;
-    private String mId;
     private Context mContext;
     private String title;
     private ArrayList<Medication> list;
+    private boolean isExpanded;
 
-    public UnreadMedicationNotificationAdapter(SectionParameters builder, Context mContext, String groupName, ArrayList<Medication> list, String timeStamp, OnMedicationNotificationEventClick listener) {
+    public UnreadMedicationNotificationAdapter(SectionParameters builder, Context mContext, String groupName, ArrayList<Medication> list, String timeId, OnMedicationNotificationEventClick listener) {
 
         super(builder);
 
         this.mContext = mContext;
-        this.parentActivity = (UnreadNotificationMessageActivity) mContext;
         this.mListener = listener;
-        String[] timeId = timeStamp.split("\\|");
-        this.mTimeStamp = timeId[0];
-        this.mId = timeId[1];
-        String hveUTaken = mContext.getString(R.string.have_u_taken);
-        String dinnerMed = mContext.getString(R.string.dinner_medication);
-        String lunchMed = mContext.getString(R.string.lunch_medication);
-        String snacks_med = mContext.getString(R.string.snacks_medication);
-        String breakfast_med = mContext.getString(R.string.breakfast_medication);
+        String[] timeIdArray = timeId.split("\\|");
 
-        if (groupName.equalsIgnoreCase(hveUTaken + dinnerMed + "?")) {
-            this.title = groupName;
-            this.list = list;
-        } else if (groupName.equalsIgnoreCase(hveUTaken + lunchMed + "?")) {
-            this.title = groupName;
-            this.list = list;
-        } else if (groupName.equalsIgnoreCase(hveUTaken + snacks_med + "?")) {
-            this.title = groupName;
-            this.list = list;
-        } else if (groupName.equalsIgnoreCase(hveUTaken + breakfast_med + "?")) {
-            this.title = groupName;
-            this.list = list;
-        }
+        this.mTimeStamp = timeIdArray[0];
+
+        this.title = groupName;
+        this.list = list;
+
+        isExpanded = ((UnreadNotificationMessageActivity) mContext).isExpanded;
     }
 
 
@@ -83,29 +66,15 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ItemViewHolder itemHolder = (ItemViewHolder) holder;
 
-        Medication item = list.get(position);
+        final Medication item = list.get(position);
 
         itemHolder.tabNameTextView.setText(item.getMedicineName());
         itemHolder.tabCountTextView.setText(item.getQuantity());
         itemHolder.tabImageView.setImageDrawable(CommonMethods.getMedicineTypeImage(item.getMedicineTypeName(), mContext, ContextCompat.getColor(mContext, R.color.white)));
 
-        itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //   Toast.makeText(mContext, String.format("Clicked on position #%s of Section %s", sectionAdapter.getPositionInSection(itemHolder.getAdapterPosition()), title), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //---------------
-        itemHolder.medicationCheckBox.setTag(item);
         itemHolder.medicationCheckBox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                CheckBox cb = (CheckBox) v;
-                Medication item = (Medication) cb.getTag();
-                item.setTabSelected(cb.isChecked());
-                list.get(position).setTabSelected(cb.isChecked());
-
-                mListener.onMedicationCheckBoxClicked(item, title, position, mId);
+                mListener.onMedicationCheckBoxClicked(item, title, position);
             }
         });
 
@@ -142,8 +111,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         headerHolder.mGroupText.setText(modifiedText);
 
-        int showFirstMessageTimeStamp = parentActivity.isShowFirstMessageTimeStamp(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-        if (showFirstMessageTimeStamp == View.VISIBLE) {
+        if (!isExpanded) {
             headerHolder.medicationTimeStamp.setVisibility(View.INVISIBLE);
         } else {
             //----
@@ -238,6 +206,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
     public interface OnMedicationNotificationEventClick {
         public void onMedicationLoadMoreFooterClicked();
-        public void onMedicationCheckBoxClicked(Medication medication, String title, int position, String mId);
+
+        public void onMedicationCheckBoxClicked(Medication medication, String title, int position);
     }
 }

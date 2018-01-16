@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -28,6 +29,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -736,11 +738,15 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             @Override
             public void OnActionDown(SlideView slideView) {
                 Log.d("Start", "Track");
-                messageTypeSubLayout.setVisibility(View.INVISIBLE);
 
-                mFileName += "Aud_" + System.nanoTime() + ".mp3";
-                cntr_aCounter.start();
-                startRecording();
+                if (ActivityCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+                    ChatActivityPermissionsDispatcher.getAudioPermissionWithCheck(ChatActivity.this);
+                else {
+                    messageTypeSubLayout.setVisibility(View.INVISIBLE);
+                    mFileName += "Aud_" + System.nanoTime() + ".mp3";
+                    cntr_aCounter.start();
+                    startRecording();
+                }
             }
         });
 
@@ -817,6 +823,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     };
 
     private void startRecording() {
+
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -834,7 +841,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         } catch (Exception e) {
             Log.e(LOG_TAG, "prepare() start");
         }
-
     }
 
     private void stopRecording(boolean isSend) {
@@ -1356,7 +1362,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 mqttMessage.addAll(unreadMessages);
                 chatAdapter.notifyItemRangeInserted(mqttMessage.size() - 1, unreadMessages.size());
                 MessageNotification.cancel(this, chatList.getId());
-                appDBHelper.deleteUnreadMessage(chatList.getId());
+                appDBHelper.deleteUnreadMessage(String.valueOf(chatList.getId()));
             }
         }
 
@@ -1467,7 +1473,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     chatAdapter.notifyDataSetChanged();
 
                     // cancel notification
-                    appDBHelper.deleteUnreadMessage(chatList.getId());
+                    appDBHelper.deleteUnreadMessage(String.valueOf(chatList.getId()));
                     MessageNotification.cancel(this, chatList.getId());
 
                     // send message seen reply when open chat screen

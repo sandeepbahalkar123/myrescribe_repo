@@ -209,7 +209,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
         int size = dashboardDataModel.getDoctorList().size();
         int index = dashboardDataModel.getIndex() + 1;
 
-        if (size < index)
+        if (size > index)
             dashboardDataModel.setIndex(index);
         else
             dashboardDataModel.setIndex(0);

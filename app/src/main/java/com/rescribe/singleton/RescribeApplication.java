@@ -155,7 +155,7 @@ public class RescribeApplication extends MultiDexApplication {
 
         for (UnreadSavedNotificationMessageData dataObject : objectToRemove) {
             appUnreadNotificationMessageList.remove(dataObject);
-            appDBHelper.deleteUnreadReceivedNotificationMessage(Integer.parseInt(dataObject.getId()), dataObject.getNotificationMessageType());
+            appDBHelper.deleteUnreadReceivedNotificationMessage(dataObject.getId(), dataObject.getNotificationMessageType());
         }
 
         return size;

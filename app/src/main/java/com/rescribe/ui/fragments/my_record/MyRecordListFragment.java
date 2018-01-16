@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 
 public class MyRecordListFragment extends Fragment {
 
-    private MyRecordsHelper mMyRecordHelper;
     @BindView(R.id.expandMyRecordListView)
     ExpandableListView mExpandMyRecordListView;
     @BindView(R.id.emptyListView)
@@ -110,11 +109,5 @@ public class MyRecordListFragment extends Fragment {
                 mEmptyListView.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
 }

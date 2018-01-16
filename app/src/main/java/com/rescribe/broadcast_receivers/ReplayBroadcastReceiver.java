@@ -88,7 +88,7 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             intentService.putExtra(MESSAGE_LIST, messageL);
             context.startService(intentService);
             MessageNotification.cancel(context, recievedMessage.getDocId());
-            appDBHelper.deleteUnreadMessage(recievedMessage.getDocId());
+            appDBHelper.deleteUnreadMessage(String.valueOf(recievedMessage.getDocId()));
 
         }
     }
@@ -98,7 +98,7 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
         if (customResponse instanceof SendMessageModel) {
             if (recievedMessage != null) {
                 MessageNotification.cancel(context, recievedMessage.getDocId());
-                appDBHelper.deleteUnreadMessage(recievedMessage.getDocId());
+                appDBHelper.deleteUnreadMessage(String.valueOf(recievedMessage.getDocId()));
             }
         }
     }

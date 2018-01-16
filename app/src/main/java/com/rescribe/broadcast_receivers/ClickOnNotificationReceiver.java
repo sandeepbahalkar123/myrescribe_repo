@@ -53,7 +53,7 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
         if (!RescribeConstants.BLANK.equalsIgnoreCase(loginStatus)) {
             if (notificationId == DosesAlarmTask.BREAKFAST_NOTIFICATION_ID || notificationId == DosesAlarmTask.LUNCH_NOTIFICATION_ID || notificationId == DosesAlarmTask.DINNER_NOTIFICATION_ID || notificationId == DosesAlarmTask.EVENING_NOTIFICATION_ID) {
 
-                AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+                AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
 
                 Intent intentNotification = new Intent(mContext, NotificationActivity.class);
                 intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, intent.getStringExtra(RescribeConstants.MEDICINE_SLOT));

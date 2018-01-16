@@ -150,7 +150,7 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isLastChild, View convertView,
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                              ViewGroup parent) {
 
         final GroupViewHolder groupViewHolder;
@@ -165,13 +165,15 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
 
+        groupViewHolder.mClickOnDoctorVisitLinearLayout.setClickable(true);
+
         DoctorFilteredInfoAndCaseDetails doctorFilteredInfoAndCaseDetails = getGroup(groupPosition);
 
         DoctorFilteredInfo dataObject = doctorFilteredInfoAndCaseDetails.getDoctorFilteredInfo();
 
         groupViewHolder.doctorName.setText(dataObject.getDoctorName());
         groupViewHolder.doctorAddress.setText(dataObject.getAddress());
-        groupViewHolder.doctorType.setText(dataObject.getSpecialization());
+        groupViewHolder.doctorType.setText(CommonMethods.toCamelCase(dataObject.getSpecialization()));
 
         groupViewHolder.parentDataContainer.setBackgroundColor(dataObject.getRowColor());
         groupViewHolder.sideBarView.setBackgroundColor(dataObject.getSideBarViewColor());
@@ -202,11 +204,21 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
         ExpandableListView mExpandableListView = (ExpandableListView) parent;
         mExpandableListView.expandGroup(groupPosition);
         //----------
+
         if (groupPosition % 2 == 1) {
+            groupViewHolder.footerDividerViewLeft.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+            groupViewHolder.footerDividerViewHalfRight.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            groupViewHolder.footerDividerViewRight.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
         } else {
+
+            groupViewHolder.footerDividerViewLeft.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            groupViewHolder.footerDividerViewHalfRight.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+            groupViewHolder.footerDividerViewRight.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
+
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
             groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
@@ -274,8 +286,18 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
         TextView sideBarView;
         @BindView(R.id.footerSideBarView)
         TextView footerSideBarView;
+
+        @BindView(R.id.footerDividerViewHalfRight)
+        View footerDividerViewHalfRight;
+
+        @BindView(R.id.footerDividerViewRight)
+        TextView footerDividerViewRight;
+
         @BindView(R.id.footerBarLayout)
         LinearLayout footerBarLayout;
+
+        @BindView(R.id.footerDividerViewLeft)
+        LinearLayout footerDividerViewLeft;
 
         GroupViewHolder(View view) {
             ButterKnife.bind(this, view);

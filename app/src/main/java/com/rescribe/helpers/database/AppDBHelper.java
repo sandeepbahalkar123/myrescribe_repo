@@ -434,7 +434,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.delete(MY_RECORDS_TABLE, null, null);
     }
 
-    public boolean deleteUnreadMessage(int id) {
+    public boolean deleteUnreadMessage(String id) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(MESSAGE_TABLE, CHAT_USER_ID + "=" + id, null) > 0;
     }
@@ -636,13 +636,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return chatDoctors;
     }
 
-    public int deleteUnreadReceivedNotificationMessage(int id, String notificationType) {
+    public int deleteUnreadReceivedNotificationMessage(String id, String notificationType) {
         SQLiteDatabase db = getWritableDatabase();
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT.equalsIgnoreCase(notificationType)) {
             deleteUnreadMessage(id);
         } else {
             int delete = db.delete(NOTIFICATION_MESSAGE_TABLE, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
-                    new String[]{Integer.toString(id), notificationType});
+                    new String[]{id, notificationType});
         }
         doMergeUnreadMessageForChatAndOther();
         return getUnreadNotificationCount();

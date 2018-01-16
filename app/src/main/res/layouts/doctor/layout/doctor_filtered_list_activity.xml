@@ -27,7 +27,7 @@
         android:background="@null"
         android:divider="@null"
         android:groupIndicator="@null"
-        android:visibility="visible"></ExpandableListView>
+        android:visibility="visible"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

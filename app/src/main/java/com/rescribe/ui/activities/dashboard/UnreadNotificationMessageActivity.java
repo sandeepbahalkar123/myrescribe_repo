@@ -50,7 +50,6 @@ import butterknife.OnClick;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.singleton.RescribeApplication.clearNotification;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
@@ -105,18 +104,22 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private UnreadChatNotificationList mUnreadChatNotificationListAdapter;
     private UnreadBookAppointTokenNotificationAdapter mUnreadBookAppointTokenNotificationAdapter;
     private SectionedRecyclerViewAdapter mUnreadMedicationNotificationAdapter;
-    private ArrayList<UnreadSavedNotificationMessageData> mUnreadMedicationNotificationMessageDataList;
-    private String mMedicationCheckBoxClickedData;
+    private ArrayList<UnreadSavedNotificationMessageData> mUnreadMedicationNotificationMessageDataList = new ArrayList<>();
     private DoctorDataHelper mDoctorDataHelper;
     private RespondToNotificationHelper mMedicationToNotificationHelper;
-    private InvestigationHelper mInvestigationHelper;
     private UnreadSavedNotificationMessageData mClickedUnreadInvestigationMessageData;
-    private boolean isMedicationLoadMoreFooterClickedPreviously = false;
+    private boolean isMedicationLoadMoreFooterClickedPreviously;
     public boolean isAllListEmpty = true;
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
     int Min = c.get(Calendar.MINUTE);
-    private HashMap<String, String> medicNotificationTime;
+
+    private HashMap<String, String> medicNotificationTimeId = new HashMap<>();
+    private HashMap<String, ArrayList<Medication>> listDataChild = new HashMap<>();
+
+    private Medication medicationToUpdate;
+    private String medicationKeyUpdate;
+    public boolean isExpanded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -327,7 +330,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     @Override
     public void onSkipClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
         this.mClickedUnreadInvestigationMessageData = unreadNotificationMessageData;
-        mInvestigationHelper = new InvestigationHelper(this, this);
+        InvestigationHelper mInvestigationHelper = new InvestigationHelper(this, this);
         InvestigationNotification data = new Gson().fromJson(unreadNotificationMessageData.getNotificationData(), InvestigationNotification.class);
         mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true);
 
@@ -338,7 +341,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     public void onNotificationRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
         AppDBHelper instance = AppDBHelper.getInstance(this);
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
-            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
+            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
             Intent intentNotification = new Intent(this, AppointmentActivity.class);
             intentNotification.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
             startActivity(intentNotification);
@@ -351,7 +354,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             clearNotification(this, APPOINTMENT_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
 
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
-            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
+            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
             String notificationData = unreadNotificationMessageData.getNotificationData();
 
             Intent intentNotification = new Intent(this, InvestigationActivity.class);
@@ -377,7 +380,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
         mUnreadMedicationNotificationAdapter = new SectionedRecyclerViewAdapter();
         //------
-        mUnreadMedicationNotificationMessageDataList = new ArrayList<UnreadSavedNotificationMessageData>();
+        mUnreadMedicationNotificationMessageDataList.clear();
         mUnreadMedicationNotificationMessageDataList.addAll(dataArrayList);
         //------
         doCreateMedicationDataMap(isMedicationLoadMoreFooterClickedPreviously);
@@ -386,6 +389,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     @Override
     public void onMedicationLoadMoreFooterClicked() {
+        isExpanded = true;
         doCreateMedicationDataMap(true);
         isMedicationLoadMoreFooterClickedPreviously = true;
         mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
@@ -393,10 +397,11 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     @Override
-    public void onMedicationCheckBoxClicked(Medication medication, String header, int mHeaderPosition, String mId) {
+    public void onMedicationCheckBoxClicked(Medication medication, String header, int mHeaderPosition) {
 
-//        Ganesh
-        mMedicationCheckBoxClickedData = mId + "|" + header + "|" + new Gson().toJson(medication);
+//      Ganesh
+        medicationToUpdate = medication;
+        medicationKeyUpdate = header;
 
         //-------------
         String presDate = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
@@ -412,17 +417,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
         mUnreadMedicationNotificationAdapter.removeAllSections();
 
-        HashMap<String, ArrayList<Medication>> stringArrayListHashMap = configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
-        Map.Entry<String, ArrayList<Medication>> entry = stringArrayListHashMap.entrySet().iterator().next();
-
-        if (isRequiredAllElements)
-            stringArrayListHashMap = configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
+        configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
+        Map.Entry<String, ArrayList<Medication>> entry = listDataChild.entrySet().iterator().next();
 
         //------ Show timeStamp of first element in header view------
-        ArrayList<Medication> medications = stringArrayListHashMap.get(entry.getKey());
-        //---------
-
-        String date = medicNotificationTime.get(entry.getKey().split("\\|")[0]);
+        ArrayList<Medication> medications = listDataChild.get(entry.getKey());
+        String date = medicNotificationTimeId.get(entry.getKey().split("\\|")[0]);
 
         String formattedDate = CommonMethods.getFormattedDate(date, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
         String time = CommonMethods.formatDateTime(date, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
@@ -435,28 +435,27 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
         //------------
 
-        int count = 0;
-        for (String key : stringArrayListHashMap.keySet()) {
-            count = count + 1;
+        for (String key : listDataChild.keySet()) {
             SectionParameters build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                     .headerResourceId(R.layout.tablet_notification_item_header)
                     .build();
-            if (!isRequiredAllElements && stringArrayListHashMap.size() > 1) {
+
+            if (!isRequiredAllElements && listDataChild.size() > 1) {
                 build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                         .headerResourceId(R.layout.tablet_notification_item_header)
                         .footerResourceId(R.layout.more_item_textview)
                         .build();
             }
 
-            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, medications, medicNotificationTime.get(key), this));
-            if (!isRequiredAllElements) {
-                break;
-            }
+            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, listDataChild.get(key), medicNotificationTimeId.get(key), this));
 
             // check is data there empty
 
             if (!medications.isEmpty())
                 isAllListEmpty = false;
+
+            if (!isRequiredAllElements)
+                break;
         }
         mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this) {
             @Override
@@ -467,60 +466,61 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
 
-    private HashMap<String, ArrayList<Medication>> configureGroupChildMapList(ArrayList<UnreadSavedNotificationMessageData> dataArrayList) {
+    private void configureGroupChildMapList(ArrayList<UnreadSavedNotificationMessageData> dataArrayList) {
         Gson gson = new Gson();
-        HashMap<String, ArrayList<Medication>> listDataChild = new HashMap<>();
-        medicNotificationTime = new HashMap<>();
+        medicNotificationTimeId.clear();
+        listDataChild.clear();
 
         for (UnreadSavedNotificationMessageData unreadSavedNotificationMessageData : dataArrayList) {
             NotificationData notificationData = gson.fromJson(unreadSavedNotificationMessageData.getNotificationData(), NotificationData.class);
             listDataChild.put(unreadSavedNotificationMessageData.getNotificationMessage(), notificationData.getMedication());
-            medicNotificationTime.put(unreadSavedNotificationMessageData.getNotificationMessage(), unreadSavedNotificationMessageData.getNotificationTimeStamp() + "|" + unreadSavedNotificationMessageData.getId());
+            medicNotificationTimeId.put(unreadSavedNotificationMessageData.getNotificationMessage(), unreadSavedNotificationMessageData.getNotificationTimeStamp() + "|" + unreadSavedNotificationMessageData.getId());
         }
-
-        return listDataChild;
     }
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
             //---- update notification in db---
+
+            ArrayList<Medication> medications = listDataChild.get(medicationKeyUpdate);
+            String time = medicNotificationTimeId.get(medicationKeyUpdate).split("\\|")[0];
+            String id = medicNotificationTimeId.get(medicationKeyUpdate).split("\\|")[1];
+
+            ArrayList<Integer> tempArrayForId = new ArrayList<>();
+
+            for (Medication medication : medications) {
+                if (medication.getMedicineId() == medicationToUpdate.getMedicineId())
+                    medication.setTabSelected(true);
+
+                if (medication.isTabSelected())
+                    tempArrayForId.add(medication.getMedicineId());
+            }
+
+            NotificationData notificationData = new NotificationData();
+            notificationData.setMedication(medications);
+            notificationData.setPrescriptionDate(time);
+
             AppDBHelper appDBHelper = AppDBHelper.getInstance(this);
-            String[] split = mMedicationCheckBoxClickedData.split("\\|");
-            appDBHelper.updateUnreadReceivedNotificationMessage(split[0], RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, split[2]);
-            //----$$$$$$$$$$$$$ Delete medication if all medicines are isTabSelected=true------
+            appDBHelper.updateUnreadReceivedNotificationMessage(id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, new Gson().toJson(notificationData));
 
-            ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+            if (tempArrayForId.size() == medications.size()) {
 
-            HashMap<String, ArrayList<Medication>> groupHeaderAndMap = configureGroupChildMapList(medicationAlertList);
-            //--******* get keys,value pair for data to delete:END --
-            //--******* ITERATE AND DELETE MEDICATION with isTABselected=true : START
-            for (Map.Entry<String, ArrayList<Medication>> entry : groupHeaderAndMap.entrySet()) {
-                ArrayList<Medication> value = entry.getValue();
-                ArrayList<Integer> tempArryForId = new ArrayList<>();
-                for (Medication dataObject : value) {
-                    if (dataObject.isTabSelected()) {
-                        tempArryForId.add(dataObject.getMedicineId());
-                    }
-                }
-                if (tempArryForId.size() == value.size()) {
+                clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, id);
+                int unReadCount = appDBHelper.deleteUnreadReceivedNotificationMessage(id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
 
-                    clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, split[0]);
-
-                    for (int idsToDelete : tempArryForId) {
-                        int unReadCount = appDBHelper.deleteUnreadReceivedNotificationMessage(idsToDelete, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-                        if (unReadCount == 0) {
-                            isAllListEmpty = true;
-                            showMessage();
-                        }
-                    }
+                if (unReadCount == 0) {
+                    isAllListEmpty = true;
+                    showMessage();
                 }
             }
             //--******* ITERATE AND DELETE MEDICATION with isTABselected=true : END
             //--******* RE-INITIALIZE UnreadNotificationMessageList----
             initializeMedicationListView();
             //-------
-        } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS)) {
+        } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS))
+
+        {
             UnreadBookAppointTokenNotificationBaseModel customResponse1 = (UnreadBookAppointTokenNotificationBaseModel) customResponse;
             if (customResponse1 != null) {
                 UnreadBookAppointTokenNotificationBaseModel.UnreadTokenNotificationDataModel dataModel = customResponse1.getUnreadTokenNotificationDataModel();
@@ -542,17 +542,21 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
             }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER) ||
-                mOldDataTag.equals(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION)) {
+                mOldDataTag.equals(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION))
+
+        {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
 
             doGetUnreadTokenNotification();
-        } else if (RescribeConstants.TASK_DO_SKIP_INVESTIGATION == mOldDataTag) {
+        } else if (RescribeConstants.TASK_DO_SKIP_INVESTIGATION == mOldDataTag)
+
+        {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
             AppDBHelper instance = AppDBHelper.getInstance(this);
 
-            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(mClickedUnreadInvestigationMessageData.getId()), mClickedUnreadInvestigationMessageData.getNotificationMessageType());
+            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(mClickedUnreadInvestigationMessageData.getId(), mClickedUnreadInvestigationMessageData.getNotificationMessageType());
 
             if (unReadCount == 0) {
                 isAllListEmpty = true;
@@ -561,6 +565,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
             initializeInvestigationListView();
         }
+
     }
 
     @Override
@@ -670,7 +675,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     @Override
     public void onDocConnectRowClicked(UnreadSavedNotificationMessageData unreadNotificationMessageData) {
         AppDBHelper instance = AppDBHelper.getInstance(this);
-        int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
+        int unReadCount = instance.deleteUnreadReceivedNotificationMessage(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
 
         ChatDoctor chatDoctor = new ChatDoctor();
         chatDoctor.setId(Integer.parseInt(unreadNotificationMessageData.getId()));

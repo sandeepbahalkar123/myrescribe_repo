@@ -51,8 +51,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private final HelperResponse mHelperResponse;
     private SortByClinicAndDoctorNameAdapter.OnDataListViewVisible mOnDataListViewVisibleListener;
     private Context mContext;
-    private ArrayList<DoctorList> mDataList = new ArrayList<>();
     private ArrayList<DoctorList> mArrayList;
+    private ArrayList<DoctorList> mDataList = new ArrayList<>();
     private ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem;
     private boolean isListByClinicName;
     private ImageView mClickedItemFavImageView;
@@ -62,7 +62,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         this.mContext = mContext;
 
         this.mArrayList = dataList;
-        this.mDataList.addAll(dataList);
+        this.mDataList.addAll(mArrayList);
 
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mOnDataListViewVisibleListener = m;
@@ -153,7 +153,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
         }
         //------------
-
 
         TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
         RequestOptions requestOptions = new RequestOptions();
@@ -315,12 +314,12 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
 
-                mDataList.clear();
+                ArrayList<DoctorList> mList = new ArrayList<>();
 
                 if (charString.isEmpty()) {
                     for (DoctorList doctorConnectModel : mArrayList) {
                         doctorConnectModel.setSpannable(null);
-                        mDataList.add(doctorConnectModel);
+                        mList.add(doctorConnectModel);
                     }
                 } else {
                     TreeSet<DoctorList> filteredList = new TreeSet<>();
@@ -348,17 +347,20 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                                 }
                             }
                         }
-
                     }
-                    mDataList.addAll(filteredList);
+                    mList.addAll(filteredList);
                 }
+
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = mDataList;
+                filterResults.values = mList;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+                mDataList.clear();
+                mDataList.addAll((ArrayList<DoctorList>) filterResults.values);
 
                 if (mDataList.isEmpty())
                     mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, true);

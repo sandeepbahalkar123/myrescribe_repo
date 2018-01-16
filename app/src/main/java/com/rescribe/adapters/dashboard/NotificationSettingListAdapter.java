@@ -71,9 +71,8 @@ public class NotificationSettingListAdapter extends RecyclerView.Adapter<Notific
             }
         });
 
-        holder.radioSwitch.setAnimationDuration(250);
         holder.radioSwitch.setCheckedNoEvent(RescribePreferencesManager.getBoolean(clickOption.getName(), mContext));
-
+        holder.radioSwitch.setAnimationDuration(250);
     }
 
     @Override

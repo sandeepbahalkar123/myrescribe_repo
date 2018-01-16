@@ -73,7 +73,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
             }
         } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
 
-            AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+            AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
 
             ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
             Intent intentNotification = new Intent(mContext, InvestigationActivity.class);
@@ -87,7 +87,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
 
         } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
 
-            AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(unreadMessNotificationID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+            AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
 
             SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
             try {

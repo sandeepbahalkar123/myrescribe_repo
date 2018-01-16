@@ -36,7 +36,6 @@ public class PrescriptionActivity extends AppCompatActivity
 
     @BindView(R.id.title)
     CustomTextView title;
-    private PrescriptionListAdapter prescriptionListAdapter;
     private final String TAG = this.getClass().getName();
     Context mContext;
     private String mGetMealTime;
@@ -136,7 +135,7 @@ public class PrescriptionActivity extends AppCompatActivity
                         data.get(i).setMealTime(mGetMealTime);
                     }
 
-                    prescriptionListAdapter = new PrescriptionListAdapter(this, data);
+                    PrescriptionListAdapter prescriptionListAdapter = new PrescriptionListAdapter(this, data);
                     mRecyclerView.setAdapter(prescriptionListAdapter);
                 }
             }

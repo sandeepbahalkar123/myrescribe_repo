@@ -9,16 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.rescribe.R;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,16 +33,10 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     private List<PrescriptionModel> mPrescriptionData;
     private Context mContext;
-    String medicineType = "";
-
-    private List<PrescriptionModel> mSearchListByMedicineName;
 
     public PrescriptionListAdapter(Context context, List<PrescriptionModel> dataSet) {
         this.mPrescriptionData = dataSet;
         this.mContext = context;
-        this.mSearchListByMedicineName = new ArrayList<>();
-        this.mSearchListByMedicineName.addAll(mPrescriptionData);
-
     }
 
     @Override
@@ -77,8 +73,10 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         }
         if (prescriptionDataObject.isExpanded()) {
             holder.mExpandLayout.setVisibility(View.VISIBLE);
+            holder.mDividerForInstruction.setVisibility(View.VISIBLE);
         } else {
             holder.mExpandLayout.setVisibility(View.GONE);
+            holder.mDividerForInstruction.setVisibility(View.INVISIBLE);
         }
 
         holder.mCardViewLayout.setOnClickListener(new View.OnClickListener() {
@@ -94,13 +92,16 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
                             prescriptionDataObject.getDinnerBefore().isEmpty() && prescriptionDataObject.getDinnerAfter().isEmpty() &&
                             prescriptionDataObject.getSnacksBefore().isEmpty() && prescriptionDataObject.getSnacksAfter().isEmpty()) {
                         holder.mExpandLayout.setVisibility(View.GONE);
+                        holder.mDividerForInstruction.setVisibility(View.INVISIBLE);
                         prescriptionDataObject.setExpanded(false);
                     } else {
                         holder.mExpandLayout.setVisibility(View.VISIBLE);
+                        holder.mDividerForInstruction.setVisibility(View.VISIBLE);
                         prescriptionDataObject.setExpanded(true);
                     }
                 } else {
                     holder.mExpandLayout.setVisibility(View.GONE);
+                    holder.mDividerForInstruction.setVisibility(View.INVISIBLE);
                     prescriptionDataObject.setExpanded(false);
                 }
                 notifyDataSetChanged();
@@ -160,7 +161,7 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
             holder.mShowDurationAndQuantityOfDoseLayout.setVisibility(View.INVISIBLE);
         }
         //-split medicineName at 15th, if long string-----------
-        medicineType = prescriptionDataObject.getMedicineTypeName();
+        String medicineType = prescriptionDataObject.getMedicineTypeName();
 
         holder.mTextviewNameOfMedicine.setText(medicineType.charAt(0)+". "+prescriptionDataObject.getMedicineName());
         //holder.mDays.setText(prescriptionDataObject.getDays()+" "+mContext.getString(R.string.days));
@@ -176,29 +177,20 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
     private void setPrescriptionDosageData(ListViewHolder holder, int position) {
 
         final PrescriptionModel prescriptionData = mPrescriptionData.get(position);
-        String quantityOfDose = "";
-        String timeOfDosage = "";
         String durationOfBreakFast = "";
-        String showSlotLabel = "";
         String durationOfLunch = "";
         String durationOfDinner = "";
         String durationOfEvening = "";
         String doseQuantity = "";
         //  **************************BreakFast********************************************
         if (!prescriptionData.getBreakfastBefore().isEmpty()) {
-            quantityOfDose = prescriptionData.getDosage();
             durationOfBreakFast = mContext.getString(R.string.before) + " " + mContext.getString(R.string.breakfast);
-            timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getBreakfastBefore();
-            showSlotLabel = mContext.getString(R.string.break_fast);
 
         }
         if (!prescriptionData.getBreakfastAfter().isEmpty()) {
-            quantityOfDose = prescriptionData.getDosage();
             durationOfBreakFast = mContext.getString(R.string.after) + " " + mContext.getString(R.string.breakfast);
-            timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getBreakfastAfter();
-            showSlotLabel = mContext.getString(R.string.break_fast);
 
         }
         if (doseQuantity.isEmpty()) {
@@ -212,28 +204,17 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
         //***************************************Lunch*****************************************************
 
-        quantityOfDose = "";
-        timeOfDosage = "";
-        durationOfBreakFast = "";
-        showSlotLabel = "";
         durationOfLunch = "";
-        durationOfDinner = "";
         doseQuantity = "";
 
         if (!prescriptionData.getLunchBefore().isEmpty()) {
-            quantityOfDose = prescriptionData.getDosage();
             durationOfLunch = mContext.getString(R.string.before) + " " + mContext.getString(R.string.lunch);
-            timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getLunchBefore();
-            showSlotLabel = mContext.getString(R.string.mlunch);
 
         }
         if (!prescriptionData.getLunchAfter().isEmpty()) {
-            quantityOfDose = prescriptionData.getDosage();
             durationOfLunch = mContext.getString(R.string.after) + " " + mContext.getString(R.string.lunch);
-            timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getLunchAfter();
-            showSlotLabel = mContext.getString(R.string.mlunch);
 
         }
         if (doseQuantity.isEmpty()) {
@@ -245,30 +226,18 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
         holder.mShowAfterNoonFullFormOfDose.setText(doseQuantity + " " + durationOfLunch);
         //************************************Evening************************************************
-        quantityOfDose = "";
-        timeOfDosage = "";
-        durationOfBreakFast = "";
-        showSlotLabel = "";
-        durationOfLunch = "";
-        durationOfDinner = "";
         durationOfEvening = "";
         doseQuantity = "";
 
         if (!prescriptionData.getSnacksBefore().isEmpty()) {
-            quantityOfDose = prescriptionData.getDosage();
             durationOfEvening = mContext.getString(R.string.before) + " " + mContext.getString(R.string.snacks);
-            timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getSnacksBefore();
-            showSlotLabel = mContext.getString(R.string.msnacks);
 
 
         }
         if (!prescriptionData.getSnacksAfter().isEmpty()) {
-            quantityOfDose = prescriptionData.getDosage();
             durationOfEvening = mContext.getString(R.string.after) + " " + mContext.getString(R.string.snacks);
-            timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getSnacksAfter();
-            showSlotLabel = mContext.getString(R.string.msnacks);
 
         }
         if (doseQuantity.isEmpty()) {
@@ -283,27 +252,16 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
         //************************Dinner********************************************
 
-        quantityOfDose = "";
-        timeOfDosage = "";
-        durationOfBreakFast = "";
-        showSlotLabel = "";
-        durationOfLunch = "";
         durationOfDinner = "";
         doseQuantity = "";
 
         if (!prescriptionData.getDinnerBefore().isEmpty()) {
-            timeOfDosage = mContext.getString(R.string.before);
             doseQuantity = prescriptionData.getDinnerBefore();
-            showSlotLabel = mContext.getString(R.string.mdinner);
-            quantityOfDose = prescriptionData.getDosage();
             durationOfDinner = mContext.getString(R.string.before) + " " + mContext.getString(R.string.dinner);
 
         }
         if (!prescriptionData.getDinnerAfter().isEmpty()) {
-            timeOfDosage = mContext.getString(R.string.after);
             doseQuantity = prescriptionData.getDinnerAfter();
-            showSlotLabel = mContext.getString(R.string.mdinner);
-            quantityOfDose = prescriptionData.getDosage();
             durationOfDinner = mContext.getString(R.string.after) + " " + mContext.getString(R.string.dinner);
 
         }
@@ -359,8 +317,6 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         @BindView(R.id.showDinnerDosage)
         LinearLayout mShowDinnerDosage;
         View view;
-        @BindView(R.id.doseImageLinearLayout)
-        LinearLayout mDoseImageLinearLayout;
         @BindView(R.id.showEveningDosage)
         LinearLayout mShowEveningDosage;
         @BindView(R.id.eveningDoseQuantity)
@@ -371,8 +327,6 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         ImageView mMedicineType;
         @BindView(R.id.frequencyString)
         TextView mFrequencyString;
-        @BindView(R.id.expandedMedicineDoseLayout)
-        LinearLayout mExpandedMedicineDoseLayout;
         @BindView(R.id.dividerForInstruction)
         View mDividerForInstruction;
         @BindView(R.id.showDurationAndQuantityOfDoseLayout)
@@ -381,7 +335,6 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         TextView mDoseAge;
         @BindView(R.id.showMedicineLayout)
         LinearLayout showMedicineLayout;
-
 
         ListViewHolder(View view) {
             super(view);

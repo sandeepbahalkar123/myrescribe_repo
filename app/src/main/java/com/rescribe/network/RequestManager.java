@@ -490,7 +490,112 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, new Gson().fromJson(data, LoginModel.class), mOldDataTag);
                         break;
                     case RescribeConstants.TASK_NOTIFICATION: //This is for get archived list
-                        NotificationModel notificationModel = new Gson().fromJson(data, NotificationModel.class);
+                        NotificationModel notificationModel = new Gson().fromJson("{\n" +
+                                "  \"common\": {\n" +
+                                "    \"success\": true,\n" +
+                                "    \"statusCode\": 200,\n" +
+                                "    \"statusMessage\": \"USER AUTHENTICATED\"\n" +
+                                "  },\n" +
+                                "  \"data\": {\n" +
+                                "    \"prescriptionNotification\": [\n" +
+                                "      {\n" +
+                                "        \"prescriptionDate\": \"2018-01-15T14:40:36.867Z\",\n" +
+                                "        \"medication\": [\n" +
+                                "          {\n" +
+                                "            \"id\": 23569,\n" +
+                                "            \"medicineName\": \"RANTAC\",\n" +
+                                "            \"medicineId\": 30621,\n" +
+                                "            \"medicineTypeName\": \"NASAL DROPS\",\n" +
+                                "            \"medicineTypeId\": \"16\",\n" +
+                                "            \"medicinSlot\": \"dinnerBefore\",\n" +
+                                "            \"dosage\": \"10 Drops\",\n" +
+                                "            \"quantity\": \"1\",\n" +
+                                "            \"days\": \"10\"\n" +
+                                "          },\n" +
+                                "          {\n" +
+                                "            \"id\": 23570,\n" +
+                                "            \"medicineName\": \"VOLINI\",\n" +
+                                "            \"medicineId\": 30620,\n" +
+                                "            \"medicineTypeName\": \"OINTMENT\",\n" +
+                                "            \"medicineTypeId\": \"12\",\n" +
+                                "            \"medicinSlot\": \"dinnerAfter\",\n" +
+                                "            \"dosage\": \"TWO TIMES A DAY\",\n" +
+                                "            \"quantity\": \"1\",\n" +
+                                "            \"days\": \"5\"\n" +
+                                "          },\n" +
+                                "          {\n" +
+                                "            \"id\": 23569,\n" +
+                                "            \"medicineName\": \"RANTAC\",\n" +
+                                "            \"medicineId\": 30621,\n" +
+                                "            \"medicineTypeName\": \"NASAL DROPS\",\n" +
+                                "            \"medicineTypeId\": \"16\",\n" +
+                                "            \"medicinSlot\": \"breakfastBefore\",\n" +
+                                "            \"dosage\": \"10 Drops\",\n" +
+                                "            \"quantity\": \"1\",\n" +
+                                "            \"days\": \"10\"\n" +
+                                "          },\n" +
+                                "          {\n" +
+                                "            \"id\": 23570,\n" +
+                                "            \"medicineName\": \"VOLINI\",\n" +
+                                "            \"medicineId\": 30620,\n" +
+                                "            \"medicineTypeName\": \"OINTMENT\",\n" +
+                                "            \"medicineTypeId\": \"12\",\n" +
+                                "            \"medicinSlot\": \"breakfastAfter\",\n" +
+                                "            \"dosage\": \"TWO TIMES A DAY\",\n" +
+                                "            \"quantity\": \"1\",\n" +
+                                "            \"days\": \"5\"\n" +
+                                "          },\n" +
+                                "          {\n" +
+                                "            \"id\": 23569,\n" +
+                                "            \"medicineName\": \"RANTAC\",\n" +
+                                "            \"medicineId\": 30621,\n" +
+                                "            \"medicineTypeName\": \"NASAL DROPS\",\n" +
+                                "            \"medicineTypeId\": \"16\",\n" +
+                                "            \"medicinSlot\": \"lunchBefore\",\n" +
+                                "            \"dosage\": \"10 Drops\",\n" +
+                                "            \"quantity\": \"1\",\n" +
+                                "            \"days\": \"10\"\n" +
+                                "          },\n" +
+                                "          {\n" +
+                                "            \"id\": 23570,\n" +
+                                "            \"medicineName\": \"VOLINI\",\n" +
+                                "            \"medicineId\": 30620,\n" +
+                                "            \"medicineTypeName\": \"OINTMENT\",\n" +
+                                "            \"medicineTypeId\": \"12\",\n" +
+                                "            \"medicinSlot\": \"lunchBefore\",\n" +
+                                "            \"dosage\": \"TWO TIMES A DAY\",\n" +
+                                "            \"quantity\": \"1\",\n" +
+                                "            \"days\": \"5\"\n" +
+                                "          }\n" +
+                                "        ]\n" +
+                                "      },\n" +
+                                "      {\n" +
+                                "        \"prescriptionDate\": \"2018-01-14T14:40:36.867Z\",\n" +
+                                "        \"medication\": []\n" +
+                                "      },\n" +
+                                "      {\n" +
+                                "        \"prescriptionDate\": \"2018-01-13T14:40:36.867Z\",\n" +
+                                "        \"medication\": []\n" +
+                                "      },\n" +
+                                "      {\n" +
+                                "        \"prescriptionDate\": \"2018-01-12T14:40:36.867Z\",\n" +
+                                "        \"medication\": []\n" +
+                                "      },\n" +
+                                "      {\n" +
+                                "        \"prescriptionDate\": \"2018-01-11T14:40:36.867Z\",\n" +
+                                "        \"medication\": []\n" +
+                                "      },\n" +
+                                "      {\n" +
+                                "        \"prescriptionDate\": \"2018-01-10T14:40:36.867Z\",\n" +
+                                "        \"medication\": []\n" +
+                                "      },\n" +
+                                "      {\n" +
+                                "        \"prescriptionDate\": \"2018-01-09T14:40:36.867Z\",\n" +
+                                "        \"medication\": []\n" +
+                                "      }\n" +
+                                "    ]\n" +
+                                "  }\n" +
+                                "}", NotificationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, notificationModel, mOldDataTag);
                         break;
 

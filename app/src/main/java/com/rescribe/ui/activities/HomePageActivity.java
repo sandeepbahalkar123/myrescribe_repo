@@ -918,6 +918,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(mContext, AppointmentActivity.class);
+            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticles.class);

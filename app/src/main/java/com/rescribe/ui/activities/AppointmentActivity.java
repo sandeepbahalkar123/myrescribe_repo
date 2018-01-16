@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -40,13 +41,14 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
     String[] mFragmentTitleList = new String[3];
     private DoctorHelper mDoctorHelper;
     private ArrayList<AptList> mAppointmentList;
+    private Intent mIntent;
+    private String mTypeCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appoinment);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.my_appointments));
         if (getSupportActionBar() != null)
@@ -81,6 +83,15 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
             // pass title here
         }
         mViewPager.setAdapter(adapter);
+        if(getIntent().getExtras()!=null){
+            mTypeCall = getIntent().getExtras().getString(RescribeConstants.CALL_FROM_DASHBOARD);
+            if(mTypeCall.equalsIgnoreCase(RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE)){
+                mViewPager.setCurrentItem(2);
+            }else{
+
+            }
+        }
+
 
     }
 
@@ -92,6 +103,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
             if (doctorAppointmentList != null) {
                 mAppointmentList = doctorAppointmentList;
                 setupViewPager();
+
             }
         }
     }

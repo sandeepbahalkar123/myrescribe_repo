@@ -29,6 +29,7 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
     private String mFormattedCurrentDateString;
     private String mSelectedDate;
     private Context mContext;
+    private static TimeSlotsInfoList.TimeSlotData mTimeSlotData;
     private ArrayList<TimeSlotsInfoList.TimeSlotData> mDataList;
     private static String mSelectedTimeSlot;
 
@@ -51,7 +52,7 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
         final TimeSlotsInfoList.TimeSlotData timeSlotData = mDataList.get(position);
-
+        mTimeSlotData  = timeSlotData;
         String fromTime = timeSlotData.getFromTime();
 
         //-----------
@@ -84,11 +85,13 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
                         fromTime = tag1.getFromTime();
                         if (fromTime.equalsIgnoreCase(mSelectedTimeSlot)) {
                             mSelectedTimeSlot = "";
+                            mTimeSlotData = null;
                             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.tab_white));
                             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
 
                         } else {
                             mSelectedTimeSlot = fromTime;
+                            mTimeSlotData = timeSlotData;
                             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_round_rectangle));
                             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                             notifyDataSetChanged();
@@ -100,6 +103,7 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
 
         if (timeSlotData.getFromTime().equalsIgnoreCase(mSelectedTimeSlot)) {
             mSelectedTimeSlot = timeSlotData.getFromTime();
+            mTimeSlotData = timeSlotData;
             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_round_rectangle));
             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.white));
         } else {
@@ -135,6 +139,9 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
         }
     }
 
+    public static TimeSlotsInfoList.TimeSlotData getmTimeSlotData() {
+        return mTimeSlotData;
+    }
 
     public static String getSelectedTimeSlot() {
         return mSelectedTimeSlot;

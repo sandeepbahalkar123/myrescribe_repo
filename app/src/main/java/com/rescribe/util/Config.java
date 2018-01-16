@@ -17,6 +17,8 @@ public class Config {
     public static final String GET_DOCTOR_LIST_BY_COMPLAINT = "api/doctors/getDocListByCityAreaComplaint";
     public static final Object GET_DASHBOARD_DATA = "api/dashboard/getDashboardDetails?patientId=";
     public static final String GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA = "api/doctors/getDocCountByArea?patientId=";
+    public static final String CONFIRM_APPOINTMENT = "api/patient/bookAppointment ";
+    public static final String CANCEL_RESCHDULE_APPOINTMENT = "api/patient/updateAppointmentStatus";
     public static boolean DEV_BUILD = true;
 
     public static final String BROKER = "tcp://52.66.154.249:1883"; // Dr Rescribe IP

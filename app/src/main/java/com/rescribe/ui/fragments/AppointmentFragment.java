@@ -12,9 +12,11 @@ import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.AppointmentAdapter;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -95,8 +97,19 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
     @Override
     public void setOnClickofAppointmentLayout(AptList mAptListObject) {
         bundleData = new Bundle();
+        DoctorList mDoctorList = new DoctorList();
+        mDoctorList.setDocName(mAptListObject.getDoctorName());
+        mDoctorList.setAptDate(mAptListObject.getAptDate());
+        mDoctorList.setAptTime(mAptListObject.getAptTime());
+        mDoctorList.setDegree(mAptListObject.getDoctorDegree());
+        mDoctorList.setAptId(mAptListObject.getId());
+        mDoctorList.setDocId(mAptListObject.getDoc_id());
+        mDoctorList.setNameOfClinicString(mAptListObject.getClinic_name());
+        mDoctorList.setAddressOfDoctorString(mAptListObject.getAddress());
+        mDoctorList.setDocPhone(mAptListObject.getDocPhone());
+        mDoctorList.setTypedashboard(true);
         Intent intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);
-        bundleData.putSerializable(getString(R.string.clicked_item_data), mAptListObject);
+        bundleData.putParcelable(getString(R.string.clicked_item_data), mDoctorList);
         intent.putExtras(bundleData);
         startActivity(intent);
 

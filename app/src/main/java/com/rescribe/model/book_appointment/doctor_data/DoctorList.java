@@ -17,9 +17,15 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("docId")
     @Expose
     private int docId;
+    @SerializedName("docPhone")
+    @Expose
+    private String docPhone;
     @SerializedName("doc_location_id")
     @Expose
     private int docLocationId;
+    @SerializedName("aptId")
+    @Expose
+    private int aptId;
     @SerializedName("location_id")
     @Expose
     private int locationId;
@@ -84,6 +90,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
 
     private String spannable;
     private boolean doctorSearch;
+    private boolean isTypedashboard;
 
     /*  @SerializedName("reviewList")
     @Expose
@@ -99,6 +106,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.docId = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.docLocationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.aptId = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.docName = ((String) in.readValue((String.class.getClassLoader())));
             instance.categoryName = ((String) in.readValue((String.class.getClassLoader())));
             instance.categorySpeciality = ((String) in.readValue((String.class.getClassLoader())));
@@ -111,6 +119,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
             instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
+            instance.docPhone = ((String) in.readValue((String.class.getClassLoader())));
             in.readList(instance.docServices, (String.class.getClassLoader()));
             instance.aptDate = ((String) in.readValue((String.class.getClassLoader())));
             instance.aptTime = ((String) in.readValue((String.class.getClassLoader())));
@@ -119,6 +128,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
             instance.spannable = ((String) in.readValue((String.class.getClassLoader())));
             instance.doctorSearch = ((boolean) in.readValue((String.class.getClassLoader())));
+            instance.isTypedashboard = ((boolean) in.readValue((String.class.getClassLoader())));
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -252,7 +262,6 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     }
 
 
-
     public ArrayList<ClinicData> getClinicDataList() {
         return clinicDataList;
     }
@@ -317,6 +326,14 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         this.doctorSearch = doctorSearch;
     }
 
+    public boolean isTypedashboard() {
+        return isTypedashboard;
+    }
+
+    public void setTypedashboard(boolean typedashboard) {
+        isTypedashboard = typedashboard;
+    }
+
     /* public ArrayList<ReviewList> getReviewList() {
         return reviewList;
     }
@@ -330,6 +347,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(docId);
         dest.writeValue(docLocationId);
         dest.writeValue(locationId);
+        dest.writeValue(aptId);
         dest.writeValue(docName);
         dest.writeValue(categoryName);
         dest.writeValue(categorySpeciality);
@@ -342,6 +360,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(rating);
         dest.writeValue(waitingTime);
         dest.writeValue(aboutDoctor);
+        dest.writeValue(docPhone);
         dest.writeList(docServices);
         dest.writeValue(aptDate);
         dest.writeValue(aptTime);
@@ -350,6 +369,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(nameOfClinicString);
         dest.writeValue(spannable);
         dest.writeValue(doctorSearch);
+        dest.writeValue(isTypedashboard);
     }
 
 
@@ -369,6 +389,22 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             return -1;
         }
         return 1;
+    }
+
+    public String getDocPhone() {
+        return docPhone;
+    }
+
+    public void setDocPhone(String docPhone) {
+        this.docPhone = docPhone;
+    }
+
+    public int getAptId() {
+        return aptId;
+    }
+
+    public void setAptId(int aptId) {
+        this.aptId = aptId;
     }
 
 }

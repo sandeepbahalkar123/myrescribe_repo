@@ -345,6 +345,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             int unReadCount = instance.deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
             Intent intentNotification = new Intent(this, AppointmentActivity.class);
+            intentNotification.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
             startActivity(intentNotification);
 
             if (unReadCount == 0) {

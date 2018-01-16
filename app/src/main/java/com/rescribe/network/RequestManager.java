@@ -36,6 +36,7 @@ import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.filterdrawer.BookAppointFilterBaseModel;
+import com.rescribe.model.book_appointment.request_appointment_confirmation.ResponseAppointmentConfirmationModel;
 import com.rescribe.model.book_appointment.reviews.ReviewListBaseModel;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
@@ -668,6 +669,14 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_GET_HEALTH_EDUCATION_ARTICLES: //This is for get saved article list
                         SavedArticleBaseModel savedHealthEducationArticleBaseModel = new Gson().fromJson(data, SavedArticleBaseModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, savedHealthEducationArticleBaseModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_CONFIRM_APPOINTMENT: //This is for get saved article list
+                        ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = new Gson().fromJson(data, ResponseAppointmentConfirmationModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, mResponseAppointmentConfirmationModel, mOldDataTag);
+                        break;
+                    case RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT: //This is for get saved article list
+                        ResponseAppointmentConfirmationModel mCommonCancelReshedule = new Gson().fromJson(data, ResponseAppointmentConfirmationModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, mCommonCancelReshedule, mOldDataTag);
                         break;
 
                     //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------

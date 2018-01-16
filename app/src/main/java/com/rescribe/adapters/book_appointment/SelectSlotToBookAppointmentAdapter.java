@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotsInfoList;
+import com.rescribe.model.doctors.appointments.AptList;
 
 import java.util.ArrayList;
 
@@ -134,5 +135,8 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
 
     public String getSelectedTimeSlot() {
         return ShowTimingsBookAppointmentDoctor.getSelectedTimeSlot();
+    }
+    public TimeSlotsInfoList.TimeSlotData getSelectedDateAndTime(){
+        return ShowTimingsBookAppointmentDoctor.getmTimeSlotData();
     }
 }

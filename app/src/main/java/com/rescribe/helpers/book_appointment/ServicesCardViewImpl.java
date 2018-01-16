@@ -98,6 +98,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 // for MyAppointment doctor from dashboard and book appointment horizontal list
         if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
+            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
             bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.my_appointments));
             intent.putExtras(bundleData);
             //mParentActivity.startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);

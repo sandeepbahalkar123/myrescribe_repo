@@ -241,11 +241,11 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 
                 for (int j = 0; j < vitalList.size(); j++) {
                     Vital dataObject = vitalList.get(j);
-                    if(isBpMax()&&isBpMin()) {
+                    if (isBpMax() && isBpMin()) {
                         if (dataObject.getUnitName().contains(getString(R.string.bp_max)) || dataObject.getUnitName().contains(getString(R.string.bp_min))) {
                             Vital vital = new Vital();
                             if (pos == null) {
-                                vital.setUnitName(getString(R.string.bp));
+                                vital.setUnitName(getString(R.string.bp)+" " + dataObject.getUnitValue());
                                 vital.setUnitValue(dataObject.getUnitValue());
                                 vital.setCategory(dataObject.getCategory());
                                 vital.setIcon(dataObject.getIcon());
@@ -280,10 +280,22 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                             vitalSortedList.add(vital);
                         }
 
-                    } else{
+                    } else {
                         Vital vital = new Vital();
-                        vital = vitalList.get(j);
-                        vitalSortedList.add(vital);
+                        if (dataObject.getUnitName().contains(getString(R.string.bp_max))) {
+                            vital = vitalList.get(j);
+                            vital.setUnitName("Systolic BP"+" "+vital.getUnitValue());
+                            vital.setDisplayName("Systolic BP");
+                            vitalSortedList.add(vital);
+                        } else if (dataObject.getUnitName().contains(getString(R.string.bp_min))) {
+                            vital = vitalList.get(j);
+                            vital.setUnitName("Diastolic BP"+" "+vital.getUnitValue());
+                            vital.setDisplayName("Diastolic BP");
+                            vitalSortedList.add(vital);
+                        }else{
+                            vital = vitalList.get(j);
+                            vitalSortedList.add(vital);
+                        }
                     }
                 }
                 patientHistoryList.get(i).setVitals(vitalSortedList);
@@ -312,6 +324,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
         mHistoryExpandableListView.setVisibility(View.GONE);
         mNoRecordAvailable.setVisibility(View.VISIBLE);
     }
+
     public boolean isBpMin() {
         return isBpMin;
     }

@@ -14,6 +14,16 @@ public class VisitCommonData implements CustomResponse{
     @Expose
     private String name;
 
+    public String getVitalValue() {
+        return vitalValue;
+    }
+
+    public void setVitalValue(String vitalValue) {
+        this.vitalValue = vitalValue;
+    }
+
+    private String vitalValue;
+
     public Integer getId() {
         return id;
     }

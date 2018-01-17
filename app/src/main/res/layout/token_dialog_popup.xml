@@ -35,11 +35,13 @@
                     android:paddingTop="30dp"
                     android:text="@string/get_token"
                     android:textSize="@dimen/sp17"
+                    android:id="@+id/textheading"
                     app:customFont="@string/roboto_bold" />
 
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/icon"
                 android:layout_width="82dp"
                 android:layout_height="82dp"
                 android:layout_gravity="center_horizontal"

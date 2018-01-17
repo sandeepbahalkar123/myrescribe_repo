@@ -95,7 +95,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 .findViewById(R.id.dashBoardCard);
         final CustomTextView doctorNameTextView = (CustomTextView) imageLayout
                 .findViewById(R.id.doctorName);
-        final  ImageView ruppessIcon = (ImageView)imageLayout.findViewById(R.id.ruppessIcon);
+        final ImageView ruppessIcon = (ImageView) imageLayout.findViewById(R.id.ruppessIcon);
         final CustomTextView sizeOfList = (CustomTextView) imageLayout
                 .findViewById(R.id.sizeOfList);
         final CustomTextView doctorExperience = (CustomTextView) imageLayout
@@ -134,8 +134,12 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             dashBoardCard.setBackground(mContext.getDrawable(R.drawable.result_white_box));
         }
-        doctorCategoryType.setText(doctorObject.getCategorySpeciality());
-        //doctorCategory.setText(doctorObject.getCategoryName());
+        if (!doctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
+            doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+            doctorCategoryType.setVisibility(View.VISIBLE);
+        } else {
+            doctorCategoryType.setVisibility(View.INVISIBLE);
+        }        //doctorCategory.setText(doctorObject.getCategoryName());
         doctorNameTextView.setText(doctorObject.getDocName());
         //  doctorType.setText(doctorObject.getDegree());
         doctorExperience.setText(doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
@@ -185,7 +189,8 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
                 clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
             }
-        } else */if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))||doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
+        } else */
+        if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor)) || doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
 
             if (doctorObject.getClinicDataList().size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
@@ -196,7 +201,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 if (doctorObject.getClinicDataList().size() > 0) {
                     boolean b = checkAllClinicAddressInSameCity(doctorObject.getClinicDataList());
                     if (b) {
-                        SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -234,7 +239,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);
-                    bookAppointmentButton.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.book));
+                    bookAppointmentButton.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.book));
                     tokenNo.setVisibility(View.INVISIBLE);
                 }
             }
@@ -252,7 +257,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
                     boolean b = checkAllClinicAddressInSameCity(doctorObject.getClinicDataList());
                     if (b) {
-                        SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -292,7 +297,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);
-                    bookAppointmentButton.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.book));
+                    bookAppointmentButton.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.book));
                     tokenNo.setVisibility(View.INVISIBLE);
                 }
             }
@@ -321,7 +326,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getCategoryName());
                 b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
+                b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
                 b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, RescribeConstants.SEARCH_DOCTORS);
                 mServicesCardViewClickListener.onClickOfCardView(b);
             }
@@ -366,8 +371,8 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view.equals(object);
     }
+
     /**
-     *
      * @param list
      * @return true incase all clinic adrress are same, else false.
      * (Considered all address ends with city name)

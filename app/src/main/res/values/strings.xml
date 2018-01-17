@@ -381,6 +381,8 @@
     <string name="get_token_msg">Sorry, currently there is no other token number available. Would you like to get notified as soon as any token number for today is available?</string>
     <string name="investigation_reports">Investigation Reports</string>
     <string name="search_doctor">Search Doctor</string>
+    <string name="cancel_msg">Do you wish to cancel the appointment ?</string>
+    <string name="reschedule_msg">Do you wish to reschedule the appointment ?</string>
 
     <!--************************-->
 </resources>

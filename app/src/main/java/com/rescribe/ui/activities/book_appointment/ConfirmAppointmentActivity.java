@@ -1,18 +1,32 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.format.DateFormat;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -22,18 +36,23 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.Common;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.ResponseAppointmentConfirmationModel;
-import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rescribe.util.RescribeConstants.CANCEL_TYPE;
+import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
 
 
 /**
@@ -41,6 +60,7 @@ import butterknife.OnClick;
  */
 
 public class ConfirmAppointmentActivity extends AppCompatActivity implements HelperResponse {
+    public static final int RESCHEDULE_OK = 200;
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
     @BindView(R.id.title)
@@ -89,7 +109,8 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
     private DoctorList mDoctorObject;
     private String mobileNo = "";
     private DoctorDataHelper mDoctorDataHelper;
-    String callType ;
+    String callType;
+    private boolean isCanceled;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,9 +155,10 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
             if (!mDoctorObject.getNameOfClinicString().isEmpty()) {
                 clinicName.setText(mDoctorObject.getNameOfClinicString());
             }
-            if (mobileNo.equals("")) {
+            if (mDoctorObject.getDocPhone().equals("")) {
                 phoneNumberLayout.setVisibility(View.GONE);
             } else {
+                mobileNumber.setText(mDoctorObject.getDocPhone());
                 phoneNumberLayout.setVisibility(View.VISIBLE);
             }
             if (!mDoctorObject.getAptTime().isEmpty() && !mDoctorObject.getAptDate().isEmpty()) {
@@ -147,22 +169,17 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 String dateToShow = dateValueToShow + ", " + ordinal + " " + CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "MMM yyyy").toUpperCase() + " @" + timeToShow;
                 showTimedate.setText(dateToShow);
             }
-
-            // mobileNumber.setText(mDoctorObject.);
-
         }
-
     }
 
     @OnClick({R.id.cancelButton, R.id.rescheduleButton, R.id.bookAppointmentBackButton, R.id.locationImageView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cancelButton:
-                mDoctorDataHelper.doCancelResheduleAppointmentRequest(mDoctorObject.getAptId(), 4, RescribeConstants.CANCEL_TYPE);
+                showTokenStatusMessageBox(mContext.getString(R.string.cancel_msg),mDoctorObject.getAptId(),CANCEL_TYPE);
                 break;
             case R.id.rescheduleButton:
-                mDoctorDataHelper.doCancelResheduleAppointmentRequest(mDoctorObject.getAptId(), 4, RescribeConstants.RESHEDULE_TYPE);
-
+                showTokenStatusMessageBox(mContext.getString(R.string.reschedule_msg),mDoctorObject.getAptId(),RESHEDULE_TYPE);
                 break;
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
@@ -179,63 +196,119 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this,HomePageActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT)) {
             ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
-            if(mResponseAppointmentConfirmationModel.getCommon()!=null)
-                if(mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
-                    if (mResponseAppointmentConfirmationModel.getCommon().getStatusMessage().contains("Rescheduled")) {
-                        if(mDoctorObject.isTypedashboard()){
+            if (mResponseAppointmentConfirmationModel.getCommon() != null)
+                if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
+                    if (!isCanceled) {
+                        if (mDoctorObject.isTypedashboard()) {
+                            Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
                             Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
                             intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
                             intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
                             ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mDoctorObject);
                             startActivity(intent1);
-                            Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-                        }else{
+                            setResult(RESCHEDULE_OK);
                             finish();
-
-                        }
-                    } else if (mResponseAppointmentConfirmationModel.getCommon().getStatusMessage().contains("Cancelled")) {
-                        if(mDoctorObject.isTypedashboard()) {
-                            Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(mContext, AppointmentActivity.class);
-                            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE);
-                            startActivity(intent);
+                        } else {
+                            setResult(Activity.RESULT_OK);
                             finish();
-                        }else{
-                           /* Intent intentObject = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
-                            Bundle b = new Bundle();
-                            b.putString(getString(R.string.toolbarTitle), "");
-                            b.putInt(getString(R.string.selected_clinic_data_position), mSelectedClinicDataPosition);
-                            intentObject.putExtras(b);
-                            startActivity(intentObject);*/
-                          finish();
-
                         }
-
                     } else {
-                        Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-
+                        Intent intent = new Intent(ConfirmAppointmentActivity.this, BookAppointDoctorListBaseActivity.class);
+                        Bundle bundle = new Bundle();
+                        //This CALL_FROM_DASHBOARD is passed to handle onBackPressed of Book Appointment Page which is directed to HomePageActivity
+                        bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD,RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE);
+                        bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+                        intent.putExtras(bundle);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
                     }
+                } else {
+                    Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
                 }
-            }
         }
 
+    }
 
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
+        Toast.makeText(mContext, errorMessage, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
+        Toast.makeText(mContext, serverErrorMessage, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
+        Toast.makeText(mContext, serverErrorMessage, Toast.LENGTH_SHORT).show();
 
     }
+    public void showTokenStatusMessageBox(String message, final int aptId, final String type) {
+
+        final Dialog dialog = new Dialog(mContext);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.token_dialog_popup);
+        dialog.setCancelable(true);
+
+        TextView messageView = (TextView) dialog.findViewById(R.id.messageView);
+        ImageView icon_get_token = (ImageView)dialog.findViewById(R.id.icon);
+        TextView textheading = (TextView) dialog.findViewById(R.id.textheading);
+        textheading.setText(mContext.getString(R.string.appointment));
+        icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.bookappointment));
+        if(type.equals(CANCEL_TYPE)){
+            isCanceled = true;
+        }else{
+            isCanceled = false;
+        }
+        messageView.setText(message);
+
+        //-----------------
+        TextView yesButton = (TextView) dialog.findViewById(R.id.yesButton);
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDoctorDataHelper.doCancelResheduleAppointmentRequest(aptId, 4, type);
+                dialog.cancel();
+            }
+        });
+        //------------
+        TextView noButton = (TextView) dialog.findViewById(R.id.noButton);
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+
+        dialog.getWindow().setAttributes(lp);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+    }
+
 }

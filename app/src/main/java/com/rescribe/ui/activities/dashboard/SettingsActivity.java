@@ -203,6 +203,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             Bundle bundle = new Bundle();
+            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD,"");
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);

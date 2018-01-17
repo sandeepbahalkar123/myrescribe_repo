@@ -29,7 +29,6 @@ public class DoctorConnectSearchContainerFragment extends Fragment {
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.login_signup_layout, container, false);
 
-
         unbinder = ButterKnife.bind(this, mRootView);
         mListener.addSpecializationOfDoctorFragment(new Bundle());
         return mRootView;

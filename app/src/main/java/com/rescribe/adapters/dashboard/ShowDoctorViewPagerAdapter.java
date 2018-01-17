@@ -78,7 +78,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup view, int position) {
+    public Object instantiateItem(ViewGroup view, final int position) {
         View imageLayout = mInflater.inflate(R.layout.dashboard_doctor_category_item, view, false);
         assert imageLayout != null;
 
@@ -122,8 +122,12 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.tokenNo);
 
         final DoctorList doctorObject = mDataList.get(position);
-
-        doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+          if(!doctorObject.getCategorySpeciality().equalsIgnoreCase("")){
+              doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+              doctorCategoryType.setVisibility(View.VISIBLE);
+          }else{
+              doctorCategoryType.setVisibility(View.INVISIBLE);
+          }
         doctorCategory.setText(doctorObject.getCategoryName());
         doctorNameTextView.setText(doctorObject.getDocName());
         doctorType.setText(doctorObject.getDegree());
@@ -178,20 +182,77 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         ArrayList<ClinicData> clinicDataList = doctorObject.getClinicDataList();
 
         if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
-            feesToPaid.setVisibility(View.INVISIBLE);
-            bookAppointmentButton.setVisibility(View.GONE);
-            doctorAppointmentDate.setVisibility(View.VISIBLE);
-            tokenNo.setVisibility(View.GONE);
-            String time = CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a).toLowerCase();
-            SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + time);
-            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-            doctorAppointmentDate.setText(content);
-            if (clinicDataList.size() > 0) {
-                doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
-                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
-                clinicName.setText(clinicDataList.get(0).getClinicName());
+            //this is done to show myAppointment doctor in favourite category to avail book option
+            if (((position == mDataList.size() - 1) && mIsFavAvail)) {
+                if (clinicDataList.size() == 1) {
+                    clinicName.setVisibility(View.VISIBLE);
+                    clinicName.setText(clinicDataList.get(0).getClinicName());
+                    doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
+
+                } else {
+                    if (clinicDataList.size() > 0) {
+                        boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                        if (b) {
+                            SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                            locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                            doctorAddress.setText(locationString);
+                            clinicName.setVisibility(View.VISIBLE);
+                            clinicName.setText(clinicDataList.get(0).getClinicName());
+                            doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+
+                        } else {
+                            SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                            locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                            doctorAddress.setText(locationString);
+                            doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                            clinicName.setVisibility(View.VISIBLE);
+                            clinicName.setText(clinicDataList.get(0).getClinicName());
+
+                        }
+
+                    }
+                }
+                designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
+                doctorAppointmentDate.setVisibility(View.GONE);
+                feesToPaid.setVisibility(View.VISIBLE);
+                if (clinicDataList.size() > 0) {
+                    feesToPaid.setVisibility(View.VISIBLE);
+                    feesToPaid.setText("" + clinicDataList.get(0).getAmount());
+
+                } else {
+                    feesToPaid.setVisibility(View.INVISIBLE);
+
+                }
+
+                //----------
+                if (clinicDataList.size() > 0) {
+                    String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                    if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                        bookAppointmentButton.setVisibility(View.GONE);
+                        tokenNo.setVisibility(View.VISIBLE);
+                    } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                        bookAppointmentButton.setVisibility(View.VISIBLE);
+                        tokenNo.setVisibility(View.GONE);
+                    }
+                }
+            }else{
+                feesToPaid.setVisibility(View.INVISIBLE);
+                bookAppointmentButton.setVisibility(View.GONE);
+                doctorAppointmentDate.setVisibility(View.VISIBLE);
+                tokenNo.setVisibility(View.GONE);
+                String time = CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a).toLowerCase();
+                SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + time);
+                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                doctorAppointmentDate.setText(content);
+                if (clinicDataList.size() > 0) {
+                    doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
+                    doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                    clinicName.setText(clinicDataList.get(0).getClinicName());
+                }
+                designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
+
             }
-            designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
 
@@ -395,19 +456,37 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         dashBoardCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                if(!doctorObject.getClinicDataList().isEmpty()) {
-                    doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
-                    doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                if (((position == mDataList.size() - 1) && mIsFavAvail)) {
+                    //this is done to show myAppointment doctor in favourite category to avail book option
+                    Bundle b = new Bundle();
+                    if(!doctorObject.getClinicDataList().isEmpty()) {
+                        doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
+                        doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                    }
+                    doctorObject.setTypedashboard(true);
+                    b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
+                    b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+
+                    b.putString(mContext.getString(R.string.category_name),"");
+                    b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
+
+                    mServicesCardViewClickListener.onClickOfCardView(b);
+                }else{
+                    Bundle b = new Bundle();
+                    if(!doctorObject.getClinicDataList().isEmpty()) {
+                        doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
+                        doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                    }
+                    doctorObject.setTypedashboard(true);
+                    b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
+                    b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+
+                    b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
+                    b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
+
+                    mServicesCardViewClickListener.onClickOfCardView(b);
                 }
-                doctorObject.setTypedashboard(true);
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
 
-                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
-                b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
-
-                mServicesCardViewClickListener.onClickOfCardView(b);
             }
         });
 

@@ -29,6 +29,7 @@ import com.rescribe.model.investigation.Image;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.ui.activities.SelectedRecordsGroupActivity;
@@ -88,6 +89,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private AppDBHelper appDBHelper;
     private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
+    private String callType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 String title = extras.getString(getString(R.string.clicked_item_data));
+                callType = extras.getString(RescribeConstants.CALL_FROM_DASHBOARD);
                 mTitleView.setText(title);
                 bundle.putString(getString(R.string.title), title);
             }
@@ -265,8 +268,16 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
             mDrawerLayout.closeDrawer(GravityCompat.END);
         } else {
-            super.onBackPressed();
-            DoctorDataHelper.setReceivedDoctorServicesModel(null);
+            if(callType.equals("")||callType==null) {
+                super.onBackPressed();
+                DoctorDataHelper.setReceivedDoctorServicesModel(null);
+            }else{
+                //this is called when appointment is cancelled and redirected to appointment page and onbackpressed Homepage is called
+                Intent intent = new Intent(mContext,HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 

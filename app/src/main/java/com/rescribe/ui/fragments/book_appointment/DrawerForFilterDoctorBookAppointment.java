@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,6 +45,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static android.view.View.FOCUS_UP;
+
 public class DrawerForFilterDoctorBookAppointment extends Fragment implements HelperResponse {
 
     @BindView(R.id.applyButton)
@@ -69,8 +72,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     LinearLayout mLocationHeaderView;
     @BindView(R.id.locationContentRecycleView)
     RecyclerView mLocationContentRecycleView;
-    @BindView(R.id.locationContentView)
-    LinearLayout mLocationContentView;
     @BindView(R.id.genderMaleIcon)
     ImageView mGenderMaleIcon;
     @BindView(R.id.genderMaleText)
@@ -147,6 +148,9 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     @BindView(R.id.clinicFeesView)
     LinearLayout mClinicFeesView;
 
+    @BindView(R.id.nestedScroll)
+    NestedScrollView nestedScroll;
+
     private OnDrawerInteractionListener mListener;
 
     //--------
@@ -186,31 +190,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
 
     private void initialize() {
         mSelectedDays = new HashMap<>();
-
         configureDrawerFieldsData();
-
-        mLocationContentRecycleView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                int action = e.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_MOVE:
-                        rv.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
-                }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
     }
 
     @Override
@@ -399,11 +379,13 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                     //--------
 
                     mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), locations);
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                     mLocationContentRecycleView.setLayoutManager(layoutManager);
                     mLocationContentRecycleView.setHasFixedSize(true);
+                    mLocationContentRecycleView.setNestedScrollingEnabled(false);
                     mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
-                    mLocationContentRecycleView.setNestedScrollingEnabled(true);
+
+                    mLocationView.setVisibility(View.VISIBLE);
 
                 } else mLocationView.setVisibility(View.GONE);
 

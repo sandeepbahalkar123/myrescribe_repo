@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 
 public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSelectLocationsAdapter.ListViewHolder> {
 
-
     private ArrayList<LocationList> mDataList;
     // private HashSet<String> mSelectedLocation = new HashSet<>();
     private SparseBooleanArray mSelectedLocation = new SparseBooleanArray();
@@ -50,9 +49,7 @@ public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSel
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 mSelectedLocation.put(position, isChecked);
-
             }
         });
     }

@@ -146,6 +146,9 @@ public class DoctorConnectChatAdapter extends RecyclerView.Adapter<DoctorConnect
         String time = CommonMethods.formatDateTime(doctorConnectChatModel.getLastChatTime(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.TIME);
         holder.paidStatusTextView.setText(time);
 
+        // 17 Jan 2018 Change
+        holder.paidStatusTextView.setVisibility(View.INVISIBLE);
+
         int count = appDBHelper.unreadMessageCountById(doctorConnectChatModel.getId());
         doctorConnectChatModel.setUnreadMessages(count);
 

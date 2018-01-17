@@ -185,6 +185,13 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
                 fragmentTransaction.commit();
             }
         });
+
+        /*mSearchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                searchBySpecializationOfDoctorFragment.hideNote(hasFocus);
+            }
+        });*/
     }
 
     private EditTextWithDeleteButton.TextChangedListener editTextChanged() {

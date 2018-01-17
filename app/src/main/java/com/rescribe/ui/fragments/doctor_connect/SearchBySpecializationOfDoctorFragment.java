@@ -72,6 +72,16 @@ public class SearchBySpecializationOfDoctorFragment extends Fragment implements 
         return mRootView;
     }
 
+    public void hideNote(boolean isHide){
+        if (isHide) {
+            mRecyclerView.setPadding(0, 0, 0, 0);
+            displayNote.setVisibility(View.GONE);
+        } else {
+            displayNote.setVisibility(View.VISIBLE);
+            mRecyclerView.setPadding(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.dp75));
+        }
+    }
+
     private void init() {
         if (searchDataModelList == null) {
             emptyListView.setVisibility(View.VISIBLE);

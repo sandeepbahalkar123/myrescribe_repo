@@ -136,7 +136,12 @@ public class SelectSlotToBookAppointmentAdapter extends BaseExpandableListAdapte
     public String getSelectedTimeSlot() {
         return ShowTimingsBookAppointmentDoctor.getSelectedTimeSlot();
     }
-    public TimeSlotsInfoList.TimeSlotData getSelectedDateAndTime(){
-        return ShowTimingsBookAppointmentDoctor.getmTimeSlotData();
+
+    public String getToTimeSlot() {
+        return ShowTimingsBookAppointmentDoctor.getmSelectedToTimeSlot();
     }
+    public String getSlotId() {
+        return ShowTimingsBookAppointmentDoctor.getSlotId();
+    }
+
 }

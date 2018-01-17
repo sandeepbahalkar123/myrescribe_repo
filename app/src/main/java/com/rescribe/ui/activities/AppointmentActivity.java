@@ -30,6 +30,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity.RESCHEDULE_OK;
+import static com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment.CONFIRM_REQUESTCODE;
+
 public class AppointmentActivity extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.toolbar)
@@ -43,6 +46,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
     private ArrayList<AptList> mAppointmentList;
     private Intent mIntent;
     private String mTypeCall;
+    private boolean isCanceled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,16 +87,10 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
             // pass title here
         }
         mViewPager.setAdapter(adapter);
-        if(getIntent().getExtras()!=null){
-            mTypeCall = getIntent().getExtras().getString(RescribeConstants.CALL_FROM_DASHBOARD);
-            if(mTypeCall.equalsIgnoreCase(RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE)){
-                mViewPager.setCurrentItem(2);
-            }else{
 
-            }
-        }
-
-
+       /* // For Cancel Appointment
+        if (isCanceled)
+            mViewPager.setCurrentItem(2);*/
     }
 
     @Override
@@ -121,6 +119,22 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CONFIRM_REQUESTCODE) {
+                initialize();
+                isCanceled = true;
+            }
+        }else if(resultCode == RESCHEDULE_OK){
+            if (requestCode == CONFIRM_REQUESTCODE) {
+                initialize();
+                //cancelled tab will not set here.
+                isCanceled = false;
+            }
+        }
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -154,7 +168,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
 
     public ArrayList<AptList> getAppointmentList(String type) {
         ArrayList<AptList> tempList = new ArrayList<>();
-        if(type.equalsIgnoreCase(getString(R.string.upcoming))) {
+        if (type.equalsIgnoreCase(getString(R.string.upcoming))) {
 
             if (mAppointmentList != null) {
                 for (AptList dataObject :
@@ -174,8 +188,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
                 }
             });
 
-        }
-        else{
+        } else {
             if (mAppointmentList != null) {
                 for (AptList dataObject :
                         mAppointmentList) {

@@ -76,7 +76,12 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             holder.doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
 
         }
-        holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+        if(!doctorObject.getCategorySpeciality().equalsIgnoreCase("")){
+            holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+            holder.doctorCategoryType.setVisibility(View.VISIBLE);
+        }else{
+            holder.doctorCategoryType.setVisibility(View.INVISIBLE);
+        }
         holder.aboutDoctor.setText(doctorObject.getDegree());
 /////
         //-------------

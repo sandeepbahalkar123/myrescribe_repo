@@ -100,7 +100,12 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             holder.doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
         }
 
-        holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+        if(!doctorObject.getCategorySpeciality().equalsIgnoreCase("")){
+            holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+            holder.doctorCategoryType.setVisibility(View.VISIBLE);
+        }else{
+            holder.doctorCategoryType.setVisibility(View.INVISIBLE);
+        }
         holder.aboutDoctor.setText(doctorObject.getDegree());
         //------------
         if (doctorObject.getRating() == 0) {

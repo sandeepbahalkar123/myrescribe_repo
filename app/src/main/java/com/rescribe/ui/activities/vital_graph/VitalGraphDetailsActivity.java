@@ -1,6 +1,7 @@
 package com.rescribe.ui.activities.vital_graph;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -79,6 +80,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
     private VitalGraphHelper mVitalGraphHelper;
     private VitalGraphInfoBaseModel.VitalGraphInfoDataModel mReceivedVitalGraphDataModel;
     String mSelectedTrackerDateToSend;
+    private boolean isVitalAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +155,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 CommonBaseModelContainer common = (CommonBaseModelContainer) customResponse;
                 CommonMethods.showToast(this, "" + common.getCommonRespose().getStatusMessage());
                 mVitalGraphHelper.doGetPatientVitalDetail(mClickedVitalGraphData.getVitalName());
+                isVitalAdded = true;
                 break;
         }
     }
@@ -586,4 +589,15 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         return bitmap;
     }
 
+    @Override
+    public void onBackPressed() {
+        if(isVitalAdded){
+            Intent intent = new Intent(this,VitalGraphActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }else{
+            super.onBackPressed();
+        }
+    }
 }

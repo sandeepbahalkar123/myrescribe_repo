@@ -56,6 +56,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 if (commonDatasVitals.size() > 0) {
                     VisitCommonData commonVitals = new VisitCommonData();
                     commonVitals.setId(0);
+                    commonVitals.setVitalValue(listDataHeader.get(i).getVitals().get(0).getUnitValue());
                     commonVitals.setName(listDataHeader.get(i).getVitals().get(0).getUnitName());
                     mCommonDataVisitList.add(commonVitals);
                     listDataHeader.get(i).setCommonData(mCommonDataVisitList);
@@ -367,7 +368,17 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
                 if (!mListDataHeader.get(groupPosition).getVitals().isEmpty())
-                    groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+                    if(mVisitDetailList.get(0).getName().equalsIgnoreCase("bp")){
+                    String bpValue = mVisitDetailList.get(0).getVitalValue();
+                        String[] unitDataObject = bpValue.split("/");
+                        String unitBpMax = unitDataObject[0];
+                        String unitBpMin = unitDataObject.length == 2 ? unitDataObject[1] : "";
+                        groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + " "+unitBpMax+"...");
+
+                    }else{
+                        groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+
+                    }
             } else if (mVisitDetailList.size() > 1) {
                 groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
             } else {

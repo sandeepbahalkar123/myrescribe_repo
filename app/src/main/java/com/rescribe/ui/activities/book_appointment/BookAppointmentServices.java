@@ -25,6 +25,7 @@ import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
+import com.rescribe.util.RescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -136,6 +137,7 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
         if (data.getName().equalsIgnoreCase(getString(R.string.doctorss))) {
             Intent intent = new Intent(BookAppointmentServices.this, BookAppointDoctorListBaseActivity.class);
             Bundle bundle = new Bundle();
+            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD,"");
             bundle.putString(getString(R.string.location_address), address);
             bundle.putString(getString(R.string.latitude), latitude);
             bundle.putString(getString(R.string.longitude), longitude);

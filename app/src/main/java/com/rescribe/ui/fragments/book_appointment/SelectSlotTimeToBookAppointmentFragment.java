@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -81,6 +82,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.rescribe.adapters.book_appointment.ShowTimingsBookAppointmentDoctor.mAptslotId;
+import static com.rescribe.adapters.book_appointment.ShowTimingsBookAppointmentDoctor.mSelectedTimeSlot;
+import static com.rescribe.adapters.book_appointment.ShowTimingsBookAppointmentDoctor.mSelectedToTimeSlot;
 import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
 import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
@@ -91,6 +95,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener, BottomSheetTimePickerDialog.OnTimeSetListener {
 
+    public static final int CONFIRM_REQUESTCODE = 212;
     private final String TASKID_TIME_SLOT_WITH_DOC_DATA = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS;
     private final String TASKID_TIME_SLOT = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT;
     //-------------
@@ -196,6 +201,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.book_appoint_doc_desc_select_time_slot, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
+        init();
         return mRootView;
     }
 
@@ -211,6 +217,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private void init() {
         mContext = getContext();
+        mSelectedTimeSlot = null;
+        mSelectedToTimeSlot = null;
+        mAptslotId = null;
+        
         yearsExperienceLine.setVisibility(View.GONE);
         selectClinicLine.setVisibility(View.GONE);
         mColorGenerator = ColorGenerator.MATERIAL;
@@ -362,7 +372,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);
         }
         //------------
-        if (mClickedDoctorObject.getCategorySpeciality() != null) {
+        if (!mClickedDoctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
             mPremiumType.setText("" + mClickedDoctorObject.getCategorySpeciality());
             mPremiumType.setVisibility(View.VISIBLE);
         } else {
@@ -495,7 +505,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
                         bundleData = new Bundle();
 
-
                         mClickedDoctorObject.setTypedashboard(false);
                         mClickedDoctorObject.setAptId(mResponseAppointmentConfirmationModel.getAptList().getId());
                         mClickedDoctorObject.setDocId(mResponseAppointmentConfirmationModel.getAptList().getDoc_id());
@@ -510,7 +519,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
                         Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
                         intentObject.putExtras(bundleData);
-                        startActivity(intentObject);
+                        startActivityForResult(intentObject, CONFIRM_REQUESTCODE);
                         //This is done to call api for token slot when user clicks on cancel button of confirmpage.
                         mDoctorDataHelper = null;
 
@@ -539,6 +548,18 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CONFIRM_REQUESTCODE) {
+                mSelectedTimeSlot = null;
+                mSelectedToTimeSlot = null;
+                mAptslotId = null;
+                init();
+            }
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -547,7 +568,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        init();
+
         if (mDoctorDataHelper == null) {
 
 
@@ -622,7 +643,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         CommonMethods.showToast(getContext(), getString(R.string.time_select_err));
                     } else {
 
-                        mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedDateAndTime().getFromTime(), mSelectSlotToBookAppointmentAdapter.getSelectedDateAndTime().getToTime(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSelectedDateAndTime().getSlotId()));
+                        mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()));
                        /* bundleData = new Bundle();
                         mClickedDoctorObject.setNameOfClinicString(mClickedDoctorObject.getClinicDataList().get(0).getClinicName());
                         mClickedDoctorObject.setAddressOfDoctorString(mClickedDoctorObject.getClinicDataList().get(0).getClinicAddress());

@@ -29,9 +29,11 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
     private String mFormattedCurrentDateString;
     private String mSelectedDate;
     private Context mContext;
-    private static TimeSlotsInfoList.TimeSlotData mTimeSlotData;
     private ArrayList<TimeSlotsInfoList.TimeSlotData> mDataList;
-    private static String mSelectedTimeSlot;
+    public static String mSelectedTimeSlot;
+
+    public static String mSelectedToTimeSlot;
+    public static String mAptslotId;
 
     public ShowTimingsBookAppointmentDoctor(Context mContext, ArrayList<TimeSlotsInfoList.TimeSlotData> dataList, String mSelectedDate) {
         this.mDataList = dataList;
@@ -52,7 +54,6 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
         final TimeSlotsInfoList.TimeSlotData timeSlotData = mDataList.get(position);
-        mTimeSlotData  = timeSlotData;
         String fromTime = timeSlotData.getFromTime();
 
         //-----------
@@ -74,6 +75,8 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
                 String s = "" + v.getTag();
                 TimeSlotsInfoList.TimeSlotData tag1 = mDataList.get(Integer.parseInt(s));
                 String fromTime = tag1.getFromTime();
+                String toTime = tag1.getToTime();
+                String slotId = tag1.getSlotId();
 
                 Date fromTimeDate = CommonMethods.convertStringToDate(mSelectedDate + " " + fromTime, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
                 Date currentDate = CommonMethods.convertStringToDate(mFormattedCurrentDateString + " " + mFormattedCurrentTimeString, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
@@ -85,13 +88,16 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
                         fromTime = tag1.getFromTime();
                         if (fromTime.equalsIgnoreCase(mSelectedTimeSlot)) {
                             mSelectedTimeSlot = "";
-                            mTimeSlotData = null;
+                            mSelectedToTimeSlot = "";
+                            mAptslotId = "";
+
                             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.tab_white));
                             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
 
                         } else {
                             mSelectedTimeSlot = fromTime;
-                            mTimeSlotData = timeSlotData;
+                            mSelectedToTimeSlot = toTime;
+                            mAptslotId = slotId;
                             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_round_rectangle));
                             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                             notifyDataSetChanged();
@@ -103,7 +109,8 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
 
         if (timeSlotData.getFromTime().equalsIgnoreCase(mSelectedTimeSlot)) {
             mSelectedTimeSlot = timeSlotData.getFromTime();
-            mTimeSlotData = timeSlotData;
+            mSelectedToTimeSlot = timeSlotData.getToTime();
+            mAptslotId = timeSlotData.getSlotId();
             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_round_rectangle));
             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.white));
         } else {
@@ -139,8 +146,13 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
         }
     }
 
-    public static TimeSlotsInfoList.TimeSlotData getmTimeSlotData() {
-        return mTimeSlotData;
+
+    public static String getmSelectedToTimeSlot() {
+        return mSelectedToTimeSlot;
+    }
+
+    public static String getSlotId() {
+        return mAptslotId;
     }
 
     public static String getSelectedTimeSlot() {

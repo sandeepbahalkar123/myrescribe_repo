@@ -268,7 +268,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
         }
         //------------
-        if (mClickedDoctorObject.getCategorySpeciality() != null) {
+        if (!mClickedDoctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
             mPremiumType.setText("" + mClickedDoctorObject.getCategorySpeciality());
             mPremiumType.setVisibility(View.VISIBLE);
         } else {

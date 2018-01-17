@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,9 +17,12 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
-import com.rescribe.util.RescribeConstants;
+import com.rescribe.ui.fragments.doctor_connect.DoctorConnectSearchContainerFragment;
 
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
+import static com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment.CONFIRM_REQUESTCODE;
 
 /**
  * Created by jeetal on 19/7/17.
@@ -33,6 +37,7 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
     private RelativeLayout mEmptyListView;
     private String mAppointmentTypeName;
     private Bundle bundleData;
+//    private AppointmentCancel mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -111,7 +116,27 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         Intent intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);
         bundleData.putParcelable(getString(R.string.clicked_item_data), mDoctorList);
         intent.putExtras(bundleData);
-        startActivity(intent);
-
+        getActivity().startActivityForResult(intent, CONFIRM_REQUESTCODE);
     }
+
+    /*@Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof AppointmentCancel) {
+            mListener = (AppointmentCancel) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement AppointmentCancel");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface AppointmentCancel {
+        void setAdapterPosition();
+    }*/
 }

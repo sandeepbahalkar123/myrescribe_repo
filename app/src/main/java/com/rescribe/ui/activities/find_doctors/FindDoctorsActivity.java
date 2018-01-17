@@ -396,6 +396,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             Bundle bundle = new Bundle();
             // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD,"");
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (data.getName().equalsIgnoreCase(getString(R.string.doctor_connect))) {

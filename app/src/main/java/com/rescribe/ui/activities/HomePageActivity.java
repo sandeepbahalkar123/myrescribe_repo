@@ -580,7 +580,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         super.onProfileImageClick();
     }
 
-
     private void doConfigureMenuOptions() {
 
         try {
@@ -597,11 +596,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             ex.printStackTrace();
         }
 
-
-        int appCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-        int invCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-        int medCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-        int chatCount = RescribeApplication.doGetUnreadNotificationCount(this, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
+        int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+        int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+        int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+        int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
         // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
         int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
@@ -938,10 +936,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
             if (intent.getAction().equals(getString(R.string.unread_notification_update_received))) {
 
-                int appCount = RescribeApplication.doGetUnreadNotificationCount(context, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-                int invCount = RescribeApplication.doGetUnreadNotificationCount(context, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-                int medCount = RescribeApplication.doGetUnreadNotificationCount(context, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-                int chatCount = RescribeApplication.doGetUnreadNotificationCount(context, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
+                int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+                int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+                int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+                int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
                 // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
                 int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;

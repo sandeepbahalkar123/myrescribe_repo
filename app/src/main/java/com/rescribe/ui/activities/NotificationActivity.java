@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -147,9 +146,6 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         mRecyclerView.setItemAnimator(null);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setNestedScrollingEnabled(false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                layoutManager.getOrientation());
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
         doGetNotification();
     }
 
@@ -242,6 +238,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                     }
                 });
 
+                final String finalSlotMedicine1 = slotMedicine;
                 SwipeDismissTouchListener swipeDismissTouchListener = new SwipeDismissTouchListener(
                         mHeaderLayout,
                         null,
@@ -249,6 +246,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                             @Override
                             public void onDismiss(View view, Object token) {
                                 mHeaderLayoutParent.removeView(view);
+                                onSwiped(finalSlotMedicine1);
                             }
                         });
 
@@ -306,21 +304,21 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         NotificationData notificationDataForHeader = new NotificationData();
         List<NotificationData> notificationListForAdapter = new ArrayList<>();
         List<NotificationData> notificationListForHeader = new ArrayList<>();
-        String todayDate = null;
         // on click of NotificationActivity checkbox of sublist layout
         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
             //onclick of checkbox of sublist
             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
-            String position = mOldDataTag;
-            String[] count = position.split("_");
+            String[] count = mOldDataTag.split("_");
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
                 mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
                 mView.findViewById(R.id.selectViewTab).setEnabled(false);
-                if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size())
+                if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size()) {
                     mHeaderLayoutParent.removeView(mHeaderLayout);
+                    mNoDataAvailable.setVisibility(View.VISIBLE);
+                }
             }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
 
@@ -358,9 +356,9 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 // DoctorConnectChatData for recyclerview Adapter is sorted to set data according to UI .
                 List<AdapterNotificationData> adapterNotificationParentData = new ArrayList<>();
                 List<AdapterNotificationModel> adapterNotificationModelListForDinner = new ArrayList<>();
-                String notifyDate = "";
+                String notifyDate;
                 for (int i = 0; i < notificationListForAdapter.size(); i++) {
-                    List<Medication> medications = new ArrayList<>();
+                    List<Medication> medications;
                     SlotModel slotModel = new SlotModel();
 
                     AdapterNotificationModel adapterNotificationModel = new AdapterNotificationModel();
@@ -511,11 +509,15 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
 
     @Override
     public void setOnClickCheckBoxListener(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick) {
-        if (isHeaderCheckboxClick) {
+        if (isHeaderCheckboxClick)
             mRespondToNotificationHelper.doRespondToNotificationForHeaderOfNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName);
-        } else {
+        else
             mRespondToNotificationHelper.doRespondToNotificationForNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName);
-        }
+    }
+
+    @Override
+    public void onSwiped(String slotType) {
+        mNoDataAvailable.setVisibility(View.VISIBLE);
     }
 
     @Override

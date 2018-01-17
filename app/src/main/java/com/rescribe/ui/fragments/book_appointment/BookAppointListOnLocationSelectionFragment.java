@@ -254,7 +254,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 break;
             case R.id.leftFab:
                 //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
-                ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
+                /*ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
                 for (int i = 0; i < mReceivedList.size(); i++) {
                     if (mReceivedList.get(i).getClinicDataList().size() > 0) {
                         DoctorList doctorList = mReceivedList.get(i);
@@ -266,7 +266,10 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                             doctorListByClinics.add(doctorListByClinic);
                         }
                     }
-                }
+                }*/
+
+                ArrayList<DoctorList> doctorListByClinics = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
+
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
                 intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.filter));

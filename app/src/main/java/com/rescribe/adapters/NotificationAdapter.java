@@ -39,17 +39,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private static final String BREAK_FAST = "breakfast";
     private static final String SNACKS = "snacks";
     public int preExpandedPos = -1;
-    String notificationDate = null;
     private List<AdapterNotificationModel> mDataSet;
     private Context mContext;
-    int mPos;
-    int mCount;
-    List<Medication> mMedicationListAdapter;
-    ViewGroup mSlotCardParent;
-    View mView;
-    View mViewForHeader;
-    int mHeaderPosition;
-    String mSlotTypeForHeader;
+    private int mPos;
+    private List<Medication> mMedicationListAdapter;
+    private ViewGroup mSlotCardParent;
+    private View mView;
+    private View mViewForHeader;
+    private int mHeaderPosition;
+    private String mSlotTypeForHeader;
     private OnNotificationClickListener mOnNotificationClickListener;
     private Integer mMedicineID = null;
     private SlotModel mSlotModel = null;
@@ -80,7 +78,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(final NotificationAdapter.ListViewHolder holder, final int position) {
         mSlotModel = new SlotModel();
 
-        notificationDate = mDataSet.get(position).getPrescriptionDate();
         if (!mDataSet.get(position).getMedication().equals(0)) {
             mSlotModel = mDataSet.get(position).getMedication();
         }
@@ -178,6 +175,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                             notifyItemChanged(position);
                                         }
                                         CommonMethods.showToast(mContext, "Removed " + slotType);
+
+                                        mOnNotificationClickListener.onSwiped(slotType);
                                     }
                                 });
 
@@ -248,6 +247,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                             notifyItemChanged(position);
                                         }
                                         CommonMethods.showToast(mContext, "Removed " + slotType);
+
+                                        mOnNotificationClickListener.onSwiped(slotType);
                                     }
                                 }));
                     }
@@ -318,6 +319,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                             notifyItemChanged(position);
                                         }
                                         CommonMethods.showToast(mContext, "Removed " + slotType);
+
+                                        mOnNotificationClickListener.onSwiped(slotType);
                                     }
                                 }));
                     }
@@ -388,6 +391,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                             notifyItemChanged(position);
                                         }
                                         CommonMethods.showToast(mContext, "Removed " + slotType);
+
+                                        mOnNotificationClickListener.onSwiped(slotType);
                                     }
                                 }));
                     }
@@ -428,7 +433,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             tabNameTextView.setText(mMedicationListAdapter.get(i).getMedicineName());
             selectViewTab.setEnabled(mMedicationListAdapter.get(i).isTabWebService());
             final int finalI = i;
-            mCount = finalI;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -438,7 +442,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mSlotCardView = slotCardView;
                     mSlotCardParent = slotCardParent;
                     mOnNotificationClickListener.setOnClickCheckBoxListener(mView, mPos, medicationList.get(finalI).getMedicinSlot(), mSlotCardParent, medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER + "_" + finalI, false);
-
                 }
             });
             view.setTag(parent.getTag());
@@ -465,103 +468,111 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onSuccessOfNotificationCheckBoxClick(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
-            String position = mOldDataTag;
 
-            String[] count = position.split("_");
+            String[] count = mOldDataTag.split("_");
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
-                if (mSlotType.equals(BREAK_FAST)) {
-                    mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(true);
-                    mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(false);
-                    mView.findViewById(R.id.selectViewTab).setEnabled(false);
+                switch (mSlotType) {
+                    case BREAK_FAST:
+                        mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(true);
+                        mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(false);
+                        mView.findViewById(R.id.selectViewTab).setEnabled(false);
 
-                    if (getSelectedCount(mDataSet.get(mPos).getMedication().getBreakfast()) == mDataSet.get(mPos).getMedication().getBreakfast().size()) {
-                        if (mView.getTag().equals(BREAK_FAST)) {
-                            mDataSet.get(mPos).setBreakThere(false);
+                        if (getSelectedCount(mDataSet.get(mPos).getMedication().getBreakfast()) == mDataSet.get(mPos).getMedication().getBreakfast().size()) {
+                            if (mView.getTag().equals(BREAK_FAST)) {
+                                mDataSet.get(mPos).setBreakThere(false);
+                                mSlotCardParent.removeView(mSlotCardView);
+                            }
+                        }
+
+                        break;
+                    case LUNCH:
+                        mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(true);
+                        mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(false);
+                        mView.findViewById(R.id.selectViewTab).setEnabled(false);
+
+                        if (getSelectedCount(mDataSet.get(mPos).getMedication().getLunch()) == mDataSet.get(mPos).getMedication().getLunch().size()) {
+                            mDataSet.get(mPos).setLunchThere(false);
                             mSlotCardParent.removeView(mSlotCardView);
                         }
-                    }
 
-                } else if (mSlotType.equals(LUNCH)) {
-                    mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(true);
-                    mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(false);
-                    mView.findViewById(R.id.selectViewTab).setEnabled(false);
+                        break;
+                    case SNACKS:
+                        mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(true);
+                        mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(false);
+                        mView.findViewById(R.id.selectViewTab).setEnabled(false);
 
-                    if (getSelectedCount(mDataSet.get(mPos).getMedication().getLunch()) == mDataSet.get(mPos).getMedication().getLunch().size()) {
-                        mDataSet.get(mPos).setLunchThere(false);
-                        mSlotCardParent.removeView(mSlotCardView);
-                    }
+                        if (getSelectedCount(mDataSet.get(mPos).getMedication().getSnacks()) == mDataSet.get(mPos).getMedication().getSnacks().size()) {
+                            mDataSet.get(mPos).setSnacksThere(false);
+                            mSlotCardParent.removeView(mSlotCardView);
+                        }
 
-                } else if (mSlotType.equals(SNACKS)) {
-                    mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(true);
-                    mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(false);
-                    mView.findViewById(R.id.selectViewTab).setEnabled(false);
+                        break;
+                    case DINNER:
+                        mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(true);
+                        mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(false);
+                        mView.findViewById(R.id.selectViewTab).setEnabled(false);
 
-                    if (getSelectedCount(mDataSet.get(mPos).getMedication().getSnacks()) == mDataSet.get(mPos).getMedication().getSnacks().size()) {
-                        mDataSet.get(mPos).setSnacksThere(false);
-                        mSlotCardParent.removeView(mSlotCardView);
-                    }
-
-                } else if (mSlotType.equals(DINNER)) {
-                    mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(true);
-                    mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(false);
-                    mView.findViewById(R.id.selectViewTab).setEnabled(false);
-
-                    if (getSelectedCount(mDataSet.get(mPos).getMedication().getDinner()) == mDataSet.get(mPos).getMedication().getDinner().size()) {
-                        mDataSet.get(mPos).setDinnerThere(false);
-                        mSlotCardParent.removeView(mSlotCardView);
-                    }
+                        if (getSelectedCount(mDataSet.get(mPos).getMedication().getDinner()) == mDataSet.get(mPos).getMedication().getDinner().size()) {
+                            mDataSet.get(mPos).setDinnerThere(false);
+                            mSlotCardParent.removeView(mSlotCardView);
+                        }
+                        break;
                 }
             }
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
-            String position = mOldDataTag;
-            String[] count = position.split("_");
+            String[] count = mOldDataTag.split("_");
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 //  CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
-                if (mSlotTypeForHeader.equals(DINNER)) {
-                    mDataSet.get(Integer.parseInt(counter)).setDinnerThere(false);
-                    mparentHeader.removeView(mViewForHeader);
-                    if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
-                        mDataSet.remove(Integer.parseInt(counter));
-                        notifyDataSetChanged();
-                    } else {
-                        notifyItemChanged(Integer.parseInt(counter));
-                    }
-                } else if (mSlotTypeForHeader.equals(SNACKS)) {
-                    mDataSet.get(Integer.parseInt(counter)).setSnacksThere(false);
-                    mparentHeader.removeView(mViewForHeader);
+                switch (mSlotTypeForHeader) {
+                    case DINNER:
+                        mDataSet.get(Integer.parseInt(counter)).setDinnerThere(false);
+                        mparentHeader.removeView(mViewForHeader);
+                        if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
+                            mDataSet.remove(Integer.parseInt(counter));
+                            notifyDataSetChanged();
+                        } else {
+                            notifyItemChanged(Integer.parseInt(counter));
+                        }
+                        break;
+                    case SNACKS:
+                        mDataSet.get(Integer.parseInt(counter)).setSnacksThere(false);
+                        mparentHeader.removeView(mViewForHeader);
 
-                    if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
-                        mDataSet.remove(Integer.parseInt(counter));
-                        notifyDataSetChanged();
-                    } else {
-                        notifyItemChanged(Integer.parseInt(counter));
-                    }
+                        if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
+                            mDataSet.remove(Integer.parseInt(counter));
+                            notifyDataSetChanged();
+                        } else {
+                            notifyItemChanged(Integer.parseInt(counter));
+                        }
 
-                } else if (mSlotTypeForHeader.equals(LUNCH)) {
-                    mDataSet.get(Integer.parseInt(counter)).setLunchThere(false);
-                    mparentHeader.removeView(mViewForHeader);
+                        break;
+                    case LUNCH:
+                        mDataSet.get(Integer.parseInt(counter)).setLunchThere(false);
+                        mparentHeader.removeView(mViewForHeader);
 
-                    if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
-                        mDataSet.remove(Integer.parseInt(counter));
-                        notifyDataSetChanged();
-                    } else {
-                        notifyItemChanged(Integer.parseInt(counter));
-                    }
+                        if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
+                            mDataSet.remove(Integer.parseInt(counter));
+                            notifyDataSetChanged();
+                        } else {
+                            notifyItemChanged(Integer.parseInt(counter));
+                        }
 
-                } else if (mSlotTypeForHeader.equals(BREAK_FAST)) {
-                    mDataSet.get(Integer.parseInt(counter)).setBreakThere(false);
-                    mparentHeader.removeView(mViewForHeader);
+                        break;
+                    case BREAK_FAST:
+                        mDataSet.get(Integer.parseInt(counter)).setBreakThere(false);
+                        mparentHeader.removeView(mViewForHeader);
 
-                    if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
-                        mDataSet.remove(Integer.parseInt(counter));
-                        notifyDataSetChanged();
-                    } else {
-                        notifyItemChanged(Integer.parseInt(counter));
-                    }
+                        if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
+                            mDataSet.remove(Integer.parseInt(counter));
+                            notifyDataSetChanged();
+                        } else {
+                            notifyItemChanged(Integer.parseInt(counter));
+                        }
+                        break;
                 }
             }
         }
@@ -571,54 +582,56 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     //this method is called from Notification Activity when there when no connection error occurs , on click of checkbox
     public void onNoConnectionOfNotificationCheckBoxClick(String mOldDataTag, String errorMessage) {
         if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
-            String position = mOldDataTag;
-            String[] count = position.split("_");
+            String[] count = mOldDataTag.split("_");
             String counter = count[1];
             CheckBox headerCheckBox = (CheckBox) mViewForHeader.findViewById(R.id.selectView);
             mDataSet.get(Integer.parseInt(counter)).setTabSelected(false);
             headerCheckBox.setEnabled(true);
             headerCheckBox.setChecked(false);
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
-            String position = mOldDataTag;
-            String[] count = position.split("_");
+            String[] count = mOldDataTag.split("_");
             String counter = count[1];
             CheckBox mChecbox = (CheckBox) mView.findViewById(R.id.selectViewTab);
-            if (mSlotType.equals(BREAK_FAST)) {
-                mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(false);
-                mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(true);
-                mView.findViewById(R.id.selectViewTab).setEnabled(true);
-                mView.findViewById(R.id.selectViewTab).setSelected(false);
-                mChecbox.setChecked(false);
+            switch (mSlotType) {
+                case BREAK_FAST:
+                    mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(false);
+                    mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(true);
+                    mView.findViewById(R.id.selectViewTab).setEnabled(true);
+                    mView.findViewById(R.id.selectViewTab).setSelected(false);
+                    mChecbox.setChecked(false);
 
-            } else if (mSlotType.equals(LUNCH)) {
-                mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(false);
-                mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(true);
-                mView.findViewById(R.id.selectViewTab).setEnabled(true);
-                mView.findViewById(R.id.selectViewTab).setSelected(false);
-                mChecbox.setChecked(false);
+                    break;
+                case LUNCH:
+                    mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(false);
+                    mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(true);
+                    mView.findViewById(R.id.selectViewTab).setEnabled(true);
+                    mView.findViewById(R.id.selectViewTab).setSelected(false);
+                    mChecbox.setChecked(false);
 
-            } else if (mSlotType.equals(SNACKS)) {
-                mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(false);
-                mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(true);
-                mView.findViewById(R.id.selectViewTab).setEnabled(true);
-                mView.findViewById(R.id.selectViewTab).setSelected(false);
-                mChecbox.setChecked(false);
+                    break;
+                case SNACKS:
+                    mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(false);
+                    mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(true);
+                    mView.findViewById(R.id.selectViewTab).setEnabled(true);
+                    mView.findViewById(R.id.selectViewTab).setSelected(false);
+                    mChecbox.setChecked(false);
 
-            } else if (mSlotType.equals(DINNER)) {
-                mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(false);
-                mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(true);
-                mView.findViewById(R.id.selectViewTab).setEnabled(true);
-                mView.findViewById(R.id.selectViewTab).setSelected(false);
-                mChecbox.setChecked(false);
+                    break;
+                case DINNER:
+                    mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(false);
+                    mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(true);
+                    mView.findViewById(R.id.selectViewTab).setEnabled(true);
+                    mView.findViewById(R.id.selectViewTab).setSelected(false);
+                    mChecbox.setChecked(false);
+                    break;
             }
         }
     }
 
     public interface OnNotificationClickListener {
         void onHeaderCollapse();
-
         void setOnClickCheckBoxListener(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick);
-
+        void onSwiped(String slotType);
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {

@@ -82,6 +82,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
+import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
@@ -488,9 +489,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 CommonMethods.showToast(getActivity(), temp2.getCommonRespose().getStatusMessage());
                 break;
             case RescribeConstants.TASK_CONFIRM_APPOINTMENT:
-                if(customResponse!=null) {
-                    ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel)customResponse;
-                    if(mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
+                if (customResponse != null) {
+                    ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
+                    if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
 
                         bundleData = new Bundle();
 
@@ -513,8 +514,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         //This is done to call api for token slot when user clicks on cancel button of confirmpage.
                         mDoctorDataHelper = null;
 
-                    }else{
-                        Toast.makeText(mContext,mResponseAppointmentConfirmationModel.getCommon().getStatusMessage() , Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -662,16 +663,20 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
                 break;
             case R.id.doChat:
-                ChatDoctor chatDoctor = new ChatDoctor();
-                chatDoctor.setId(mClickedDoctorObject.getDocId());
-                chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
-                chatDoctor.setOnlineStatus(ONLINE);
-                chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
-                chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
+                if (mClickedDoctorObject.getPaidStatus() == PAID)
+                    CommonMethods.showInfoDialog(getResources().getString(R.string.paid_doctor_message), getContext(), false);
+                else {
+                    ChatDoctor chatDoctor = new ChatDoctor();
+                    chatDoctor.setId(mClickedDoctorObject.getDocId());
+                    chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
+                    chatDoctor.setOnlineStatus(ONLINE);
+                    chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
+                    chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
 
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
-                startActivity(intent);
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+                    startActivity(intent);
+                }
                 break;
             case R.id.tokenNewTimeStamp:
                 GridTimePickerDialog grid = GridTimePickerDialog.newInstance(
@@ -781,7 +786,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 calendar.add(Calendar.DATE, mSelectedClinicDataObject.getApptScheduleLmtDays());
                 mMaxDateRange = calendar.getTime();
                 //------------
-                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(),mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
+                mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, false, TASKID_TIME_SLOT);
             } else if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(getString(R.string.mixed))) {
                 //------------
                 Calendar calendar = Calendar.getInstance();

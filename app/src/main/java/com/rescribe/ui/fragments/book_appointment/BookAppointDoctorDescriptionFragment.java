@@ -56,6 +56,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
@@ -451,16 +452,20 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 break;
             case R.id.doChat:
 
-                ChatDoctor chatDoctor = new ChatDoctor();
-                chatDoctor.setId(mClickedDoctorObject.getDocId());
-                chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
-                chatDoctor.setOnlineStatus(ONLINE);
-                chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
-                chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
+                if (mClickedDoctorObject.getPaidStatus() == PAID)
+                    CommonMethods.showInfoDialog(getResources().getString(R.string.paid_doctor_message), getContext(), false);
+                else {
+                    ChatDoctor chatDoctor = new ChatDoctor();
+                    chatDoctor.setId(mClickedDoctorObject.getDocId());
+                    chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
+                    chatDoctor.setOnlineStatus(ONLINE);
+                    chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
+                    chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
 
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
-                startActivity(intent);
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+                    startActivity(intent);
+                }
 
                 break;
 

@@ -112,7 +112,7 @@ public class RescribeApplication extends MultiDexApplication {
         return receivedNotificationMessageList;
     }
 
-    public static int doGetUnreadNotificationCount(Context context, String notificationType) {
+    public static int doGetUnreadNotificationCount(String notificationType) {
 
         ArrayList<UnreadSavedNotificationMessageData> objectToRemove = new ArrayList<>();
 

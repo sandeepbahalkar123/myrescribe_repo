@@ -224,7 +224,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                         new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(doctorServices.getDoctorList());
                         // mReceivedList = doctorServices.filterDocListBySpeciality(mReceivedTitle);
                         doGetReceivedListBasedOnClickedItemData();
-
                     }
                 }
                 setDoctorListAdapter();

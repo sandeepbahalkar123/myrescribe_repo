@@ -79,6 +79,11 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("aptTime")
     @Expose
     private String aptTime = "";
+
+    @SerializedName("paidStatus")
+    @Expose
+    private int paidStatus;
+
     //------
     private int sizeOfList = 0;
     private double latitude = 0.0;
@@ -129,6 +134,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.spannable = ((String) in.readValue((String.class.getClassLoader())));
             instance.doctorSearch = ((boolean) in.readValue((String.class.getClassLoader())));
             instance.isTypedashboard = ((boolean) in.readValue((String.class.getClassLoader())));
+            instance.paidStatus = ((Integer) in.readValue((Integer.class.getClassLoader())));
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -334,7 +340,14 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         isTypedashboard = typedashboard;
     }
 
-    /* public ArrayList<ReviewList> getReviewList() {
+    public int getPaidStatus() {
+        return paidStatus;
+    }
+
+    public void setPaidStatus(int paidStatus) {
+        this.paidStatus = paidStatus;
+    }
+/* public ArrayList<ReviewList> getReviewList() {
         return reviewList;
     }
 
@@ -370,6 +383,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(spannable);
         dest.writeValue(doctorSearch);
         dest.writeValue(isTypedashboard);
+        dest.writeValue(paidStatus);
     }
 
 

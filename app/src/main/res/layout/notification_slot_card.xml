@@ -108,6 +108,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/dividerView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp1"
             android:background="@color/divider" />

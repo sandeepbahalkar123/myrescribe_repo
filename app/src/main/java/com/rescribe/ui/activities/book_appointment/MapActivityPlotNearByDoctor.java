@@ -91,6 +91,12 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
 
         if (mDoctorLists != null) {
             for (DoctorList doctorList : mDoctorLists) {
+
+                if (doctorList.getAddressOfDoctorString().equals("")) {
+                    if (!doctorList.getClinicDataList().isEmpty())
+                        doctorList.setAddressOfDoctorString(doctorList.getClinicDataList().get(0).getClinicAddress());
+                }
+
                 if (mLocations.containsKey(doctorList.getAddressOfDoctorString()))
                     mLocations.get(doctorList.getAddressOfDoctorString()).getDoctorList().add(doctorList);
                 else {
@@ -150,6 +156,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
             public void run() {
                 for (Map.Entry<String, DashboardDataModel> entry : mLocations.entrySet()) {
                     DoctorList doctorList = entry.getValue().getDoctorList().get(0);
+
                     p1 = getLocationFromAddress(doctorList.getAddressOfDoctorString());
                     if (p1 != null) {
                         LatLng currentLocation = new LatLng(p1.getLatitude(), p1.getLongitude());

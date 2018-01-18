@@ -51,7 +51,7 @@ import butterknife.OnClick;
  * Created by jeetal on 4/10/17.
  */
 
-public class MapActivityPlotNearByDoctor extends AppCompatActivity implements HelperResponse, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+public class MapActivityPlotNearByDoctor extends AppCompatActivity implements HelperResponse, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
@@ -142,7 +142,6 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapClickListener(this);
 
         drawMarkerOnMapReady();
 
@@ -211,15 +210,34 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
         }
 
         DashboardDataModel dashboardDataModel = mLocations.get(marker.getTitle());
-        init_modal_bottomsheet(dashboardDataModel.getDoctorList().get(dashboardDataModel.getIndex()));
 
         int size = dashboardDataModel.getDoctorList().size();
+
+        if (dashboardDataModel.getIndex() < size)
+            init_modal_bottomsheet(dashboardDataModel.getDoctorList().get(dashboardDataModel.getIndex()));
+
         int index = dashboardDataModel.getIndex() + 1;
 
         if (size > index)
             dashboardDataModel.setIndex(index);
-        else
+        else if (size == index)
+            dashboardDataModel.setIndex(index);
+        else {
+
+            if (mShowDocDetailBottomSheet.getVisibility() == View.VISIBLE) {
+                Animation slideDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.slide_down_animation);
+                mShowDocDetailBottomSheet.startAnimation(slideDownAnimation);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mShowDocDetailBottomSheet.setVisibility(View.GONE);
+                    }
+                }, RescribeConstants.TIME_STAMPS.FIVE_FIFTY);
+            }
+
             dashboardDataModel.setIndex(0);
+        }
 
         return true;
     }
@@ -308,21 +326,6 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
         } else {
             super.onBackPressed();
         }
-    }
-
-    // On Map click listener close dialog
-    @Override
-    public void onMapClick(LatLng latLng) {
-        Animation slideDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.slide_down_animation);
-        mShowDocDetailBottomSheet.startAnimation(slideDownAnimation);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mShowDocDetailBottomSheet.setVisibility(View.GONE);
-            }
-        }, RescribeConstants.TIME_STAMPS.FIVE_FIFTY);
-
     }
 
     @OnClick({R.id.locationTextView})

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusable="false"
     android:orientation="vertical">
 
     <CheckBox
@@ -10,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp40"
         android:padding="@dimen/dp5"
+        android:focusable="false"
         android:text="Nagpur"
         android:drawableTint="@color/tagColor"
         android:button="@null"

@@ -112,7 +112,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 @RuntimePermissions
 public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, GoogleSettingsApi.LocationSettings {
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "HomePage";
     @BindView(R.id.custom_progress_bar)
@@ -416,18 +416,27 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         dataMap.put(getString(R.string.favorite), favoriteList.size());
 
         ArrayList<DoctorList> mergeList = new ArrayList<>();
+        ArrayList<String> cardBgImage = new ArrayList<>();
 
-        if (myAppoint.size() > 0)
+        if (myAppoint.size() > 0) {
             mergeList.add(myAppoint.get(0));
+            cardBgImage.add("myappointments.jpg");
+        }
 
-        if (sponsered.size() > 0)
+        if (sponsered.size() > 0) {
             mergeList.add(sponsered.get(0));
+            cardBgImage.add("sponsored.jpg");
+        }
 
-        if (recently_visit_doctor.size() > 0)
+        if (recently_visit_doctor.size() > 0) {
             mergeList.add(recently_visit_doctor.get(0));
+            cardBgImage.add("recentlyvisited.jpg");
+        }
 
-        if (favoriteList.size() > 0)
+        if (favoriteList.size() > 0) {
             mergeList.add(favoriteList.get(0));
+            cardBgImage.add("favorite.jpg");
+        }
 
         //------------
         mDashboardDoctorListsToShowDashboardDoctor.addAll(mergeList);
@@ -442,7 +451,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
         viewPagerDoctorItem.setPageMargin(pager_margin);
 
-        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, mDashboardMenuData.getCardBgImageUrlList());
+        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, cardBgImage);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
 
@@ -739,7 +748,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         super.onResume();
 
         HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
-        //doCallDashBoardAPI();
+        // doCallDashBoardAPI();
         if (mDashboardDataModel != null) {
             setUpViewPager();
         }
@@ -868,12 +877,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         else
             return obj.getCountryName();
     }
-
-    @Override
-    public void gpsStatus() {
-        HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
-    }
-
 
     @Override
     public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {

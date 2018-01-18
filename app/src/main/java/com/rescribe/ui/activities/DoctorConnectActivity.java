@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rescribe.R;
 import com.rescribe.helpers.doctor_connect.DoctorConnectSearchHelper;
@@ -112,7 +112,6 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     private SearchDataModel searchDataModel;
     private String mFragmentLoaded;
     private ArrayList<ChatDoctor> mChatDoctors;
-    private String patientId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,14 +122,26 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         mFragmentTitleList[1] = getString(R.string.connect);
         mFragmentTitleList[2] = getString(R.string.search);
 
-        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, DoctorConnectActivity.this);
-
         setupViewPager();
         mTabsDoctorConnect.setupWithViewPager(mDoctorConnectViewpager);
         initialize();
     }
 
     private void initialize() {
+
+        mSearchView.addTextChangedListener(editTextChanged());
+        mSearchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
+            @Override
+            public void onClearButtonClicked() {
+                mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT;
+                searchBySpecializationOfDoctorFragment = SearchBySpecializationOfDoctorFragment.newInstance(searchDataModel.getDoctorSpecialities());
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, searchBySpecializationOfDoctorFragment);
+                fragmentTransaction.commit();
+            }
+        });
+
         mTabsDoctorConnect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -172,26 +183,6 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
                 }
             }
         });
-
-        mSearchView.addTextChangedListener(editTextChanged());
-        mSearchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
-            @Override
-            public void onClearButtonClicked() {
-                mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT;
-                searchBySpecializationOfDoctorFragment = SearchBySpecializationOfDoctorFragment.newInstance(searchDataModel.getDoctorSpecialities());
-                FragmentManager supportFragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, searchBySpecializationOfDoctorFragment);
-                fragmentTransaction.commit();
-            }
-        });
-
-        /*mSearchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                searchBySpecializationOfDoctorFragment.hideNote(hasFocus);
-            }
-        });*/
     }
 
     private EditTextWithDeleteButton.TextChangedListener editTextChanged() {
@@ -210,21 +201,14 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (SPECIALIZATION_DOCTOR_FRAGMENT.equalsIgnoreCase(mFragmentLoaded) && mSearchView.getText().toString().trim().length() != 0) {
-                    addSearchDoctorByNameFragment(null);
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            searchDoctorByNameFragment.setOnClickOfSearchBar(mSearchView.getText().toString());
-                        }
-                    }, 500);
-                } else if (mSearchView.getText().toString().trim().length() == 0) {
+                if (mSearchView.getText().toString().trim().length() != 0) {
 
-                    //search Bar Code
-                    //if (searchDoctorByNameFragment != null) {
-                    //     searchDoctorByNameFragment.setOnClickOfSearchBar(mSearchView.getText().toString());
-                    //  }
+                    if (SPECIALIZATION_DOCTOR_FRAGMENT.equalsIgnoreCase(mFragmentLoaded))
+                        addSearchDoctorByNameFragment(null);
+
+                    searchDoctorByNameFragment.setOnClickOfSearchBar(mSearchView.getText().toString());
+
+                } else if (mSearchView.getText().toString().trim().length() == 0) {
 
                     mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT;
                     searchBySpecializationOfDoctorFragment = SearchBySpecializationOfDoctorFragment.newInstance(searchDataModel.getDoctorSpecialities());
@@ -320,6 +304,11 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         void setOnClickOfSearchBar(String searchText);
     }
 
+    @Override
+    public String getSearchText() {
+        return mSearchView.getText().toString();
+    }
+
     //TODO: parceable has to be used to getSpecialityOFDoctorList
     //Call Back from DoctorConnectSearchContainer
     public void addSpecializationOfDoctorFragment(Bundle bundleData) {
@@ -336,17 +325,19 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
 
     }
 
-    //Call Back from SearchBySpecializationOfDoctor
+    // Call Back from SearchBySpecializationOfDoctor
     public void addSearchDoctorByNameFragment(Bundle bundleData) {
         mFragmentLoaded = SPECIALIZATION_DOCTOR_FRAGMENT_BYNAME;
-        if (bundleData != null) {
-            mSearchView.setText("" + bundleData.getString(getString(R.string.clicked_item_data)));
-        }
+
         searchDoctorByNameFragment = SearchDoctorByNameFragment.newInstance(getmChatDoctors(), bundleData);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, searchDoctorByNameFragment);
         fragmentTransaction.commit();
+
+        if (bundleData != null)
+            mSearchView.setText("" + bundleData.getString(getString(R.string.clicked_item_data)));
+
     }
 
     public ArrayList<ChatDoctor> getmChatDoctors() {

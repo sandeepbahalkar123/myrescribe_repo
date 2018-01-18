@@ -46,7 +46,6 @@ public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSel
         holder.locationName.setText(mDataList.get(position).getAreaName());
 
         holder.locationName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mSelectedLocation.put(position, isChecked);
@@ -60,7 +59,6 @@ public class FilterSelectLocationsAdapter extends RecyclerView.Adapter<FilterSel
     }
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
-
 
         @BindView(R.id.locationName)
         CheckBox locationName;

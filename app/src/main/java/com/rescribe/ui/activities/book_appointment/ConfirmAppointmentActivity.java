@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,7 +8,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +53,8 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.CANCEL_TYPE;
 import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
@@ -59,6 +64,7 @@ import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
  * Created by jeetal on 28/12/17.
  */
 
+@RuntimePermissions
 public class ConfirmAppointmentActivity extends AppCompatActivity implements HelperResponse {
     public static final int RESCHEDULE_OK = 200;
     @BindView(R.id.bookAppointmentBackButton)
@@ -171,8 +177,26 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
             }
         }
     }
+    @NeedsPermission(Manifest.permission.CALL_PHONE)
+    void doCallSupport() {
+        callSupport(mobileNumber.getText().toString());
+    }
 
-    @OnClick({R.id.cancelButton, R.id.rescheduleButton, R.id.bookAppointmentBackButton, R.id.locationImageView})
+    private void callSupport(String phoneNo) {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:"+phoneNo));
+        startActivity(callIntent);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ConfirmAppointmentActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+
+    }
+
+    @OnClick({R.id.cancelButton, R.id.rescheduleButton, R.id.bookAppointmentBackButton, R.id.locationImageView, R.id.phoneNumberLayout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cancelButton:
@@ -192,15 +216,24 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                     mContext.startActivity(intent);
                 }
                 break;
+            case R.id.phoneNumberLayout:
+               ConfirmAppointmentActivityPermissionsDispatcher.doCallSupportWithCheck(this);
+                break;
         }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this,HomePageActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+
+        if (mDoctorObject.isTypedashboard()) {
+            super.onBackPressed();
+        }else{
+            Intent intent = new Intent(this,HomePageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     @Override
@@ -211,7 +244,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
                     if (!isCanceled) {
                         if (mDoctorObject.isTypedashboard()) {
-                            Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
                             Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
                             intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
                             intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
@@ -224,6 +257,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                             finish();
                         }
                     } else {
+                        Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ConfirmAppointmentActivity.this, BookAppointDoctorListBaseActivity.class);
                         Bundle bundle = new Bundle();
                         //This CALL_FROM_DASHBOARD is passed to handle onBackPressed of Book Appointment Page which is directed to HomePageActivity
@@ -271,6 +305,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
         ImageView icon_get_token = (ImageView)dialog.findViewById(R.id.icon);
         TextView textheading = (TextView) dialog.findViewById(R.id.textheading);
         textheading.setText(mContext.getString(R.string.appointment));
+        messageView.setGravity(Gravity.CENTER);
         icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.bookappointment));
         if(type.equals(CANCEL_TYPE)){
             isCanceled = true;

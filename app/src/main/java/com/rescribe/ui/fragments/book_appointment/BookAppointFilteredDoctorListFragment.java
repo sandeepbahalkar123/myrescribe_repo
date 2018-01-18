@@ -233,7 +233,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
                 if (receivedDoctorServicesModel != null) {
 
-                    new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
+                    //   new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
+                    mServicesCardViewImpl.setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
                     doGetReceivedListBasedOnClickedItemData();
                     setDoctorListAdapter();
                 }

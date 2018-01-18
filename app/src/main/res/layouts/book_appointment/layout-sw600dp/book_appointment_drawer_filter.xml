@@ -11,6 +11,7 @@
         android:id="@+id/hideMainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -27,6 +28,7 @@
                 android:background="@color/transparent"
                 android:text="@string/apply"
                 android:textAllCaps="false"
+                android:focusable="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp19" />
 
@@ -57,13 +59,14 @@
         </RelativeLayout>
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedScroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
+                android:focusable="true"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -259,6 +262,7 @@
                             android:visibility="gone" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/clinicFeesContentView"
                         android:layout_width="match_parent"
@@ -401,9 +405,7 @@
                                     android:text="asd" />
                             </LinearLayout>
 
-
                         </FrameLayout>
-
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -573,6 +575,7 @@
                     android:id="@+id/locationView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -605,37 +608,15 @@
                         android:text="@string/select_location"
                         app:customFont="@string/roboto_regular" />
 
-                    <LinearLayout
-                        android:id="@+id/locationContentView"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/locationContentRecycleView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/otp_background_layout"
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:paddingBottom="@dimen/dp20"
                         android:paddingTop="@dimen/dp20"
-                        android:visibility="visible">
+                        android:background="@color/otp_background_layout" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/locationContentRecycleView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:listitem="@layout/case_details_row" />
-                    </LinearLayout>
                 </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp1"
-                    android:background="@color/divider" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/sortRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:divider="@null"
-                    android:dividerHeight="0dp"
-                    android:visibility="visible" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
@@ -712,6 +693,19 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/divider" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sortRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
 
     </LinearLayout>
 </LinearLayout>

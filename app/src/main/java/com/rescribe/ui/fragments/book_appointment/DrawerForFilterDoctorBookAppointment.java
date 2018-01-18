@@ -468,8 +468,8 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
             case R.id.applyButton:
                 BookAppointFilterRequestModel bookAppointFilterRequestModel = new BookAppointFilterRequestModel();
                 bookAppointFilterRequestModel.setGender(mSelectedGender.toLowerCase());
-                bookAppointFilterRequestModel.setClinicFeesRange(new String[]{"" + mClinicFeesSeekBar.getSelectedMinValue(), "" + mClinicFeesSeekBar.getSelectedMaxValue()});
-                bookAppointFilterRequestModel.setDistance(new String[]{"" + mDistanceSeekBar.getProgress(), "" + mDistanceSeekBar.getProgress()});
+                bookAppointFilterRequestModel.setClinicFeesRange(new Integer[]{ ((Long)mClinicFeesSeekBar.getSelectedMinValue()).intValue(), ((Long)mClinicFeesSeekBar.getSelectedMaxValue()).intValue()});
+               // bookAppointFilterRequestModel.setDistance(new String[]{"" + mDistanceSeekBar.getProgress(), "" + mDistanceSeekBar.getProgress()});
 
                 //------
                 ArrayList<String> temp = new ArrayList<>();
@@ -479,7 +479,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                         temp.add((String) pair.getKey());
                     }
                 }
-                bookAppointFilterRequestModel.setAvailability(temp.toArray(new String[temp.size()]));
+              //  bookAppointFilterRequestModel.setAvailability(temp.toArray(new String[temp.size()]));
                 //------
                 if (mFilterSelectLocationsAdapter != null)
                     bookAppointFilterRequestModel.setLocationList(mFilterSelectLocationsAdapter.getSelectedLocation().toArray(new String[temp.size()]));

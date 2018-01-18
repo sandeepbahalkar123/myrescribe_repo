@@ -463,13 +463,12 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
                         doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
                     }
+                    //typeDashboard is set for cancel and reshedule flow.
                     doctorObject.setTypedashboard(true);
                     b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
                     b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-
                     b.putString(mContext.getString(R.string.category_name),"");
                     b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
-
                     mServicesCardViewClickListener.onClickOfCardView(b);
                 }else{
                     Bundle b = new Bundle();
@@ -482,8 +481,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
 
                     b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
+                    //TYPE_OF_DOCTOR_SEARCH parameter is set to avail book option for myappointment card
                     b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
-
                     mServicesCardViewClickListener.onClickOfCardView(b);
                 }
 

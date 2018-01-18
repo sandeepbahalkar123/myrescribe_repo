@@ -76,6 +76,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
     LineChart mGraphCard;
     @BindView(R.id.title)
     CustomTextView title;
+    @BindView(R.id.legendsDrawn)
+    LinearLayout legendsDrawn;
     private VitalGraphData mClickedVitalGraphData;
     private VitalGraphHelper mVitalGraphHelper;
     private VitalGraphInfoBaseModel.VitalGraphInfoDataModel mReceivedVitalGraphDataModel;
@@ -146,8 +148,11 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                     mGraphCard.invalidate();
                     if (mClickedVitalGraphData.getVitalName().equalsIgnoreCase("Blood Pressure")) {
                         plotVitalGraphUsingMpChartForBloodPressure();
+                        legendsDrawn.setVisibility(View.GONE);
+
                     } else {
                         plotVitalGraphUsingMpChart();
+                        legendsDrawn.setVisibility(View.VISIBLE);
                     }
                 }
                 break;
@@ -221,9 +226,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 LineDataSet dataset = new LineDataSet(tempEntries, "");
 
                 LineData data = new LineData();
-
                 data.addDataSet(dataset);
-
                 dataset.setDrawCircleHole(false);
                 dataset.setColor(Color.WHITE);
                 dataset.setValueTextColor(Color.TRANSPARENT);

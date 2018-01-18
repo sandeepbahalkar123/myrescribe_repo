@@ -171,8 +171,8 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
 
             //possibly check for nulls to avoid NullPointerException
             //  String s = CommonMethods.formatDateTime(m1.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
-            Date m1Date = CommonMethods.convertStringToDate(m1.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-            Date m2Date = CommonMethods.convertStringToDate(m2.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
+            Date m1Date = CommonMethods.convertStringToDate(m1.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
+            Date m2Date = CommonMethods.convertStringToDate(m2.getVitalDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_ss);
             return m2Date.compareTo(m1Date);
         }
     }

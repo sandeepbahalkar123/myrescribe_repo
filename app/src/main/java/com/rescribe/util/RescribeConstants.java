@@ -229,12 +229,12 @@ public class RescribeConstants {
 
 
     public static class USER_STATUS {
-        public static final String ONLINE = "online";
-        public static final String OFFLINE = "offline";
-        public static final String TYPING = "typing";
-        public static final String IDLE = "idle";
-        public static final String ACTIVE = "active";
-        public static final String INACTIVE = "inactive";
+        public static final String ONLINE = "Online";
+        public static final String OFFLINE = "Offline";
+        public static final String TYPING = "Typing";
+        public static final String IDLE = "Idle";
+        public static final String ACTIVE = "Active";
+        public static final String INACTIVE = "Inactive";
     }
 
     // change

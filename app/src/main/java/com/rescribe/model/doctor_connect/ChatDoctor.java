@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
+import com.rescribe.util.CommonMethods;
 
 
 public class ChatDoctor implements Parcelable, CustomResponse {
@@ -25,7 +26,7 @@ public class ChatDoctor implements Parcelable, CustomResponse {
     private String docAppointmentType;
     @SerializedName("onlineStatus")
     @Expose
-    private String onlineStatus;
+    private String onlineStatus = "";
     @SerializedName("paidStatus")
     @Expose
     private int paidStatus;
@@ -99,7 +100,7 @@ public class ChatDoctor implements Parcelable, CustomResponse {
     }
 
     public String getOnlineStatus() {
-        return onlineStatus;
+        return CommonMethods.toCamelCase(onlineStatus);
     }
 
     public void setOnlineStatus(String onlineStatus) {

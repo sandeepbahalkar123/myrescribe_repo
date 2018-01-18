@@ -30,7 +30,7 @@
                 android:textAllCaps="false"
                 android:focusable="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp19" />
+                android:textSize="@dimen/sp19"/>
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/titleTextView"
@@ -84,7 +84,7 @@
                         <ImageView
                             style="@style/drawer_filter_header_icon_layout"
                             android:layout_gravity="center"
-                            android:src="@drawable/sorting_icon" />
+                            android:src="@drawable/sorting_icon"/>
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             style="@style/drawer_filter_header_layout"
@@ -613,6 +613,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/dp20"
+                        android:visibility="gone"
+                        android:focusable="false"
                         android:paddingTop="@dimen/dp20"
                         android:background="@color/otp_background_layout" />
 
@@ -703,7 +705,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"
             android:divider="@null"
             android:dividerHeight="0dp" />
 

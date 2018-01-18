@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments.doctor_connect;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSearchByNameAdapter;
@@ -38,6 +41,10 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     Unbinder unbinder;
     @BindView(R.id.displayNote)
     CustomTextView displayNote;
+
+    @BindView(R.id.fragmentContainer)
+    RelativeLayout fragmentContainer;
+
     private ArrayList<ChatDoctor> mReceivedList;
     private DoctorSearchByNameAdapter doctorSearchByNameAdapter;
     private String mClickedSpecialityOfDoctor;
@@ -60,7 +67,7 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
+        final View mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
         Bundle arguments = getArguments();
         if (arguments != null) {
             mClickedSpecialityOfDoctor = arguments.getString(getString(R.string.clicked_item_data));
@@ -69,6 +76,7 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
 
         unbinder = ButterKnife.bind(this, mRootView);
         init();
+
         return mRootView;
     }
 

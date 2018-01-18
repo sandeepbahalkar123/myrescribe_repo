@@ -29,15 +29,8 @@ import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocatio
 public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SettingsApi";
-    LocationSettings locationSettings;
 
     public GoogleSettingsApi(final Context context) {
-
-        try {
-            this.locationSettings = ((LocationSettings) context);
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement LocationSettings.");
-        }
 
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
@@ -65,8 +58,7 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
                         // All location settings are satisfied. The client can initialize location
-                        // requests here.
-                        locationSettings.gpsStatus();
+
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied. But could be fixed by showing the user
@@ -110,9 +102,5 @@ public class GoogleSettingsApi implements GoogleApiClient.ConnectionCallbacks, G
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.e(TAG, "ConnectionFailed");
-    }
-
-    public interface LocationSettings {
-        void gpsStatus();
     }
 }

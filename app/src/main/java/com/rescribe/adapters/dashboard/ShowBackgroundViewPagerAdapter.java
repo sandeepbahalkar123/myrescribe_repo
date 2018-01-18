@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
-    private final int widthPixelOfBanner;
+//    private final int widthPixelOfBanner;
     private ArrayList<String> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
@@ -40,7 +40,7 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
-        widthPixelOfBanner = metrics.widthPixels;
+//        widthPixelOfBanner = metrics.widthPixels;
 
         mInflater = LayoutInflater.from(context);
 
@@ -66,7 +66,7 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.override(widthPixelOfBanner - 20);
+//        requestOptions.override(widthPixelOfBanner - dashboardBackgroundLayout.getContext().getResources().getDimensionPixelSize(R.dimen.dp10));
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
 

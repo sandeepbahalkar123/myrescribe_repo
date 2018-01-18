@@ -12,7 +12,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,15 +36,12 @@ import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static android.view.View.FOCUS_UP;
 
 public class DrawerForFilterDoctorBookAppointment extends Fragment implements HelperResponse {
 
@@ -386,8 +382,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                     mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
 
                     mLocationView.setVisibility(View.VISIBLE);
+                    mLocationContentRecycleView.setVisibility(View.VISIBLE);
 
-                } else mLocationView.setVisibility(View.GONE);
+                } else {
+                    mLocationView.setVisibility(View.GONE);
+                    mLocationContentRecycleView.setVisibility(View.GONE);
+                }
 
                 //------
                 ArrayList<Integer> clinicFeesRange = filterConfigData.getClinicFeesRange();

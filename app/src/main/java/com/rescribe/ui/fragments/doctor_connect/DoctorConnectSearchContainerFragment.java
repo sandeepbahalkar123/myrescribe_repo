@@ -17,7 +17,6 @@ import butterknife.Unbinder;
  */
 
 public class DoctorConnectSearchContainerFragment extends Fragment {
-    private View mRootView;
     Unbinder unbinder;
     private OnAddFragmentListener mListener;
 
@@ -27,10 +26,17 @@ public class DoctorConnectSearchContainerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.login_signup_layout, container, false);
-
+        View mRootView = inflater.inflate(R.layout.login_signup_layout, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
-        mListener.addSpecializationOfDoctorFragment(new Bundle());
+
+        if (mListener.getSearchText().isEmpty())
+            mListener.addSpecializationOfDoctorFragment(new Bundle());
+        else {
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), mListener.getSearchText());
+            mListener.addSearchDoctorByNameFragment(bundle);
+        }
+
         return mRootView;
     }
 
@@ -53,6 +59,9 @@ public class DoctorConnectSearchContainerFragment extends Fragment {
     }
 
     public interface OnAddFragmentListener {
+        String getSearchText();
         void addSpecializationOfDoctorFragment(Bundle bundleData);
+
+        void addSearchDoctorByNameFragment(Bundle bundleData);
     }
 }

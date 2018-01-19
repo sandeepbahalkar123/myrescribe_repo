@@ -79,8 +79,8 @@ public class LoginFragment extends Fragment implements HelperResponse {
 
         // TODO : this is done for development, remove it----
         //--- for drrescribe.com
-        editTextMobileNo.setText("9833898048");
-        editTextPassword.setText("uren1234");
+    /*    editTextMobileNo.setText("9833898048");
+        editTextPassword.setText("uren1234");*/
         //---- For 182 server
         // editTextMobileNo.setText("7738477306");
         //  editTextPassword.setText("test1234");

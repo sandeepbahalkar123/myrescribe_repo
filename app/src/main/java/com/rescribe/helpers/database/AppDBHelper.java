@@ -636,6 +636,18 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return chatDoctors;
     }
 
+    public int deleteUnreadReceivedNotificationMessage() {
+        SQLiteDatabase db = getWritableDatabase();
+
+        int deletedOther = db.delete(NOTIFICATION_MESSAGE_TABLE, null,
+                null);
+
+        int deletedChat = db.delete(MESSAGE_TABLE, null,
+                null);
+
+        return deletedChat + deletedOther;
+    }
+
     public int deleteUnreadReceivedNotificationMessage(String id, String notificationType) {
         SQLiteDatabase db = getWritableDatabase();
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT.equalsIgnoreCase(notificationType)) {

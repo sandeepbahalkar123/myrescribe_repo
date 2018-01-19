@@ -65,6 +65,7 @@ import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
+import com.rescribe.notification.DeleteUnreadNotificationAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -129,15 +130,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
     private Context mContext;
-    String breakFastTime = "";
-    String lunchTime = "";
-    String dinnerTime = "";
-    String snacksTime = "";
     String locationReceived = "";
     String previousLocationReceived = "";
-    Calendar c = Calendar.getInstance();
-    int hour24 = c.get(Calendar.HOUR_OF_DAY);
-    int Min = c.get(Calendar.MINUTE);
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
     DashboardDataModel mDashboardDataModel;
@@ -159,6 +153,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     String mLastUpdateTime;
     private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
+
+    String breakFast = "8:00 AM";
+    String lunchTime = "2:00 PM";
+    String dinnerTime = "8:00 PM";
+    String snacksTime = "5:00 PM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,13 +186,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         activeRequest.setId(Integer.parseInt(patientId));
         loginHelper.doActiveStatus(activeRequest);
         //------
-        String currentDate = CommonMethods.getCurrentDate();
-        String pastDate = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, mContext);
-
-        if (!currentDate.equals(pastDate)) {
-            if (getIntent().getBooleanExtra(RescribeConstants.ALERT, true))
-                notificationForMedicine();
-        }
+        notificationForMedicine();
 
         mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
@@ -246,13 +239,15 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     private void notificationForMedicine() {
-        String currentDate = CommonMethods.getCurrentDate();
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NOTIFY_DATE, currentDate, mContext);
+
+        Calendar c = Calendar.getInstance();
+        int hour24 = c.get(Calendar.HOUR_OF_DAY);
+        int Min = c.get(Calendar.MINUTE);
 
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
+                breakFast = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
                 lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
                 dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
                 snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
@@ -261,18 +256,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         }
         cursor.close();
 
-        String times[] = {breakFastTime, lunchTime, dinnerTime, snacksTime};
-        String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-
-        // Cancel Previous Alarms so it will not repeat.
-
-        new DosesAlarmTask(mContext, null, null).run();
-        new AppointmentAlarmTask(mContext, null, null).run();
-        new InvestigationAlarmTask(mContext, null, null).run();
+        String times[] = {breakFast, lunchTime, dinnerTime, snacksTime};
 
         // Set Alarms Again when date changed.
-
-        new DosesAlarmTask(mContext, times, date).run();
+        new DeleteUnreadNotificationAlarmTask(mContext).run();
+        new DosesAlarmTask(mContext, times).run();
         new InvestigationAlarmTask(mContext, RescribeConstants.INVESTIGATION_NOTIFICATION_TIME, getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(mContext, RescribeConstants.APPOINTMENT_NOTIFICATION_TIME, getResources().getString(R.string.appointment_msg)).run();
     }
@@ -284,68 +272,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         else
             finishAffinity();
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-//        //noinspection SimplifiableIfStatement
-        if (id == R.id.notification) {
-
-            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
-            if (mGetMealTime.equals(getString(R.string.break_fast))) {
-                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-                intentNotification.putExtra(RescribeConstants.TIME, breakFastTime);
-                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentNotification);
-
-            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
-                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-                intentNotification.putExtra(RescribeConstants.TIME, lunchTime);
-                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentNotification);
-
-            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
-                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-                intentNotification.putExtra(RescribeConstants.TIME, snacksTime);
-                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentNotification);
-
-            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
-                Intent intentNotification = new Intent(HomePageActivity.this, NotificationActivity.class);
-                intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intentNotification.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-                intentNotification.putExtra(RescribeConstants.TIME, dinnerTime);
-                intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentNotification);
-            }
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {

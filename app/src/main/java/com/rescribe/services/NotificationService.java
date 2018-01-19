@@ -1,6 +1,5 @@
 package com.rescribe.services;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,7 +24,6 @@ import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.activities.SnoozeAlarmNotifyActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -34,6 +32,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.facebook.login.widget.ProfilePictureView.TAG;
+import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.LUNCH_NOTIFICATION_ID;
 import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
 
 
@@ -48,14 +50,10 @@ import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
  */
 public class NotificationService extends Service implements HelperResponse {
 
-//    static int mNotificationNoTextField = 0;
-
     // Name of an intent extra we can use to identify if this service was started to create a notification
     public static final String INTENT_NOTIFY = "com.rescribe";
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
-    private int notification_id;
-    private Intent intent;
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
     int Min = c.get(Calendar.MINUTE);
@@ -66,26 +64,15 @@ public class NotificationService extends Service implements HelperResponse {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        this.intent = intent;
+
+        CommonMethods.Log("ALARM", "MedicationNotificationService");
 
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
         boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.medication_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
-
-            notification_id = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, 0);
-
-            // If this service was started by out DosesAlarmTask intent then we want to show our notification
-            if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-                NotificationHelper mNotificationHelper = new NotificationHelper(this);
-                mNotificationHelper.doGetNotificationList();
-                //customNotification(intent);
-            } else {
-                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, notification_id, intent, flags);
-                AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                aManager.cancel(mAlarmPendingIntent);
-            }
-
+            NotificationHelper mNotificationHelper = new NotificationHelper(this);
+            mNotificationHelper.doGetNotificationList();
         } else stopSelf();
 
         // We don't care if this service is stopped as we have already delivered our notification
@@ -97,12 +84,9 @@ public class NotificationService extends Service implements HelperResponse {
         return mBinder;
     }
 
-    public void customNotification(Intent intentData, NotificationData notificationData) {
-        //--------------
-        String medicineSlot = intentData.getStringExtra(RescribeConstants.MEDICINE_SLOT);
-//        String notificationTimeSlot = intentData.getStringExtra(RescribeConstants.NOTIFICATION_TIME);
+    public void customNotification(NotificationData notificationData, String medicineSlot, int notification_id) {
+
         String notificationTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
-        String title = getText(R.string.taken_medicine).toString();
 
         //---- Save notification in db---
         String timeStamp = CommonMethods.getCurrentDate() + " " + notificationTime;
@@ -127,9 +111,8 @@ public class NotificationService extends Service implements HelperResponse {
 
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
-        mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_DATE, intentData.getStringExtra(RescribeConstants.NOTIFICATION_DATE));
+        mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
         mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_TIME, notificationTime);
-        mNotifyNoIntent.putExtra(RescribeConstants.MEDICINE_NAME, intentData.getBundleExtra(RescribeConstants.MEDICINE_NAME));
         mNotifyNoIntent.putExtra(RescribeConstants.NOTIFICATION_ID, notification_id);
         mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), id);
 
@@ -162,7 +145,7 @@ public class NotificationService extends Service implements HelperResponse {
         // build.flags |= Notification.FLAG_INSISTENT;
 
         //--- Show notification/Alarm based on user configured setting :START
-        String string = RescribePreferencesManager.getString(getString(R.string.notificationAlarmTypeSetting), this);
+        /*String string = RescribePreferencesManager.getString(getString(R.string.notificationAlarmTypeSetting), this);
         if (getString(R.string.alarm).equalsIgnoreCase(string)) {
             //-----Open Alarm dialog based on config setting-----
             //----------
@@ -175,7 +158,9 @@ public class NotificationService extends Service implements HelperResponse {
             startActivity(popup);
             //----------
             //----------
-        } else notificationmanager.notify(MEDICATIONS_NOTIFICATION_TAG, notification_id, build);
+        } else*/
+
+        notificationmanager.notify(MEDICATIONS_NOTIFICATION_TAG, notification_id, build);
         //--- Show notification/Alarm based on user configured setting : END
 
         stopSelf();
@@ -205,9 +190,27 @@ public class NotificationService extends Service implements HelperResponse {
                 }
 
                 NotificationData filteredData = getFilteredData(notificationDataForHeader, slot.toLowerCase());
-                if (filteredData.getMedication() != null) {
+
+                int notification_id = 0;
+                String medicineSlot = null;
+
+                if (slot.equals(getString(R.string.break_fast))) {
+                    medicineSlot = getString(R.string.breakfast_medication);
+                    notification_id = BREAKFAST_NOTIFICATION_ID;
+                } else if (slot.equals(getString(R.string.mlunch))) {
+                    medicineSlot = getString(R.string.lunch_medication);
+                    notification_id = LUNCH_NOTIFICATION_ID;
+                } else if (slot.equals(getString(R.string.msnacks))) {
+                    medicineSlot = getString(R.string.snacks_medication);
+                    notification_id = EVENING_NOTIFICATION_ID;
+                } else if (slot.equals(getString(R.string.mdinner))) {
+                    medicineSlot = getString(R.string.dinner_medication);
+                    notification_id = DINNER_NOTIFICATION_ID;
+                }
+
+                if (filteredData.getMedication() != null && medicineSlot != null) {
                     if (!filteredData.getMedication().isEmpty())
-                        customNotification(intent, filteredData);
+                        customNotification(filteredData, medicineSlot, notification_id);
                 }
 
             }

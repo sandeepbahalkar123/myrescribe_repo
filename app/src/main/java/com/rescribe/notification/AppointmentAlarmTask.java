@@ -23,6 +23,7 @@ import java.util.Calendar;
  */
 public class AppointmentAlarmTask implements Runnable {
     public static final int APPOINTMENT_NOTIFICATION_ID = 5;
+    private static final String TAG = "APPOINTMENT_ALARM";
 
     // The time selected for the alarm
     private final String time;
@@ -59,31 +60,18 @@ public class AppointmentAlarmTask implements Runnable {
 
     @Override
     public void run() {
-        if (time == null || msg == null)
-            cancelAlarm(APPOINTMENT_NOTIFICATION_ID);
-        else 
-        setAlarm(time, msg, APPOINTMENT_NOTIFICATION_ID);
+        setAlarm(time, msg);
     }
 
-    private void setAlarm(String time, String msg, int requestCode) {
+    private void setAlarm(String time, String msg) {
+
         Intent intent = new Intent(context, AppointmentNotificationService.class);
         intent.putExtra(AppointmentNotificationService.INTENT_NOTIFY, true);
         intent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
         intent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, msg);
-        intent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, requestCode);
+        intent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, APPOINTMENT_NOTIFICATION_ID);
 
-        PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
-
-        // Sets an alarm - note this alarm will be lost if the phone is turned off and on again
-//        am.set(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), pendingIntent);
-
+        PendingIntent pendingIntent = PendingIntent.getService(context, APPOINTMENT_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-    }
-
-    private void cancelAlarm(int requestCode) {
-        Intent intent = new Intent(context, AppointmentNotificationService.class);
-        intent.putExtra(AppointmentNotificationService.INTENT_NOTIFY, false);
-        intent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, requestCode);
-        context.startService(intent);
     }
 }

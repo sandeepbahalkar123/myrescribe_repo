@@ -4,14 +4,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
-import com.rescribe.R;
 import com.rescribe.services.NotificationService;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.Calendar;
+
+import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Set an alarm for the time passed into the constructor
@@ -29,21 +28,20 @@ public class DosesAlarmTask implements Runnable {
     public static final int LUNCH_NOTIFICATION_ID = 999999991;
     public static final int DINNER_NOTIFICATION_ID = 999999992;
     public static final int EVENING_NOTIFICATION_ID = 999999993;
+    private static final String TAG = "DOSES_ALARM";
 
     // The time selected for the alarm
     private final String time[];
-    private final String date;
 
     // The android system alarm manager
     private final AlarmManager am;
     // Your context to retrieve the alarm manager from
     private final Context context;
 
-    public DosesAlarmTask(Context context, String time[], String date) {
+    public DosesAlarmTask(Context context, String... time) {
         this.context = context;
-        this.am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        this.am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         this.time = time;
-        this.date = date;
     }
 
     private Calendar getCalendar(String time) {
@@ -65,42 +63,22 @@ public class DosesAlarmTask implements Runnable {
 
     @Override
     public void run() {
-        if (time == null || date == null) {
-            cancelAlarm(BREAKFAST_NOTIFICATION_ID);
-            cancelAlarm(LUNCH_NOTIFICATION_ID);
-            cancelAlarm(DINNER_NOTIFICATION_ID);
-            cancelAlarm(EVENING_NOTIFICATION_ID);
-        } else {
-            setAlarm(time[0], context.getResources().getString(R.string.breakfast_medication), BREAKFAST_NOTIFICATION_ID);
-            setAlarm(time[1], context.getResources().getString(R.string.lunch_medication), LUNCH_NOTIFICATION_ID);
-            setAlarm(time[2], context.getResources().getString(R.string.dinner_medication), DINNER_NOTIFICATION_ID);
-            setAlarm(time[3], context.getResources().getString(R.string.snacks_medication), EVENING_NOTIFICATION_ID);
-        }
+        setAlarm(time);
     }
 
-    private void cancelAlarm(int requestCode) {
+    private void setAlarm(String... time) {
         Intent intent = new Intent(context, NotificationService.class);
-        intent.putExtra(NotificationService.INTENT_NOTIFY, false);
-        intent.putExtra(RescribeConstants.NOTIFICATION_ID, requestCode);
-        context.startService(intent);
-    }
 
-    private void setAlarm(String time, String medicineSlot, int requestCode) {
-        Intent intent = new Intent(context, NotificationService.class);
-        intent.putExtra(NotificationService.INTENT_NOTIFY, true);
-        intent.putExtra(RescribeConstants.NOTIFICATION_TIME, time);
-        intent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
-        intent.putExtra(RescribeConstants.NOTIFICATION_DATE, date);
-        intent.putExtra(RescribeConstants.NOTIFICATION_ID, requestCode);
+        PendingIntent pendingIntent0 = PendingIntent.getService(context, BREAKFAST_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time[0]).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent0);
 
-        Bundle bundle = new Bundle();
-        intent.putExtra(RescribeConstants.MEDICINE_NAME, bundle);
+        PendingIntent pendingIntent1 = PendingIntent.getService(context, LUNCH_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time[1]).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent1);
 
-        PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
+        PendingIntent pendingIntent2 = PendingIntent.getService(context, DINNER_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time[2]).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent2);
 
-        // Sets an alarm - note this alarm will be lost if the phone is turned off and on again
-//        am.set(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), pendingIntent);
-
-        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        PendingIntent pendingIntent3 = PendingIntent.getService(context, EVENING_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time[3]).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent3);
     }
 }

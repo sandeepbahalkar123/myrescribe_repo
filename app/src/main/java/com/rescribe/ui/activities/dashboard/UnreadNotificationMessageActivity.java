@@ -529,6 +529,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                     if (list != null) {
                         if (!list.isEmpty()) {
                             setUnreadBookAppointTokenAlertListAdapter(list);
+                            isAllListEmpty = false;
                         } else {
                             unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
                         }

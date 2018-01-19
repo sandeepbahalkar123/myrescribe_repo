@@ -506,6 +506,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         bundleData = new Bundle();
 
                         mClickedDoctorObject.setTypedashboard(false);
+                        mClickedDoctorObject.setRating(mResponseAppointmentConfirmationModel.getAptList().getRating());
                         mClickedDoctorObject.setAptId(mResponseAppointmentConfirmationModel.getAptList().getId());
                         mClickedDoctorObject.setDocId(mResponseAppointmentConfirmationModel.getAptList().getDoc_id());
                         mClickedDoctorObject.setDocPhone(mResponseAppointmentConfirmationModel.getAptList().getDocPhone());

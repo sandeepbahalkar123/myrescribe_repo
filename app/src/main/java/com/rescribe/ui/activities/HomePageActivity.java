@@ -1,6 +1,7 @@
 package com.rescribe.ui.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,9 +13,12 @@ import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -109,7 +113,6 @@ import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
  * Created by jeetal on 28/6/17.
  */
 
-@RuntimePermissions
 public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -137,10 +140,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     int Min = c.get(Calendar.MINUTE);
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
-
     DashboardDataModel mDashboardDataModel;
     DashboardMenuData mDashboardMenuData;
-
+    public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
@@ -198,34 +200,12 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void getWritePermission() {
-        HomePageActivityPermissionsDispatcher.getFineLocationWithCheck(HomePageActivity.this);
-    }
-
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    void getFineLocation() {
-        HomePageActivityPermissionsDispatcher.getCourseLocationWithCheck(HomePageActivity.this);
-    }
-
-    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-    void getCourseLocation() {
-        doCallDashBoardAPI();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        HomePageActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
-                        HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
                         break;
                     case Activity.RESULT_CANCELED:
                         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
@@ -746,9 +726,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     @Override
     public void onResume() {
         super.onResume();
-
-        HomePageActivityPermissionsDispatcher.getWritePermissionWithCheck(HomePageActivity.this);
-        // doCallDashBoardAPI();
+        checkAndroidVersion();
         if (mDashboardDataModel != null) {
             setUpViewPager();
         }
@@ -977,5 +955,121 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             mUpdateAppUnreadNotificationCount = null;
         }
         super.onDestroy();
+    }
+    private void checkAndroidVersion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermission();
+
+        } else {
+            doCallDashBoardAPI();
+            // write your logic here
+        }
+
+    }
+    @SuppressLint("NewApi")
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat
+                .checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)+ ContextCompat
+                                .checkSelfPermission(this,
+                                        Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale
+                    (this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale
+                            (this, Manifest.permission.ACCESS_COARSE_LOCATION)||
+                    ActivityCompat.shouldShowRequestPermissionRationale
+                            (this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+                if (userSelectedLocationInfo.get(mContext.getString(R.string.location)) == null) {
+                    String lastCapturedLocation = RescribePreferencesManager.getString(getString(R.string.location), mContext);
+                    if (!lastCapturedLocation.isEmpty()) {
+                        try {
+                            Double lat = Double.valueOf(RescribePreferencesManager.getString(getString(R.string.latitude), mContext));
+                            Double lng = Double.valueOf(RescribePreferencesManager.getString(getString(R.string.longitude), mContext));
+                            LatLng location = new LatLng(lat, lng);
+                            RescribeApplication.setUserSelectedLocationInfo(mContext, location, lastCapturedLocation);
+                            String[] split = lastCapturedLocation.split(",");
+                            mDashboardHelper.doGetDashboard(split[1]);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+                Snackbar.make(this.findViewById(android.R.id.content),
+                        "Please Grant Permissions",
+                        Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                requestPermissions(
+                                        new String[]{Manifest.permission
+                                                .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},
+                                        PERMISSIONS_MULTIPLE_REQUEST);
+                            }
+                        }).show();
+            } else {
+                requestPermissions(
+                        new String[]{Manifest.permission
+                                .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSIONS_MULTIPLE_REQUEST);
+            }
+        } else {
+            doCallDashBoardAPI();
+            // write your logic code if permission already granted
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case PERMISSIONS_MULTIPLE_REQUEST:
+                if (grantResults.length > 0) {
+                    boolean accessFinePermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                    boolean accessCoarsePermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeExternalFile = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                    if(accessCoarsePermission && writeExternalFile && accessFinePermission)
+                    {
+                        doCallDashBoardAPI(); // write your logic here
+                    } else {
+                        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+                        if (userSelectedLocationInfo.get(mContext.getString(R.string.location)) == null) {
+                            String lastCapturedLocation = RescribePreferencesManager.getString(getString(R.string.location), mContext);
+                            if (!lastCapturedLocation.isEmpty()) {
+                                try {
+                                    Double lat = Double.valueOf(RescribePreferencesManager.getString(getString(R.string.latitude), mContext));
+                                    Double lng = Double.valueOf(RescribePreferencesManager.getString(getString(R.string.longitude), mContext));
+                                    LatLng location = new LatLng(lat, lng);
+                                    RescribeApplication.setUserSelectedLocationInfo(mContext, location, lastCapturedLocation);
+                                    String[] split = lastCapturedLocation.split(",");
+                                    mDashboardHelper.doGetDashboard(split[1]);
+                                } catch (NumberFormatException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+                        Snackbar.make(this.findViewById(android.R.id.content),
+                                "Please Grant Permissions",
+                                Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                                new View.OnClickListener() {
+                                    @SuppressLint("NewApi")
+                                    @Override
+                                    public void onClick(View v) {
+                                        requestPermissions(
+                                                new String[]{Manifest.permission
+                                                        .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},
+                                                PERMISSIONS_MULTIPLE_REQUEST);
+                                    }
+                                }).show();
+                    }
+                }
+                break;
+        }
     }
 }

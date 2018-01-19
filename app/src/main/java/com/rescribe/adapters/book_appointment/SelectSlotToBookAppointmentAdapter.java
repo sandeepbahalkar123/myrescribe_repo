@@ -10,13 +10,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.rescribe.R;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotsInfoList;
-import com.rescribe.model.doctors.appointments.AptList;
-
 import java.util.ArrayList;
-
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**

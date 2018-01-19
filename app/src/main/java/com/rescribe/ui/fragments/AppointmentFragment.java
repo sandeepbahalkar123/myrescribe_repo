@@ -112,6 +112,7 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         mDoctorList.setNameOfClinicString(mAptListObject.getClinic_name());
         mDoctorList.setAddressOfDoctorString(mAptListObject.getAddress());
         mDoctorList.setDocPhone(mAptListObject.getDocPhone());
+        mDoctorList.setRating(mAptListObject.getRating());
         mDoctorList.setTypedashboard(true);
         Intent intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);
         bundleData.putParcelable(getString(R.string.clicked_item_data), mDoctorList);
@@ -119,24 +120,5 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         getActivity().startActivityForResult(intent, CONFIRM_REQUESTCODE);
     }
 
-    /*@Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof AppointmentCancel) {
-            mListener = (AppointmentCancel) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement AppointmentCancel");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface AppointmentCancel {
-        void setAdapterPosition();
-    }*/
 }

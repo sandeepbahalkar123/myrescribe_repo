@@ -9,50 +9,58 @@
     android:orientation="vertical"
     tools:ignore="MissingTranslation">
 
-    <com.rescribe.ui.customesViews.CustomTextView
-        android:id="@+id/pickSpeciality"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp8"
-        android:layout_marginLeft="@dimen/dp10"
-        android:layout_marginTop="@dimen/dp16"
-        android:text="@string/pick_speciality"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp16"
-        android:visibility="gone"
-        app:customFont="@string/roboto_medium"
-        android:layout_marginStart="@dimen/dp10" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listView"
+    <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/pickSpeciality"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:visibility="visible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/displayNote"
+            android:id="@+id/pickSpeciality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:background="@drawable/curve_edge_blue"
-            android:gravity="center"
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp16"
+            android:text="@string/pick_speciality"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp16"
             android:visibility="gone"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/dp6"
-            android:paddingLeft="@dimen/dp12"
-            android:paddingRight="@dimen/dp12"
-            android:layout_margin="@dimen/dp16"
-            android:paddingTop="@dimen/dp6"
-            android:text="@string/details_note"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp12"
-            app:customFont="@string/roboto_bold" />
+            app:customFont="@string/roboto_medium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/pickSpeciality"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:visibility="visible"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </LinearLayout>
+
+
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/displayNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp16"
+        android:background="@drawable/curve_edge_blue"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp6"
+        android:paddingLeft="@dimen/dp12"
+        android:paddingRight="@dimen/dp12"
+        android:paddingTop="@dimen/dp6"
+        android:text="@string/details_note"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp12"
+        android:visibility="gone"
+        app:customFont="@string/roboto_bold" />
 
 
     <RelativeLayout
@@ -73,10 +81,5 @@
             android:gravity="center"
             android:orientation="vertical" />
     </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
 
 </RelativeLayout>

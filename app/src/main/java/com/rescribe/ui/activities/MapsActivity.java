@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,11 +49,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @BindView(R.id.mapToolbar)
     Toolbar mapToolbar;
-
     @BindView(R.id.doctorName)
     CustomTextView doctorNameTextView;
+    @BindView(R.id.doctorRating)
+    CustomTextView doctorRating;
+    @BindView(R.id.ratingBar)
+    RatingBar customRatingBar;
     @BindView(R.id.directions)
     ImageView directions;
+    @BindView(R.id.ratingLayout)
+    LinearLayout ratingLayout;
     @BindView(R.id.showDocDetailBottomSheet)
     LinearLayout showDocDetailBottomSheet;
     @BindView(R.id.title)
@@ -66,6 +72,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Context mContext;
     private String doctorName;
     private HashMap<String, String> mUserSelectedLocationInfo;
+    private double rating;
 
 
     @Override
@@ -78,7 +85,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         intent = getIntent();
         if (intent != null) {
             address = intent.getStringExtra(getString(R.string.address));
-
+            rating = intent.getDoubleExtra(RescribeConstants.RATING, 0);
             if (intent.getStringExtra(RescribeConstants.DOCTOR_NAME).contains("Dr.")) {
                 doctorName = intent.getStringExtra(RescribeConstants.DOCTOR_NAME);
             } else {
@@ -195,6 +202,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     markerIconLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.appointment_locator));
                     doctorNameText.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
                     doctorNameText.setText(doctorName);
+                    if (rating == 0) {
+                        ratingText.setText("");
+                    } else {
+                        ratingText.setText("" + rating);
+                    }
                     mMap.addMarker(new MarkerOptions().position(currentLocation).title(address).icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(MapsActivity.this, itemView))));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p1.getLatitude(), p1.getLongitude()), RescribeConstants.ZOOM_CAMERA_VALUE));
                 } else
@@ -265,7 +277,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
+        if (rating == 0) {
+            ratingLayout.setVisibility(View.GONE);
+        } else {
+            ratingLayout.setVisibility(View.VISIBLE);
+            customRatingBar.setRating((float) rating);
+            doctorRating.setText("" + rating);
+        }
         doctorNameTextView.setText(doctorName);
 
     }

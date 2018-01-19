@@ -23,7 +23,9 @@ public class AptList implements CustomResponse, Serializable{
     @SerializedName("locationId")
     @Expose
     private String locationId;
+
     @SerializedName("doctorDegree")
+
     @Expose
     private String doctorDegree;
     @SerializedName("docPhone")
@@ -58,6 +60,10 @@ public class AptList implements CustomResponse, Serializable{
     @SerializedName("clinic_name")
     @Expose
     private String clinic_name;
+
+    @SerializedName("rating")
+    @Expose
+    private double rating;
 
     public String getClinic_name() {
         return clinic_name;
@@ -174,4 +180,12 @@ public class AptList implements CustomResponse, Serializable{
     public void setDocPhone(String docPhone) {
         this.docPhone = docPhone;
     }
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
 }

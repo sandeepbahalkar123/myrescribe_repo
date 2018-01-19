@@ -130,8 +130,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
                     intent.putExtra(RescribeConstants.DOCTOR_NAME,appointment1.getDoctorName());
+                    intent.putExtra(RescribeConstants.RATING,appointment1.getRating());
                     mContext.startActivity(intent);
-                    //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLongitude());
+                    //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLosngitude());
 
                 } else {
                     CommonMethods.showToast(mContext, mContext.getString(R.string.internet));

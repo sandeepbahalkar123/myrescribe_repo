@@ -212,6 +212,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 if (mDoctorObject != null) {
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getAddressOfDoctorString());
+                    intent.putExtra(RescribeConstants.RATING,mDoctorObject.getRating());
                     intent.putExtra(RescribeConstants.DOCTOR_NAME, mDoctorObject.getDocName());
                     mContext.startActivity(intent);
                 }

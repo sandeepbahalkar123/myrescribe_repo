@@ -8,6 +8,7 @@ import android.database.Cursor;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.notification.AppointmentAlarmTask;
+import com.rescribe.notification.DeleteUnreadNotificationAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.notification.MQTTServiceAlarmTask;
@@ -21,10 +22,15 @@ import com.rescribe.util.RescribeConstants;
 
 public class StartUpBootReceiver extends BroadcastReceiver {
 
+    private static final String TAG = "BootDevice";
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+
+            CommonMethods.Log(TAG, "StartUpBootReceiver");
+
             new MQTTServiceAlarmTask(context).run();
 
             if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES))
@@ -33,10 +39,10 @@ public class StartUpBootReceiver extends BroadcastReceiver {
     }
 
     private void notificationForMedicine(Context context) {
-        String breakFast = "9:17 AM";
-        String lunchTime = "9:19 AM";
-        String dinnerTime = "9:21 AM";
-        String snacksTime = "9:21 AM";
+        String breakFast = "8:00 AM";
+        String lunchTime = "2:00 PM";
+        String dinnerTime = "8:00 PM";
+        String snacksTime = "5:00 PM";
 
         AppDBHelper appDBHelper = new AppDBHelper(context);
         Cursor cursor = appDBHelper.getPreferences("1");
@@ -52,9 +58,9 @@ public class StartUpBootReceiver extends BroadcastReceiver {
         cursor.close();
 
         String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
-        String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
 
-        new DosesAlarmTask(context, times, date).run();
+        new DeleteUnreadNotificationAlarmTask(context).run();
+        new DosesAlarmTask(context, times).run();
         new InvestigationAlarmTask(context, RescribeConstants.INVESTIGATION_NOTIFICATION_TIME, context.getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(context, RescribeConstants.APPOINTMENT_NOTIFICATION_TIME, context.getResources().getString(R.string.appointment_msg)).run();
     }

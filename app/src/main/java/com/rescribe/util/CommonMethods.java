@@ -491,9 +491,9 @@ public class CommonMethods {
             time = context.getString(R.string.break_fast);
         else if (hour >= 11 && hour < 15)
             time = context.getString(R.string.mlunch);
-        else if (hour >= 15 && hour <= 17)
+        else if (hour >= 15 && hour < 17)
             time = context.getString(R.string.msnacks);
-        else if (hour >= 17 && hour <= 24)
+        else if (hour >= 17 && hour <= 23)
             time = context.getString(R.string.mdinner);
 
         CommonMethods.Log(TAG, "hour" + hour);
@@ -505,7 +505,7 @@ public class CommonMethods {
 
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context, int colorCodeForUnread) {
 
-        boolean isReqUnread = ContextCompat.getColor(context, R.color.white) == colorCodeForUnread ? true : false;
+        boolean isReqUnread = ContextCompat.getColor(context, R.color.white) == colorCodeForUnread;
 
         Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.defaulticon);
         if (medicineTypeName.equalsIgnoreCase("syrup")) {

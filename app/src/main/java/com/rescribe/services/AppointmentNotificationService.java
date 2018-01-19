@@ -1,6 +1,5 @@
 package com.rescribe.services;
 
-import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -57,6 +56,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        CommonMethods.Log("ALARM", "AppointmentNotificationService");
+
         // If this service was started by out DosesAlarmTask intent then we want to show our notification
 
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
@@ -64,14 +65,8 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
 
-            if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-                AppointmentHelper appointmentHelper = new AppointmentHelper(this);
-                appointmentHelper.getDoctorList();
-            } else {
-                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID, intent, flags);
-                AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                aManager.cancel(mAlarmPendingIntent);
-            }
+            AppointmentHelper appointmentHelper = new AppointmentHelper(this);
+            appointmentHelper.getDoctorList();
 
         } else stopSelf();
         // We don't care if this service is stopped as we have already delivered our notification

@@ -59,7 +59,6 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
                 intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, intent.getStringExtra(RescribeConstants.MEDICINE_SLOT));
                 intentNotification.putExtra(RescribeConstants.NOTIFICATION_DATE, intent.getStringExtra(RescribeConstants.NOTIFICATION_DATE));
                 intentNotification.putExtra(RescribeConstants.NOTIFICATION_TIME, intent.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
-                intentNotification.putExtra(RescribeConstants.MEDICINE_NAME, intent.getBundleExtra(RescribeConstants.MEDICINE_NAME));
                 intentNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intentNotification);

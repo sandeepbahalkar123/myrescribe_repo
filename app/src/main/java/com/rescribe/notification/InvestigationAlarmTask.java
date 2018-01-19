@@ -23,6 +23,7 @@ import java.util.Calendar;
  */
 public class InvestigationAlarmTask implements Runnable {
     public static final int INVESTIGATION_NOTIFICATION_ID = 4;
+    private static final String TAG = "INVESTIGATION_ALARM";
     // The time selected for the alarm
     private final String time;
     private final String msg;
@@ -58,31 +59,19 @@ public class InvestigationAlarmTask implements Runnable {
 
     @Override
     public void run() {
-        if (time == null || msg == null)
-            cancelAlarm(INVESTIGATION_NOTIFICATION_ID);
-        else
-            setAlarm(time, msg, INVESTIGATION_NOTIFICATION_ID);
+        setAlarm(time, msg);
     }
 
-    private void setAlarm(String time, String msg, int requestCode) {
+    private void setAlarm(String time, String msg) {
         Intent intent = new Intent(context, InvestigationNotificationService.class);
         intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, true);
         intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, time);
-        intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, requestCode);
+        intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, INVESTIGATION_NOTIFICATION_ID);
 
-        PendingIntent pendingIntent = PendingIntent.getService(context, requestCode, intent, 0);
-
-        // Sets an alarm - note this alarm will be lost if the phone is turned off and on again
-//        am.set(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), pendingIntent);
-
-        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-    }
-
-    private void cancelAlarm(int requestCode) {
-        Intent intent = new Intent(context, InvestigationNotificationService.class);
-        intent.putExtra(InvestigationNotificationService.INTENT_NOTIFY, false);
-        intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, requestCode);
-        context.startService(intent);
+        if ((PendingIntent.getService(context, INVESTIGATION_NOTIFICATION_ID, intent, PendingIntent.FLAG_NO_CREATE) == null)) {
+            PendingIntent pendingIntent = PendingIntent.getService(context, INVESTIGATION_NOTIFICATION_ID, intent, 0);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        } else CommonMethods.Log(TAG, "Alar]m already there" + INVESTIGATION_NOTIFICATION_ID);
     }
 
 }

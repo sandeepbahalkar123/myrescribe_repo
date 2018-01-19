@@ -494,7 +494,6 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, notificationModel, mOldDataTag);
                         break;
 
-
                     case RescribeConstants.FILTER_DOCTOR_LIST: //This is for get archived list
                         FilterDoctorListModel filterDoctorListModel = new Gson().fromJson(data, FilterDoctorListModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, filterDoctorListModel, mOldDataTag);

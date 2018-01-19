@@ -202,6 +202,7 @@
         <service android:name=".services.InvestigationNotificationService" />
         <service android:name=".services.AppointmentNotificationService" />
         <service android:name=".services.NotificationService" />
+        <service android:name=".services.DeleteUnreadNotificationService" />
 
         <!-- Common Broadcast Receiver -->
         <receiver android:name=".broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver" />

@@ -61,7 +61,6 @@ public class RescribeConstants {
     public static final String MONTH = "month";
     public static final String YEAR = "year";
     public static final String DATE = "date";
-    public static final String MEDICINE_NAME = "medicine_name";
     public static final String MEDICINE_SLOT = "edicine_slot";
     public static final String MEDICINE_TYPE = "medicine_type";
     //------------

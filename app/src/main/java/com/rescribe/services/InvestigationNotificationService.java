@@ -1,6 +1,5 @@
 package com.rescribe.services;
 
-import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -57,21 +56,17 @@ public class InvestigationNotificationService extends Service implements HelperR
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        CommonMethods.Log("ALARM", "InvestigationNotificationService");
+
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
         boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.investigation_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
             notification_id = intent.getIntExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, INVESTIGATION_NOTIFICATION_ID);
             // If this service was started by out DosesAlarmTask intent then we want to show our notification
-            InvestigationHelper investigationHelper;
-            if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
-                investigationHelper = new InvestigationHelper(this, this);
-                investigationHelper.getInvestigationList(false);
-            } else {
-                PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, INVESTIGATION_NOTIFICATION_ID, intent, flags);
-                AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                aManager.cancel(mAlarmPendingIntent);
-            }
+            InvestigationHelper investigationHelper = new InvestigationHelper(this, this);
+            investigationHelper.getInvestigationList(false);
+
         } else stopSelf();
 
         // We don't care if this service is stopped as we have already delivered our notification

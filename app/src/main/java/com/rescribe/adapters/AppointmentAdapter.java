@@ -88,12 +88,12 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + new SimpleDateFormat("MMM yy", Locale.US).format(cal.getTime());
             //------
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getAddress(), Html.FROM_HTML_MODE_LEGACY));
+                holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getArea_name()+", "+appointment.getCity_name(), Html.FROM_HTML_MODE_LEGACY));
             } else {
-                holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getAddress()));
+                holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " +  appointment.getArea_name()+", "+appointment.getCity_name()));
             }
         } else {
-            holder.doctorAddress.setText(appointment.getAddress());
+            holder.doctorAddress.setText( appointment.getArea_name()+", "+appointment.getCity_name());
         }
         //--- For address
 

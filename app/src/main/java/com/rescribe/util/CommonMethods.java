@@ -501,6 +501,23 @@ public class CommonMethods {
         return time;
     }
 
+    public static String getMealTimeForPrescription(int hour, int mint, Context context) {
+        //BB : 7-11,lunch : 11-3,dinner :7-11
+        String time = "";
+        if (hour >= 8 && hour < 11)
+            time = context.getString(R.string.break_fast);
+        else if (hour >= 11 && hour < 14)
+            time = context.getString(R.string.mlunch);
+        else if (hour >= 15 && hour < 17)
+            time = context.getString(R.string.msnacks);
+        else if (hour >= 20 && hour <= 23)
+            time = context.getString(R.string.mdinner);
+
+        CommonMethods.Log(TAG, "hour" + hour);
+        CommonMethods.Log(TAG, "getMealTime" + time);
+        return time;
+    }
+
     // Return medicine Icon's
 
     public static Drawable getMedicineTypeImage(String medicineTypeName, Context context, int colorCodeForUnread) {

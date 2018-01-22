@@ -220,7 +220,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         mSelectedTimeSlot = null;
         mSelectedToTimeSlot = null;
         mAptslotId = null;
-        
+
         yearsExperienceLine.setVisibility(View.GONE);
         selectClinicLine.setVisibility(View.GONE);
         mColorGenerator = ColorGenerator.MATERIAL;

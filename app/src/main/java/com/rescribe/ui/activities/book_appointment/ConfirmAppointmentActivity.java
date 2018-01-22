@@ -218,7 +218,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 }
                 break;
             case R.id.phoneNumberLayout:
-               ConfirmAppointmentActivityPermissionsDispatcher.doCallSupportWithCheck(this);
+                ConfirmAppointmentActivityPermissionsDispatcher.doCallSupportWithCheck(this);
                 break;
         }
     }
@@ -245,7 +245,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
                     if (!isCanceled) {
                         if (mDoctorObject.isTypedashboard()) {
-                           // Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
                             Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
                             intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
                             intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));

@@ -142,25 +142,6 @@ public class DashboardHelper implements ConnectionListener {
         }
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);
-
-
-        //---
-        /*try {
-            InputStream is = mContext.getAssets().open("temp_dashboard_data.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "temp_dashboard_data" + json);
-
-            DashBoardBaseModel slotListBaseModel = new Gson().fromJson(json, DashBoardBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, slotListBaseModel, RescribeConstants.TASK_DASHBOARD_API);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
-        //---
     }
 
     public void doGetSavedArticles() {

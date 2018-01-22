@@ -295,9 +295,8 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         appDBHelper.deleteDatabase();
 
         Intent intent = new Intent(mContext, LoginSignUpActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 
     @Override

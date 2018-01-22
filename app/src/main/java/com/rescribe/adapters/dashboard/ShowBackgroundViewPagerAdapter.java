@@ -11,11 +11,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
-import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 
 import java.util.ArrayList;
 
@@ -25,15 +23,13 @@ import java.util.ArrayList;
 
 public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
-//    private final int widthPixelOfBanner;
+    private final String activityCreatedTimeStamp;
+    //    private final int widthPixelOfBanner;
     private ArrayList<String> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
 
-    private final static String FOLDER_PATH = "images/dashboard/cardBgImage/android/";
-    private String density;
-
-    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<String> doctorLists) {
+    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<String> doctorLists, String activityCreatedTimeStamp) {
         this.mContext = context;
         this.mDataList = doctorLists;
 
@@ -44,7 +40,7 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
         mInflater = LayoutInflater.from(context);
 
-        density = CommonMethods.getDeviceResolution(mContext) + "/";
+        this.activityCreatedTimeStamp = activityCreatedTimeStamp;
     }
 
     @Override
@@ -66,13 +62,13 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
+        requestOptions.signature(new ObjectKey(activityCreatedTimeStamp));
 //        requestOptions.override(widthPixelOfBanner - dashboardBackgroundLayout.getContext().getResources().getDimensionPixelSize(R.dimen.dp10));
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
+//        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+//        requestOptions.skipMemoryCache(true);
 
-        String imageURL = Config.BASE_URL + FOLDER_PATH + density + mDataList.get(position);
         Glide.with(mContext)
-                .load(imageURL)
+                .load(mDataList.get(position))
                 .apply(requestOptions)
                 .into(dashboardBackgroundLayout);
 

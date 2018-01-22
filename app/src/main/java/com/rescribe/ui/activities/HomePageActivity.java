@@ -23,13 +23,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -84,6 +85,7 @@ import com.rescribe.ui.activities.health_repository.HealthRepository;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
 
@@ -102,8 +104,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocation.REQUEST_CHECK_SETTINGS;
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
@@ -159,6 +159,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     String dinnerTime = "8:00 PM";
     String snacksTime = "5:00 PM";
 
+    private String activityCreatedTimeStamp;
+    private final static String FOLDER_PATH = "images/dashboard/cardBgImage/android/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,6 +169,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         ButterKnife.bind(this);
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
         mContext = HomePageActivity.this;
+
+        activityCreatedTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
 
         appDBHelper = new AppDBHelper(mContext);
         mDashboardHelper = new DashboardHelper(this, this);
@@ -324,24 +329,27 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         ArrayList<DoctorList> mergeList = new ArrayList<>();
         ArrayList<String> cardBgImage = new ArrayList<>();
 
+        String density = CommonMethods.getDeviceResolution(mContext) + "/";
+        String imageBaseURL = Config.BASE_URL + FOLDER_PATH + density;
+
         if (myAppoint.size() > 0) {
             mergeList.add(myAppoint.get(0));
-            cardBgImage.add("myappointments.jpg");
+            cardBgImage.add(imageBaseURL + "myappointments.jpg");
         }
 
         if (sponsered.size() > 0) {
             mergeList.add(sponsered.get(0));
-            cardBgImage.add("sponsored.jpg");
+            cardBgImage.add(imageBaseURL + "sponsored.jpg");
         }
 
         if (recently_visit_doctor.size() > 0) {
             mergeList.add(recently_visit_doctor.get(0));
-            cardBgImage.add("recentlyvisited.jpg");
+            cardBgImage.add(imageBaseURL + "recentlyvisited.jpg");
         }
 
         if (favoriteList.size() > 0) {
             mergeList.add(favoriteList.get(0));
-            cardBgImage.add("favorite.jpg");
+            cardBgImage.add(imageBaseURL + "favorite.jpg");
         }
 
         //------------
@@ -357,7 +365,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
         viewPagerDoctorItem.setPageMargin(pager_margin);
 
-        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, cardBgImage);
+        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, cardBgImage, activityCreatedTimeStamp);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
 
@@ -880,6 +888,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             unregisterReceiver(mUpdateAppUnreadNotificationCount);
             mUpdateAppUnreadNotificationCount = null;
         }
+
         super.onDestroy();
     }
     private void checkAndroidVersion() {

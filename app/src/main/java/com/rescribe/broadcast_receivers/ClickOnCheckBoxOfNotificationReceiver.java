@@ -38,6 +38,7 @@ import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
 public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver implements HelperResponse {
     RespondToNotificationHelper respondToNotificationHelper;
     Context mContext;
+    private int notificationId;
 
     @Override
     public void onReceive(Context mContext, Intent intent) {
@@ -65,6 +66,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
                 medicineSlot = mContext.getString(R.string.smallcasedinner);
             }
             if (NetworkUtil.isInternetAvailable(mContext)) {
+                this.notificationId = notificationId;
                 respondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), medicineSlot, medicineID, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION);
                 //Toast.makeText(mContext, slot + " " + notificationId + " " + "Dose Accepted", Toast.LENGTH_SHORT).show();
                 manager.cancel(MEDICATIONS_NOTIFICATION_TAG, notificationId);
@@ -125,16 +127,18 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
-        if (responseLogNotificationModel.getCommon().isSuccess()) {
-            CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+        if (customResponse instanceof NotificationResponseBaseModel) {
+            NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
+            if (responseLogNotificationModel.getCommon().isSuccess()) {
+                CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
+                AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(notificationId), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+            }
         }
     }
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
         CommonMethods.showToast(mContext, errorMessage);
-
     }
 
     @Override
@@ -145,6 +149,5 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         CommonMethods.showToast(mContext, serverErrorMessage);
-
     }
 }

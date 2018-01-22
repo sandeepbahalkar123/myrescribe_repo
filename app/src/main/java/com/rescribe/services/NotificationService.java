@@ -170,7 +170,7 @@ public class NotificationService extends Service implements HelperResponse {
         if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
             NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
 
-            String slot = CommonMethods.getMealTimeForLocalNotification(hour24, this);
+            String slot = CommonMethods.getMealTime(hour24, this);
 
             if (!prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().isEmpty()) {
                 ArrayList<Medication> notificationDataList;

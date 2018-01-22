@@ -323,46 +323,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return dataObject;
     }
 
-    /*public Cursor getAllInvestigationData() {
-        SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select * from " + INVESTIGATION_TABLE, null);
-    }
-
-    public int deleteInvestigation(String id) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(INVESTIGATION_TABLE,
-                INV_ID + " = ? ",
-                new String[]{id});
-    }
-
-    // Investigation notification skip
-    public boolean insertDoctorIdToSkip(int docId) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(SKIP_INV_DOCTOR_ID, docId);
-        db.insert(SKIP_INV_TABLE, null, contentValues);
-        return true;
-    }
-
-    public int getDoctorIdToSkip(int docId) {
-        SQLiteDatabase db = getReadableDatabase();
-        String countQuery = "select * from " + SKIP_INV_TABLE + " where " + SKIP_INV_DOCTOR_ID + " = '" + docId + "'";
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-
-        if (count > 0)
-            return docId;
-        else return -1;
-    }
-
-    public int deleteDoctorIdToSkip(int docId) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(SKIP_INV_TABLE,
-                SKIP_INV_DOCTOR_ID + " = ? ",
-                new String[]{String.valueOf(docId)});
-    }*/
-
     // MyRecords
     public boolean insertMyRecordsData(String id, int status, String data, int docId, int opdId, String visitDate) {
         if (MyRecordsDataTableNumberOfRows(id) == 0) {
@@ -553,11 +513,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         return mqttMessage;
     }
-
-  /*  public boolean deleteUploadedMessage(String id) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(MESSAGE_UPLOAD_TABLE, MESSAGE_UPLOAD_ID + "='" + id + "'", null) > 0;
-    }*/
 
     // Chat Upload End
 

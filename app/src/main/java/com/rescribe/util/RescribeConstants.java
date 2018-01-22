@@ -226,6 +226,7 @@ public class RescribeConstants {
     public static final String CALL_FROM_DASHBOARD = "dashboard";
     public static final String DASHBOARD_CALL_CONFIRMATION_PAGE = "dashboard_call";
     public static final String RATING = "rating";
+    public static final String MIXED_APPOINTMENT_TYPE = "mixed";
 
 
     public static class USER_STATUS {

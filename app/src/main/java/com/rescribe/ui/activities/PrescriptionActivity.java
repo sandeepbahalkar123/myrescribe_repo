@@ -63,7 +63,7 @@ public class PrescriptionActivity extends AppCompatActivity
         Calendar c = Calendar.getInstance();
         int hour24 = c.get(Calendar.HOUR_OF_DAY);
         int Min = c.get(Calendar.MINUTE);
-        mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+        mGetMealTime = CommonMethods.getMealTimeForPrescription(hour24, Min, this);
         doGetPrescriptionList();
     }
 

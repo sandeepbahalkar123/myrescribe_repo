@@ -190,9 +190,8 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
 
             Calendar c = Calendar.getInstance();
             int hour24 = c.get(Calendar.HOUR_OF_DAY);
-            int Min = c.get(Calendar.MINUTE);
 
-            String mGetMealTime = CommonMethods.getMealTime(hour24, Min, this);
+            String mGetMealTime = CommonMethods.getMealTime(hour24, this);
             Intent intent = new Intent(this, NotificationActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));

@@ -107,11 +107,9 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
         if (savedArticleInfo.getArticleImageURL() != null) {
 
             RequestOptions requestOptions = new RequestOptions();
-
             requestOptions.dontAnimate();
             requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
             requestOptions.skipMemoryCache(true);
-
             requestOptions.placeholder(R.drawable.image_1);
             requestOptions.error(R.drawable.image_1);
 

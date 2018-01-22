@@ -1,5 +1,6 @@
 package com.rescribe.ui.activities.dashboard;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.rescribe.singleton.RescribeApplication.appUnreadNotificationMessageList;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 
@@ -292,7 +294,12 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
         RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
 
+        // Clear all notification
+        NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nMgr.cancelAll();
+
         appDBHelper.deleteDatabase();
+        appUnreadNotificationMessageList.clear();
 
         Intent intent = new Intent(mContext, LoginSignUpActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

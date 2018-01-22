@@ -28,17 +28,12 @@ import java.util.TreeSet;
 public class RescribeApplication extends MultiDexApplication {
     public final String TAG = this.getClass().getName();
     private static final Hashtable<String, Typeface> cache = new Hashtable<String, Typeface>();
-    private static RescribeApplication singleton;
 
     private static HashMap<String, String> userSelectedLocationInfo = new HashMap<>();
     private static HashMap<String, String> previousUserSelectedLocationInfo = new HashMap<>();
 
-    private static ArrayList<UnreadSavedNotificationMessageData> appUnreadNotificationMessageList = new ArrayList<>();
+    public static ArrayList<UnreadSavedNotificationMessageData> appUnreadNotificationMessageList = new ArrayList<>();
     private static AppDBHelper appDBHelper;
-
-    public static RescribeApplication getInstance() {
-        return singleton;
-    }
 
     public static Typeface get(Context c, String name) {
         synchronized (cache) {

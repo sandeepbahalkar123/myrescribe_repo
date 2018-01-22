@@ -484,24 +484,7 @@ public class CommonMethods {
         dialog.show();
     }
 
-    public static String getMealTime(int hour, int mint, Context context) {
-        //BB : 7-11,lunch : 11-3,dinner :7-11
-        String time = "";
-        if (hour > 7 && hour < 11)
-            time = context.getString(R.string.break_fast);
-        else if (hour >= 11 && hour < 15)
-            time = context.getString(R.string.mlunch);
-        else if (hour >= 15 && hour < 17)
-            time = context.getString(R.string.msnacks);
-        else if (hour >= 17 && hour <= 23)
-            time = context.getString(R.string.mdinner);
-
-        CommonMethods.Log(TAG, "hour" + hour);
-        CommonMethods.Log(TAG, "getMealTime" + time);
-        return time;
-    }
-
-    public static String getMealTimeForLocalNotification(int hour, Context context) {
+    public static String getMealTime(int hour, Context context) {
         //BB : 7-11,lunch : 11-3,dinner :7-11
         String time = "";
         if (hour >= 8 && hour < 11)
@@ -509,6 +492,23 @@ public class CommonMethods {
         else if (hour >= 14 && hour < 16)
             time = context.getString(R.string.mlunch);
         else if (hour >= 17 && hour < 19)
+            time = context.getString(R.string.msnacks);
+        else if (hour >= 20 && hour <= 23)
+            time = context.getString(R.string.mdinner);
+
+        CommonMethods.Log(TAG, "hour" + hour);
+        CommonMethods.Log(TAG, "getMealTime" + time);
+        return time;
+    }
+
+    public static String getMealTimeForPrescription(int hour, int mint, Context context) {
+        //BB : 7-11,lunch : 11-3,dinner :7-11
+        String time = "";
+        if (hour >= 8 && hour < 11)
+            time = context.getString(R.string.break_fast);
+        else if (hour >= 11 && hour < 14)
+            time = context.getString(R.string.mlunch);
+        else if (hour >= 15 && hour < 17)
             time = context.getString(R.string.msnacks);
         else if (hour >= 20 && hour <= 23)
             time = context.getString(R.string.mdinner);

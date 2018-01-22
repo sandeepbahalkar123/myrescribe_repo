@@ -56,7 +56,6 @@ public class NotificationService extends Service implements HelperResponse {
     private final IBinder mBinder = new ServiceBinder();
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
-    int Min = c.get(Calendar.MINUTE);
 
     @Override
     public void onCreate() {
@@ -171,7 +170,7 @@ public class NotificationService extends Service implements HelperResponse {
         if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
             NotificationModel prescriptionDataReceived = (NotificationModel) customResponse;
 
-            String slot = CommonMethods.getMealTime(hour24, Min, this);
+            String slot = CommonMethods.getMealTimeForLocalNotification(hour24, this);
 
             if (!prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification().isEmpty()) {
                 ArrayList<Medication> notificationDataList;

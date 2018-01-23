@@ -18,6 +18,7 @@ import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
 import com.rescribe.ui.fragments.doctor_connect.DoctorConnectSearchContainerFragment;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -116,6 +117,8 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         mDoctorList.setTypedashboard(true);
         Intent intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);
         bundleData.putParcelable(getString(R.string.clicked_item_data), mDoctorList);
+        bundleData.putString(RescribeConstants.LOCATION_ID,""+0);
+        bundleData.putString(RescribeConstants.TOKEN_NO,""+0);
         intent.putExtras(bundleData);
         getActivity().startActivityForResult(intent, CONFIRM_REQUESTCODE);
     }

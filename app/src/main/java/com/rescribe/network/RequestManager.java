@@ -677,6 +677,10 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         ResponseAppointmentConfirmationModel mCommonCancelReshedule = new Gson().fromJson(data, ResponseAppointmentConfirmationModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, mCommonCancelReshedule, mOldDataTag);
                         break;
+                    case RescribeConstants.TASK_CANCEL_GET_TOKEN: //This is for get saved article list
+                        ResponseAppointmentConfirmationModel responseAppointmentConfirmationModel = new Gson().fromJson(data, ResponseAppointmentConfirmationModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseAppointmentConfirmationModel, mOldDataTag);
+                        break;
 
                     //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
                     case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for fav doc

@@ -243,6 +243,7 @@
             android:textSize="@dimen/sp18" />
 
         <ImageView
+            android:id="@+id/partitionLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

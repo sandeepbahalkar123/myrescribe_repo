@@ -206,7 +206,7 @@
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/receivedTokenNumber"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center|left"
                         android:paddingLeft="@dimen/dp5"
                         android:textColor="@color/tagColor"

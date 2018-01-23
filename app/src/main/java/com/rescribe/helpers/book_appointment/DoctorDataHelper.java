@@ -16,6 +16,7 @@ import com.rescribe.model.book_appointment.doctor_data.request_model.RequestDoct
 import com.rescribe.model.book_appointment.doctor_data.request_model.RequestFavouriteDoctorModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.RequestAppointmentConfirmationModel;
+import com.rescribe.model.book_appointment.request_appointment_confirmation.RequestCancelGetToken;
 import com.rescribe.model.book_appointment.request_cancel_appointment.RequestCancelAppointment;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.network.ConnectRequest;
@@ -95,6 +96,8 @@ public class DoctorDataHelper implements ConnectionListener {
                 } else if (mOldDataTag == RescribeConstants.TASK_CONFIRM_APPOINTMENT) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag == RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT) {
+                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                }  else if (mOldDataTag == RescribeConstants.TASK_CANCEL_GET_TOKEN) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
@@ -456,7 +459,18 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT);
 
     }
+    public void doCancelTokenNumber(int docID, int locationId, int tokenNo) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_GET_TOKEN, Request.Method.POST, true);
+        mConnectionFactory.setHeaderParams();
 
+        RequestCancelGetToken mRequestCancelAppointment= new RequestCancelGetToken();
+        mRequestCancelAppointment.setDocId(docID);
+        mRequestCancelAppointment.setLocationId(locationId);
+        mRequestCancelAppointment.setTokenNumber(tokenNo);
+        mRequestCancelAppointment.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        mConnectionFactory.setPostParams(mRequestCancelAppointment);
+        mConnectionFactory.setUrl(Config.CANCEL_TOKEN_NUMBER);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_CANCEL_GET_TOKEN);
 
-
+    }
 }

@@ -160,6 +160,7 @@ public class RescribeConstants {
     public static final String TASK_DO_SKIP_INVESTIGATION = RescribeConstants.BLANK + 57;
     public static final String TASK_CONFIRM_APPOINTMENT = RescribeConstants.BLANK + 58;
     public static final String TASK_CANCEL_RESCHEDULE_APPOINTMENT = RescribeConstants.BLANK + 59;
+    public static final String TASK_CANCEL_GET_TOKEN = RescribeConstants.BLANK + 60;
 
     //-----------------
 
@@ -227,6 +228,8 @@ public class RescribeConstants {
     public static final String DASHBOARD_CALL_CONFIRMATION_PAGE = "dashboard_call";
     public static final String RATING = "rating";
     public static final String MIXED_APPOINTMENT_TYPE = "mixed";
+    public static final String LOCATION_ID = "location_id";
+    public static final String TOKEN_NO = "token_no";
 
 
     public static class USER_STATUS {

@@ -79,6 +79,11 @@ public class SavedArticleListAdapter extends RecyclerView.Adapter<SavedArticleLi
 
 
             String doctorName = savedArticleInfo.getAuthorName();
+            if (doctorName.contains("Dr. ")) {
+                doctorName = doctorName.replace("Dr. ", "");
+            }else{
+                doctorName =   savedArticleInfo.getAuthorName();
+            }
 
 
             int color2 = mColorGenerator.getColor(doctorName);

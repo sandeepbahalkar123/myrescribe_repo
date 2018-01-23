@@ -67,6 +67,8 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             } else {
                 //for MyAppointment category doctor confirmAppointment page will open
                 Intent intent = new Intent(mParentActivity, ConfirmAppointmentActivity.class);
+                bundleData.putString(RescribeConstants.LOCATION_ID,""+0);
+                bundleData.putString(RescribeConstants.TOKEN_NO,""+0);
                 intent.putExtras(bundleData);
                 mParentActivity.startActivity(intent);
             }

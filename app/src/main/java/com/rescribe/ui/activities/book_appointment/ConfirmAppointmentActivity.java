@@ -57,6 +57,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.CANCEL_TYPE;
+import static com.rescribe.util.RescribeConstants.MIXED_APPOINTMENT_TYPE;
 import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
 
 
@@ -91,6 +92,8 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
     CustomTextView mobileNumber;
     @BindView(R.id.addressIcon)
     ImageView addressIcon;
+    @BindView(R.id.partitionLine)
+    ImageView partitionLine;
     @BindView(R.id.clinicAddress)
     CustomTextView clinicAddress;
     @BindView(R.id.locationText)
@@ -117,6 +120,9 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
     private DoctorDataHelper mDoctorDataHelper;
     String callType;
     private boolean isCanceled;
+    private Intent intent;
+    private int mTokenNo;
+    private int mLocationId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,11 +145,23 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
 
     private void setUpDataInViews() {
         Bundle extras = getIntent().getExtras();
+
+
         if (extras != null) {
             mDoctorObject = extras.getParcelable(getString(R.string.clicked_item_data));
+            mTokenNo = Integer.parseInt(extras.getString(RescribeConstants.TOKEN_NO));
+            mLocationId = Integer.parseInt(extras.getString(RescribeConstants.LOCATION_ID));
             callType = extras.getString(RescribeConstants.CALL_FROM_DASHBOARD);
         }
         if (mDoctorObject != null) {
+            if (mDoctorObject.isAppointmentTypeMixed()) {
+                rescheduleButton.setVisibility(View.GONE);
+                partitionLine.setVisibility(View.GONE);
+
+            } else {
+                partitionLine.setVisibility(View.VISIBLE);
+                rescheduleButton.setVisibility(View.VISIBLE);
+            }
             doctorName.setText(mDoctorObject.getDocName());
             aboutDoctor.setText(mDoctorObject.getDegree());
             clinicAddress.setText(mDoctorObject.getAddressOfDoctorString());
@@ -177,6 +195,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
             }
         }
     }
+
     @NeedsPermission(Manifest.permission.CALL_PHONE)
     void doCallSupport() {
         callSupport(mobileNumber.getText().toString());
@@ -184,7 +203,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
 
     private void callSupport(String phoneNo) {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:"+phoneNo));
+        callIntent.setData(Uri.parse("tel:" + phoneNo));
         startActivity(callIntent);
     }
 
@@ -200,10 +219,15 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cancelButton:
-                showTokenStatusMessageBox(mContext.getString(R.string.cancel_msg),mDoctorObject.getAptId(),CANCEL_TYPE);
+                if (mDoctorObject.isAppointmentTypeMixed()) {
+                    showTokenStatusMessageBox(mContext.getString(R.string.cancel_token_msg), 0, MIXED_APPOINTMENT_TYPE);
+                } else {
+                    showTokenStatusMessageBox(mContext.getString(R.string.cancel_msg), mDoctorObject.getAptId(), CANCEL_TYPE);
+
+                }
                 break;
             case R.id.rescheduleButton:
-                showTokenStatusMessageBox(mContext.getString(R.string.reschedule_msg),mDoctorObject.getAptId(),RESHEDULE_TYPE);
+                showTokenStatusMessageBox(mContext.getString(R.string.reschedule_msg), mDoctorObject.getAptId(), RESHEDULE_TYPE);
                 break;
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
@@ -212,7 +236,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 if (mDoctorObject != null) {
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getAddressOfDoctorString());
-                    intent.putExtra(RescribeConstants.RATING,mDoctorObject.getRating());
+                    intent.putExtra(RescribeConstants.RATING, mDoctorObject.getRating());
                     intent.putExtra(RescribeConstants.DOCTOR_NAME, mDoctorObject.getDocName());
                     mContext.startActivity(intent);
                 }
@@ -228,8 +252,8 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
 
         if (mDoctorObject.isTypedashboard()) {
             super.onBackPressed();
-        }else{
-            Intent intent = new Intent(this,HomePageActivity.class);
+        } else {
+            Intent intent = new Intent(this, HomePageActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
@@ -262,7 +286,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                         Intent intent = new Intent(ConfirmAppointmentActivity.this, BookAppointDoctorListBaseActivity.class);
                         Bundle bundle = new Bundle();
                         //This CALL_FROM_DASHBOARD is passed to handle onBackPressed of Book Appointment Page which is directed to HomePageActivity
-                        bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD,RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE);
+                        bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE);
                         bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
                         intent.putExtras(bundle);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -271,6 +295,21 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                     }
                 } else {
                     Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                }
+        } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_CANCEL_GET_TOKEN)) {
+            ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
+            if (mResponseAppointmentConfirmationModel.getCommon() != null)
+                if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
+                    // Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ConfirmAppointmentActivity.this, BookAppointDoctorListBaseActivity.class);
+                    Bundle bundle = new Bundle();
+                    //This CALL_FROM_DASHBOARD is passed to handle onBackPressed of Book Appointment Page which is directed to HomePageActivity
+                    bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE);
+                    bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+                    intent.putExtras(bundle);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 }
         }
 
@@ -294,6 +333,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
         Toast.makeText(mContext, serverErrorMessage, Toast.LENGTH_SHORT).show();
 
     }
+
     public void showTokenStatusMessageBox(String message, final int aptId, final String type) {
 
         final Dialog dialog = new Dialog(mContext);
@@ -303,14 +343,14 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
         dialog.setCancelable(true);
 
         TextView messageView = (TextView) dialog.findViewById(R.id.messageView);
-        ImageView icon_get_token = (ImageView)dialog.findViewById(R.id.icon);
+        ImageView icon_get_token = (ImageView) dialog.findViewById(R.id.icon);
         TextView textheading = (TextView) dialog.findViewById(R.id.textheading);
         textheading.setText(mContext.getString(R.string.appointment));
         messageView.setGravity(Gravity.CENTER);
-        icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.bookappointment));
-        if(type.equals(CANCEL_TYPE)){
+        icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.bookappointment));
+        if (type.equals(CANCEL_TYPE)) {
             isCanceled = true;
-        }else{
+        } else {
             isCanceled = false;
         }
         messageView.setText(message);
@@ -320,8 +360,13 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDoctorDataHelper.doCancelResheduleAppointmentRequest(aptId, 4, type);
-                dialog.cancel();
+                if (type.equalsIgnoreCase(CANCEL_TYPE) || type.equalsIgnoreCase(RESHEDULE_TYPE)) {
+                    mDoctorDataHelper.doCancelResheduleAppointmentRequest(aptId, 4, type);
+                    dialog.cancel();
+                } else {
+                    mDoctorDataHelper.doCancelTokenNumber(mDoctorObject.getDocId(), mLocationId, mTokenNo);
+                    dialog.cancel();
+                }
             }
         });
         //------------

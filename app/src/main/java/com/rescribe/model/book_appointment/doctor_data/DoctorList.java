@@ -96,6 +96,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     private String spannable;
     private boolean doctorSearch;
     private boolean isTypedashboard;
+    private boolean isAppointmentTypeMixed;
+
 
     /*  @SerializedName("reviewList")
     @Expose
@@ -135,6 +137,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.doctorSearch = ((boolean) in.readValue((String.class.getClassLoader())));
             instance.isTypedashboard = ((boolean) in.readValue((String.class.getClassLoader())));
             instance.paidStatus = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.isAppointmentTypeMixed = ((boolean) in.readValue((Boolean.class.getClassLoader())));
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -347,6 +350,14 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     public void setPaidStatus(int paidStatus) {
         this.paidStatus = paidStatus;
     }
+
+    public boolean isAppointmentTypeMixed() {
+        return isAppointmentTypeMixed;
+    }
+
+    public void setAppointmentTypeMixed(boolean appointmentTypeMixed) {
+        isAppointmentTypeMixed = appointmentTypeMixed;
+    }
 /* public ArrayList<ReviewList> getReviewList() {
         return reviewList;
     }
@@ -384,6 +395,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(doctorSearch);
         dest.writeValue(isTypedashboard);
         dest.writeValue(paidStatus);
+        dest.writeValue(isAppointmentTypeMixed);
     }
 
 

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
@@ -97,16 +98,12 @@ public class NotificationService extends Service implements HelperResponse {
 
         appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(notification_id), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, new Gson().toJson(notificationData), timeStamp);
 
-        // Using RemoteViews to bind custom layouts into Notification
-        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_layout);
-
         Intent mNotifyYesIntent = new Intent(this.getApplicationContext(), ClickOnCheckBoxOfNotificationReceiver.class);
         mNotifyYesIntent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
         mNotifyYesIntent.putExtra(RescribeConstants.NOTIFICATION_ID, notification_id);
         mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), id);
 
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyYesIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
 
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
@@ -116,50 +113,49 @@ public class NotificationService extends Service implements HelperResponse {
         mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), id);
 
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, notification_id, mNotifyNoIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
 
+        // **********************************************************************************
 
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                // Set Icon
-                .setSmallIcon(R.drawable.logosmall)
+        // Collapse
+
+        // Using RemoteViews to bind custom layouts into Notification
+        RemoteViews mRemoteViewCollapse = new RemoteViews(getPackageName(), R.layout.notification_layout);
+        mRemoteViewCollapse.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
+        mRemoteViewCollapse.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
+        mRemoteViewCollapse.setTextViewText(R.id.showMedicineName, medicineSlot);
+        mRemoteViewCollapse.setTextViewText(R.id.questionText, medicineData + "?");
+        mRemoteViewCollapse.setTextViewText(R.id.timeText, notificationTime);
+
+        // **********************************************************************************
+
+        // Expanded
+
+        // Using RemoteViews to bind custom layouts into Notification
+        RemoteViews mRemoteViewExpanded = new RemoteViews(getPackageName(), R.layout.notification_layout_expanded);
+        mRemoteViewExpanded.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
+        mRemoteViewExpanded.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
+        mRemoteViewExpanded.setTextViewText(R.id.showMedicineName, medicineSlot);
+        mRemoteViewExpanded.setTextViewText(R.id.questionText, medicineData + "?");
+        mRemoteViewExpanded.setTextViewText(R.id.timeText, notificationTime);
+
+        // **********************************************************************************
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setSmallIcon(R.drawable.logosmall)
                 // Set Ticker Message
                 .setTicker(getString(R.string.customnotificationticker))
                 // Dismiss Notification
-                .setAutoCancel(true)
-                // Set RemoteViews into Notification
-                .setContent(mRemoteViews)
-                .setSound(soundUri) //This sets the sound to play
-                .setVibrate(new long[]{1000, 1000, 1000})
-                //.setSound(ringtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
-                //   .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+                .setAutoCancel(true);
 
-
-        mRemoteViews.setTextViewText(R.id.showMedicineName, medicineSlot);
-        mRemoteViews.setTextViewText(R.id.questionText, medicineData + "?");
-        mRemoteViews.setTextViewText(R.id.timeText, notificationTime);
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Notification build = builder.build();
-        // build.flags |= Notification.FLAG_INSISTENT;
+        Notification notification = builder.build();
 
-        //--- Show notification/Alarm based on user configured setting :START
-        /*String string = RescribePreferencesManager.getString(getString(R.string.notificationAlarmTypeSetting), this);
-        if (getString(R.string.alarm).equalsIgnoreCase(string)) {
-            //-----Open Alarm dialog based on config setting-----
-            //----------
-            Intent popup = new Intent(getApplicationContext(), SnoozeAlarmNotifyActivity.class);
-            popup.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
-            popup.putExtra(RescribeConstants.NOTIFICATION_TIME, notificationTime);
-            popup.putExtra(RescribeConstants.NOTIFICATION_ID, "" + notification_id);
-            popup.putExtra(RescribeConstants.TITLE, title);
-            popup.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            startActivity(popup);
-            //----------
-            //----------
-        } else*/
+        notification.contentView = mRemoteViewCollapse;
+        if (Build.VERSION.SDK_INT >= 16) {
+            notification.bigContentView = mRemoteViewExpanded;
+        }
 
-        notificationmanager.notify(MEDICATIONS_NOTIFICATION_TAG, notification_id, build);
+        notificationmanager.notify(MEDICATIONS_NOTIFICATION_TAG, notification_id, notification);
         //--- Show notification/Alarm based on user configured setting : END
 
         stopSelf();
@@ -188,7 +184,7 @@ public class NotificationService extends Service implements HelperResponse {
                     }
                 }
 
-                NotificationData filteredData = getFilteredData(notificationDataForHeader, slot.toLowerCase());
+                NotificationData filteredData = getFilteredData(notificationDataForHeader, slot);
 
                 int notification_id = 0;
                 String medicineSlot = null;
@@ -220,12 +216,14 @@ public class NotificationService extends Service implements HelperResponse {
 
     private NotificationData getFilteredData(NotificationData notificationData, String slot) {
 
+        String slotLower = slot.toLowerCase();
+
         ArrayList<Medication> notificationListForNotification = new ArrayList<>();
         NotificationData notificationDataForNotification = new NotificationData();
 
         if (notificationData.getMedication() != null) {
             for (Medication medication : notificationData.getMedication()) {
-                if (medication.getMedicinSlot().contains(slot))
+                if (medication.getMedicinSlot().contains(slotLower))
                     notificationListForNotification.add(medication);
             }
 

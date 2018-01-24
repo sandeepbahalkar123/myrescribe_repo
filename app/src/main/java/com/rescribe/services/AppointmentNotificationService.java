@@ -1,11 +1,13 @@
 package com.rescribe.services;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
@@ -99,30 +101,27 @@ public class AppointmentNotificationService extends Service implements HelperRes
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
         String currentTimeStamp = CommonMethods.getCurrentDate() + " " + notificationTime;
         appDBHelper.insertUnreadReceivedNotificationMessage("" + subNotificationId, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT, message, message, currentTimeStamp);
-        //-------
-
-        // Using RemoteViews to bind custom layouts into Notification
-        RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
-                R.layout.appointment_notification_layout);
+        //------
 
         Intent mNotifyYesIntent = new Intent(this, ClickOnCheckBoxOfNotificationReceiver.class);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_ID, subNotificationId);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
+        mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_DATE, date);
         mNotifyYesIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
         mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), subNotificationId);
 
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyYesIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
+        
 
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_ID, subNotificationId);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_TIME, time);
+        mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_DATE, date);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_MESSAGE, message);
         mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), subNotificationId);
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyNoIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
 
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this)
                 // Set Icon
@@ -130,19 +129,45 @@ public class AppointmentNotificationService extends Service implements HelperRes
                 // Set Ticker Message
                 .setTicker(getString(R.string.appointment))
                 // Dismiss Notification
-                .setAutoCancel(true)
-                // Set RemoteViews into Notification
-                .setContent(mRemoteViews)
-                .setVibrate(new long[]{1000, 1000, 1000})
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)) //This sets the sound to play
-                .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
+                .setAutoCancel(true);
 
-        mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));
-        mRemoteViews.setTextViewText(R.id.questionText, message);
-        mRemoteViews.setTextViewText(R.id.timeText, notificationTime);
+        // *************************************************************************************************************
+        
+        // Collapsed
+        
+        // Using RemoteViews to bind custom layouts into Notification
+        RemoteViews mRemoteViewCollapse = new RemoteViews(getPackageName(),
+                R.layout.appointment_notification_layout);
+        mRemoteViewCollapse.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
+        mRemoteViewCollapse.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
+        mRemoteViewCollapse.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));
+        mRemoteViewCollapse.setTextViewText(R.id.questionText, message);
+        mRemoteViewCollapse.setTextViewText(R.id.timeText, notificationTime);
+
+        // *************************************************************************************************************
+        
+        // Expanded
+
+        // Using RemoteViews to bind custom layouts into Notification
+        RemoteViews mRemoteViewExpanded = new RemoteViews(getPackageName(),
+                R.layout.appointment_notification_layout_expanded);
+        mRemoteViewExpanded.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
+        mRemoteViewExpanded.setOnClickPendingIntent(R.id.buttonYes, mNoPendingIntent);
+        mRemoteViewExpanded.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.appointment));
+        mRemoteViewExpanded.setTextViewText(R.id.questionText, message);
+        mRemoteViewExpanded.setTextViewText(R.id.timeText, notificationTime);
+        
+        // *************************************************************************************************************
+
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        notificationmanager.notify(APPOINTMENT_NOTIFICATION_TAG, subNotificationId, builder.build());
+        Notification notification = builder.build();
+        notification.contentView = mRemoteViewCollapse;
+        if (Build.VERSION.SDK_INT >= 16) {
+            notification.bigContentView = mRemoteViewExpanded;
+        }
+
+        notificationmanager.notify(APPOINTMENT_NOTIFICATION_TAG, subNotificationId, notification);
     }
 
     @Override

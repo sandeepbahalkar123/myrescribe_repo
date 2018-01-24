@@ -91,13 +91,16 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
 
             AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
 
-            SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
             try {
 
                 String time = intent.getStringExtra(RescribeConstants.APPOINTMENT_TIME);
+                String date = intent.getStringExtra(RescribeConstants.APPOINTMENT_DATE);
 
-                Date date1 = sdf.parse(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a));
-                Date date2 = sdf.parse(time);
+                String dateTime = date + " " + time;
+
+                Date date1 = sdf.parse(CommonMethods.getCurrentTimeStamp(RescribeConstants.DD_MM_YYYY + " " +RescribeConstants.DATE_PATTERN.hh_mm_a));
+                Date date2 = sdf.parse(dateTime);
 
                 if (date2.before(date1))
                     CommonMethods.showToast(mContext, mContext.getResources().getString(R.string.appointment_time_has_lapsed));

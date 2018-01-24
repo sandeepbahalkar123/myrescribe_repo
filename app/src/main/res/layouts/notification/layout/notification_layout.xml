@@ -4,12 +4,13 @@
     android:id="@+id/notificationLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="@dimen/dp4"
     android:background="@color/transparent">
 
     <ImageView
         android:id="@+id/bigIcon"
         android:layout_width="@dimen/dp40"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp40"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:adjustViewBounds="true"
@@ -73,12 +74,14 @@
                 android:layout_toLeftOf="@+id/buttonYes"
                 android:layout_toStartOf="@+id/buttonYes"
                 android:textSize="@dimen/sp12"
+                android:lines="1"
+                android:ellipsize="end"
                 tools:text="@string/dummy_normal" />
 
             <ImageView
                 android:id="@+id/buttonYes"
-                android:layout_width="@dimen/dp56"
-                android:layout_height="@dimen/dp50"
+                android:layout_width="@dimen/dp40"
+                android:layout_height="@dimen/dp40"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"

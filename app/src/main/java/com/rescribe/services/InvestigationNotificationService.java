@@ -1,10 +1,12 @@
 package com.rescribe.services;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
@@ -101,11 +103,6 @@ public class InvestigationNotificationService extends Service implements HelperR
         //---- Save notification in db---
         AppDBHelper appDBHelper = AppDBHelper.getInstance(getApplicationContext());
         appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(value.get(0).getDrId()), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message, new Gson().toJson(data), time);
-        //-------
-
-        // Using RemoteViews to bind custom layouts into Notification
-        RemoteViews mRemoteViews = new RemoteViews(getPackageName(),
-                R.layout.investigation_notification_layout);
 
         //---------
         Intent mNotifyYesIntent = new Intent(this, ClickOnCheckBoxOfNotificationReceiver.class);
@@ -116,15 +113,12 @@ public class InvestigationNotificationService extends Service implements HelperR
         mNotifyYesIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, notificationTime);
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyYesIntent, 0);
 
-        mRemoteViews.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
-
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.INVESTIGATION_LIST, value);
         mNotifyNoIntent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, notification_id);
         mNotifyNoIntent.putExtra(getString(R.string.unread_notification_update_received), value.get(0).getDrId());
 
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyNoIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.buttonSkip, mNoPendingIntent);
 
         android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this)
                 // Set Icon
@@ -132,18 +126,45 @@ public class InvestigationNotificationService extends Service implements HelperR
                 // Set Ticker Message
                 .setTicker(getString(R.string.investigation))
                 // Dismiss Notification
-                .setAutoCancel(true)
-                // Set RemoteViews into Notification
-                .setContent(mRemoteViews)
-                .setStyle(new android.support.v7.app.NotificationCompat.DecoratedCustomViewStyle());
+                .setAutoCancel(true);
 
-        mRemoteViews.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
+        // *************************************************************************************************************
 
-        mRemoteViews.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
-        mRemoteViews.setTextViewText(R.id.timeText, notificationTime);
+        // Collapsed
+        
+        // Using RemoteViews to bind custom layouts into Notification
+        RemoteViews mRemoteViewCollapse = new RemoteViews(getPackageName(),
+                R.layout.investigation_notification_layout);
+        mRemoteViewCollapse.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
+        mRemoteViewCollapse.setOnClickPendingIntent(R.id.buttonSkip, mNoPendingIntent);
+        mRemoteViewCollapse.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
+        mRemoteViewCollapse.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
+        mRemoteViewCollapse.setTextViewText(R.id.timeText, notificationTime);
+        
+        // **************************************************************************************************************
 
+        // Expanded
+
+        // Using RemoteViews to bind custom layouts into Notification
+        RemoteViews mRemoteViewExpanded = new RemoteViews(getPackageName(),
+                R.layout.investigation_notification_layout_expanded);
+        mRemoteViewExpanded.setOnClickPendingIntent(R.id.notificationLayout, mYesPendingIntent);
+        mRemoteViewExpanded.setOnClickPendingIntent(R.id.buttonSkip, mNoPendingIntent);
+        mRemoteViewExpanded.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
+        mRemoteViewExpanded.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
+        mRemoteViewExpanded.setTextViewText(R.id.timeText, notificationTime);
+        
+        // *************************************************************************************************************
+        
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(INVESTIGATION_NOTIFICATION_TAG, value.get(0).getDrId(), builder.build());
+
+        Notification notification = builder.build();
+        notification.contentView = mRemoteViewCollapse;
+        if (Build.VERSION.SDK_INT >= 16) {
+            notification.bigContentView = mRemoteViewExpanded;
+        }
+
+        notificationmanager.notify(INVESTIGATION_NOTIFICATION_TAG, value.get(0).getDrId(), notification);
 
         stopSelf();
     }

@@ -28,9 +28,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -93,7 +90,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -191,7 +187,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         activeRequest.setId(Integer.parseInt(patientId));
         loginHelper.doActiveStatus(activeRequest);
         //------
-        notificationForMedicine();
+
+        boolean need_notify = RescribePreferencesManager.getBoolean(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NEED_NOTIFY, mContext);
+
+        if (need_notify)
+            notificationForMedicine();
 
         mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
@@ -245,10 +245,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private void notificationForMedicine() {
 
-        Calendar c = Calendar.getInstance();
-        int hour24 = c.get(Calendar.HOUR_OF_DAY);
-        int Min = c.get(Calendar.MINUTE);
-
         Cursor cursor = appDBHelper.getPreferences("1");
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -268,6 +264,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         new DosesAlarmTask(mContext, times).run();
         new InvestigationAlarmTask(mContext, RescribeConstants.INVESTIGATION_NOTIFICATION_TIME, getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(mContext, RescribeConstants.APPOINTMENT_NOTIFICATION_TIME, getResources().getString(R.string.appointment_msg)).run();
+
+        RescribePreferencesManager.putBoolean(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NEED_NOTIFY, false, mContext);
     }
 
     @Override
@@ -899,8 +897,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             doCallDashBoardAPI();
             // write your logic here
         }
-
     }
+
     @SuppressLint("NewApi")
     private void checkPermission() {
         if (ContextCompat.checkSelfPermission(this,

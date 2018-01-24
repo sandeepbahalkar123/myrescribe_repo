@@ -248,5 +248,6 @@ public class RescribePreferencesManager {
         String PROFILE_PHOTO = "profile_photo";
         String USER_EMAIL = "user_email";
         String COACHMARK_GET_TOKEN = "coachmark_get_token" ;
+        String NEED_NOTIFY = "notification_set";
     }
 }

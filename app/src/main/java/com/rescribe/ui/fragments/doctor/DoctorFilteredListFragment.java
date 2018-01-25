@@ -5,15 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorFilteredExpandableList;
@@ -44,8 +43,12 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
     ExpandableListView mExpandFilterDocListView;
     @BindView(R.id.emptyListView)
     RelativeLayout mEmptyListView;
-    @BindView(R.id.docFilterToolbar)
-    Toolbar mDocFilterToolbar;
+
+    @BindView(R.id.backArrow)
+    ImageView backArrow;
+    @BindView(R.id.titleText)
+    TextView titleTextView;
+
     private Context mContext;
     private DrFilterRequestModel mRequestedFilterRequestModel;
     private DoctorListActivity mParentActivity;
@@ -62,10 +65,8 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
         ButterKnife.bind(this, mRootView);
         mContext = inflater.getContext();
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mDocFilterToolbar);
-        ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
-        supportActionBar.setTitle(getString(R.string.doctor_details) + getString(R.string.details));
+        titleTextView.setText(getString(R.string.doctor_details) + getString(R.string.details));
+
         setHasOptionsMenu(true);
 
         mParentActivity = (DoctorListActivity) getActivity();
@@ -143,7 +144,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.fab})
+    @OnClick({R.id.fab, R.id.backArrow})
     public void onViewClicked(View view) {
 
         DrawerLayout activityDrawer = mParentActivity.getActivityDrawer();
@@ -156,6 +157,10 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
                 } else {
                     activityDrawer.openDrawer(GravityCompat.END);
                 }
+                break;
+
+            case R.id.backArrow:
+                getActivity().onBackPressed();
                 break;
         }
     }

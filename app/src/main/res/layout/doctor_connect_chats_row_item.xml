@@ -7,9 +7,9 @@
     android:layout_gravity="center"
     android:layout_marginBottom="@dimen/dp10"
     android:layout_marginEnd="@dimen/dp6"
-    android:layout_marginLeft="@dimen/dp16"
+    android:layout_marginLeft="@dimen/dp14"
     android:layout_marginRight="@dimen/dp6"
-    android:layout_marginStart="@dimen/dp16"
+    android:layout_marginStart="@dimen/dp14"
     android:layout_marginTop="@dimen/dp10"
     android:background="@color/white"
     android:baselineAligned="false"
@@ -22,9 +22,7 @@
         android:layout_height="@dimen/dp50"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/dp5"
-        android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp5"
-        android:layout_marginStart="@dimen/dp16"
         android:padding="3dip">
 
         <com.rescribe.ui.customesViews.CircularImageView

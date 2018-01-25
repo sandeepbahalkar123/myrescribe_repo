@@ -368,14 +368,28 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
                 if (!mListDataHeader.get(groupPosition).getVitals().isEmpty())
-                    if(mVisitDetailList.get(0).getName().equalsIgnoreCase("bp")){
-                    String bpValue = mVisitDetailList.get(0).getVitalValue();
+                    if (mVisitDetailList.get(0).getName().equalsIgnoreCase("bp")) {
+                        String bpValue = mVisitDetailList.get(0).getVitalValue();
+
                         String[] unitDataObject = bpValue.split("/");
                         String unitBpMax = unitDataObject[0];
-                        String unitBpMin = unitDataObject.length == 2 ? unitDataObject[1] : "";
-                        groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + " "+unitBpMax+"...");
+                        String unitBpMin = unitDataObject.length > 1 ? unitDataObject[1] : "";
 
-                    }else{
+                        // Find Unit
+                        String unitString = "";
+                        if (unitBpMax.contains(" "))
+                            unitString = unitBpMax.substring(unitBpMax.indexOf(" "), unitBpMax.length());
+
+                        // Find Digits
+                        String digitSystolic = unitBpMax.split(" ")[0];
+                        String digitDiastolic = unitBpMin.split(" ")[0];
+
+                        // Final String
+                        String finalString = digitSystolic + "/ " + digitDiastolic + " " + unitString + "...";
+
+                        groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + " - " + finalString);
+
+                    } else {
                         groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
 
                     }

@@ -41,10 +41,13 @@ public class MessageNotification {
     private static final String GROUP = "RescribeMessages";
 
     public static void notify(final Context context, final ArrayList<MQTTMessage> messageContent,
-                              final String userName, Bitmap picture, final int unread, PendingIntent replyPendingIntent, final int notificationId) {
+                              String userName, Bitmap picture, final int unread, PendingIntent replyPendingIntent, final int notificationId) {
 
         MQTTMessage lastMessage = messageContent.get(messageContent.size() - 1);
         String content = getContent(lastMessage);
+
+        if (!userName.contains("Dr. "))
+            userName = "Dr. " + userName;
 
         String title;
         if (unread > 1)

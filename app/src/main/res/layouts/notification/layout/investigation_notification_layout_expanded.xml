@@ -4,9 +4,9 @@
     android:id="@+id/notificationLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/transparent"
     android:clipToPadding="true"
-    android:padding="@dimen/dp4"
-    android:background="@color/transparent">
+    android:padding="@dimen/dp4">
 
     <ImageView
         android:id="@+id/bigIcon"
@@ -14,21 +14,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/dp6"
+        android:layout_marginStart="@dimen/dp6"
         android:adjustViewBounds="true"
         android:padding="@dimen/dp2"
-        android:layout_marginTop="@dimen/dp8"
-        android:layout_marginStart="@dimen/dp4"
-        android:layout_marginLeft="@dimen/dp4"
         android:src="@drawable/ic_notification_investigations" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginStart="@dimen/dp4"
+        android:layout_marginTop="@dimen/dp4"
         android:layout_toEndOf="@id/bigIcon"
-        android:layout_marginTop="@dimen/dp8"
         android:layout_toRightOf="@+id/bigIcon"
         android:orientation="vertical"
-        android:padding="@dimen/dp8">
+        android:padding="@dimen/dp4">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,17 +62,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/dp4"
+            android:paddingTop="@dimen/dp4"
+            android:paddingBottom="@dimen/dp4"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/questionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/instruction_color"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/buttonSkip"
                 android:layout_toStartOf="@+id/buttonSkip"
+                android:textColor="@color/instruction_color"
                 android:textSize="@dimen/sp12"
                 tools:text="@string/dummy_normal" />
 
@@ -79,17 +81,17 @@
                 android:id="@+id/buttonSkip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/dp8"
-                android:paddingEnd="@dimen/dp8"
-                android:textSize="12sp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/tagColor"
+                android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8"
                 android:text="@string/skip"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:textColor="@color/tagColor"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

@@ -294,7 +294,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
         Toast.makeText(mContext, serverErrorMessage, Toast.LENGTH_SHORT).show();
 
     }
-    public void showTokenStatusMessageBox(String message, final int aptId, final String type) {
+    public void showTokenStatusMessageBox(String message, final String aptId, final String type) {
 
         final Dialog dialog = new Dialog(mContext);
 

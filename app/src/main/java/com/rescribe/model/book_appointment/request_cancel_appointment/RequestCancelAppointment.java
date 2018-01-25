@@ -9,7 +9,7 @@ public class RequestCancelAppointment implements CustomResponse{
 
     @SerializedName("aptId")
     @Expose
-    private Integer aptId;
+    private String aptId;
     @SerializedName("status")
     @Expose
     private Integer status;
@@ -20,11 +20,11 @@ public class RequestCancelAppointment implements CustomResponse{
     @Expose
     private Integer patientId;
 
-    public Integer getAptId() {
+    public String getAptId() {
         return aptId;
     }
 
-    public void setAptId(Integer aptId) {
+    public void setAptId(String aptId) {
         this.aptId = aptId;
     }
 

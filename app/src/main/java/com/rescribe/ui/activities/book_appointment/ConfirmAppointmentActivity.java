@@ -190,7 +190,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 String ordinal = CommonMethods.ordinal(Integer.parseInt(CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "dd")));
                 String timeToShow = CommonMethods.formatDateTime(mDoctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.hh_mm_a,
                         RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.TIME).toLowerCase();
-                String dateToShow = dateValueToShow + ", " + ordinal + " " + CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "MMM yyyy").toUpperCase() + " @" + timeToShow;
+                String dateToShow = dateValueToShow + ", " + ordinal + " " + CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "MMM yyyy") + " @" + timeToShow;
                 showTimedate.setText(dateToShow);
             }
         }
@@ -220,7 +220,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
         switch (view.getId()) {
             case R.id.cancelButton:
                 if (mDoctorObject.isAppointmentTypeMixed()) {
-                    showTokenStatusMessageBox(mContext.getString(R.string.cancel_token_msg), 0, MIXED_APPOINTMENT_TYPE);
+                    showTokenStatusMessageBox(mContext.getString(R.string.cancel_token_msg), "0", MIXED_APPOINTMENT_TYPE);
                 } else {
                     showTokenStatusMessageBox(mContext.getString(R.string.cancel_msg), mDoctorObject.getAptId(), CANCEL_TYPE);
 
@@ -334,7 +334,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
 
     }
 
-    public void showTokenStatusMessageBox(String message, final int aptId, final String type) {
+    public void showTokenStatusMessageBox(String message, final String aptId, final String type) {
 
         final Dialog dialog = new Dialog(mContext);
 

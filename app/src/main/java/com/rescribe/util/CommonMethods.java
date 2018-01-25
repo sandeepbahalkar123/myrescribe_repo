@@ -635,7 +635,9 @@ public class CommonMethods {
         return abbreviation;
     }
 
-    public static int getCaseStudyIcons(String caseStudyName) {
+    public static int getCaseStudyIcons(String caseStudyNameOriginal) {
+
+        String caseStudyName = caseStudyNameOriginal.toLowerCase();
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
         int abbreviation = R.drawable.commonicon;

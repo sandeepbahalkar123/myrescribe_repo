@@ -444,7 +444,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
     }
 
-    public void doCancelResheduleAppointmentRequest(int aptId, int status, String type) {
+    public void doCancelResheduleAppointmentRequest(String aptId, int status, String type) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 

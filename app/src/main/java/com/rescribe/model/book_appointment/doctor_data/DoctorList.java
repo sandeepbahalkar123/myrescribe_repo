@@ -23,9 +23,14 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("doc_location_id")
     @Expose
     private int docLocationId;
+
+    /*@SerializedName("aptId")
+    @Expose
+    private int aptId;*/
+
     @SerializedName("aptId")
     @Expose
-    private int aptId;
+    private String aptId;
     @SerializedName("location_id")
     @Expose
     private int locationId;
@@ -62,7 +67,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
 
     @SerializedName("rating")
     @Expose
-    private double rating;
+    private double rating = 0.0d;
 
     @SerializedName("waitingTime")
     @Expose
@@ -83,6 +88,13 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("paidStatus")
     @Expose
     private int paidStatus;
+
+    @SerializedName("type")
+    @Expose
+    private String type;
+    @SerializedName("tokenNumber")
+    @Expose
+    private String tokenNumber;
 
     //------
     private int sizeOfList = 0;
@@ -113,7 +125,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.docId = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.docLocationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.aptId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.aptId = ((String) in.readValue((String.class.getClassLoader())));
             instance.docName = ((String) in.readValue((String.class.getClassLoader())));
             instance.categoryName = ((String) in.readValue((String.class.getClassLoader())));
             instance.categorySpeciality = ((String) in.readValue((String.class.getClassLoader())));
@@ -138,6 +150,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.isTypedashboard = ((boolean) in.readValue((String.class.getClassLoader())));
             instance.paidStatus = ((Integer) in.readValue((Integer.class.getClassLoader())));
             instance.isAppointmentTypeMixed = ((boolean) in.readValue((Boolean.class.getClassLoader())));
+            instance.type = ((String) in.readValue((String.class.getClassLoader())));
+            instance.tokenNumber = ((String) in.readValue((String.class.getClassLoader())));
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -359,6 +373,25 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         isAppointmentTypeMixed = appointmentTypeMixed;
     }
 /* public ArrayList<ReviewList> getReviewList() {
+=======
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public void setTokenNumber(String tokenNumber) {
+        this.tokenNumber = tokenNumber;
+    }
+
+    /* public ArrayList<ReviewList> getReviewList() {
+>>>>>>> ganesh
         return reviewList;
     }
 
@@ -396,6 +429,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(isTypedashboard);
         dest.writeValue(paidStatus);
         dest.writeValue(isAppointmentTypeMixed);
+        dest.writeValue(type);
+        dest.writeValue(tokenNumber);
     }
 
 
@@ -425,11 +460,11 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         this.docPhone = docPhone;
     }
 
-    public int getAptId() {
+    public String getAptId() {
         return aptId;
     }
 
-    public void setAptId(int aptId) {
+    public void setAptId(String aptId) {
         this.aptId = aptId;
     }
 

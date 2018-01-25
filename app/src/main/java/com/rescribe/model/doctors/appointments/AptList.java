@@ -33,7 +33,7 @@ public class AptList implements CustomResponse, Serializable{
     private String docPhone;
     @SerializedName("aptId")
     @Expose
-    private int id;
+    private String id;
     @SerializedName("doctorName")
     @Expose
     private String doctorName;
@@ -106,11 +106,11 @@ public class AptList implements CustomResponse, Serializable{
         this.aptTime = aptTime;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

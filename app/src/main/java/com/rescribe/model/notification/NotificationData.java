@@ -17,7 +17,8 @@ public class NotificationData implements CustomResponse{
     private String prescriptionDate;
     @SerializedName("medication")
     @Expose
-    private ArrayList<Medication> medication = null;
+    private ArrayList<Medication> medication;
+
     private boolean isExpanded = false;
     private boolean isLunchThere = true;
     private boolean isDinnerThere = true;

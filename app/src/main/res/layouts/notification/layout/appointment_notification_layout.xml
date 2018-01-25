@@ -4,6 +4,7 @@
     android:id="@+id/notificationLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="@dimen/dp4"
     android:background="@color/transparent">
 
     <ImageView
@@ -14,8 +15,8 @@
         android:layout_alignParentStart="true"
         android:adjustViewBounds="true"
         android:padding="@dimen/dp2"
-        android:layout_marginStart="@dimen/dp4"
-        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginLeft="@dimen/dp6"
+        android:layout_marginStart="@dimen/dp6"
         android:src="@drawable/ic_notification_appoinments" />
 
     <LinearLayout
@@ -61,6 +62,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/instruction_color"
             android:textSize="@dimen/sp12"
+            android:lines="1"
+            android:ellipsize="end"
+            android:paddingBottom="@dimen/dp4"
+            android:paddingTop="@dimen/dp4"
             tools:text="@string/dummy_full" />
 
     </LinearLayout>

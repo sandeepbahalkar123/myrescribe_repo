@@ -11,7 +11,7 @@
         android:id="@+id/viewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"></FrameLayout>
+        android:orientation="horizontal"/>
 
     <FrameLayout
         android:id="@+id/nav_view"

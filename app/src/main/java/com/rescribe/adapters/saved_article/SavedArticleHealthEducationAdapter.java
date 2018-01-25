@@ -21,8 +21,6 @@ import com.rescribe.R;
 import com.rescribe.model.saved_article.SavedArticleInfo;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.util.CommonMethods;
-import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -70,14 +68,14 @@ public class SavedArticleHealthEducationAdapter extends RecyclerView.Adapter<Sav
         date.setSpan(new UnderlineSpan(), 0, date.length(), 0);
         holder.articleDate.setText(date);
         //-----------
-        SpannableString s = CommonMethods.addTextToStringAtLast(savedArticleInfo.getArticleExcerpt(), 20, "... READ MORE", ContextCompat.getColor(mContext, R.color.tagColor));
 
+        Spanned articleExcerpt;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+            articleExcerpt = Html.fromHtml(savedArticleInfo.getArticleExcerpt() + "<font color='#04abdf'><b>READ MORE</b></font>", Html.FROM_HTML_MODE_LEGACY);
+        else
+            articleExcerpt = Html.fromHtml(savedArticleInfo.getArticleExcerpt() + "<font color='#04abdf'><b>READ MORE</b></font>");
 
-        if (s == null) {
-            holder.articleText.setText("" + savedArticleInfo.getArticleExcerpt());
-        } else {
-            holder.articleText.setText(s);
-        }
+        holder.articleText.setText(articleExcerpt);
         //------------
 
         if (!savedArticleInfo.getAuthorImageURL().equals(null)) {

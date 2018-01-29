@@ -67,16 +67,23 @@ public class CommonMethods {
     }
 
     // 1ˢᵗ, 2ⁿᵈ, 3ʳᵈ, 4ᵗʰ
-    public static String ordinal(int i) {
-        String[] sufixes = new String[]{"ᵗʰ", "ˢᵗ", "ⁿᵈ", "ʳᵈ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ"};
-        switch (i % 100) {
-            case 11:
-            case 12:
-            case 13:
-                return i + "ᵗʰ";
-            default:
-                return i + sufixes[i % 10];
+    public static String ordinal(String number) {
+        try {
 
+            int i = Integer.parseInt(number);
+            String[] sufixes = new String[]{"ᵗʰ", "ˢᵗ", "ⁿᵈ", "ʳᵈ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ", "ᵗʰ"};
+            switch (i % 100) {
+                case 11:
+                case 12:
+                case 13:
+                    return i + "ᵗʰ";
+                default:
+                    return i + sufixes[i % 10];
+            }
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 
@@ -404,13 +411,14 @@ public class CommonMethods {
             // SimpleDateFormat ft = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.HH_MM, Locale.US);
             SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat, Locale.US);
 
-            Date dateObj = null;
+            Date dateObj = new Date();
 
             try {
                 dateObj = ft.parse(selectedDateTime);
             } catch (ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                return "";
             }
 
             long millis = dateObj.getTime();
@@ -422,7 +430,7 @@ public class CommonMethods {
         else if (formatString.equalsIgnoreCase(RescribeConstants.DATE)) {
             SimpleDateFormat ft = new SimpleDateFormat(currentDateFormat, Locale.US);
 
-            Date dateObj = null;
+            Date dateObj;
 
             try {
                 dateObj = ft.parse(selectedDateTime);
@@ -430,6 +438,7 @@ public class CommonMethods {
             } catch (ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                return "";
             }
 
             SimpleDateFormat simpleDateFormatObj = new SimpleDateFormat(requestedFormat, Locale.US);
@@ -801,7 +810,7 @@ public class CommonMethods {
 
     public static Date convertStringToDate(String dateString, String dateFormat) {
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat, Locale.US);
-        Date date = null;
+        Date date = new Date();
 
         try {
             date = formatter.parse(dateString.trim());

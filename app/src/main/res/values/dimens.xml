@@ -67,6 +67,8 @@
     <dimen name="dp75">75dp</dimen>
     <dimen name="myrecords_height">120dp</dimen>
     <dimen name="dp32">32dp</dimen>
+    <dimen name="dp90">90dp</dimen>
+    <dimen name="dp41">41dp</dimen>
 
     <!--End Switch Button-->
 </resources>

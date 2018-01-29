@@ -5,9 +5,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.rescribe.R;
 import com.rescribe.helpers.login.LoginHelper;
@@ -25,18 +28,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link SocialLoginInputMobileForConfirmation#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SocialLoginInputMobileForConfirmation extends Fragment implements HelperResponse {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+    @BindView(R.id.editTextName)
+    EditText editTextName;
 
     @BindView(R.id.socialLoginMobileNo)
     EditText mSocialLoginMobileNo;
@@ -48,28 +43,19 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
     LinearLayout mEmailLayout;
     @BindView(R.id.submitBtn)
     Button mSubmitBtn;
+
+    @BindView(R.id.salutationSpinner)
+    Spinner salutationSpinner;
+
+    @BindView(R.id.genderSpinner)
+    Spinner genderSpinner;
+
     private SignUpRequestModel mSignUpRequestModel;
+    private int salutationValue;
+    private String genderValue;
 
     public SocialLoginInputMobileForConfirmation() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUp.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SocialLoginInputMobileForConfirmation newInstance(String param1, String param2) {
-        SocialLoginInputMobileForConfirmation fragment = new SocialLoginInputMobileForConfirmation();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -86,12 +72,46 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
         if (getArguments() != null) {
             Bundle arguments = getArguments();
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
-            mEmailLayout.setVisibility(View.GONE);
-            if (mSignUpRequestModel.getEmailId() == null || RescribeConstants.BLANK.equalsIgnoreCase(mSignUpRequestModel.getEmailId())) {
+            if (mSignUpRequestModel.getEmailId() == null || mSignUpRequestModel.getEmailId().isEmpty())
+                mEmailLayout.setVisibility(View.GONE);
+             else {
+                mSocialLoginEmail.setText(mSignUpRequestModel.getEmailId());
                 mEmailLayout.setVisibility(View.VISIBLE);
-            } else {
-                mSocialLoginEmail.setText("" + mSignUpRequestModel.getEmailId());
             }
+
+            editTextName.setText(mSignUpRequestModel.getName());
+
+            final String[] salutation = {"Mr.", "Mrs.", "Miss", "Other"};
+            final String[] gender = {"MALE", "FEMALE", "TRANSGENDER"};
+
+            ArrayAdapter salutationSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_social_spinner_item, salutation);
+            salutationSpinnerAdapter.setDropDownViewResource(R.layout.signup_social_spinner_item_view);
+            salutationSpinner.setAdapter(salutationSpinnerAdapter);
+
+            salutationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    salutationValue = position + 1;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+
+            ArrayAdapter genderSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_social_spinner_item, gender);
+            genderSpinnerAdapter.setDropDownViewResource(R.layout.signup_social_spinner_item_view);
+            genderSpinner.setAdapter(genderSpinnerAdapter);
+
+            genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    genderValue = gender[position];
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {}
+            });
         }
         return inflate;
     }

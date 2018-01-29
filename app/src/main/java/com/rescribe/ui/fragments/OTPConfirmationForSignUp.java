@@ -160,6 +160,10 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
             model.setName(mSignUpRequestModel.getName());
             model.seteMailID(mSignUpRequestModel.getEmailId());
 
+            model.setSalutation(mSignUpRequestModel.getSalutation());
+            model.setAge(mSignUpRequestModel.getAge());
+            model.setGender(mSignUpRequestModel.getGender());
+
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
             loginHelper.doVerifyGeneratedSignUpOTP(model);
         } else {

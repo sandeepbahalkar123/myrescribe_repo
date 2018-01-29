@@ -322,7 +322,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
 
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        selectDate.setText(CommonMethods.ordinal(dayOfMonth) + " " + CommonMethods.getFormattedDate(String.valueOf(monthOfYear + 1), RescribeConstants.DATE_PATTERN.MM, RescribeConstants.DATE_PATTERN.MMM) + " " + year);
+        selectDate.setText(CommonMethods.ordinal(String.valueOf(dayOfMonth)) + " " + CommonMethods.getFormattedDate(String.valueOf(monthOfYear + 1), RescribeConstants.DATE_PATTERN.MM, RescribeConstants.DATE_PATTERN.MMM) + " " + year);
         mSelectDatePicker = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
     }
 

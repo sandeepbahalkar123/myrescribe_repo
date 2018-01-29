@@ -384,6 +384,8 @@
     <string name="cancel_msg">Do you wish to cancel the appointment?</string>
     <string name="cancel_token_msg">Do you wish to cancel the token?</string>
     <string name="reschedule_msg">Do you wish to reschedule the appointment?</string>
+    <string name="enter_age">Age</string>
+    <string name="salutation">Salutation</string>
 
     <!--************************-->
 </resources>

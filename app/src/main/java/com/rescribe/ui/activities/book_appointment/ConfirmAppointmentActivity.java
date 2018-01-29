@@ -185,9 +185,9 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 mobileNumber.setText(mDoctorObject.getDocPhone());
                 phoneNumberLayout.setVisibility(View.VISIBLE);
             }
-            if (!mDoctorObject.getAptTime().isEmpty() && !mDoctorObject.getAptDate().isEmpty()) {
+            if (!mDoctorObject.getAptTime().isEmpty() || !mDoctorObject.getAptDate().isEmpty()) {
                 String dateValueToShow = (String) DateFormat.format("EEE", CommonMethods.convertStringToDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD));
-                String ordinal = CommonMethods.ordinal(Integer.parseInt(CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "dd")));
+                String ordinal = CommonMethods.ordinal(CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "dd"));
                 String timeToShow = CommonMethods.formatDateTime(mDoctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.hh_mm_a,
                         RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.TIME).toLowerCase();
                 String dateToShow = dateValueToShow + ", " + ordinal + " " + CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "MMM yyyy") + " @" + timeToShow;

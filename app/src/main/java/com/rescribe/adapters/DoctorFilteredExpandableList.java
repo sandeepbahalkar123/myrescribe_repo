@@ -171,7 +171,10 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
 
         DoctorFilteredInfo dataObject = doctorFilteredInfoAndCaseDetails.getDoctorFilteredInfo();
 
-        groupViewHolder.doctorName.setText(dataObject.getDoctorName());
+        if (dataObject.getDoctorName().contains("Dr."))
+            groupViewHolder.doctorName.setText(dataObject.getDoctorName());
+        else groupViewHolder.doctorName.setText("Dr. " + dataObject.getDoctorName());
+
         groupViewHolder.doctorAddress.setText(dataObject.getAddress());
         groupViewHolder.doctorType.setText(CommonMethods.toCamelCase(dataObject.getSpecialization()));
 

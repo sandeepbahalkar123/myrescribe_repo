@@ -21,6 +21,19 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
     @Expose
     private String password;
 
+
+    @SerializedName("salutation")
+    @Expose
+    private int salutation;
+
+    @SerializedName("age")
+    @Expose
+    private String age;
+
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+
     private boolean isGmailLogin;
     private boolean isFaceBookLogin;
 
@@ -70,5 +83,29 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(int salutation) {
+        this.salutation = salutation;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

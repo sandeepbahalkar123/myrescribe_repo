@@ -152,7 +152,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             ImageView vitalImage = (ImageView) item.findViewById(R.id.vitalImage);
             TextView vital_name = (TextView) item.findViewById(R.id.vital_name);
             TextView noOfVitals = (TextView) item.findViewById(R.id.noOfVitals);
-            LinearLayout unitValuesLayout = (LinearLayout) item.findViewById(R.id.unitValuesLayout);
+
             final int finali = mPosition;
             //dialog is opened to see info of vitals , Note : BpMin and BpMax is together shown as Bp
             vitalLinearlayout.setOnClickListener(new View.OnClickListener() {
@@ -177,12 +177,21 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 String unit = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue();
                 String[] unitForBp = unit.split("/");
                 String unitForBpMax = unitForBp[0];
-                String unitForBpMin = unitForBp.length == 2 ? unitForBp[1] : "";
+                String unitForBpMin = unitForBp.length > 1 ? unitForBp[1] : "";
                 vitalImage.setImageResource(CommonMethods.getVitalIcons(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getIcon()));
+
+                // Find Unit
+                String unitString = "";
+                if (unitForBpMax.contains(" "))
+                    unitString = unitForBpMax.substring(unitForBpMax.indexOf(" "), unitForBpMax.length());
+
+                // Find Digits
+                String digitSystolic = unitForBpMax.split(" ")[0];
+                String digitDiastolic = unitForBpMin.split(" ")[0];
 
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
 
-                noOfVitals.setText(Html.fromHtml(getUnitValueforBp(categoryForBpMin, categoryForBpMax, unitForBpMin, unitForBpMax)));
+                noOfVitals.setText(Html.fromHtml(getUnitValueforBp(categoryForBpMin, categoryForBpMax, digitDiastolic, digitSystolic) + " <font color='#737373'>" + unitString + "</font>"));
 
             } else {
                 //TextColor of vital unit is set according to category

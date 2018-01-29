@@ -67,7 +67,7 @@ public class VisitDate implements Parcelable {
         if (opdDate.equals("Select Date") || opdDate.equals(""))
             return opdDate;
 
-        String ordinal = CommonMethods.ordinal(Integer.parseInt(CommonMethods.getFormattedDate(opdDate, DD_MM_YYYY, "dd")));
+        String ordinal = CommonMethods.ordinal(CommonMethods.getFormattedDate(opdDate, DD_MM_YYYY, "dd"));
         return ordinal + " " + CommonMethods.getFormattedDate(opdDate, DD_MM_YYYY, "MMM yyyy").toUpperCase();
     }
 }

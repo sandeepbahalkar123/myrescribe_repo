@@ -8,9 +8,12 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.rescribe.R;
 import com.rescribe.helpers.login.LoginHelper;
@@ -40,6 +43,10 @@ public class SignUpFragment extends Fragment implements HelperResponse{
 
     @BindView(R.id.editTextName)
     EditText editTextName;
+
+    @BindView(R.id.editTextAge)
+    EditText editTextAge;
+
     @BindView(R.id.editTextEmailID)
     EditText editTextEmailID;
     @BindView(R.id.editTextPassword)
@@ -54,9 +61,18 @@ public class SignUpFragment extends Fragment implements HelperResponse{
     ImageView signUpWithFacebook;
     @BindView(R.id.signUpWithGoogle)
     ImageView signUpWithGoogle;
+
+    @BindView(R.id.salutationSpinner)
+    Spinner salutationSpinner;
+
+    @BindView(R.id.genderSpinner)
+    Spinner genderSpinner;
+
     Unbinder unbinder;
     private SignUpRequestModel mSignUpRequestModel;
     private OnFragmentInteractionListener mListener;
+    private int salutationValue = 0;
+    private String genderValue = "";
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -68,8 +84,41 @@ public class SignUpFragment extends Fragment implements HelperResponse{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
-
         unbinder = ButterKnife.bind(this, rootView);
+
+        final String[] salutation = {"Mr.", "Mrs.", "Miss.", "Other."};
+        final String[] gender = {"MALE", "FEMALE", "TRANSGENDER"};
+
+        ArrayAdapter salutationSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_spinner_item, salutation);
+        salutationSpinnerAdapter.setDropDownViewResource(R.layout.signup_spinner_item_view);
+        salutationSpinner.setAdapter(salutationSpinnerAdapter);
+
+        salutationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                salutationValue = position + 1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        ArrayAdapter genderSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_spinner_item, gender);
+        genderSpinnerAdapter.setDropDownViewResource(R.layout.signup_spinner_item_view);
+        genderSpinner.setAdapter(genderSpinnerAdapter);
+
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                genderValue = gender[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         return rootView;
     }
 
@@ -102,16 +151,20 @@ public class SignUpFragment extends Fragment implements HelperResponse{
             //Onclick of Signup button
             case R.id.btnSignUp:
                 String name = editTextName.getText().toString();
+                String age = editTextAge.getText().toString();
                 String email = editTextEmailID.getText().toString();
                 String password = editTextPassword.getText().toString();
                 String mobileNo = editTextMobileNo.getText().toString();
-                if (!validate(name, email, password, mobileNo)) {
+                if (!validate(name, age, email, password, mobileNo)) {
                     LoginHelper loginHelper = new LoginHelper(getActivity(), this);
                     mSignUpRequestModel = new SignUpRequestModel();
                     mSignUpRequestModel.setMobileNumber(mobileNo);
                     mSignUpRequestModel.setName(name);
                     mSignUpRequestModel.setEmailId(email);
                     mSignUpRequestModel.setPassword(password);
+                    mSignUpRequestModel.setSalutation(salutationValue);
+                    mSignUpRequestModel.setAge(age);
+                    mSignUpRequestModel.setGender(genderValue);
                     loginHelper.doSignUp(mSignUpRequestModel);
                 }
                 break;
@@ -130,13 +183,18 @@ public class SignUpFragment extends Fragment implements HelperResponse{
                 break;
         }
     }
-    private boolean validate(String name, String email, String password, String mobileNo) {
+
+    private boolean validate(String name, String age, String email, String password, String mobileNo) {
         String message = null;
         String enter = getString(R.string.enter);
         if (name.isEmpty()) {
             message = enter + getString(R.string.enter_full_name).toLowerCase(Locale.US);
             editTextName.setError(message);
             editTextName.requestFocus();
+        } else if (age.isEmpty()) {
+            message = enter + getString(R.string.enter_age).toLowerCase(Locale.US);
+            editTextAge.setError(message);
+            editTextAge.requestFocus();
         } else if (email.isEmpty()) {
             message = enter + getString(R.string.enter_email_id).toLowerCase(Locale.US);
             editTextEmailID.setError(message);
@@ -169,11 +227,7 @@ public class SignUpFragment extends Fragment implements HelperResponse{
             editTextMobileNo.requestFocus();
 
         }
-        if (message != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return message != null;
     }
 
     @Override

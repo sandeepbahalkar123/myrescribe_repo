@@ -21,6 +21,18 @@ public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable
     private String name;
     private String eMailID;
 
+    @SerializedName("salutation")
+    @Expose
+    private int salutation;
+
+    @SerializedName("age")
+    @Expose
+    private String age;
+
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+
     public String getOTP() {
         return OTP;
     }
@@ -59,5 +71,29 @@ public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable
 
     public void seteMailID(String eMailID) {
         this.eMailID = eMailID;
+    }
+
+    public int getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(int salutation) {
+        this.salutation = salutation;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

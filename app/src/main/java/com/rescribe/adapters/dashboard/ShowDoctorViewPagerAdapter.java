@@ -241,10 +241,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 bookAppointmentButton.setVisibility(View.GONE);
                 doctorAppointmentDate.setVisibility(View.VISIBLE);
                 tokenNo.setVisibility(View.GONE);
-                String time = CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a).toLowerCase();
-                SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + time);
-                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-                doctorAppointmentDate.setText(content);
+
+                if (!doctorObject.getAptTime().isEmpty()) {
+                    String time = CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a).toLowerCase();
+                    SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + time);
+                    content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                    doctorAppointmentDate.setText(content);
+                }
+
                 if (clinicDataList.size() > 0) {
                     doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
                     doctorAddress.setText(clinicDataList.get(0).getClinicAddress());

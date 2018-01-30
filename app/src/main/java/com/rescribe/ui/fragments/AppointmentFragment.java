@@ -37,8 +37,7 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
     private RecyclerView mAppointmentListView;
     private RelativeLayout mEmptyListView;
     private String mAppointmentTypeName;
-    private Bundle bundleData;
-//    private AppointmentCancel mListener;
+    //    private AppointmentCancel mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -102,7 +101,7 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
 
     @Override
     public void setOnClickofAppointmentLayout(AptList mAptListObject) {
-        bundleData = new Bundle();
+        Bundle bundleData = new Bundle();
         DoctorList mDoctorList = new DoctorList();
         mDoctorList.setDocName(mAptListObject.getDoctorName());
         mDoctorList.setAptDate(mAptListObject.getAptDate());

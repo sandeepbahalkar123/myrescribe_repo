@@ -162,6 +162,10 @@ public class RescribeConstants {
     public static final String TASK_CANCEL_RESCHEDULE_APPOINTMENT = RescribeConstants.BLANK + 59;
     public static final String TASK_CANCEL_GET_TOKEN = RescribeConstants.BLANK + 60;
 
+    public static final String TASK_FORGOT_PASS_WITH_OTP = RescribeConstants.BLANK + 61;
+    public static final String TASK_RESET_PASS_WITH_OTP = RescribeConstants.BLANK + 62;
+    public static final String TASK_VERIFY_FORGET_PASSWORD_OTP = RescribeConstants.BLANK + 63;
+
     //-----------------
 
     public static final String DATA = "DATA";
@@ -230,6 +234,7 @@ public class RescribeConstants {
     public static final String MIXED_APPOINTMENT_TYPE = "mixed";
     public static final String LOCATION_ID = "location_id";
     public static final String TOKEN_NO = "token_no";
+    public static final String FROM = "from";
 
 
     public static class USER_STATUS {

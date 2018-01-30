@@ -110,8 +110,8 @@
     <string name="forgot_password">Forgot  password?</string>
     <string name="forgot_password_header">Forgot Password</string>
     <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
-    <string name="message_forgot_password">Please provide your email id to access the reset password link.</string>
-    <string name="message_social_login_confirm_mobile_no_password">Please input your mobile no. and password.</string>
+    <string name="message_forgot_password">Please provide your mobile number</string>
+    <string name="message_social_login_confirm">Please input your remain information.</string>
     <string name="submit">Submit</string>
     <string name="err_email_invalid">Enter valid email.</string>
     <string name="err_otp_invalid">Enter valid OTP</string>
@@ -386,6 +386,10 @@
     <string name="reschedule_msg">Do you wish to reschedule the appointment?</string>
     <string name="enter_age">Age</string>
     <string name="salutation">Salutation</string>
+    <string name="enter_new_password">New password</string>
+    <string name="enter_new_password_again">New password again</string>
+    <string name="title_activity_reset_password">Reset Password</string>
+    <string name="password_not_matched">Password not matched</string>
 
     <!--************************-->
 </resources>

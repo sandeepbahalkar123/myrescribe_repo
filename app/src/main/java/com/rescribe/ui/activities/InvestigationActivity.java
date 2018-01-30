@@ -42,6 +42,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.FilePickerConst;
 
+import static com.rescribe.util.RescribeConstants.FROM;
+
 public class InvestigationActivity extends AppCompatActivity implements InvestigationViewAdapter.CheckedClickListener, HelperResponse {
 
     private boolean isCompareDialogCollapsed = true;
@@ -161,10 +163,13 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
-        intent.putExtra(RescribeConstants.ALERT, false);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        String from = getIntent().getStringExtra(FROM); // If coming from Unread Notification Screen it's value will "unread" else null.
+        if (from == null){
+            Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
+            intent.putExtra(RescribeConstants.ALERT, false);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
         super.onBackPressed();
     }
 

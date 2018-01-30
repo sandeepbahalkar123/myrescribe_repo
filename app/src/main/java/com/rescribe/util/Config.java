@@ -11,6 +11,8 @@ public class Config {
     public static final String TOKEN_TYPE = "Bearer";
     public static final String LOGIN_URL = "authApi/authenticate/patientLogin";
     public static final String VERIFY_SIGN_UP_OTP = "authApi/authenticate/verifyPatientOTP";
+    public static final String VERIFY_FORGET_PASSWORD_OTP = "authApi/authenticate/verifyOtpByNumber";
+    public static final String RESET_PASSWORD = "authApi/authenticate/resetpassword";
     public static final String SIGN_UP_URL = "authApi/authenticate/patientSignUp";
     public static final String DOCTOR_LIST_BY_LOCATION = "api/doctors/getDoctorListByLocation";
     public static final String REVIEW_URL = "api/doctors/getReviewsForDoctor?docId=10";
@@ -31,8 +33,10 @@ public class Config {
     //---------------------
     public Context mContext;
     //Declared all URL used in app here
-    public static final String LOGIN_WITH_PASSWORD_URL = "";
     public static final String LOGIN_WITH_OTP_URL = "authApi/authenticate/patientOtpLogin";
+
+    public static final String CHANGE_PASS_WITH_OTP = "authApi/authenticate/forgotpassword";
+
     public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions?patientId=";
     public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList?patientId=";
     public static final String ONE_DAY_VISIT_URL = "api/patient/getPatientOneDayVisit?opdId=";

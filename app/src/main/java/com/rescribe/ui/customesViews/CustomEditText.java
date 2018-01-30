@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
@@ -14,7 +15,7 @@ import com.rescribe.util.RescribeConstants;
 /**
  * Created by Sandeep Bahalkar
  */
-public class CustomEditText extends EditText {
+public class CustomEditText extends AppCompatEditText {
     public CustomEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -36,7 +37,7 @@ public class CustomEditText extends EditText {
     }
 
     public void setCustomFont(Context ctx, String asset) {
-        Typeface typeface = RescribeApplication.get(ctx, "fonts/" + asset);
+        Typeface typeface = RescribeApplication.get(ctx, asset);
         setTypeface(typeface);
     }
 }

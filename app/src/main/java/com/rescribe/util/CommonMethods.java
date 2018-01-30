@@ -446,8 +446,7 @@ public class CommonMethods {
 
 
         }
-        return null;
-
+        return "";
     }
 
     public static int convertDpToPixel(float dp) {

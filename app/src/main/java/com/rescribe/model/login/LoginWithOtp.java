@@ -5,29 +5,29 @@ import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 
-public class LoginWithOtp implements CustomResponse{
+public class LoginWithOtp implements CustomResponse {
 
-@SerializedName("common")
-@Expose
-private Common common;
-@SerializedName("data")
-@Expose
-private String data;
+    @SerializedName("common")
+    @Expose
+    private Common common;
+    @SerializedName("data")
+    @Expose
+    private String data;
 
-public Common getCommon() {
-return common;
-}
+    public Common getCommon() {
+        return common;
+    }
 
-public void setCommon(Common common) {
-this.common = common;
-}
+    public void setCommon(Common common) {
+        this.common = common;
+    }
 
-public String getData() {
-return data;
-}
+    public String getData() {
+        return data;
+    }
 
-public void setData(String data) {
-this.data = data;
-}
+    public void setData(String data) {
+        this.data = data;
+    }
 
 }

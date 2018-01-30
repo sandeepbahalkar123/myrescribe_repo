@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.format.DateFormat;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Gravity;
 import android.view.View;
@@ -46,9 +41,6 @@ import com.rescribe.ui.activities.MapsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -162,7 +154,10 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 partitionLine.setVisibility(View.VISIBLE);
                 rescheduleButton.setVisibility(View.VISIBLE);
             }
-            doctorName.setText(mDoctorObject.getDocName());
+
+            String drName = mDoctorObject.getDocName().contains("Dr.") ? mDoctorObject.getDocName() : "Dr. " + mDoctorObject.getDocName();
+
+            doctorName.setText(drName);
             aboutDoctor.setText(mDoctorObject.getDegree());
             clinicAddress.setText(mDoctorObject.getAddressOfDoctorString());
             if (!mDoctorObject.getAddressOfDoctorString().isEmpty()) {

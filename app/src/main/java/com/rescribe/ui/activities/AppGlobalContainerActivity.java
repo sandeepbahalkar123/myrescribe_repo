@@ -20,16 +20,20 @@ import java.io.Serializable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.util.RescribeConstants.FROM;
+
 /**
  * Created by jeetal on 19/5/17.
  */
 
 public class AppGlobalContainerActivity extends AppCompatActivity {
+    public static final String FORGET_PASSWORD = "forgetPassword";
     private final String TAG = this.getClass().getName();
     @BindView(R.id.blankContainer)
     FrameLayout mBlankContainer;
     private ActionBar mActionBar;
-    Context mContext;
+    private Context mContext;
+    private String from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         String header = getIntent().getStringExtra(getString(R.string.title));
+        from = getIntent().getStringExtra(FROM);
         loadFragment(getIntent().getStringExtra(getString(R.string.type)), getIntent().getSerializableExtra(getString(R.string.details)), header);
 
     }
@@ -56,31 +61,34 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
 
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        Bundle b = new Bundle();
+        Bundle bundle = new Bundle();
         if (serializableExtra != null) {
-            b.putSerializable(getString(R.string.details), serializableExtra);
+            bundle.putSerializable(getString(R.string.details), serializableExtra);
         }
 
         if (type.equalsIgnoreCase(getString(R.string.enter_otp))) {
             OTPConfirmationForSignUp otpConfirmationForSignUp = new OTPConfirmationForSignUp();
-            otpConfirmationForSignUp.setArguments(b);
+            otpConfirmationForSignUp.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, otpConfirmationForSignUp);
         } else if (type.equalsIgnoreCase(getString(R.string.login_with_facebook))) {
             SocialLoginInputMobileForConfirmation socialLoginInputMobileForConfirmation = new SocialLoginInputMobileForConfirmation();
-            socialLoginInputMobileForConfirmation.setArguments(b);
+            socialLoginInputMobileForConfirmation.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
         } else if (type.equalsIgnoreCase(getString(R.string.login_with_gmail))) {
             SocialLoginInputMobileForConfirmation socialLoginInputMobileForConfirmation = new SocialLoginInputMobileForConfirmation();
-            socialLoginInputMobileForConfirmation.setArguments(b);
+            socialLoginInputMobileForConfirmation.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
 
         } else if (type.equalsIgnoreCase(getString(R.string.forgot_password))) {
             ForgotPassword forgotPassword = new ForgotPassword();
-            forgotPassword.setArguments(b);
+            forgotPassword.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, forgotPassword);
         }
         else if(type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))){
             OtpConfirmationForLogin otpConfirmationForLogin = new OtpConfirmationForLogin();
+            if (from != null)
+                bundle.putString(FROM, from);
+            otpConfirmationForLogin.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, otpConfirmationForLogin);
         }
         fragmentTransaction.commit();

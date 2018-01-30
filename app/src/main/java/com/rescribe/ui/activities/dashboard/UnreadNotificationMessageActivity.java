@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
-import com.rescribe.adapters.unread_notification_message_list.UnreadAppointmentNotificationAlert;
+import com.rescribe.adapters.unread_notification_message_list.UnreadNotificationAlertAdapter;
 import com.rescribe.adapters.unread_notification_message_list.UnreadBookAppointTokenNotificationAdapter;
 import com.rescribe.adapters.unread_notification_message_list.UnreadChatNotificationList;
 import com.rescribe.adapters.unread_notification_message_list.UnreadMedicationNotificationAdapter;
@@ -61,7 +61,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
  * Created by jeetal on 27/11/17.
  */
 
-public class UnreadNotificationMessageActivity extends AppCompatActivity implements HelperResponse, UnreadAppointmentNotificationAlert.OnNotificationItemClicked, UnreadMedicationNotificationAdapter.OnMedicationNotificationEventClick, UnreadBookAppointTokenNotificationAdapter.OnUnreadTokenNotificationItemClicked, UnreadChatNotificationList.OnDocConnectItemClicked {
+public class UnreadNotificationMessageActivity extends AppCompatActivity implements HelperResponse, UnreadNotificationAlertAdapter.OnNotificationItemClicked, UnreadMedicationNotificationAdapter.OnMedicationNotificationEventClick, UnreadBookAppointTokenNotificationAdapter.OnUnreadTokenNotificationItemClicked, UnreadChatNotificationList.OnDocConnectItemClicked {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView mBackButton;
@@ -99,8 +99,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     CustomTextView mDoctorConnectFirstMessageTimeStamp;
     @BindView(R.id.emptyListMessageView)
     ImageView emptyListMessageView;
-    private UnreadAppointmentNotificationAlert mAppointmentNotificationAlertAdapter;
-    private UnreadAppointmentNotificationAlert mInvestigationNotificationAlertAdapter;
+    private UnreadNotificationAlertAdapter mAppointmentNotificationAlertAdapter;
+    private UnreadNotificationAlertAdapter mInvestigationNotificationAlertAdapter;
     private UnreadChatNotificationList mUnreadChatNotificationListAdapter;
     private UnreadBookAppointTokenNotificationAdapter mUnreadBookAppointTokenNotificationAdapter;
     private SectionedRecyclerViewAdapter mUnreadMedicationNotificationAdapter;
@@ -227,7 +227,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mAppointmentsFirstMessageTimeStamp.setVisibility(View.VISIBLE);
         //------------
         Collections.reverse(appAlertList);
-        mAppointmentNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
+        mAppointmentNotificationAlertAdapter = new UnreadNotificationAlertAdapter(this, appAlertList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()) {
             @Override
             public boolean canScrollVertically() {
@@ -256,7 +256,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         }
         mInvestigationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
         //------------
-        mInvestigationNotificationAlertAdapter = new UnreadAppointmentNotificationAlert(this, appAlertList, this);
+        mInvestigationNotificationAlertAdapter = new UnreadNotificationAlertAdapter(this, appAlertList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()) {
             @Override
             public boolean canScrollVertically() {
@@ -361,6 +361,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             InvestigationNotification investigationNotification = new Gson().fromJson(notificationData, InvestigationNotification.class);
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationNotification.getNotifications());
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, unreadNotificationMessageData.getNotificationTimeStamp());
+            intentNotification.putExtra(RescribeConstants.FROM, "unread");
             startActivity(intentNotification);
 
             if (unReadCount == 0) {

@@ -59,6 +59,7 @@ import com.rescribe.model.investigation.InvestigationListModel;
 import com.rescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.rescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
 import com.rescribe.model.login.ActiveStatusModel;
+import com.rescribe.model.login.ForgetPasswordModel;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.SignUpModel;
@@ -470,6 +471,22 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginModel, mOldDataTag);
                         break;
+
+                    case RescribeConstants.TASK_FORGOT_PASS_WITH_OTP: //This is for get archived list
+                        ForgetPasswordModel forgetPassword = gson.fromJson(data, ForgetPasswordModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, forgetPassword, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.TASK_RESET_PASS_WITH_OTP: //This is for get archived list
+                        ForgetPasswordModel resetPassword = gson.fromJson(data, ForgetPasswordModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, resetPassword, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.TASK_VERIFY_FORGET_PASSWORD_OTP: //This is for get archived list
+                        ForgetPasswordModel verifyOTP = gson.fromJson(data, ForgetPasswordModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, verifyOTP, mOldDataTag);
+                        break;
+
                     case RescribeConstants.TASK_ONE_DAY_VISIT: //This is for get archived list
                         CaseDetailsModel caseDetailsModel = gson.fromJson(data, CaseDetailsModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, caseDetailsModel, mOldDataTag);

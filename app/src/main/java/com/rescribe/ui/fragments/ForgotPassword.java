@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,9 +9,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.rescribe.R;
+import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.login.ForgetPassPatientDetail;
+import com.rescribe.model.login.ForgetPasswordModel;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.AppGlobalContainerActivity;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.Locale;
 
@@ -18,42 +25,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link ForgotPassword#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ForgotPassword extends Fragment implements HelperResponse {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import static com.rescribe.ui.activities.AppGlobalContainerActivity.FORGET_PASSWORD;
+import static com.rescribe.util.RescribeConstants.FROM;
 
-    @BindView(R.id.forgotPasswordEmailEditText)
-    EditText mForgotPasswordEmailEditText;
+public class ForgotPassword extends Fragment implements HelperResponse {
+
+    @BindView(R.id.editTextMobileNo)
+    EditText editTextMobileNo;
 
     public ForgotPassword() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUp.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ForgotPassword newInstance(String param1, String param2) {
-        ForgotPassword fragment = new ForgotPassword();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -97,18 +78,58 @@ public class ForgotPassword extends Fragment implements HelperResponse {
         int id = v.getId();
         switch (id) {
             case R.id.forgotPasswordSubmit:
-                String email = mForgotPasswordEmailEditText.getText().toString();
-                if (!validate(email)) {
-                    CommonMethods.showToast(getActivity(), "Reset link mail to you.");
-                    getActivity().finish();
+                //input mobile no and click on otp button ,TASK_LOGIN_WITH_OTP is used
+                String mobile = editTextMobileNo.getText().toString();
+                if (!validatePhoneNo(mobile)) {
+                    LoginHelper loginHelper = new LoginHelper(getContext(), this);
+                    loginHelper.forgetPassword(mobile);
                 }
                 break;
         }
     }
 
+    //validation for mobileNo and password on click of Login Button
+    private boolean validatePhoneNo(String mobile) {
+        String message = null;
+        String enter = getString(R.string.enter);
+        if (mobile.isEmpty()) {
+            message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
+            editTextMobileNo.setError(message);
+            editTextMobileNo.requestFocus();
+        } else if ((mobile.trim().length() < 10) || !(mobile.trim().startsWith("7") || mobile.trim().startsWith("8") || mobile.trim().startsWith("9"))) {
+            message = getString(R.string.err_invalid_mobile_no);
+            editTextMobileNo.setError(message);
+            editTextMobileNo.requestFocus();
+        }
+        if (message != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
+        if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_FORGOT_PASS_WITH_OTP)) {
+            //After login user navigated to HomepageActivity
+            ForgetPasswordModel forgetPasswordModel = (ForgetPasswordModel) customResponse;
+            if (forgetPasswordModel.getCommon().isSuccess()) {
 
+                ForgetPassPatientDetail patientDetail = forgetPasswordModel.getData().getPatientDetail();
+
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getPatientPhon(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getId()), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, patientDetail.getPassword(), getActivity());
+
+                Intent intent = new Intent(getActivity(), AppGlobalContainerActivity.class);
+                intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
+                intent.putExtra(getString(R.string.title), getString(R.string.enter_otp_for_login));
+                intent.putExtra(FROM, FORGET_PASSWORD);
+                startActivity(intent);
+            } else {
+                CommonMethods.showToast(getActivity(), forgetPasswordModel.getCommon().getStatusMessage());
+            }
+        }
     }
 
     @Override

@@ -18,19 +18,24 @@ import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.OTPListener;
+import com.rescribe.model.login.ForgetPasswordModel;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.PatientDetail;
-import com.rescribe.model.requestmodel.login.SignUpRequestModel;
+import com.rescribe.model.login.ResetPasswordRequestModel;
 import com.rescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.ui.activities.LoginSignUpActivity;
+import com.rescribe.ui.activities.ResetPasswordActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rescribe.util.RescribeConstants.FROM;
 
 /**
  * Created by jeetal on 17/8/17.
@@ -43,7 +48,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
     private static final String ARG_PARAM2 = "param2";
     private CountDownTimer mCountDownTimer;
     private final long mStartTime = 30 * 1000;
-    private final long mInterval = 1 * 1000;
+    private final long mInterval = 1000;
 
     @BindView(R.id.otpEditText)
     EditText mOtpEditText;
@@ -60,10 +65,8 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
     @BindView(R.id.resendOtpBtnLayout)
     LinearLayout mResendOtpBtnLayout;
 
-    private SignUpRequestModel mSignUpRequestModel;
-
-    private String mMobileNo;
     private int mResendOTPCount = 0;
+    private String from;
 //
 //    @BindView(R.id.progressBar)
 //    LinearLayout mProgressBar;
@@ -72,39 +75,18 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUp.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OtpConfirmationForLogin newInstance(String param1, String param2) {
-        OtpConfirmationForLogin fragment = new OtpConfirmationForLogin();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.enter_generated_otp, container, false);
         ButterKnife.bind(this, inflate);
-   // Read sms
+        // Read sms
         OtpReader.bind(this, RescribeConstants.SENDERID);
         mCountDownTimer = new OtpConfirmationForLogin.MyCountDownTimer(mStartTime, mInterval);
         mCountDownTimer.start();
 
-        if (getArguments() != null) {
-            Bundle arguments = getArguments();
-            mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
-            mHeaderMessageForMobileOTP.setText(getString(R.string.enter_otp_no));
-        }
+        if (getArguments() != null)
+            from = getArguments().getString(FROM);
 
         return inflate;
     }
@@ -149,11 +131,14 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
     @OnClick(R.id.submitBtn)
     public void onSubmitBtnClicked() {
         if (mOtpEditText.getText().toString().trim().length() == 4) {
-            SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
-            model.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,getActivity()));
-            model.setOTP(mOtpEditText.getText().toString().trim());
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
-            loginHelper.doVerifyGeneratedSignUpOTP(model);
+            SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
+            model.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, getActivity()));
+            model.setOTP(mOtpEditText.getText().toString().trim());
+
+            if (from == null)
+                loginHelper.doVerifyGeneratedSignUpOTP(model);
+            else loginHelper.doVerifyForgetPasswordOTP(model);
         } else {
             CommonMethods.showToast(getActivity(), getString(R.string.err_otp_invalid));
         }
@@ -166,7 +151,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
             CommonMethods.showToast(getActivity(), getString(R.string.err_maximum_otp_retries));
         } else {
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
-            loginHelper.doLoginByOTP(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER,getActivity()));
+            loginHelper.doLoginByOTP(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, getActivity()));
         }
 
     }
@@ -187,10 +172,8 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
                 CommonMethods.showToast(getActivity(), loginModel.getData());
             }
         } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_VERIFY_SIGN_UP_OTP)) {
-
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
-
                 PatientDetail patientDetail = loginModel.getLoginData().getPatientDetail();
 
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), getActivity());
@@ -210,21 +193,27 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());
             }
+        } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_VERIFY_FORGET_PASSWORD_OTP)) {
+            ForgetPasswordModel forgetPasswordModel = (ForgetPasswordModel) customResponse;
+            if (forgetPasswordModel.getCommon().isSuccess()) {
+                Intent intentObj = new Intent(getActivity(), ResetPasswordActivity.class);
+                startActivity(intentObj);
+            }
         }
     }
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-          CommonMethods.showToast(getActivity(),errorMessage);
+        CommonMethods.showToast(getActivity(), errorMessage);
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        CommonMethods.showToast(getActivity(),serverErrorMessage);
+        CommonMethods.showToast(getActivity(), serverErrorMessage);
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        CommonMethods.showToast(getActivity(),serverErrorMessage);
+        CommonMethods.showToast(getActivity(), serverErrorMessage);
     }
 }

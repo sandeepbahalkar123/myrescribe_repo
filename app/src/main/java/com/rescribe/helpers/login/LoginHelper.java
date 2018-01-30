@@ -8,7 +8,9 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.login.ActiveRequest;
+import com.rescribe.model.login.ForgetPasswordModel;
 import com.rescribe.model.login.LoginModel;
+import com.rescribe.model.login.ResetPasswordRequestModel;
 import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.requestmodel.login.LoginRequestModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
@@ -45,11 +47,22 @@ public class LoginHelper implements ConnectionListener {
                         LoginModel loginModel = (LoginModel) customResponse;
                         mHelperResponseManager.onSuccess(mOldDataTag, loginModel);
                         break;
+                    case RescribeConstants.TASK_FORGOT_PASS_WITH_OTP:
+                        ForgetPasswordModel forgetPassword = (ForgetPasswordModel) customResponse;
+                        mHelperResponseManager.onSuccess(mOldDataTag, forgetPassword);
+                        break;
+                    case RescribeConstants.TASK_RESET_PASS_WITH_OTP:
+                        ForgetPasswordModel resetPassword = (ForgetPasswordModel) customResponse;
+                        mHelperResponseManager.onSuccess(mOldDataTag, resetPassword);
+                        break;
                     case RescribeConstants.TASK_SIGN_UP:
                         SignUpModel signUpModel = (SignUpModel) customResponse;
                         mHelperResponseManager.onSuccess(mOldDataTag, signUpModel);
                         break;
                     case RescribeConstants.TASK_VERIFY_SIGN_UP_OTP:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_VERIFY_FORGET_PASSWORD_OTP:
                         mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                         break;
                     case RescribeConstants.TASK_LOGIN_WITH_PASSWORD:
@@ -89,7 +102,7 @@ public class LoginHelper implements ConnectionListener {
     }
      //Do login using mobileNo and password
     public void doLogin(String mobileNo,String password) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         LoginRequestModel loginRequestModel = new LoginRequestModel();
         loginRequestModel.setMobileNumber(mobileNo);
@@ -99,15 +112,34 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN);
     }
    //Do login using Otp
-    public void doLoginByOTP(String otp) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN_WITH_OTP, Request.Method.POST, true);
+    public void doLoginByOTP(String mobile) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN_WITH_OTP, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         LoginRequestModel loginRequestModel = new LoginRequestModel();
-        loginRequestModel.setMobileNumber(otp);
+        loginRequestModel.setMobileNumber(mobile);
         mConnectionFactory.setPostParams(loginRequestModel);
         mConnectionFactory.setUrl(Config.LOGIN_WITH_OTP_URL);
         mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN_WITH_OTP);
     }
+
+    public void forgetPassword(String mobile) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_FORGOT_PASS_WITH_OTP, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        LoginRequestModel loginRequestModel = new LoginRequestModel();
+        loginRequestModel.setMobileNumber(mobile);
+        mConnectionFactory.setPostParams(loginRequestModel);
+        mConnectionFactory.setUrl(Config.CHANGE_PASS_WITH_OTP);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_FORGOT_PASS_WITH_OTP);
+    }
+
+    public void resetPassword(ResetPasswordRequestModel resetPasswordRequestModel) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_RESET_PASS_WITH_OTP, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(resetPasswordRequestModel);
+        mConnectionFactory.setUrl(Config.RESET_PASSWORD);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_RESET_PASS_WITH_OTP);
+    }
+
     //Verify Otp sent
     public void doVerifyGeneratedSignUpOTP(SignUpVerifyOTPRequestModel requestModel) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_VERIFY_SIGN_UP_OTP, Request.Method.POST, false);
@@ -142,5 +174,13 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.setPostParams(activeRequest);
         mConnectionFactory.setUrl(Config.ACTIVE);
         mConnectionFactory.createConnection(RescribeConstants.ACTIVE_STATUS);
+    }
+
+    public void doVerifyForgetPasswordOTP(SignUpVerifyOTPRequestModel model) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_VERIFY_FORGET_PASSWORD_OTP, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(model);
+        mConnectionFactory.setUrl(Config.VERIFY_FORGET_PASSWORD_OTP);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_VERIFY_FORGET_PASSWORD_OTP);
     }
 }

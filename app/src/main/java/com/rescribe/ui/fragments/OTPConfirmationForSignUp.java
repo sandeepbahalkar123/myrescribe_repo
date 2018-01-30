@@ -32,13 +32,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link OTPConfirmationForSignUp#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class OTPConfirmationForSignUp extends Fragment implements HelperResponse, OTPListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,24 +69,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUp.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OTPConfirmationForSignUp newInstance(String param1, String param2) {
-        OTPConfirmationForSignUp fragment = new OTPConfirmationForSignUp();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -107,7 +82,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         if (getArguments() != null) {
             Bundle arguments = getArguments();
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
-            mHeaderMessageForMobileOTP.setText("" + String.format(getString(R.string.message_for_mobile_otp), mSignUpRequestModel.getMobileNumber()));
+            mHeaderMessageForMobileOTP.setText(String.format(getString(R.string.message_for_mobile_otp), mSignUpRequestModel.getMobileNumber()));
         }
 
         return inflate;
@@ -154,7 +129,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
     public void onSubmitBtnClicked() {
         if (mOtpEditText.getText().toString().trim().length() == 4) {
             SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
-            model.setMobileNumber("" + mSignUpRequestModel.getMobileNumber());
+            model.setMobileNumber(mSignUpRequestModel.getMobileNumber());
             model.setOTP(mOtpEditText.getText().toString().trim());
             model.setPassword(mSignUpRequestModel.getPassword());
             model.setName(mSignUpRequestModel.getName());

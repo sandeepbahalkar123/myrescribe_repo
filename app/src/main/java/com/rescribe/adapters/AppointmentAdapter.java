@@ -21,7 +21,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.MapsActivity;
-import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.NetworkUtil;
@@ -156,7 +155,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             holder.appointmentItemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnClickOfAppointmentClickListener.setOnClickofAppointmentLayout(appointment);
+                    mOnClickOfAppointmentClickListener.setOnClickOfAppointmentLayout(appointment);
 
                 }
             });
@@ -202,7 +201,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     }
 
     public interface OnClickOfAppointmentClickListener {
-        void setOnClickofAppointmentLayout(AptList mAptListObject);
+        void setOnClickOfAppointmentLayout(AptList mAptListObject);
     }
 
 }

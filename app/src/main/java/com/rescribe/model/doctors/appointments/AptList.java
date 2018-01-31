@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Created by riteshpandhurkar on 19/7/17.
  */
 
-public class AptList implements CustomResponse, Serializable{
+public class AptList implements CustomResponse, Serializable {
 
     @SerializedName("hospital_pat_id")
     @Expose
@@ -44,6 +44,7 @@ public class AptList implements CustomResponse, Serializable{
     @SerializedName("address")
     @Expose
     private String address;
+
 
     public String getCity_name() {
         return city_name;
@@ -78,7 +79,7 @@ public class AptList implements CustomResponse, Serializable{
     private String aptDate;
     @SerializedName("aptStatus")
     @Expose
-    private String appointmentType;
+    private String aptStatus; //upcoming n all
     @SerializedName("aptTime")
     @Expose
     private String aptTime;
@@ -89,6 +90,15 @@ public class AptList implements CustomResponse, Serializable{
     @SerializedName("rating")
     @Expose
     private double rating;
+
+    //--------------------------
+    @SerializedName("type")
+    @Expose
+    private String confirmationType; // token/appointment to show confirmation screen.
+    @SerializedName("tokenNumber")
+    @Expose
+    private String tokenNumber;
+    //--------------------------
 
     public String getClinic_name() {
         return clinic_name;
@@ -145,12 +155,13 @@ public class AptList implements CustomResponse, Serializable{
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
     //the time which is coming in aptTime is time of appointment
     public String getAptDate() {
         if (aptDate.contains("T")) {
             String date[] = aptDate.split("T");
             String dateBeforeTime = date[0];
-            aptDate = CommonMethods.formatDateTime(dateBeforeTime+"T"+aptTime+".000Z", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+            aptDate = CommonMethods.formatDateTime(dateBeforeTime + "T" + aptTime + ".000Z", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
         }
         return aptDate;
     }
@@ -159,13 +170,14 @@ public class AptList implements CustomResponse, Serializable{
         this.aptDate = aptDate;
     }
 
-    public String getAppointmentType() {
-        return appointmentType;
+    public String getAptStatus() {
+        return aptStatus;
     }
 
-    public void setAppointmentType(String appointmentType) {
-        this.appointmentType = appointmentType;
+    public void setAptStatus(String aptStatus) {
+        this.aptStatus = aptStatus;
     }
+
     public String getHospital_pat_id() {
         return hospital_pat_id;
     }
@@ -205,6 +217,7 @@ public class AptList implements CustomResponse, Serializable{
     public void setDocPhone(String docPhone) {
         this.docPhone = docPhone;
     }
+
     public double getRating() {
         return rating;
     }
@@ -213,4 +226,19 @@ public class AptList implements CustomResponse, Serializable{
         this.rating = rating;
     }
 
+    public String getConfirmationType() {
+        return confirmationType;
+    }
+
+    public String getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public void setTokenNumber(String tokenNumber) {
+        this.tokenNumber = tokenNumber;
+    }
+
+    public void setConfirmationType(String confirmationType) {
+        this.confirmationType = confirmationType;
+    }
 }

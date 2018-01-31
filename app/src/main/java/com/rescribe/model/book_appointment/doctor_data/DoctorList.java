@@ -31,7 +31,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("aptId")
     @Expose
     private String aptId;
-    @SerializedName("location_id")
+    @SerializedName("locationId")
     @Expose
     private int locationId;
     @SerializedName("docName")
@@ -91,7 +91,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
 
     @SerializedName("type")
     @Expose
-    private String type;
+    private String type; // token/appointment etc
     @SerializedName("tokenNumber")
     @Expose
     private String tokenNumber;
@@ -467,5 +467,19 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     public void setAptId(String aptId) {
         this.aptId = aptId;
     }
+
+    //------- THIS IS DONE FOR APPOINTMENT, TO SHOW CONFIRMATION DIALOG BASED ON type="token/appointment" :START
+    public String getType() {
+        return type;
+    }
+
+    public String getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public int getLocationId() {
+        return locationId;
+    }
+    //------- THIS IS DONE FOR APPOINTMENT, TO SHOW CONFIRMATION DIALOG BASED ON type="token/appointment" :END
 
 }

@@ -11,10 +11,11 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.services.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
+import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
+import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmTokenInfoActivity;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         mHardCodedTitle = mContext.getString(R.string.doctor);
     }
 
-  //onClick of whole card view // searchType Doctor then myappointment doctors will be shown to book appointment
+    //onClick of whole card view // searchType Doctor then myappointment doctors will be shown to book appointment
     @Override
     public void onClickOfCardView(Bundle bundleData) {
         String searchType = bundleData.getString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH);
@@ -65,10 +66,17 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 intent.putExtras(bundleData);
                 mParentActivity.startActivity(intent);
             } else {
+                Intent intent;
                 //for MyAppointment category doctor confirmAppointment page will open
-                Intent intent = new Intent(mParentActivity, ConfirmAppointmentActivity.class);
-                bundleData.putString(RescribeConstants.LOCATION_ID,""+0);
-                bundleData.putString(RescribeConstants.TOKEN_NO,""+0);
+                if (userSelectedDoctorListDataObject.getType().equalsIgnoreCase(mContext.getString(R.string.token))) {
+                    intent = new Intent(mContext, ConfirmTokenInfoActivity.class);
+                    bundleData.putString(RescribeConstants.LOCATION_ID, "" + userSelectedDoctorListDataObject.getClinicDataList().get(0).getLocationId());
+                    bundleData.putString(RescribeConstants.TOKEN_NO, userSelectedDoctorListDataObject.getTokenNumber());
+                } else {
+                    intent = new Intent(mParentActivity, ConfirmAppointmentActivity.class);
+                    bundleData.putString(RescribeConstants.LOCATION_ID, "" + 0);
+                    bundleData.putString(RescribeConstants.TOKEN_NO, "" + 0);
+                }
                 intent.putExtras(bundleData);
                 mParentActivity.startActivity(intent);
             }
@@ -87,6 +95,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             mParentActivity.startActivity(intent);
         }
     }
+
     // All favourite clicks managed here
     @Override
     public void onFavoriteIconClick(boolean isFavouriteStatus, DoctorList doctorListObject, ImageView favorite, HelperResponse helperResponse) {
@@ -100,7 +109,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 // for MyAppointment doctor from dashboard and book appointment horizontal list
         if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
-            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
+            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
             bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.my_appointments));
             intent.putExtras(bundleData);
             //mParentActivity.startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
@@ -120,7 +129,8 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             mParentActivity.startActivity(intent);
         }
     }
-   //onclick of GetToken button
+
+    //onclick of GetToken button
     @Override
     public void onClickedOfTokenNumber(Bundle bundleData) {
         userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
@@ -140,7 +150,8 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         intent.putExtras(bundleData);
         mParentActivity.startActivity(intent);
     }
-//onClick of BookAppointment button
+
+    //onClick of BookAppointment button
     @Override
     public void onClickedOfBookButton(Bundle bundleData) {
 
@@ -161,7 +172,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         mParentActivity.startActivity(intent);
     }
 
-//Sort doctorList CategoryWise
+    //Sort doctorList CategoryWise
     public ArrayList<DoctorList> getCategoryWiseDoctorList(String categoryName, int size) {
         ArrayList<DoctorList> temp = new ArrayList<>();
         if (mReceivedDoctorDataList != null)
@@ -242,7 +253,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return status;
     }
 
-// function to sort out doctors from pick speciality from bookAppointment page
+    // function to sort out doctors from pick speciality from bookAppointment page
     public ArrayList<DoctorList> filterDocListBySpeciality(String selectedSpeciality) {
 
         ArrayList<DoctorList> dataList = new ArrayList<>();
@@ -274,11 +285,13 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
         return dataList;
     }
-  // get whole doctor list using this function
+
+    // get whole doctor list using this function
     public static DoctorList getUserSelectedDoctorListDataObject() {
         return userSelectedDoctorListDataObject;
     }
-   //set doctor list using this function
+
+    //set doctor list using this function
     public static void setUserSelectedDoctorListDataObject(DoctorList userSelectedDoctorListDataObject) {
         ServicesCardViewImpl.userSelectedDoctorListDataObject = userSelectedDoctorListDataObject;
     }
@@ -291,7 +304,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return mReceivedDoctorDataList;
     }
 
-//Sort Unique doctors by docId
+    //Sort Unique doctors by docId
     public static ArrayList<DoctorList> getDoctorListByUniqueDocIDs(ArrayList<DoctorList> mReceivedDoctorDataList) {
         ArrayList<DoctorList> dataList = new ArrayList<>();
         for (DoctorList listObject :

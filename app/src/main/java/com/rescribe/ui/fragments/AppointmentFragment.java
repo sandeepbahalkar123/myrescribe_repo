@@ -1,6 +1,5 @@
 package com.rescribe.ui.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,13 +15,12 @@ import com.rescribe.adapters.AppointmentAdapter;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
-import com.rescribe.ui.fragments.doctor_connect.DoctorConnectSearchContainerFragment;
+import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity;
+import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmTokenInfoActivity;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
-import static android.app.Activity.RESULT_OK;
 import static com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment.CONFIRM_REQUESTCODE;
 
 /**
@@ -100,7 +98,8 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
     }
 
     @Override
-    public void setOnClickofAppointmentLayout(AptList mAptListObject) {
+    public void setOnClickOfAppointmentLayout(AptList mAptListObject) {
+
         Bundle bundleData = new Bundle();
         DoctorList mDoctorList = new DoctorList();
         mDoctorList.setDocName(mAptListObject.getDoctorName());
@@ -114,10 +113,17 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         mDoctorList.setDocPhone(mAptListObject.getDocPhone());
         mDoctorList.setRating(mAptListObject.getRating());
         mDoctorList.setTypedashboard(true);
-        Intent intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);
+        Intent intent;
+        if (mAptListObject.getConfirmationType().equalsIgnoreCase(getString(R.string.token))) {
+            intent = new Intent(getActivity(), ConfirmTokenInfoActivity.class);
+            bundleData.putString(RescribeConstants.TOKEN_NO, mAptListObject.getTokenNumber());
+        } else {
+            bundleData.putString(RescribeConstants.TOKEN_NO, "" + 0);
+            intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);
+        }
+        bundleData.putString(RescribeConstants.LOCATION_ID, mAptListObject.getLocationId());
+
         bundleData.putParcelable(getString(R.string.clicked_item_data), mDoctorList);
-        bundleData.putString(RescribeConstants.LOCATION_ID,""+0);
-        bundleData.putString(RescribeConstants.TOKEN_NO,""+0);
         intent.putExtras(bundleData);
         getActivity().startActivityForResult(intent, CONFIRM_REQUESTCODE);
     }

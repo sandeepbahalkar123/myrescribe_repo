@@ -46,7 +46,6 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
         String header = getIntent().getStringExtra(getString(R.string.title));
         from = getIntent().getStringExtra(FROM);
         loadFragment(getIntent().getStringExtra(getString(R.string.type)), getIntent().getSerializableExtra(getString(R.string.details)), header);
-
     }
 
     @Override

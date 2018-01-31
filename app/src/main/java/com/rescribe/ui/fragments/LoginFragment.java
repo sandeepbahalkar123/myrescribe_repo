@@ -200,11 +200,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
             editTextPassword.requestFocus();
 
         }
-        if (message != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return message != null;
     }
 
     @Override

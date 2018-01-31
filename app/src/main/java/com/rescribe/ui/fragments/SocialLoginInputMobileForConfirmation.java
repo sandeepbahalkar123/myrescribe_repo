@@ -35,6 +35,10 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
 
     @BindView(R.id.socialLoginMobileNo)
     EditText mSocialLoginMobileNo;
+
+    @BindView(R.id.editTextAge)
+    EditText editTextAge;
+
     @BindView(R.id.socialLoginPassword)
     EditText mSocialLoginPassword;
     @BindView(R.id.socialLoginEmail)
@@ -121,7 +125,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
      *
      * @return
      */
-    private boolean validate(String mobileNo, String password, String email) {
+    private boolean validate(String mobileNo, String password, String email, String age) {
         String message = null;
         String enter = getString(R.string.enter);
         if (mobileNo.isEmpty()) {
@@ -138,6 +142,8 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             } else if (!CommonMethods.isValidEmail(email)) {
                 message = enter + getString(R.string.err_email_invalid);
             }
+        } else if (age.isEmpty()) {
+            message = "Enter " + getString(R.string.enter_age);
         }
         if (message != null) {
             CommonMethods.showToast(getActivity(), message);
@@ -155,7 +161,9 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
                 String email = mSocialLoginEmail.getText().toString();
                 String password = mSocialLoginPassword.getText().toString();
                 String mobileNo = mSocialLoginMobileNo.getText().toString();
-                if (!validate(mobileNo, password, email)) {
+                String age = editTextAge.getText().toString();
+
+                if (!validate(mobileNo, password, email, age)) {
                     LoginHelper loginHelper = new LoginHelper(getActivity(), this);
                     mSignUpRequestModel.setMobileNumber(mobileNo);
                     mSignUpRequestModel.setEmailId(email);
@@ -165,6 +173,11 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
                     }else if(mSignUpRequestModel.isFaceBookLogin()){
                         mSignUpRequestModel.setFaceBookLogin(true);
                     }
+
+                    mSignUpRequestModel.setGender(genderValue);
+                    mSignUpRequestModel.setSalutation(salutationValue);
+                    mSignUpRequestModel.setAge(age);
+
                     loginHelper.doSignUp(mSignUpRequestModel);
                 }
                 break;

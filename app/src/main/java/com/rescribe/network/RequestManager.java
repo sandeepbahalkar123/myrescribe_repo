@@ -148,7 +148,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
             if (isOffline) {
                 if (getOfflineData() != null)
-                    succesResponse(getOfflineData(), false);
+                    successResponse(getOfflineData(), false);
                 else
                     mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
             } else {
@@ -182,7 +182,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        succesResponse(response.toString(), isTokenExpired);
+                        successResponse(response.toString(), isTokenExpired);
                         if (isOffline)
                             dbHelper.insertData(mDataTag, response.toString());
                     }
@@ -232,7 +232,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        succesResponse(response.toString(), false);
+                        successResponse(response.toString(), false);
                         if (isOffline)
                             dbHelper.insertData(mDataTag, response.toString());
                     }
@@ -268,7 +268,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        succesResponse(response, isTokenExpired);
+                        successResponse(response, isTokenExpired);
                         if (isOffline)
                             dbHelper.insertData(mDataTag, response);
                     }
@@ -298,7 +298,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         RequestPool.getInstance(this.mContext).addToRequestQueue(stringRequest);
     }
 
-    private void succesResponse(String response, boolean isTokenExpired) {
+    private void successResponse(String response, boolean isTokenExpired) {
         requestTimer.cancel();
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
@@ -379,7 +379,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             } else if (error instanceof NetworkError) {
 
                 if (isOffline) {
-                    succesResponse(getOfflineData(), false);
+                    successResponse(getOfflineData(), false);
                 } else {
                     mConnectionListener.onResponse(ConnectionListener.NO_INTERNET, null, mOldDataTag);
                 }

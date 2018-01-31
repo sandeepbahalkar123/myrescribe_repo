@@ -34,6 +34,10 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
     @Expose
     private String gender;
 
+    @SerializedName("authSocialToken")
+    @Expose
+    private String authSocialToken;
+
     private boolean isGmailLogin;
     private boolean isFaceBookLogin;
 
@@ -107,5 +111,13 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getAuthSocialToken() {
+        return authSocialToken;
+    }
+
+    public void setAuthSocialToken(String authSocialToken) {
+        this.authSocialToken = authSocialToken;
     }
 }

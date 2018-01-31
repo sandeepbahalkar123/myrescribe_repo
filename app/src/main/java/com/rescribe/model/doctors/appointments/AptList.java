@@ -75,13 +75,13 @@ public class AptList implements CustomResponse, Serializable{
     private String imageUrl;
     @SerializedName("aptDate")
     @Expose
-    private String aptDate = "";
+    private String aptDate;
     @SerializedName("aptStatus")
     @Expose
     private String appointmentType;
     @SerializedName("aptTime")
     @Expose
-    private String aptTime = "";
+    private String aptTime;
     @SerializedName("clinic_name")
     @Expose
     private String clinic_name;
@@ -147,7 +147,12 @@ public class AptList implements CustomResponse, Serializable{
     }
     //the time which is coming in aptTime is time of appointment
     public String getAptDate() {
-        return aptTime.contains("T") ? CommonMethods.formatDateTime(aptTime, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE) : aptTime;
+        if (aptDate.contains("T")) {
+            String date[] = aptDate.split("T");
+            String dateBeforeTime = date[0];
+            aptDate = CommonMethods.formatDateTime(dateBeforeTime+"T"+aptTime+".000Z", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+        }
+        return aptDate;
     }
 
     public void setAptDate(String aptDate) {

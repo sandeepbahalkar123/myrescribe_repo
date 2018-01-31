@@ -48,7 +48,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private OnClickOfAppointmentClickListener mOnClickOfAppointmentClickListener;
 
 
-    public AppointmentAdapter(final Context mContext, ArrayList<AptList> appointmentsList, String appointmentType,OnClickOfAppointmentClickListener mOnClickOfAppointmentClickListener) {
+    public AppointmentAdapter(final Context mContext, ArrayList<AptList> appointmentsList, String appointmentType, OnClickOfAppointmentClickListener mOnClickOfAppointmentClickListener) {
 
         this.mAppointmentType = appointmentType;
         this.appointmentsList = appointmentsList;
@@ -88,12 +88,12 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + new SimpleDateFormat("MMM yy", Locale.US).format(cal.getTime());
             //------
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getArea_name()+", "+appointment.getCity_name(), Html.FROM_HTML_MODE_LEGACY));
+                holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getArea_name() + ", " + appointment.getCity_name(), Html.FROM_HTML_MODE_LEGACY));
             } else {
-                holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " +  appointment.getArea_name()+", "+appointment.getCity_name()));
+                holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getArea_name() + ", " + appointment.getCity_name()));
             }
         } else {
-            holder.doctorAddress.setText( appointment.getArea_name()+", "+appointment.getCity_name());
+            holder.doctorAddress.setText(appointment.getArea_name() + ", " + appointment.getCity_name());
         }
         //--- For address
 
@@ -129,8 +129,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     AptList appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
                     Intent intent = new Intent(mContext, MapsActivity.class);
                     intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
-                    intent.putExtra(RescribeConstants.DOCTOR_NAME,appointment1.getDoctorName());
-                    intent.putExtra(RescribeConstants.RATING,appointment1.getRating());
+                    intent.putExtra(RescribeConstants.DOCTOR_NAME, appointment1.getDoctorName());
+                    intent.putExtra(RescribeConstants.RATING, appointment1.getRating());
                     mContext.startActivity(intent);
                     //intent.putExtra(mContext.getString(R.string.longitude), appointment1.getLosngitude());
 
@@ -153,13 +153,13 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                 .into(holder.mImageURL);
         //--------------
         if (mAppointmentType.equalsIgnoreCase(mContext.getString(R.string.upcoming))) {
-              holder.appointmentItemLayout.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                      mOnClickOfAppointmentClickListener.setOnClickofAppointmentLayout(appointment);
+            holder.appointmentItemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickOfAppointmentClickListener.setOnClickofAppointmentLayout(appointment);
 
-                  }
-              });
+                }
+            });
         }
 
     }
@@ -200,6 +200,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             preWeekDays.add(CommonMethods.getCalculatedDate(RescribeConstants.DATE_PATTERN.YYYY_MM_DD, i));
         return preWeekDays;
     }
+
     public interface OnClickOfAppointmentClickListener {
         void setOnClickofAppointmentLayout(AptList mAptListObject);
     }

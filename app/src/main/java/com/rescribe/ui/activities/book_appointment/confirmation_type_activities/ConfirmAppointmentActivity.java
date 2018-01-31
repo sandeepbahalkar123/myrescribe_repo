@@ -1,4 +1,4 @@
-package com.rescribe.ui.activities.book_appointment;
+package com.rescribe.ui.activities.book_appointment.confirmation_type_activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -38,6 +38,8 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.ResponseAppointmentConfirmationModel;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MapsActivity;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;

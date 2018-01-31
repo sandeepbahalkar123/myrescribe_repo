@@ -62,7 +62,7 @@ import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.token.FCMTokenData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.ChatActivity;
-import com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity;
+import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;

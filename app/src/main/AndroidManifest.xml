@@ -76,7 +76,12 @@
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.ConfirmAppointmentActivity"
+            android:name=".ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity"
+            android:configChanges="orientation|keyboard|screenSize"
+            android:label="@string/doctor_connect"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.book_appointment.confirmation_type_activities.ConfirmTokenInfoActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar" />

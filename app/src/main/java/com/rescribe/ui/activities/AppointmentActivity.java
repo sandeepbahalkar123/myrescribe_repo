@@ -30,7 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.rescribe.ui.activities.book_appointment.ConfirmAppointmentActivity.RESCHEDULE_OK;
+import static com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity.RESCHEDULE_OK;
 import static com.rescribe.ui.fragments.book_appointment.SelectSlotTimeToBookAppointmentFragment.CONFIRM_REQUESTCODE;
 
 public class AppointmentActivity extends AppCompatActivity implements HelperResponse {
@@ -173,7 +173,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
             if (mAppointmentList != null) {
                 for (AptList dataObject :
                         mAppointmentList) {
-                    if (dataObject.getAppointmentType().equalsIgnoreCase(type)) {
+                    if (dataObject.getAptStatus().equalsIgnoreCase(type)) {
                         tempList.add(dataObject);
                     }
                 }
@@ -192,7 +192,7 @@ public class AppointmentActivity extends AppCompatActivity implements HelperResp
             if (mAppointmentList != null) {
                 for (AptList dataObject :
                         mAppointmentList) {
-                    if (dataObject.getAppointmentType().equalsIgnoreCase(type)) {
+                    if (dataObject.getAptStatus().equalsIgnoreCase(type)) {
                         tempList.add(dataObject);
                     }
                 }

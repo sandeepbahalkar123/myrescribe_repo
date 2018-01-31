@@ -6,21 +6,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
@@ -28,7 +24,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.singleton.RescribeApplication;
-import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -122,12 +117,12 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 .findViewById(R.id.tokenNo);
 
         final DoctorList doctorObject = mDataList.get(position);
-          if(!doctorObject.getCategorySpeciality().equalsIgnoreCase("")){
-              doctorCategoryType.setText(doctorObject.getCategorySpeciality());
-              doctorCategoryType.setVisibility(View.VISIBLE);
-          }else{
-              doctorCategoryType.setVisibility(View.INVISIBLE);
-          }
+        if (!doctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
+            doctorCategoryType.setText(doctorObject.getCategorySpeciality());
+            doctorCategoryType.setVisibility(View.VISIBLE);
+        } else {
+            doctorCategoryType.setVisibility(View.INVISIBLE);
+        }
         doctorCategory.setText(doctorObject.getCategoryName());
         doctorNameTextView.setText(doctorObject.getDocName());
         doctorType.setText(doctorObject.getDegree());
@@ -194,7 +189,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     if (clinicDataList.size() > 0) {
                         boolean b = checkAllClinicAddressInSameCity(clinicDataList);
                         if (b) {
-                            SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                            SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
                             locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                             doctorAddress.setText(locationString);
                             clinicName.setVisibility(View.VISIBLE);
@@ -222,7 +217,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
                 } else {
                     feesToPaid.setVisibility(View.INVISIBLE);
-
                 }
 
                 //----------
@@ -236,15 +230,18 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         tokenNo.setVisibility(View.GONE);
                     }
                 }
-            }else{
+            } else {
                 feesToPaid.setVisibility(View.INVISIBLE);
                 bookAppointmentButton.setVisibility(View.GONE);
                 doctorAppointmentDate.setVisibility(View.VISIBLE);
                 tokenNo.setVisibility(View.GONE);
 
-                if (!doctorObject.getAptTime().isEmpty()) {
-                    String time = CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a).toLowerCase();
-                    SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + time);
+                if (!doctorObject.getAptDate().isEmpty()) {
+                    String time = "";
+                    if (!doctorObject.getAptTime().isEmpty())
+                        time = ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a).toLowerCase();
+
+                    SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + time);
                     content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
                     doctorAppointmentDate.setText(content);
                 }
@@ -255,7 +252,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     clinicName.setText(clinicDataList.get(0).getClinicName());
                 }
                 designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
-
             }
 
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
@@ -270,7 +266,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 if (clinicDataList.size() > 0) {
                     boolean b = checkAllClinicAddressInSameCity(clinicDataList);
                     if (b) {
-                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         clinicName.setVisibility(View.VISIBLE);
@@ -325,7 +321,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 if (clinicDataList.size() > 0) {
                     boolean b = checkAllClinicAddressInSameCity(clinicDataList);
                     if (b) {
-                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         clinicName.setVisibility(View.VISIBLE);
@@ -377,7 +373,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 if (clinicDataList.size() > 0) {
                     boolean b = checkAllClinicAddressInSameCity(clinicDataList);
                     if (b) {
-                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations)+ " " + "in" + " " + cityname);
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                         doctorAddress.setText(locationString);
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -450,7 +446,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
                 b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
-                b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
+                b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
 
                 mServicesCardViewClickListener.onClickOfTotalCount(b);
             }
@@ -463,7 +459,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 if (((position == mDataList.size() - 1) && mIsFavAvail)) {
                     //this is done to show myAppointment doctor in favourite category to avail book option
                     Bundle b = new Bundle();
-                    if(!doctorObject.getClinicDataList().isEmpty()) {
+                    if (!doctorObject.getClinicDataList().isEmpty()) {
                         doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
                         doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
                     }
@@ -471,12 +467,12 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     doctorObject.setTypedashboard(true);
                     b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
                     b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                    b.putString(mContext.getString(R.string.category_name),"");
-                    b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
+                    b.putString(mContext.getString(R.string.category_name), "");
+                    b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, "");
                     mServicesCardViewClickListener.onClickOfCardView(b);
-                }else{
+                } else {
                     Bundle b = new Bundle();
-                    if(!doctorObject.getClinicDataList().isEmpty()) {
+                    if (!doctorObject.getClinicDataList().isEmpty()) {
                         doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
                         doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
                     }
@@ -484,9 +480,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
                     b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
 
-                    b.putString(mContext.getString(R.string.category_name),doctorObject.getCategoryName());
+                    b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
                     //TYPE_OF_DOCTOR_SEARCH parameter is set to avail book option for myappointment card
-                    b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH,"");
+                    b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, "");
                     mServicesCardViewClickListener.onClickOfCardView(b);
                 }
 
@@ -529,7 +525,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     }
 
     /**
-     *
      * @param list
      * @return true incase all clinic adrress are same, else false.
      * (Considered all address ends with city name)

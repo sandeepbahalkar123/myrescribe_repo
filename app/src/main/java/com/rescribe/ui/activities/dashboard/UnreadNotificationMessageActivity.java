@@ -296,7 +296,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
             int unReadCount = instance.deleteUnreadReceivedNotificationMessage(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
             Intent intentNotification = new Intent(this, AppointmentActivity.class);
-            intentNotification.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
+            intentNotification.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
             startActivity(intentNotification);
 
             if (unReadCount == 0) {
@@ -442,9 +442,14 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             String time = medicNotificationTimeId.get(medicationKeyUpdate).split("\\|")[0];
             String id = medicNotificationTimeId.get(medicationKeyUpdate).split("\\|")[1];
 
+            ArrayList<Integer> tempArrayForId = new ArrayList<>();
+
             for (Medication medication : medications) {
                 if (medication.getMedicineId() == medicationToUpdate.getMedicineId())
                     medication.setTabSelected(medicationToCheck);
+
+                if (medication.isTabSelected())
+                    tempArrayForId.add(medication.getMedicineId());
             }
 
             NotificationData notificationData = new NotificationData();
@@ -453,6 +458,17 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
             AppDBHelper appDBHelper = AppDBHelper.getInstance(this);
             appDBHelper.updateUnreadReceivedNotificationMessage(id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, new Gson().toJson(notificationData));
+
+            if (tempArrayForId.size() == medications.size()) {
+
+                clearNotification(this, MEDICATIONS_NOTIFICATION_TAG, id);
+                int unReadCount = appDBHelper.deleteUnreadReceivedNotificationMessage(id, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+
+                if (unReadCount == 0) {
+                    isAllListEmpty = true;
+                    showMessage();
+                }
+            }
 
             initializeMedicationListView();
             //-------
@@ -479,16 +495,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
             }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER) ||
-                mOldDataTag.equals(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION))
-
-        {
+                mOldDataTag.equals(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
 
             doGetUnreadTokenNotification();
-        } else if (RescribeConstants.TASK_DO_SKIP_INVESTIGATION == mOldDataTag)
-
-        {
+        } else if (RescribeConstants.TASK_DO_SKIP_INVESTIGATION.equals(mOldDataTag)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
             AppDBHelper instance = AppDBHelper.getInstance(this);

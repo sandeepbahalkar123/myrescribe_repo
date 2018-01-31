@@ -92,7 +92,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         } else {
             doctorName = "Dr. " + data.getDoctorName();
         }
-        int subNotificationId = data.getAptId();
+        int subNotificationId = Integer.parseInt(data.getAptId());
         String date = CommonMethods.getFormattedDate(data.getAptDate(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DD_MM_YYYY);
         String time = CommonMethods.getFormattedDate(data.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a);
         String message = "You have an appointment with " + doctorName + " on " + date + " at " + time.toLowerCase() + ".";

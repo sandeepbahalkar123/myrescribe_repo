@@ -16,7 +16,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.login.ForgetPasswordModel;
 import com.rescribe.model.login.ResetPasswordRequestModel;
 import com.rescribe.preference.RescribePreferencesManager;
-import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -88,13 +87,13 @@ public class ResetPasswordActivity extends AppCompatActivity implements HelperRe
         String password = passwordText.getText().toString();
         String passwordAgain = passwordAgainText.getText().toString();
 
-        if (password.isEmpty() || passwordAgain.isEmpty()) {
+        if (password.isEmpty() && passwordAgain.isEmpty()) {
             CommonMethods.showToast(this, "Please enter " + getResources().getString(R.string.enter_password));
             return;
         }
 
-        if (password.length() > 7 && passwordAgain.length() > 7) {
-            if (password.equals(passwordAgain)) {
+        if (password.equals(passwordAgain)) {
+            if (password.length() > 7 && passwordAgain.length() > 7) {
                 LoginHelper loginHelper = new LoginHelper(this, this);
                 ResetPasswordRequestModel resetPasswordRequestModel = new ResetPasswordRequestModel();
                 resetPasswordRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this));
@@ -102,8 +101,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements HelperRe
                 resetPasswordRequestModel.setPatientId(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this));
                 loginHelper.resetPassword(resetPasswordRequestModel);
             } else
-                CommonMethods.showToast(this, getResources().getString(R.string.password_not_matched));
+                CommonMethods.showToast(this, getResources().getString(R.string.error_too_small_password));
         } else
-            CommonMethods.showToast(this, getResources().getString(R.string.error_too_small_password));
+            CommonMethods.showToast(this, getResources().getString(R.string.password_not_matched));
     }
 }

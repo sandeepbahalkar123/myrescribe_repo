@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
-import com.rescribe.R;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
@@ -438,7 +437,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        doMergeUnreadMessageForChatAndOther();
+        doReadAllUnreadMessages();
 
         return chatDoctors;
     }
@@ -535,7 +534,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         else
             db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
 
-        doMergeUnreadMessageForChatAndOther();
+        doReadAllUnreadMessages();
 
         return true;
     }
@@ -549,15 +548,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
-    public void doMergeUnreadMessageForChatAndOther() {
-
+    public void doReadAllUnreadMessages() {
         ArrayList<UnreadSavedNotificationMessageData> mainList = RescribeApplication.getAppUnreadNotificationMessageList();
         mainList.clear();
-
-        mainList.addAll(unreadChatMessagesList());
         mainList.addAll(doGetAppUnreadReceivedNotificationMessage());
-
-
         RescribeApplication.setAppUnreadNotificationMessageList(mContext, mainList);
     }
 
@@ -611,7 +605,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
             int delete = db.delete(NOTIFICATION_MESSAGE_TABLE, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
                     new String[]{id, notificationType});
         }
-        doMergeUnreadMessageForChatAndOther();
+        doReadAllUnreadMessages();
         return getUnreadNotificationCount();
     }
 
@@ -629,12 +623,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATA, data);
 
         db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{dataId, notificationType});
-        doMergeUnreadMessageForChatAndOther();
+        doReadAllUnreadMessages();
 
         return true;
     }
 
-    public ArrayList<UnreadSavedNotificationMessageData> unreadChatMessagesList() {
+    /*public ArrayList<UnreadSavedNotificationMessageData> unreadChatMessagesList() {
         SQLiteDatabase db = getReadableDatabase();
         String countQuery = "select * from " + MESSAGE_TABLE;
         Cursor cursor = db.rawQuery(countQuery, null);
@@ -660,6 +654,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
         db.close();
 
         return chatDoctors;
-    }
+    }*/
     //----- Notification storing : END
 }

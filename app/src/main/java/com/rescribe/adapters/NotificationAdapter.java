@@ -42,7 +42,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private List<AdapterNotificationModel> mDataSet;
     private Context mContext;
     private int mPos;
-    private List<Medication> mMedicationListAdapter;
     private ViewGroup mSlotCardParent;
     private View mView;
     private View mViewForHeader;
@@ -51,7 +50,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private OnNotificationClickListener mOnNotificationClickListener;
     private Integer mMedicineID = null;
     private SlotModel mSlotModel = null;
-    private ViewGroup mparentHeader;
+    private ViewGroup mParentHeader;
     private String mSlotType;
     private View mSlotCardView;
 
@@ -137,8 +136,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mViewForHeader = view;
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
-                                mparentHeader = parent;
-                                mOnNotificationClickListener.setOnClickCheckBoxListener(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasedinner), mparentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true);
+                                mParentHeader = parent;
+                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasedinner), mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true, selectView.isChecked());
                             }
                         });
                         //expand and collapse for each slot in one row
@@ -209,8 +208,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mViewForHeader = view;
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
-                                mparentHeader = parent;
-                                mOnNotificationClickListener.setOnClickCheckBoxListener(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcaselunch), mparentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true);
+                                mParentHeader = parent;
+                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcaselunch), mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true, selectView.isChecked());
 
                             }
                         });
@@ -280,8 +279,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mViewForHeader = view;
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
-                                mparentHeader = parent;
-                                mOnNotificationClickListener.setOnClickCheckBoxListener(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasebreakfast), mparentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true);
+                                mParentHeader = parent;
+                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasebreakfast), mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true, selectView.isChecked());
 
                             }
                         });
@@ -353,8 +352,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mViewForHeader = view;
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
-                                mparentHeader = parent;
-                                mOnNotificationClickListener.setOnClickCheckBoxListener(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasesnacks), mparentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true);
+                                mParentHeader = parent;
+                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasesnacks), mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true, selectView.isChecked());
 
                             }
                         });
@@ -417,7 +416,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     // Added Tablet View
 
     private void addTabletView(final ViewGroup parent, final int position, final ViewGroup slotCardParent, final View slotCardView, final String slotType, final List<Medication> medicationList) {
-        mMedicationListAdapter = new ArrayList<>();
+        List<Medication> mMedicationListAdapter = new ArrayList<>();
         mMedicationListAdapter.addAll(medicationList);
         for (int i = 0; i < mMedicationListAdapter.size(); i++) {
             final View view = LayoutInflater.from(mContext)
@@ -441,7 +440,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mView = view;
                     mSlotCardView = slotCardView;
                     mSlotCardParent = slotCardParent;
-                    mOnNotificationClickListener.setOnClickCheckBoxListener(mView, mPos, medicationList.get(finalI).getMedicinSlot(), mSlotCardParent, medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER + "_" + finalI, false);
+                    mOnNotificationClickListener.clickCheckBox(mView, mPos, medicationList.get(finalI).getMedicinSlot(), mSlotCardParent, medicationList.get(finalI).getMedicineId(), CommonMethods.formatDateTime(medicationList.get(finalI).getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER + "_" + finalI, false, selectViewTab.isChecked());
                 }
             });
             view.setTag(parent.getTag());
@@ -530,7 +529,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 switch (mSlotTypeForHeader) {
                     case DINNER:
                         mDataSet.get(Integer.parseInt(counter)).setDinnerThere(false);
-                        mparentHeader.removeView(mViewForHeader);
+                        mParentHeader.removeView(mViewForHeader);
                         if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
                             mDataSet.remove(Integer.parseInt(counter));
                             notifyDataSetChanged();
@@ -540,7 +539,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         break;
                     case SNACKS:
                         mDataSet.get(Integer.parseInt(counter)).setSnacksThere(false);
-                        mparentHeader.removeView(mViewForHeader);
+                        mParentHeader.removeView(mViewForHeader);
 
                         if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
                             mDataSet.remove(Integer.parseInt(counter));
@@ -552,7 +551,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         break;
                     case LUNCH:
                         mDataSet.get(Integer.parseInt(counter)).setLunchThere(false);
-                        mparentHeader.removeView(mViewForHeader);
+                        mParentHeader.removeView(mViewForHeader);
 
                         if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
                             mDataSet.remove(Integer.parseInt(counter));
@@ -564,7 +563,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         break;
                     case BREAK_FAST:
                         mDataSet.get(Integer.parseInt(counter)).setBreakThere(false);
-                        mparentHeader.removeView(mViewForHeader);
+                        mParentHeader.removeView(mViewForHeader);
 
                         if (!mDataSet.get(Integer.parseInt(counter)).isDinnerThere() && !mDataSet.get(Integer.parseInt(counter)).isLunchThere() && !mDataSet.get(Integer.parseInt(counter)).isBreakThere() && !mDataSet.get(Integer.parseInt(counter)).isSnacksThere()) {
                             mDataSet.remove(Integer.parseInt(counter));
@@ -591,14 +590,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
             String[] count = mOldDataTag.split("_");
             String counter = count[1];
-            CheckBox mChecbox = (CheckBox) mView.findViewById(R.id.selectViewTab);
+            CheckBox mCheckBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
             switch (mSlotType) {
                 case BREAK_FAST:
                     mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(false);
                     mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(true);
                     mView.findViewById(R.id.selectViewTab).setEnabled(true);
                     mView.findViewById(R.id.selectViewTab).setSelected(false);
-                    mChecbox.setChecked(false);
+                    mCheckBox.setChecked(false);
 
                     break;
                 case LUNCH:
@@ -606,7 +605,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(true);
                     mView.findViewById(R.id.selectViewTab).setEnabled(true);
                     mView.findViewById(R.id.selectViewTab).setSelected(false);
-                    mChecbox.setChecked(false);
+                    mCheckBox.setChecked(false);
 
                     break;
                 case SNACKS:
@@ -614,7 +613,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(true);
                     mView.findViewById(R.id.selectViewTab).setEnabled(true);
                     mView.findViewById(R.id.selectViewTab).setSelected(false);
-                    mChecbox.setChecked(false);
+                    mCheckBox.setChecked(false);
 
                     break;
                 case DINNER:
@@ -622,7 +621,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(true);
                     mView.findViewById(R.id.selectViewTab).setEnabled(true);
                     mView.findViewById(R.id.selectViewTab).setSelected(false);
-                    mChecbox.setChecked(false);
+                    mCheckBox.setChecked(false);
                     break;
             }
         }
@@ -630,7 +629,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface OnNotificationClickListener {
         void onHeaderCollapse();
-        void setOnClickCheckBoxListener(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick);
+        void clickCheckBox(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick, boolean checked);
         void onSwiped(String slotType);
     }
 

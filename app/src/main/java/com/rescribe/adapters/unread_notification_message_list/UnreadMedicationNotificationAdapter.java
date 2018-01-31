@@ -74,19 +74,14 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
         itemHolder.medicationCheckBox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mListener.onMedicationCheckBoxClicked(item, title, position);
+                mListener.onMedicationCheckBoxClicked(item, title, position, itemHolder.medicationCheckBox.isChecked());
             }
         });
 
-        if (item.isTabSelected()) {
+        if (item.isTabSelected())
             itemHolder.medicationCheckBox.setChecked(true);
-            itemHolder.medicationCheckBox.setEnabled(false);
-            itemHolder.rootView.setEnabled(false);
-        } else {
-            itemHolder.medicationCheckBox.setEnabled(true);
-            itemHolder.rootView.setEnabled(true);
+        else
             itemHolder.medicationCheckBox.setChecked(false);
-        }
         //---------------
         if (position == list.size() - 1) {
             itemHolder.divider.setVisibility(View.VISIBLE);
@@ -205,8 +200,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
     }
 
     public interface OnMedicationNotificationEventClick {
-        public void onMedicationLoadMoreFooterClicked();
-
-        public void onMedicationCheckBoxClicked(Medication medication, String title, int position);
+        void onMedicationLoadMoreFooterClicked();
+        void onMedicationCheckBoxClicked(Medication medication, String title, int position, boolean checked);
     }
 }

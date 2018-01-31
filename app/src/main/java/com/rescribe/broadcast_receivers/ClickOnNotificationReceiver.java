@@ -72,7 +72,9 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
                 InvestigationHelper mInvestigationHelper = new InvestigationHelper(mContext, this);
                 mInvestigationHelper.doSkipInvestigation(invId, false);
 
-                RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), false, mContext);
+                // Skip notification and should come next day directly
+//                RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), false, mContext); // It will turn off notification
+
                 manager.cancel(INVESTIGATION_NOTIFICATION_TAG, investigationData.get(0).getDrId());
 
             } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {

@@ -5,37 +5,37 @@ import com.google.gson.annotations.SerializedName;
 
 public class ForgetPassPatientDetail {
 
-    @SerializedName("id")
+    @SerializedName("patientId")
     @Expose
-    private int id;
-    @SerializedName("patient_name")
+    private int patientId;
+    @SerializedName("patientName")
     @Expose
     private String patientName;
-    @SerializedName("patient_email")
+    @SerializedName("patientEmail")
     @Expose
     private String patientEmail;
-    @SerializedName("patient_phon")
+    @SerializedName("patientPhone")
     @Expose
-    private String patientPhon;
+    private String patientPhone;
     @SerializedName("password")
     @Expose
     private String password;
     @SerializedName("age")
     @Expose
     private int age;
-    @SerializedName("patient_gender")
+    @SerializedName("patientGender")
     @Expose
     private String patientGender;
     @SerializedName("salutation")
     @Expose
     private String salutation;
 
-    public int getId() {
-        return id;
+    public int getPatientId() {
+        return patientId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public String getPatientName() {
@@ -54,12 +54,12 @@ public class ForgetPassPatientDetail {
         this.patientEmail = patientEmail;
     }
 
-    public String getPatientPhon() {
-        return patientPhon;
+    public String getPatientPhone() {
+        return patientPhone;
     }
 
-    public void setPatientPhon(String patientPhon) {
-        this.patientPhon = patientPhon;
+    public void setPatientPhone(String patientPhone) {
+        this.patientPhone = patientPhone;
     }
 
     public String getPassword() {

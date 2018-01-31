@@ -117,8 +117,8 @@ public class ForgotPassword extends Fragment implements HelperResponse {
 
                 ForgetPassPatientDetail patientDetail = forgetPasswordModel.getData().getPatientDetail();
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getPatientPhon(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getId()), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), getActivity());
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, patientDetail.getPassword(), getActivity());
 
                 Intent intent = new Intent(getActivity(), AppGlobalContainerActivity.class);

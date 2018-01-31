@@ -54,7 +54,7 @@ public class RescribeApplication extends MultiDexApplication {
         AppDBHelper instance = AppDBHelper.getInstance(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-        instance.doMergeUnreadMessageForChatAndOther();
+        instance.doReadAllUnreadMessages();
         appDBHelper = new AppDBHelper(this);
         //--------------
     }

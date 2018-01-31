@@ -7,7 +7,7 @@ public class AppointmentsNotificationData {
 
     @SerializedName("aptId")
     @Expose
-    private int aptId;
+    private String aptId;
     @SerializedName("doctorName")
     @Expose
     private String doctorName;
@@ -30,11 +30,11 @@ public class AppointmentsNotificationData {
     @Expose
     private String aptStatus;
 
-    public int getAptId() {
+    public String getAptId() {
         return aptId;
     }
 
-    public void setAptId(int aptId) {
+    public void setAptId(String aptId) {
         this.aptId = aptId;
     }
 

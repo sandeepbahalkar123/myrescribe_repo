@@ -7,10 +7,10 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
-public class NotificationData implements CustomResponse{
+public class NotificationData implements CustomResponse, Serializable {
 
     @SerializedName("prescriptionDate")
     @Expose

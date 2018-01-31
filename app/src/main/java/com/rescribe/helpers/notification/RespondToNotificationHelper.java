@@ -8,7 +8,7 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.response_model_notification.NotificationResponseBaseModel;
-import com.rescribe.model.response_model_notification.ResponseNotificationModel;
+import com.rescribe.model.response_model_notification.RequestNotificationModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
@@ -21,9 +21,9 @@ import com.rescribe.util.RescribeConstants;
 
 public class RespondToNotificationHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
-    HelperResponse mHelperResponseManager;
+    private String TAG = this.getClass().getName();
+    private Context mContext;
+    private HelperResponse mHelperResponseManager;
 
     public RespondToNotificationHelper(Context context, HelperResponse respondNotificationActivity) {
         this.mContext = context;
@@ -83,7 +83,7 @@ public class RespondToNotificationHelper implements ConnectionListener {
     public void doRespondToNotification(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle,String pos) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, pos, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
-        ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
+        RequestNotificationModel responseNotificationModel = new RequestNotificationModel();
         responseNotificationModel.setPatientId(patientID);
         responseNotificationModel.setSlot(slot);
         responseNotificationModel.setMedicineId(medicineId);
@@ -97,7 +97,7 @@ public class RespondToNotificationHelper implements ConnectionListener {
     public void doRespondToNotificationForHeader(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle,String pos) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, pos, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
-        ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
+        RequestNotificationModel responseNotificationModel = new RequestNotificationModel();
         responseNotificationModel.setPatientId(patientID);
         responseNotificationModel.setSlot(slot);
         responseNotificationModel.setMedicineId(medicineId);
@@ -108,29 +108,31 @@ public class RespondToNotificationHelper implements ConnectionListener {
         mConnectionFactory.createConnection(pos);
     }
     // for click of checkbox in sublist   , whether particular medicines of particular slot taken or not i.e. isBundle = 0
-    public void doRespondToNotificationForNotificationAdapter(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle,String pos) {
+    public void doRespondToNotificationForNotificationAdapter(Integer patientID, String slot, Integer medicineId, String takenDate, Integer isBundle, String pos, int isTaken) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, pos, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
-        ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
+        RequestNotificationModel responseNotificationModel = new RequestNotificationModel();
         responseNotificationModel.setPatientId(patientID);
         responseNotificationModel.setSlot(slot);
         responseNotificationModel.setMedicineId(medicineId);
         responseNotificationModel.setTakenDate(takenDate);
         responseNotificationModel.setIsBundle(isBundle);
+        responseNotificationModel.setIsTaken(isTaken);
         mConnectionFactory.setPostParams(responseNotificationModel);
         mConnectionFactory.setUrl(Config.RESPOND_TO_NOTIFICATION_URL);
         mConnectionFactory.createConnection(pos);
     }
     // for click of checkbox in header sublist   , whether particular medicines of particular slot taken or not i.e. isBundle = 0
-    public void doRespondToNotificationForHeaderOfNotificationAdapter(Integer patientID,String slot,Integer medicineId,String takenDate,Integer isBundle,String pos) {
+    public void doRespondToNotificationForHeaderOfNotificationAdapter(Integer patientID, String slot, Integer medicineId, String takenDate, Integer isBundle, String pos, int isTaken) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, pos, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
-        ResponseNotificationModel responseNotificationModel = new ResponseNotificationModel();
+        RequestNotificationModel responseNotificationModel = new RequestNotificationModel();
         responseNotificationModel.setPatientId(patientID);
         responseNotificationModel.setSlot(slot);
         responseNotificationModel.setMedicineId(medicineId);
         responseNotificationModel.setTakenDate(takenDate);
         responseNotificationModel.setIsBundle(isBundle);
+        responseNotificationModel.setIsTaken(isTaken);
         mConnectionFactory.setPostParams(responseNotificationModel);
         mConnectionFactory.setUrl(Config.RESPOND_TO_NOTIFICATION_URL);
         mConnectionFactory.createConnection(pos);

@@ -19,6 +19,7 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.model.investigation.uploaded.InvestigationUploadFromUploadedModel;
+import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -45,6 +46,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
     private AppDBHelper appDBHelper;
     private ArrayList<InvestigationData> investigationTemp;
     private InvestigationHelper investigationHelper;
+    private String mUnreadInvestigationMsgID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,8 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
         recyclerView.setAdapter(uploadedImageAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         recyclerView.setLayoutManager(layoutManager);
+
+        mUnreadInvestigationMsgID = getIntent().getStringExtra(RescribeConstants.NOTIFICATION_ID);
 
     }
 
@@ -129,6 +133,8 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
             }
 
             if (selectedCount == investigationTemp.size()) {
+                AppDBHelper.getInstance(this).deleteUnreadReceivedNotificationMessage(mUnreadInvestigationMsgID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+
                 Intent intent = new Intent(this, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

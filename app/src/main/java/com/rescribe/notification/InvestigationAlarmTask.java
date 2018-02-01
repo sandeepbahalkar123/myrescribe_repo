@@ -68,10 +68,8 @@ public class InvestigationAlarmTask implements Runnable {
         intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, time);
         intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, INVESTIGATION_NOTIFICATION_ID);
 
-        if ((PendingIntent.getService(context, INVESTIGATION_NOTIFICATION_ID, intent, PendingIntent.FLAG_NO_CREATE) == null)) {
-            PendingIntent pendingIntent = PendingIntent.getService(context, INVESTIGATION_NOTIFICATION_ID, intent, 0);
-            am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-        } else CommonMethods.Log(TAG, "Alar]m already there" + INVESTIGATION_NOTIFICATION_ID);
+        PendingIntent pendingIntent = PendingIntent.getService(context, INVESTIGATION_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, getCalendar(time).getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
 }

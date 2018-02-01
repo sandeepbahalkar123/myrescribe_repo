@@ -132,7 +132,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private int widthPixels;
     DashboardDataModel mDashboardDataModel;
     DashboardMenuData mDashboardMenuData;
-    public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
+    public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
@@ -476,7 +476,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             Intent intent = new Intent(HomePageActivity.this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             Bundle bundle = new Bundle();
-            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD,"");
+            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
@@ -517,13 +517,20 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             ex.printStackTrace();
         }
 
+
         int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
         int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
         int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-        int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
         // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
+        /*
+         -->
+         START: Notification count is stored in shared-preferences now,
+                check AppDbHelper.insertUnreadReceivedNotificationMessage();
+                Chat count is not showing now.
+         <--
+        */
+         //-->END
 
         ArrayList<DashboardMenuList> dashboardMenuList = mDashboardMenuData.getDashboardMenuList();
         //------- Menus received from server, like find_doc,ongoing_medication : START
@@ -548,7 +555,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
             bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.home)));
-            bottomMenu.setNotificationCount(notificationCount);
 
             addBottomMenu(bottomMenu);
         }
@@ -572,7 +578,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         else
                             CommonMethods.Log(TAG, "Resource does not exist");
 
-                        bottomSheetMenu.setNotificationCount(notificationCount);
                         addBottomSheetMenu(bottomSheetMenu);
                     }
                 }
@@ -662,7 +667,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         if (mDashboardDataModel != null) {
             setUpViewPager();
         }
-
+        int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
+        setBadgeCount(notificationCount);
     }
 
     private void doCallDashBoardAPI() {
@@ -794,8 +800,12 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             Intent intent = new Intent(this, VitalGraphActivity.class);
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
+
             Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
             startActivity(intent);
+
+            RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, 0, this);
+            setBadgeCount(0);
 
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
             MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
@@ -829,7 +839,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(mContext, AppointmentActivity.class);
-            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
+            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticles.class);
@@ -852,10 +862,15 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
                 int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
                 int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-                int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
                 // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-                int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
+                  /* START: Notification count is stored in shared-preferences now,
+                    check AppDbHelper.insertUnreadReceivedNotificationMessage();
+                     Chat count is not showing now.
+                   */
+                int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
+                //-->END
+
                 //--- Update count on App_logo
                 for (BottomMenu object :
                         bottomMenus) {
@@ -889,6 +904,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         super.onDestroy();
     }
+
     private void checkAndroidVersion() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermission();
@@ -904,15 +920,15 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat
                 .checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION)+ ContextCompat
-                                .checkSelfPermission(this,
-                                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        Manifest.permission.ACCESS_COARSE_LOCATION) + ContextCompat
+                .checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale
                     (this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
                     ActivityCompat.shouldShowRequestPermissionRationale
-                            (this, Manifest.permission.ACCESS_COARSE_LOCATION)||
+                            (this, Manifest.permission.ACCESS_COARSE_LOCATION) ||
                     ActivityCompat.shouldShowRequestPermissionRationale
                             (this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
@@ -940,14 +956,14 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                             public void onClick(View v) {
                                 requestPermissions(
                                         new String[]{Manifest.permission
-                                                .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},
+                                                .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                                         PERMISSIONS_MULTIPLE_REQUEST);
                             }
                         }).show();
             } else {
                 requestPermissions(
                         new String[]{Manifest.permission
-                                .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},
+                                .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSIONS_MULTIPLE_REQUEST);
             }
         } else {
@@ -955,6 +971,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             // write your logic code if permission already granted
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -966,8 +983,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     boolean accessCoarsePermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean writeExternalFile = grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
-                    if(accessCoarsePermission && writeExternalFile && accessFinePermission)
-                    {
+                    if (accessCoarsePermission && writeExternalFile && accessFinePermission) {
                         doCallDashBoardAPI(); // write your logic here
                     } else {
                         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
@@ -996,7 +1012,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                                     public void onClick(View v) {
                                         requestPermissions(
                                                 new String[]{Manifest.permission
-                                                        .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},
+                                                        .WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                                                 PERMISSIONS_MULTIPLE_REQUEST);
                                     }
                                 }).show();

@@ -69,6 +69,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
     private ArrayList<InvestigationData> investigation;
     private AppDBHelper appDBHelper;
     private String patient_id = "";
+    private String mUnreadInvestigationMsgID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,8 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         recyclerView.setAdapter(selectedImageAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         recyclerView.setLayoutManager(layoutManager);
+
+        mUnreadInvestigationMsgID = getIntent().getStringExtra(RescribeConstants.NOTIFICATION_ID);
 
     }
 
@@ -299,9 +302,12 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         }
 
         if (selectedCount == investigation.size()) {
+            AppDBHelper.getInstance(this).deleteUnreadReceivedNotificationMessage(mUnreadInvestigationMsgID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+
             Intent intent = new Intent(this, HomePageActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+
         } else {
             Intent intent = new Intent();
             intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);

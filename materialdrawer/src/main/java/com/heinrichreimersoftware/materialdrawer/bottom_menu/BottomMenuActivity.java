@@ -182,6 +182,9 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         if (bottomSheetBadgeView != null && count > 0) {
             bottomSheetBadgeView.setVisibility(View.VISIBLE);
             bottomSheetBadgeView.setText(String.valueOf(count));
+        }else{
+            bottomSheetBadgeView.setVisibility(View.GONE);
+            bottomSheetBadgeView.setText(String.valueOf(count));
         }
 
         bottomMenus.get(appIconIndex).setNotificationCount(count);

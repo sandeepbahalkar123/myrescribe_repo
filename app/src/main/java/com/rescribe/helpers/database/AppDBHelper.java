@@ -17,6 +17,7 @@ import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -534,6 +535,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
         else
             db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
 
+        //---Update notification count
+        int anInt = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext) + 1;
+        RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, anInt, mContext);
+
         doReadAllUnreadMessages();
 
         return true;
@@ -541,7 +546,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     private boolean isExist(String id, String type) {
         SQLiteDatabase db = getReadableDatabase();
-        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE + " where " + COLUMN_ID + " = " + id + " AND " + NOTIFICATION_MSG_TYPE + " = '" + type +  "'";
+        String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE + " where " + COLUMN_ID + " = " + id + " AND " + NOTIFICATION_MSG_TYPE + " = '" + type + "'";
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
         cursor.close();
@@ -599,12 +604,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public int deleteUnreadReceivedNotificationMessage(String id, String notificationType) {
         SQLiteDatabase db = getWritableDatabase();
-        if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT.equalsIgnoreCase(notificationType)) {
-            deleteUnreadMessage(id);
-        } else {
-            int delete = db.delete(NOTIFICATION_MESSAGE_TABLE, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
-                    new String[]{id, notificationType});
-        }
+
+        int delete = db.delete(NOTIFICATION_MESSAGE_TABLE, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ",
+                new String[]{id, notificationType});
+
         doReadAllUnreadMessages();
         return getUnreadNotificationCount();
     }

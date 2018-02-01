@@ -187,16 +187,21 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }, 100);
 
     }
-  //BottomMenu is Set here // BottomMenu is shown on Bookappointment page only i it opens from bottomMenuBar otherwise it is hidden
+
+    //BottomMenu is Set here // BottomMenu is shown on Bookappointment page only i it opens from bottomMenuBar otherwise it is hidden
     private void setBottomMenu() {
 
         int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
         int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
         int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-        int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
         //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount + chatCount;
+        /* START: Notification count is stored in shared-preferences now,
+                check AppDbHelper.insertUnreadReceivedNotificationMessage();
+                Chat count is not showing now.
+             */
+        int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
+        //END
 
         bottomMenus.clear();
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
@@ -241,7 +246,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 break;
             }
         }
-      //on click of logo bottomSheetAdapter is opened , for that purpose adapter of bottomSheet is set
+        //on click of logo bottomSheetAdapter is opened , for that purpose adapter of bottomSheet is set
         setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
     }
 
@@ -268,12 +273,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
             mDrawerLayout.closeDrawer(GravityCompat.END);
         } else {
-            if(callType.equals("")||callType==null) {
+            if (callType.equals("") || callType == null) {
                 super.onBackPressed();
                 DoctorDataHelper.setReceivedDoctorServicesModel(null);
-            }else{
+            } else {
                 //this is called when appointment is cancelled and redirected to appointment page and onbackpressed Homepage is called
-                Intent intent = new Intent(mContext,HomePageActivity.class);
+                Intent intent = new Intent(mContext, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
@@ -302,7 +307,8 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }
         super.onBottomMenuClick(bottomMenu);
     }
-  //on click of logo bottomsheet  dialog opens and on click of profileImage ProfileAcivity is opened
+
+    //on click of logo bottomsheet  dialog opens and on click of profileImage ProfileAcivity is opened
     @Override
     public void onProfileImageClick() {
         Intent intent = new Intent(this, ProfileActivity.class);
@@ -317,6 +323,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         mDrawerLayout.closeDrawers();
         mRecentVisitDoctorFragment.onApplyClicked(b);
     }
+
     //on click of drawer reset button
     @Override
     public void onReset(boolean drawerRequired) {
@@ -342,6 +349,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
             Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
             startActivity(intent);
+
+            RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, 0, this);
+            setBadgeCount(0);
 
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
             MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
@@ -375,7 +385,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(mContext, AppointmentActivity.class);
-            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
+            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticles.class);
@@ -396,10 +406,15 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
             int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
             int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-            int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
             // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-            int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
+                /*   START: Notification count is stored in shared-preferences now,
+                     check AppDbHelper.insertUnreadReceivedNotificationMessage();
+                     Chat count is not showing now.
+                  */
+            int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
+            //END
+
             //--- Update count on App_logo
             for (BottomMenu object :
                     bottomMenus) {

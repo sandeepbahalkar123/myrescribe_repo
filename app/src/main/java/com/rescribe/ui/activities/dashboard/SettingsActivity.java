@@ -101,10 +101,15 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
         int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
         int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-        int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
         //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        int notificationCount = appCount + invCount + medCount + chatCount;
+         /* START: Notification count is stored in shared-preferences now,
+                check AppDbHelper.insertUnreadReceivedNotificationMessage();
+                Chat count is not showing now.
+             */
+        int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
+        //END
+
         if (dashboardBottomMenuLists != null)
             bottomSheetMenus.clear();
         for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
@@ -316,6 +321,9 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
             startActivity(intent);
 
+            RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, 0, this);
+            setBadgeCount(0);
+
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
             MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
             int completeCount = 0;
@@ -400,10 +408,15 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
             int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
             int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-            int chatCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
             // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-            int notificationCount = appCount + invCount + medCount + chatCount;// + tokCount;
+             /* START: Notification count is stored in shared-preferences now,
+                check AppDbHelper.insertUnreadReceivedNotificationMessage();
+                Chat count is not showing now.
+             */
+            int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
+            //END
+
             //--- Update count on App_logo
             for (BottomMenu object :
                     bottomMenus) {

@@ -224,7 +224,6 @@ public class RescribePreferencesManager {
         String APPOINTMENT_ALERT_COUNT = "appointmentAlertCount";
         String INVESTIGATION_ALERT_COUNT = "investigationAlertCount";
         String MEDICATION_ALERT_COUNT = "medicationAlertCount";
-        String CHAT_ALERT_COUNT = "chatAlertCount";
         String TOKEN_ALERT_COUNT = "tokenAlertCount";
         String OFFERS_ALERT_COUNT = "offersAlertCount";
     }

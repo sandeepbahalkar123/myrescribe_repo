@@ -1,5 +1,7 @@
 package com.rescribe.ui.activities.dashboard;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -120,6 +122,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mTitleView.setText(getString(R.string.notifications));
 
         // Clear all notifications
+        NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nMgr.cancelAll();
     }
 
     @Override
@@ -307,22 +311,22 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             clearNotification(this, APPOINTMENT_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
 
         } else if (RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT.equalsIgnoreCase(unreadNotificationMessageData.getNotificationMessageType())) {
-            int unReadCount = instance.deleteUnreadReceivedNotificationMessage(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
             String notificationData = unreadNotificationMessageData.getNotificationData();
 
             Intent intentNotification = new Intent(this, InvestigationActivity.class);
             InvestigationNotification investigationNotification = new Gson().fromJson(notificationData, InvestigationNotification.class);
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_LIST, investigationNotification.getNotifications());
             intentNotification.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TIME, unreadNotificationMessageData.getNotificationTimeStamp());
+            intentNotification.putExtra(RescribeConstants.NOTIFICATION_ID, unreadNotificationMessageData.getId());
             intentNotification.putExtra(RescribeConstants.FROM, "unread");
             startActivity(intentNotification);
 
+            /*int unReadCount = instance.deleteUnreadReceivedNotificationMessage(unreadNotificationMessageData.getId(), unreadNotificationMessageData.getNotificationMessageType());
             if (unReadCount == 0) {
                 isAllListEmpty = true;
                 showMessage();
             }
-
-            clearNotification(this, INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
+            clearNotification(this, INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());*/
             // OPEN INVESTIGATION SCREEN, pending for ganesh code
         }
     }

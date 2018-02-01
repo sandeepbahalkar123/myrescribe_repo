@@ -79,6 +79,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private int patientId;
     private Intent gmailIntent;
     private String doctorName;
+    private String mUnreadInvestigationMsgID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 onBackPressed();
             }
         });
-      //  toolbar.setTitle(getString(R.string.investigation_reports));
+        //  toolbar.setTitle(getString(R.string.investigation_reports));
         mContext = InvestigationActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
@@ -115,6 +116,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
 
     }
 
@@ -164,7 +166,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     @Override
     public void onBackPressed() {
         String from = getIntent().getStringExtra(FROM); // If coming from Unread Notification Screen it's value will "unread" else null.
-        if (from == null){
+        if (from == null) {
             Intent intent = new Intent(InvestigationActivity.this, HomePageActivity.class);
             intent.putExtra(RescribeConstants.ALERT, false);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -236,6 +238,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 if (selected) {
                     Intent intent = new Intent(mContext, SelectedDocsActivity.class);
                     intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
+                    intent.putExtra(RescribeConstants.NOTIFICATION_ID, mUnreadInvestigationMsgID);
                     startActivityForResult(intent, FilePickerConst.REQUEST_CODE_PHOTO);
                 } else
                     CommonMethods.showToast(mContext, getResources().getString(R.string.please_select_at_least_one_document));
@@ -244,6 +247,8 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 Intent intent = new Intent(mContext, UploadedDocsActivity.class);
                 intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigation);
                 intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA, investigationTemp);
+                intent.putExtra(RescribeConstants.NOTIFICATION_ID, mUnreadInvestigationMsgID);
+
                 startActivityForResult(intent, UPLOADED_DOCS);
                 break;
             case R.id.gmailButton:
@@ -318,10 +323,11 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
     private void getIntentData() {
 
+        mUnreadInvestigationMsgID = getIntent().getStringExtra(RescribeConstants.NOTIFICATION_ID);
         investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
-        if(investigation.get(0).getDoctorName().toLowerCase().contains("dr.")){
+        if (investigation.get(0).getDoctorName().toLowerCase().contains("dr.")) {
             doctorName = investigation.get(0).getDoctorName();
-        }else{
+        } else {
             doctorName = "Dr. " + investigation.get(0).getDoctorName();
         }
         String titleText = getResources().getString(R.string.investigation_title);

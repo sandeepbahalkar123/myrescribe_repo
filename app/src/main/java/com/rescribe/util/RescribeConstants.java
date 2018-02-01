@@ -199,7 +199,10 @@ public class RescribeConstants {
     public static final String MYRECORDDATAMODEL = "myrecorddatamodel";
     public static final String CAPTION = "caption";
     public static final String TYPE_OF_LOGIN = "";
+
     public static final String SENDERID = "EMROTP";
+    public static final String SENDERID_2 = "RSCRIB";
+
     public static final String IS_URL = "isUrl";
     public static final String DOCTORS_INFO = "doctor_info";
     public static final String DOCTOR_DATA_REQUEST = "doctor_request_info";

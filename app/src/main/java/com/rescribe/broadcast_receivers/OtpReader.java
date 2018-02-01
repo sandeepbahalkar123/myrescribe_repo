@@ -10,6 +10,9 @@ import android.text.TextUtils;
 import com.rescribe.interfaces.OTPListener;
 import com.rescribe.util.CommonMethods;
 
+import static com.rescribe.util.RescribeConstants.SENDERID;
+import static com.rescribe.util.RescribeConstants.SENDERID_2;
+
 
 /**
  * Created by swarajpal on 13-12-2015.
@@ -28,19 +31,12 @@ public class OtpReader extends BroadcastReceiver {
     private static OTPListener otpListener;
 
     /**
-     * The Sender number string.
-     */
-    private static String receiverString;
-
-    /**
      * Binds the sender string and listener for callback.
      *
      * @param listener
-     * @param sender
      */
-    public static void bind(OTPListener listener, String sender) {
+    public static void bind(OTPListener listener) {
         otpListener = listener;
-        receiverString = sender;
     }
 
     @Override
@@ -50,16 +46,18 @@ public class OtpReader extends BroadcastReceiver {
 
             final Object[] pdusArr = (Object[]) bundle.get("pdus");
 
-            for (int i = 0; i < pdusArr.length; i++) {
+            if (pdusArr != null) {
+                for (Object aPdusArr : pdusArr) {
 
-                SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusArr[i]);
-                String senderNum = currentMessage.getDisplayOriginatingAddress();
-                String message = currentMessage.getDisplayMessageBody();
-                CommonMethods.Log(TAG, "senderNum: " + senderNum + " message: " + message);
-                if (!TextUtils.isEmpty(receiverString) && senderNum.contains(receiverString)) { //If message received is from required number.
-                    //If bound a listener interface, callback the overriden method.
-                    if (otpListener != null) {
-                        otpListener.otpReceived(message);
+                    SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) aPdusArr);
+                    String senderNum = currentMessage.getDisplayOriginatingAddress();
+                    String message = currentMessage.getDisplayMessageBody();
+                    CommonMethods.Log(TAG, "senderNum: " + senderNum + " message: " + message);
+                    if (senderNum.contains(SENDERID) || senderNum.contains(SENDERID_2)) { //If message received is from required number.
+                        //If bound a listener interface, callback the overriden method.
+                        if (otpListener != null) {
+                            otpListener.otpReceived(message);
+                        }
                     }
                 }
             }

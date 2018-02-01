@@ -42,10 +42,7 @@ import static com.rescribe.util.RescribeConstants.FROM;
  */
 
 public class OtpConfirmationForLogin extends Fragment implements HelperResponse, OTPListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
     private CountDownTimer mCountDownTimer;
     private final long mStartTime = 30 * 1000;
     private final long mInterval = 1000;
@@ -81,7 +78,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
         View inflate = inflater.inflate(R.layout.enter_generated_otp, container, false);
         ButterKnife.bind(this, inflate);
         // Read sms
-        OtpReader.bind(this, RescribeConstants.SENDERID);
+        OtpReader.bind(this);
         mCountDownTimer = new OtpConfirmationForLogin.MyCountDownTimer(mStartTime, mInterval);
         mCountDownTimer.start();
 

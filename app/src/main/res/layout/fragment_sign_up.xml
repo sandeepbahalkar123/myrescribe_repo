@@ -29,7 +29,7 @@
                 android:layout_gravity="center"
                 android:text="@string/your_health"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp16"
+                android:textSize="@dimen/sp13"
                 app:customFont="@string/roboto_medium" />
 
             <LinearLayout

@@ -120,8 +120,10 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
             doctorConnectBaseModel = (DoctorConnectBaseModel) customResponse;
             mDoctorConnectDataModel = doctorConnectBaseModel.getDoctorConnectDataModel();
             DoctorConnectActivity activity = (DoctorConnectActivity) getActivity();
-            activity.setmChatDoctors(mDoctorConnectDataModel.getChatDoctor());
-            setAdapter();
+            if (mDoctorConnectDataModel != null) {
+                activity.setmChatDoctors(mDoctorConnectDataModel.getChatDoctor());
+                setAdapter();
+            }
         }
     }
 

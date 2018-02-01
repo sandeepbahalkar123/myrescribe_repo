@@ -1,201 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
-    android:orientation="vertical">
+    android:background="@drawable/login_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dp20"
-        android:layout_weight="0.7"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/vector_smart_object" />
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/your_health"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp13"
-            app:customFont="@string/roboto_medium" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/dp20"
-            android:paddingLeft="@dimen/dp30"
-            android:paddingRight="@dimen/dp30">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp16"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextMobileNo"
-                style="@style/AppLoginNewMainStyle"
-                android:hint="@string/enter_mobile_no"
-                android:inputType="number"
-                android:maxLength="10"
-                android:textStyle="bold"
-                android:typeface="sans" />
-            <!--  Email Label -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp1"
-                android:background="@color/white" />
-
-
-            <EditText
-                android:id="@+id/editTextPassword"
-                style="@style/AppLoginNewMainStyle"
-                android:layout_marginTop="@dimen/dp10"
-                android:hint="@string/enter_password"
-                android:inputType="textPassword"
-                android:textStyle="bold"
-                android:typeface="sans" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp1"
-                android:background="@color/white" />Ap
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/vector_smart_object" />
 
             <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/btnOtp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginBottom="@dimen/dp25"
-                android:layout_marginTop="@dimen/dp25"
-                android:background="@drawable/rectangle_box"
-                android:drawablePadding="@dimen/dp16"
-                android:drawableRight="@drawable/layer_20"
-                android:gravity="center_vertical"
-                android:paddingTop="@dimen/dp6"
-                android:paddingBottom="@dimen/dp6"
-                android:paddingLeft="@dimen/dp8"
-                android:paddingStart="@dimen/dp8"
-                android:paddingEnd="@dimen/dp8"
-                android:paddingRight="@dimen/dp8"
-                android:text="@string/using_otp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp16"
-                app:customFont="@string/roboto_regular" />
-
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp40"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp10"
-                android:layout_marginRight="@dimen/dp10"
-                android:background="@color/login_bg_color"
-                android:gravity="center"
-                android:paddingBottom="@dimen/dp10"
-                android:paddingTop="@dimen/dp10"
-                android:text="@string/log_in"
-                android:textAllCaps="true"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/sp16" />
+                android:text="@string/your_health"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp13"
+                app:customFont="@string/roboto_medium" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp6"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dp20"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dp30"
+                android:paddingRight="@dimen/dp30">
 
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/forgotPasswordView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="@dimen/dp6"
-                    android:text="@string/forgot_password"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp14"
-                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/editTextMobileNo"
+                    style="@style/AppLoginNewMainStyle"
+                    android:hint="@string/enter_mobile_no"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:typeface="sans" />
+                <!--  Email Label -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/white" />
+
+
+                <EditText
+                    android:id="@+id/editTextPassword"
+                    style="@style/AppLoginNewMainStyle"
+                    android:layout_marginTop="@dimen/dp14"
+                    android:drawableEnd="@drawable/password"
+                    android:drawableRight="@drawable/password"
+                    android:hint="@string/enter_password"
+                    android:paddingTop="@dimen/dp16"
+                    android:inputType="textPassword"
+                    android:typeface="sans" />
 
                 <View
-                    android:layout_width="@dimen/dp2"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dp10"
-                    android:layout_marginRight="@dimen/dp10"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
                     android:background="@color/white" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/signup"
+                    android:id="@+id/btnOtp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="@dimen/dp6"
-                    android:text="@string/sign_up"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginBottom="@dimen/dp25"
+                    android:layout_marginTop="@dimen/dp25"
+                    android:background="@drawable/rectangle_box"
+                    android:drawablePadding="@dimen/dp16"
+                    android:drawableRight="@drawable/layer_20"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/dp6"
+                    android:paddingEnd="@dimen/dp8"
+                    android:paddingLeft="@dimen/dp8"
+                    android:paddingRight="@dimen/dp8"
+                    android:paddingStart="@dimen/dp8"
+                    android:paddingTop="@dimen/dp6"
+                    android:text="@string/using_otp"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp14"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/sp16"
+                    app:customFont="@string/roboto_regular" />
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp40"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:background="@color/login_bg_color"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/dp10"
+                    android:paddingTop="@dimen/dp10"
+                    android:text="@string/log_in"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/sp16" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp6"
+                    android:orientation="horizontal">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/forgotPasswordView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dp6"
+                        android:text="@string/forgot_password"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="@dimen/dp2"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginRight="@dimen/dp10"
+                        android:background="@color/white" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/signup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dp6"
+                        android:text="@string/sign_up"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp16"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/dp16">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp10"
+                android:gravity="center_vertical"
+                android:src="@drawable/or"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/loginUpWithFacebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp16"
+                android:gravity="center_vertical"
+                android:src="@drawable/fb_logo"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/loginUpWithGmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp16"
+                android:gravity="center_vertical"
+                android:src="@drawable/gmail"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp16"
+                android:gravity="center_vertical"
+                android:src="@drawable/by_continuing_you_accept_the_terms_of_use_and_privacy_policy"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp30"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dp10"
-            android:layout_marginRight="@dimen/dp10"
-            android:gravity="center_vertical"
-            android:src="@drawable/or"
-            android:textColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/loginUpWithFacebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dp20"
-            android:layout_marginRight="@dimen/dp20"
-            android:layout_marginTop="@dimen/dp16"
-            android:gravity="center_vertical"
-            android:src="@drawable/fb_logo"
-            android:textColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/loginUpWithGmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dp20"
-            android:layout_marginRight="@dimen/dp20"
-            android:layout_marginTop="@dimen/dp16"
-            android:gravity="center_vertical"
-            android:src="@drawable/gmail"
-            android:textColor="@color/white" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/dp8"
-            android:layout_marginTop="@dimen/dp16"
-            android:gravity="center_vertical"
-            android:src="@drawable/by_continuing_you_accept_the_terms_of_use_and_privacy_policy"
-            android:textColor="@color/white" />
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>
 

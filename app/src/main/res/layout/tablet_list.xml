@@ -40,7 +40,7 @@
             android:textSize="@dimen/sp15"
             android:paddingStart="@dimen/dp20"
             app:customFont="@string/roboto_bold"
-            tools:text="Rantacfdffgdfgfgsgggggggggdddf"
+            tools:text="Tablet Name"
             android:paddingLeft="@dimen/dp20" />
 
         <com.rescribe.ui.customesViews.CustomTextView
@@ -54,7 +54,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/sp16"
             app:customFont="@string/roboto_bold"
-            tools:text="dsdfsdsf2" />
+            tools:text="Doses" />
 
         <CheckBox
             android:id="@+id/selectViewTab"

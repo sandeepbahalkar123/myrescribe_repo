@@ -472,11 +472,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
+
+                CheckBox checkBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
+
                 switch (mSlotType) {
                     case BREAK_FAST:
-                        mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(true);
-                        mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(false);
-                        mView.findViewById(R.id.selectViewTab).setEnabled(false);
+                        mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                        mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                         if (getSelectedCount(mDataSet.get(mPos).getMedication().getBreakfast()) == mDataSet.get(mPos).getMedication().getBreakfast().size()) {
                             if (mView.getTag().equals(BREAK_FAST)) {
@@ -487,9 +489,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         break;
                     case LUNCH:
-                        mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(true);
-                        mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(false);
-                        mView.findViewById(R.id.selectViewTab).setEnabled(false);
+                        mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                        mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                         if (getSelectedCount(mDataSet.get(mPos).getMedication().getLunch()) == mDataSet.get(mPos).getMedication().getLunch().size()) {
                             mDataSet.get(mPos).setLunchThere(false);
@@ -498,9 +499,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         break;
                     case SNACKS:
-                        mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(true);
-                        mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(false);
-                        mView.findViewById(R.id.selectViewTab).setEnabled(false);
+                        mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                        mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                         if (getSelectedCount(mDataSet.get(mPos).getMedication().getSnacks()) == mDataSet.get(mPos).getMedication().getSnacks().size()) {
                             mDataSet.get(mPos).setSnacksThere(false);
@@ -509,9 +509,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         break;
                     case DINNER:
-                        mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(true);
-                        mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(false);
-                        mView.findViewById(R.id.selectViewTab).setEnabled(false);
+                        mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                        mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                         if (getSelectedCount(mDataSet.get(mPos).getMedication().getDinner()) == mDataSet.get(mPos).getMedication().getDinner().size()) {
                             mDataSet.get(mPos).setDinnerThere(false);

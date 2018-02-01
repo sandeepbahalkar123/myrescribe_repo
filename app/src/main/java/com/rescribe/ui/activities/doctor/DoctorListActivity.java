@@ -1,7 +1,6 @@
 package com.rescribe.ui.activities.doctor;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -44,6 +43,8 @@ import butterknife.ButterKnife;
  */
 
 public class DoctorListActivity extends AppCompatActivity implements HelperResponse, FilterFragment.OnDrawerInteractionListener, SelectDoctorsFragment.OnSelectDoctorInteractionListener, SelectSpecialityFragment.OnSelectSpecialityInteractionListener, FilterDoctorsAdapter.ItemClickListener, FilterDoctorSpecialitiesAdapter.ItemClickListener, FilterCaseDetailsAdapter.ItemClickListener {
+    private static final String BACK_STACK_ROOT_TAG = "root_fragment";
+    private static final String FILTERED_FRAGMENT_TAG = "filtered_fragment";
     // Filter Start
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
@@ -66,7 +67,11 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         setContentView(R.layout.global_drawer_layout_container);
         ButterKnife.bind(this);
         mFragmentManager = getSupportFragmentManager();
-        loadFragment(DoctorListFragmentContainer.newInstance(), false);
+
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.viewContainer, DoctorListFragmentContainer.newInstance(), BACK_STACK_ROOT_TAG);
+        fragmentTransaction.commit();
+
         //--- Filter Start
         FilterHelper filterHelper = new FilterHelper(this);
         filterHelper.getDoctorList();
@@ -80,8 +85,8 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         if (mDrawer.isDrawerOpen(GravityCompat.END)) {
             mDrawer.closeDrawer(GravityCompat.END);
         } else {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                getSupportFragmentManager().popBackStack();
+            if (mFragmentManager.getBackStackEntryCount() > 0) {
+                mFragmentManager.popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             } else {
                 RequestPool.getInstance(this).cancellAllPreviousRequestWithSameTag(RescribeConstants.CASE_DETAILS_LIST);
                 super.onBackPressed();
@@ -109,10 +114,14 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
         Gson gson = new Gson();
         CommonMethods.Log("FilterRequest", gson.toJson(drFilterRequestModel, DrFilterRequestModel.class));
         mDrawer.closeDrawer(GravityCompat.END);
+
+        if (mFragmentManager.getBackStackEntryCount() > 0)
+            mFragmentManager.popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
         DoctorFilteredListFragment doctorFilteredListFragment = DoctorFilteredListFragment.newInstance(drFilterRequestModel);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.viewContainer, doctorFilteredListFragment);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.add(R.id.viewContainer, doctorFilteredListFragment, FILTERED_FRAGMENT_TAG);
+        fragmentTransaction.addToBackStack(BACK_STACK_ROOT_TAG);
         fragmentTransaction.commit();
 
     }
@@ -264,17 +273,4 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
     }
-
-    // Filter End
-
-    private void loadFragment(Fragment fragment, boolean requiredBackStack) {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.viewContainer, fragment);
-        if (requiredBackStack) {
-            fragmentTransaction.addToBackStack(null);
-        }
-        fragmentTransaction.commit();
-    }
-
-
 }

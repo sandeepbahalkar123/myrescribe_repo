@@ -1,5 +1,6 @@
 package com.rescribe.adapters.dashboard;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -53,6 +54,7 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
         return mDataList.size();
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
         View imageLayout = mInflater.inflate(R.layout.background_item, view, false);
@@ -62,10 +64,7 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.signature(new ObjectKey(activityCreatedTimeStamp));
-//        requestOptions.override(widthPixelOfBanner - dashboardBackgroundLayout.getContext().getResources().getDimensionPixelSize(R.dimen.dp10));
-//        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-//        requestOptions.skipMemoryCache(true);
+        requestOptions.signature(new ObjectKey(activityCreatedTimeStamp + mDataList.get(position)));
 
         Glide.with(mContext)
                 .load(mDataList.get(position))

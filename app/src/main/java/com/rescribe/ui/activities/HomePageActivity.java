@@ -28,6 +28,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -123,8 +126,13 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     ViewPager viewPagerDoctorItem;
     @BindView(R.id.menuOptionsListView)
     RecyclerView mMenuOptionsListView;
+
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
+
+    @BindView(R.id.preloadView)
+    ImageView preloadView;
+
     private Context mContext;
     String locationReceived = "";
     String previousLocationReceived = "";
@@ -157,6 +165,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private String activityCreatedTimeStamp;
     private final static String FOLDER_PATH = "images/dashboard/cardBgImage/android/";
+    private String imageBaseURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +176,12 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mContext = HomePageActivity.this;
 
         activityCreatedTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+
+        // Pre load
+
+        preLoadBannerImages();
+
+        // Pre load end
 
         appDBHelper = new AppDBHelper(mContext);
         mDashboardHelper = new DashboardHelper(this, this);
@@ -196,6 +211,48 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
+    }
+
+    @SuppressLint("CheckResult")
+    private void preLoadBannerImages() {
+        String density = CommonMethods.getDeviceResolution(mContext) + "/";
+        imageBaseURL = Config.BASE_URL + FOLDER_PATH + density;
+
+        RequestOptions requestOptions1 = new RequestOptions();
+        requestOptions1.dontAnimate();
+        requestOptions1.signature(new ObjectKey(activityCreatedTimeStamp + imageBaseURL + "myappointments.jpg"));
+
+        Glide.with(mContext)
+                .load(imageBaseURL + "myappointments.jpg")
+                .apply(requestOptions1)
+                .into(preloadView);
+
+        RequestOptions requestOptions2 = new RequestOptions();
+        requestOptions2.dontAnimate();
+        requestOptions2.signature(new ObjectKey(activityCreatedTimeStamp + imageBaseURL + "sponsored.jpg"));
+
+        Glide.with(mContext)
+                .load(imageBaseURL + "sponsored.jpg")
+                .apply(requestOptions2)
+                .into(preloadView);
+
+        RequestOptions requestOptions3 = new RequestOptions();
+        requestOptions3.dontAnimate();
+        requestOptions3.signature(new ObjectKey(activityCreatedTimeStamp + imageBaseURL + "recentlyvisited.jpg"));
+
+        Glide.with(mContext)
+                .load(imageBaseURL + "recentlyvisited.jpg")
+                .apply(requestOptions3)
+                .into(preloadView);
+
+        RequestOptions requestOptions4 = new RequestOptions();
+        requestOptions4.dontAnimate();
+        requestOptions4.signature(new ObjectKey(activityCreatedTimeStamp + imageBaseURL + "favorite.jpg"));
+
+        Glide.with(mContext)
+                .load(imageBaseURL + "favorite.jpg")
+                .apply(requestOptions4)
+                .into(preloadView);
     }
 
     @Override
@@ -326,9 +383,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         ArrayList<DoctorList> mergeList = new ArrayList<>();
         ArrayList<String> cardBgImage = new ArrayList<>();
-
-        String density = CommonMethods.getDeviceResolution(mContext) + "/";
-        String imageBaseURL = Config.BASE_URL + FOLDER_PATH + density;
 
         if (myAppoint.size() > 0) {
             mergeList.add(myAppoint.get(0));

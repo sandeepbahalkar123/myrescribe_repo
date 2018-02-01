@@ -42,7 +42,6 @@
     </style>
 
     <style name="AppLoginMainStyle">
-
         <item name="android:textCursorDrawable">@drawable/cursor_color</item>
         <item name="android:cursorVisible">true</item>
         <item name="android:background">@android:color/transparent</item>
@@ -51,10 +50,11 @@
         <item name="android:gravity">bottom|left</item>
         <item name="android:textColorHint">@color/Gray</item>
         <item name="android:textColor">@color/recentblue</item>
-        <item name="android:textSize">@dimen/sp12</item>
+        <item name="android:textSize">@dimen/sp15</item>
+        <item name="android:paddingBottom">@dimen/dp4</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/dp38</item>
     </style>
 
     <style name="AppLoginNewMainStyle">
@@ -63,12 +63,13 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="android:backgroundTint">@color/transparent</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:paddingBottom">@dimen/dp4</item>
         <item name="android:gravity">bottom|left</item>
         <item name="android:textColorHint">@color/white</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/sp14</item>
+        <item name="android:textSize">@dimen/sp15</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/dp38</item>
     </style>
 
     <style name="AppLoginSocialStyle">
@@ -78,9 +79,10 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textCursorDrawable">@drawable/cursor</item>
         <item name="android:gravity">bottom|left</item>
-        <item name="android:textSize">@dimen/sp14</item>
+        <item name="android:textSize">@dimen/sp15</item>
+        <item name="android:paddingBottom">@dimen/dp4</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/dp38</item>
     </style>
 
     <style name="CompalintStyle">
@@ -92,9 +94,10 @@
         <item name="android:gravity">bottom|left</item>
         <item name="android:textColorHint">@color/tagColor</item>
         <item name="android:textColor">@color/tagColor</item>
+        <item name="android:paddingBottom">@dimen/dp4</item>
         <item name="android:textSize">@dimen/sp14</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp40</item>
+        <item name="android:layout_height">@dimen/dp38</item>
     </style>
 
     <declare-styleable name="ZoomageView">
@@ -180,7 +183,9 @@
     </style>
 
     <style name="Material"></style>
+
     <style name="Material.App"></style>
+
     <style name="Material.App.BottomSheetDialog">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:windowIsFloating">false</item>
@@ -192,6 +197,7 @@
         <item name="bsd_canceledOnTouchOutside">true</item>
         <item name="bsd_dimAmount">0.5</item>
     </style>
+
     <style name="DialogNoAnimation">
         <item name="android:windowEnterAnimation">@null</item>
         <item name="android:windowExitAnimation">@null</item>

@@ -5,5 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textColor="@color/black"
+    android:typeface="sans"
     android:padding="@dimen/dp8"
     tools:text="Miss." />

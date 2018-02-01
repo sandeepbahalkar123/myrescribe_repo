@@ -273,13 +273,8 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             selectViewTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectViewTab.isChecked()) {
-                        mView = view;
-                        mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI);
-                    } else {
-                        mTodayDataList.get(finalI).setTabSelected(false);
-                    }
-
+                    mView = view;
+                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI, selectViewTab.isChecked() ? 1 : 0);
                 }
             });
 
@@ -287,8 +282,6 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             tabNameTextView.setText(mTodayDataList.get(i).getMedicineName());
             tabTypeView.setImageDrawable(CommonMethods.getMedicineTypeImage(mTodayDataList.get(i).getMedicineTypeName(), mContext, ContextCompat.getColor(mContext, R.color.tagColor)));
             parent.addView(view);
-
-
         }
 
     }
@@ -312,12 +305,17 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             String counter = count[1];
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
-                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(true);
-                mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(false);
-                mView.findViewById(R.id.selectViewTab).setEnabled(false);
+
+                CheckBox checkBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
+                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
+
                 if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size()) {
                     mHeaderLayoutParent.removeView(mHeaderLayout);
-                    mNoDataAvailable.setVisibility(View.VISIBLE);
+                    if (mAdapter != null) {
+                        if (mAdapter.getItemCount() == 0)
+                            mNoDataAvailable.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
@@ -432,6 +430,10 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 //    CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mHeaderLayoutParent.removeView(mHeaderLayout);
+                if (mAdapter != null) {
+                    if (mAdapter.getItemCount() == 0)
+                        mNoDataAvailable.setVisibility(View.VISIBLE);
+                }
             }
             //handled click from NotificationAdapter checkbox in header layout
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
@@ -439,7 +441,6 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             //handled click from NotificationAdapter checkbox in sublist layout
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
             mAdapter.onSuccessOfNotificationCheckBoxClick(mOldDataTag, customResponse);
-
         }
     }
 
@@ -481,12 +482,8 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             mSelectView.setEnabled(true);
             mSelectView.setChecked(false);
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION)) {
-            String position = mOldDataTag;
-            String[] count = position.split("_");
-            String counter = count[1];
-            mView.findViewById(R.id.selectViewTab).setEnabled(true);
             CheckBox checkBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
-            checkBox.setChecked(false);
+            checkBox.setChecked(!checkBox.isChecked());
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
             mNoDataAvailable.setVisibility(View.VISIBLE);
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
@@ -517,7 +514,10 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
 
     @Override
     public void onSwiped(String slotType) {
-        mNoDataAvailable.setVisibility(View.VISIBLE);
+        if (mAdapter != null) {
+            if (mAdapter.getItemCount() == 0)
+                mNoDataAvailable.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

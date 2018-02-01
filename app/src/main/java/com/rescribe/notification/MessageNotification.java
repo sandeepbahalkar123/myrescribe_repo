@@ -15,11 +15,14 @@ import android.support.v4.content.ContextCompat;
 import com.rescribe.R;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.services.MQTTService;
+import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
+import static com.rescribe.broadcast_receivers.ReplayBroadcastReceiver.MESSAGE_LIST;
+import static com.rescribe.services.MQTTService.REPLY_ACTION;
 import static com.rescribe.util.RescribeConstants.FILE.AUD;
 import static com.rescribe.util.RescribeConstants.FILE.DOC;
 import static com.rescribe.util.RescribeConstants.FILE.IMG;
@@ -54,11 +57,14 @@ public class MessageNotification {
             title = userName + " (" + unread + " messages)";
         else title = userName;
 
-        Intent resultIntent = new Intent(context, DoctorConnectActivity.class);
+        Intent resultIntent = new Intent(context, ChatActivity.class);
+        resultIntent.setAction(REPLY_ACTION);
+        resultIntent.putExtra(MESSAGE_LIST, lastMessage);
+
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         context,
-                        0,
+                        lastMessage.getDocId(),
                         resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );

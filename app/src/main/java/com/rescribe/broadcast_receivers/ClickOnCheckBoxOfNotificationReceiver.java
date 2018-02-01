@@ -75,7 +75,12 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
             }
         } else if (investigation_notification_id == InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID) {
 
-            AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+            // don't delete investigation data till investigation upload not completed
+//            AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+
+            int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext);
+            if (notificationCount > 0)
+                RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, notificationCount - 1, mContext);
 
             ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
             Intent intentNotification = new Intent(mContext, InvestigationActivity.class);
@@ -90,6 +95,9 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
         } else if (appointment_notification_id == AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID) {
 
             AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+            int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext);
+            if (notificationCount > 0)
+                RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, notificationCount - 1, mContext);
 
             SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
             try {
@@ -133,8 +141,13 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
         if (customResponse instanceof NotificationResponseBaseModel) {
             NotificationResponseBaseModel responseLogNotificationModel = (NotificationResponseBaseModel) customResponse;
             if (responseLogNotificationModel.getCommon().isSuccess()) {
+
                 CommonMethods.showToast(mContext, responseLogNotificationModel.getCommon().getStatusMessage());
                 AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(notificationId), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+
+                int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext);
+                if (notificationCount > 0)
+                    RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, notificationCount - 1, mContext);
             }
         }
     }

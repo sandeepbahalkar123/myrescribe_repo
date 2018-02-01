@@ -47,15 +47,17 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
         String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext);
 
         int unreadMessNotificationID = intent.getIntExtra(mContext.getString(R.string.unread_notification_update_received), -1);
-
         NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (!loginStatus.isEmpty()) {
             if (notificationId == DosesAlarmTask.BREAKFAST_NOTIFICATION_ID || notificationId == DosesAlarmTask.LUNCH_NOTIFICATION_ID || notificationId == DosesAlarmTask.DINNER_NOTIFICATION_ID || notificationId == DosesAlarmTask.EVENING_NOTIFICATION_ID) {
 
-                AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+                int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext);
+                if (notificationCount > 0)
+                    RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, notificationCount - 1, mContext);
 
                 Intent intentNotification = new Intent(mContext, NotificationActivity.class);
+                intentNotification.putExtra(RescribeConstants.NOTIFICATION_ID, unreadMessNotificationID);
                 intentNotification.putExtra(RescribeConstants.MEDICINE_SLOT, intent.getStringExtra(RescribeConstants.MEDICINE_SLOT));
                 intentNotification.putExtra(RescribeConstants.NOTIFICATION_DATE, intent.getStringExtra(RescribeConstants.NOTIFICATION_DATE));
                 intentNotification.putExtra(RescribeConstants.NOTIFICATION_TIME, intent.getStringExtra(RescribeConstants.NOTIFICATION_TIME));
@@ -71,6 +73,11 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
                 int invId = investigationData.get(0).getId();
                 InvestigationHelper mInvestigationHelper = new InvestigationHelper(mContext, this);
                 mInvestigationHelper.doSkipInvestigation(invId, false);
+
+                AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+                int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext);
+                if (notificationCount > 0)
+                    RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, notificationCount - 1, mContext);
 
                 // Skip notification and should come next day directly
 //                RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), false, mContext); // It will turn off notification

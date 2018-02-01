@@ -55,6 +55,7 @@ import butterknife.ButterKnife;
 
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
+import static com.rescribe.util.RescribeConstants.NOTIFICATION_ID;
 
 public class NotificationActivity extends BottomMenuActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener, BottomMenuAdapter.OnBottomMenuClickListener {
 
@@ -98,6 +99,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     Toolbar mToolbar;
     @BindView(R.id.headerLayoutParent)
     LinearLayout mHeaderLayoutParent;
+    private int notificationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,8 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
         initialize();
+
+        notificationId = getIntent().getIntExtra(NOTIFICATION_ID, -1);
 
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
         if (dashboardBottomMenuLists != null) {
@@ -316,6 +320,9 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                         if (mAdapter.getItemCount() == 0)
                             mNoDataAvailable.setVisibility(View.VISIBLE);
                     }
+
+                    if (notificationId != -1)
+                        AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(notificationId), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
                 }
             }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
@@ -434,6 +441,9 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                     if (mAdapter.getItemCount() == 0)
                         mNoDataAvailable.setVisibility(View.VISIBLE);
                 }
+
+                if (notificationId != -1)
+                    AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(notificationId), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
             }
             //handled click from NotificationAdapter checkbox in header layout
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {

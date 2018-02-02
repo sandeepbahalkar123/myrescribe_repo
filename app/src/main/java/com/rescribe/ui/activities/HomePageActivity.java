@@ -721,6 +721,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         if (mDashboardDataModel != null) {
             setUpViewPager();
         }
+
         int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
         setBadgeCount(notificationCount);
     }
@@ -761,9 +762,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         if (mDashboardDataModel != null) {
             setUpViewPager();
         }
-
     }
-
 
     private void updateUI() {
         Log.d(TAG, "UI update initiated.");
@@ -810,15 +809,14 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 LatLng location = new LatLng(lat, lng);
                 mDashboardHelper = new DashboardHelper(this, this);
                 String locationString;
-                if (obj.getLocality().equals(null)) {
+                if (obj.getLocality() == null)
                     locationString = getArea(obj);
-                } else {
+                 else
                     locationString = obj.getSubLocality();
-                }
+
                 RescribeApplication.setUserSelectedLocationInfo(mContext, location, locationString + "," + obj.getLocality());
-                if (obj.getLocality() != null) {
+                if (obj.getLocality() != null)
                     mDashboardHelper.doGetDashboard(obj.getLocality());
-                }
 
                 Log.d("AREA", getArea(obj));
             } else {

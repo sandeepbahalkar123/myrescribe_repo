@@ -62,8 +62,8 @@ import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.token.FCMTokenData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.ChatActivity;
-import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
+import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -87,6 +87,10 @@ import static com.rescribe.adapters.book_appointment.ShowTimingsBookAppointmentD
 import static com.rescribe.adapters.book_appointment.ShowTimingsBookAppointmentDoctor.mSelectedToTimeSlot;
 import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
 import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
+import static com.rescribe.util.RescribeConstants.APPOINTMENT_ID;
+import static com.rescribe.util.RescribeConstants.FROM;
+import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
+import static com.rescribe.util.RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
@@ -170,8 +174,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     View yearsExperienceLine;
     @BindView(R.id.ruppeeShadow)
     ImageView ruppeeShadow;
-    //--------------
-    private View mRootView;
     Unbinder unbinder;
     private DoctorDataHelper mDoctorDataHelper;
     private DoctorList mClickedDoctorObject;
@@ -190,6 +192,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private Bundle bundleData;
     private FCMTokenData fcmTokenData;
 
+    private String from;
+    private String aptId;
+    private String type;
+
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -199,7 +205,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.book_appoint_doc_desc_select_time_slot, container, false);
+        View mRootView = inflater.inflate(R.layout.book_appoint_doc_desc_select_time_slot, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -266,6 +272,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
         Bundle arguments = getArguments();
         if (arguments != null) {
+            aptId = arguments.getString(APPOINTMENT_ID);
+            type = arguments.getString(RESHEDULE_TYPE);
+            from = arguments.getString(FROM);
             fcmTokenData = arguments.getParcelable(TOKEN_DATA);
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
             mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
@@ -557,6 +566,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 break;
 
+            case TASK_CANCEL_RESCHEDULE_APPOINTMENT:
+                ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
+                if (mResponseAppointmentConfirmationModel.getCommon() != null)
+                    if (mResponseAppointmentConfirmationModel.getCommon().isSuccess())
+                        mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()));
+                    else
+                        Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -670,15 +687,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     if (RescribeConstants.BLANK.equalsIgnoreCase(mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot()) || mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot() == null) {
                         CommonMethods.showToast(getContext(), getString(R.string.time_select_err));
                     } else {
-
-                        mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()));
-                       /* bundleData = new Bundle();
-                        mClickedDoctorObject.setNameOfClinicString(mClickedDoctorObject.getClinicDataList().get(0).getClinicName());
-                        mClickedDoctorObject.setAddressOfDoctorString(mClickedDoctorObject.getClinicDataList().get(0).getClinicAddress());
-                        bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
-                        Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
-                        intentObject.putExtras(bundleData);
-                        startActivity(intentObject);*/
+                        if (from != null) {
+                            mDoctorDataHelper.doCancelResheduleAppointmentRequest(aptId, 4, type);
+                        } else {
+                            mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()));
+                        }
                     }
                 }
 

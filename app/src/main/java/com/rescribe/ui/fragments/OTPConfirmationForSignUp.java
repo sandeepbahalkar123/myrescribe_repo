@@ -32,6 +32,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.rescribe.util.RescribeConstants.FACEBOOK;
+import static com.rescribe.util.RescribeConstants.GMAIL;
+
 public class OTPConfirmationForSignUp extends Fragment implements HelperResponse, OTPListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -177,15 +180,14 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
 
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
-                if(mSignUpRequestModel.isGmailLogin()){
-                    RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN,getString(R.string.login_with_gmail),getActivity());
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL,mSignUpRequestModel.getMobileNumber(),getActivity());
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL,mSignUpRequestModel.getPassword(),getActivity());
-                }
-                if(mSignUpRequestModel.isFaceBookLogin()){
-                    RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN,getString(R.string.login_with_facebook),getActivity());
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK,mSignUpRequestModel.getMobileNumber(),getActivity());
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK,mSignUpRequestModel.getPassword(),getActivity());
+                if (mSignUpRequestModel.getAuthSocialType().equalsIgnoreCase(GMAIL)) {
+                    RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, getString(R.string.login_with_gmail), getActivity());
+                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mSignUpRequestModel.getMobileNumber(), getActivity());
+                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mSignUpRequestModel.getPassword(), getActivity());
+                } else if (mSignUpRequestModel.getAuthSocialType().equalsIgnoreCase(FACEBOOK)) {
+                    RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, getString(R.string.login_with_facebook), getActivity());
+                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mSignUpRequestModel.getMobileNumber(), getActivity());
+                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mSignUpRequestModel.getPassword(), getActivity());
                 }
 
                 PatientDetail patientDetail = loginModel.getLoginData().getPatientDetail();

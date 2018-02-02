@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SocialLoginInputMobileForConfirmation extends Fragment implements HelperResponse {
+public class SocialSignUpInputFragment extends Fragment implements HelperResponse {
 
     @BindView(R.id.editTextName)
     EditText editTextName;
@@ -58,7 +58,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
     private int salutationValue;
     private String genderValue;
 
-    public SocialLoginInputMobileForConfirmation() {
+    public SocialSignUpInputFragment() {
         // Required empty public constructor
     }
 
@@ -78,7 +78,7 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
             if (mSignUpRequestModel.getEmailId() == null || mSignUpRequestModel.getEmailId().isEmpty())
                 mEmailLayout.setVisibility(View.GONE);
-             else {
+            else {
                 mSocialLoginEmail.setText(mSignUpRequestModel.getEmailId());
                 mEmailLayout.setVisibility(View.VISIBLE);
             }
@@ -114,7 +114,8 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
             });
         }
         return inflate;
@@ -168,16 +169,10 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
                     mSignUpRequestModel.setMobileNumber(mobileNo);
                     mSignUpRequestModel.setEmailId(email);
                     mSignUpRequestModel.setPassword(password);
-                    if(mSignUpRequestModel.isGmailLogin()){
-                        mSignUpRequestModel.setGmailLogin(true);
-                    }else if(mSignUpRequestModel.isFaceBookLogin()){
-                        mSignUpRequestModel.setFaceBookLogin(true);
-                    }
-
                     mSignUpRequestModel.setGender(genderValue);
                     mSignUpRequestModel.setSalutation(salutationValue);
                     mSignUpRequestModel.setAge(age);
-
+                    mSignUpRequestModel.setAuthSocialToken(email);
                     loginHelper.doSignUp(mSignUpRequestModel);
                 }
                 break;
@@ -191,8 +186,8 @@ public class SocialLoginInputMobileForConfirmation extends Fragment implements H
             SignUpModel loginModel = (SignUpModel) customResponse;
 
             if (loginModel.getCommon().isSuccess()) {
-                     AppGlobalContainerActivity activity = (AppGlobalContainerActivity) getActivity();
-                     activity.loadFragment(getString(R.string.enter_otp), mSignUpRequestModel, getString(R.string.sign_up_confirmation));
+                AppGlobalContainerActivity activity = (AppGlobalContainerActivity) getActivity();
+                activity.loadFragment(getString(R.string.enter_otp), mSignUpRequestModel, getString(R.string.sign_up_confirmation));
 
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());

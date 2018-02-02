@@ -50,7 +50,9 @@ import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.rescribe.util.RescribeConstants.APPOINTMENT_ID;
 import static com.rescribe.util.RescribeConstants.CANCEL_TYPE;
+import static com.rescribe.util.RescribeConstants.FROM;
 import static com.rescribe.util.RescribeConstants.MIXED_APPOINTMENT_TYPE;
 import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
 
@@ -61,7 +63,10 @@ import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
 
 @RuntimePermissions
 public class ConfirmAppointmentActivity extends AppCompatActivity implements HelperResponse {
+
     public static final int RESCHEDULE_OK = 200;
+    public static final String RESCHEDULE = "reschedule";
+
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
     @BindView(R.id.title)
@@ -266,14 +271,13 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
                     if (!isCanceled) {
                         if (mDoctorObject.isTypedashboard()) {
-                            // Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-                            Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-                            intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-                            intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
-                            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mDoctorObject);
-                            startActivity(intent1);
-                            setResult(RESCHEDULE_OK);
-                            finish();
+//                            Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
+//                            intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+//                            intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+//                            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mDoctorObject);
+//                            startActivity(intent1);
+//                            setResult(RESCHEDULE_OK);
+//                            finish();
                         } else {
                             setResult(Activity.RESULT_OK);
                             finish();
@@ -345,11 +349,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
         textheading.setText(mContext.getString(R.string.appointment));
         messageView.setGravity(Gravity.CENTER);
         icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.bookappointment));
-        if (type.equals(CANCEL_TYPE)) {
-            isCanceled = true;
-        } else {
-            isCanceled = false;
-        }
+        isCanceled = type.equals(CANCEL_TYPE);
         messageView.setText(message);
 
         //-----------------
@@ -358,7 +358,19 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
             @Override
             public void onClick(View v) {
                 if (type.equalsIgnoreCase(CANCEL_TYPE) || type.equalsIgnoreCase(RESHEDULE_TYPE)) {
-                    mDoctorDataHelper.doCancelResheduleAppointmentRequest(aptId, 4, type);
+
+                    Intent intent1 = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
+                    intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                    intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                    intent1.putExtra(FROM, RESCHEDULE);
+                    intent1.putExtra(APPOINTMENT_ID, aptId);
+                    intent1.putExtra(RESHEDULE_TYPE, type);
+
+                    ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mDoctorObject);
+                    startActivity(intent1);
+                    setResult(RESCHEDULE_OK);
+                    finish();
+
                     dialog.cancel();
                 } else {
                     mDoctorDataHelper.doCancelTokenNumber(mDoctorObject.getDocId(), mLocationId, mTokenNo);

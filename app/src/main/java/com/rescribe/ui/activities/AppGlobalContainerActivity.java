@@ -13,7 +13,7 @@ import com.rescribe.R;
 import com.rescribe.ui.fragments.ForgotPassword;
 import com.rescribe.ui.fragments.OTPConfirmationForSignUp;
 import com.rescribe.ui.fragments.OtpConfirmationForLogin;
-import com.rescribe.ui.fragments.SocialLoginInputMobileForConfirmation;
+import com.rescribe.ui.fragments.SocialSignUpInputFragment;
 
 import java.io.Serializable;
 
@@ -32,7 +32,6 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
     @BindView(R.id.blankContainer)
     FrameLayout mBlankContainer;
     private ActionBar mActionBar;
-    private Context mContext;
     private String from;
 
     @Override
@@ -40,7 +39,6 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_layout);
         ButterKnife.bind(this);
-        mContext = AppGlobalContainerActivity.this;
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         String header = getIntent().getStringExtra(getString(R.string.title));
@@ -61,23 +59,21 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
-        if (serializableExtra != null) {
+        if (serializableExtra != null)
             bundle.putSerializable(getString(R.string.details), serializableExtra);
-        }
 
         if (type.equalsIgnoreCase(getString(R.string.enter_otp))) {
             OTPConfirmationForSignUp otpConfirmationForSignUp = new OTPConfirmationForSignUp();
             otpConfirmationForSignUp.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, otpConfirmationForSignUp);
         } else if (type.equalsIgnoreCase(getString(R.string.login_with_facebook))) {
-            SocialLoginInputMobileForConfirmation socialLoginInputMobileForConfirmation = new SocialLoginInputMobileForConfirmation();
+            SocialSignUpInputFragment socialLoginInputMobileForConfirmation = new SocialSignUpInputFragment();
             socialLoginInputMobileForConfirmation.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
         } else if (type.equalsIgnoreCase(getString(R.string.login_with_gmail))) {
-            SocialLoginInputMobileForConfirmation socialLoginInputMobileForConfirmation = new SocialLoginInputMobileForConfirmation();
+            SocialSignUpInputFragment socialLoginInputMobileForConfirmation = new SocialSignUpInputFragment();
             socialLoginInputMobileForConfirmation.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
-
         } else if (type.equalsIgnoreCase(getString(R.string.forgot_password))) {
             ForgotPassword forgotPassword = new ForgotPassword();
             forgotPassword.setArguments(bundle);

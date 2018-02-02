@@ -472,6 +472,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginModel, mOldDataTag);
                         break;
 
+                    case RescribeConstants.TASK_LOGIN_WITH_SOCIAL: //This is for get archived list
+                        LoginModel loginModelWthSocial = gson.fromJson(data, LoginModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, loginModelWthSocial, mOldDataTag);
+                        break;
+
                     case RescribeConstants.TASK_FORGOT_PASS_WITH_OTP: //This is for get archived list
                         ForgetPasswordModel forgetPassword = gson.fromJson(data, ForgetPasswordModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, forgetPassword, mOldDataTag);

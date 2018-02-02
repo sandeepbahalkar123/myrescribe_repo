@@ -21,7 +21,6 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
     @Expose
     private String password;
 
-
     @SerializedName("salutation")
     @Expose
     private int salutation;
@@ -38,24 +37,9 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
     @Expose
     private String authSocialToken;
 
-    private boolean isGmailLogin;
-    private boolean isFaceBookLogin;
-
-    public boolean isGmailLogin() {
-        return isGmailLogin;
-    }
-
-    public void setGmailLogin(boolean gmailLogin) {
-        isGmailLogin = gmailLogin;
-    }
-
-    public boolean isFaceBookLogin() {
-        return isFaceBookLogin;
-    }
-
-    public void setFaceBookLogin(boolean faceBookLogin) {
-        isFaceBookLogin = faceBookLogin;
-    }
+    @SerializedName("authSocialType")
+    @Expose
+    private String authSocialType;
 
     public String getName() {
         return name;
@@ -119,5 +103,13 @@ public class SignUpRequestModel implements CustomResponse,Serializable {
 
     public void setAuthSocialToken(String authSocialToken) {
         this.authSocialToken = authSocialToken;
+    }
+
+    public String getAuthSocialType() {
+        return authSocialType;
+    }
+
+    public void setAuthSocialType(String authSocialType) {
+        this.authSocialType = authSocialType;
     }
 }

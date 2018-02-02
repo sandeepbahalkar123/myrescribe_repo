@@ -176,7 +176,6 @@ public class RescribeConstants {
     public static final String CASE_DETAILS = "case_details";
     public static final String FILTER_REQUEST = "filter_request";
     public static final int MAX_RETRIES = 3;
-    public static final String PATIENT_ID = "patientId=";
     public static final String VISIT_DATE = "visitDate";
     public static final String DOCTORS_ID = "doctorId";
     public static final String GMAIL_LOGIN = "gmail_login";

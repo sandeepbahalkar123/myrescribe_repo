@@ -166,6 +166,8 @@ public class RescribeConstants {
     public static final String TASK_RESET_PASS_WITH_OTP = RescribeConstants.BLANK + 62;
     public static final String TASK_VERIFY_FORGET_PASSWORD_OTP = RescribeConstants.BLANK + 63;
 
+    public static final String TASK_LOGIN_WITH_SOCIAL = RescribeConstants.BLANK + 64;
+
     //-----------------
 
     public static final String DATA = "DATA";
@@ -176,7 +178,6 @@ public class RescribeConstants {
     public static final String CASE_DETAILS = "case_details";
     public static final String FILTER_REQUEST = "filter_request";
     public static final int MAX_RETRIES = 3;
-    public static final String PATIENT_ID = "patientId=";
     public static final String VISIT_DATE = "visitDate";
     public static final String DOCTORS_ID = "doctorId";
     public static final String GMAIL_LOGIN = "gmail_login";
@@ -240,6 +241,8 @@ public class RescribeConstants {
     public static final String TOKEN_NO = "token_no";
     public static final String FROM = "from";
 
+    public static final String GMAIL = "gmail";
+    public static final String FACEBOOK = "facebook";
 
     public static class USER_STATUS {
         public static final String ONLINE = "Online";

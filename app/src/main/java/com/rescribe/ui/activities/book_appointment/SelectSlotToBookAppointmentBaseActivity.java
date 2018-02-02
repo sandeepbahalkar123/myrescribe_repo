@@ -41,8 +41,6 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
     HashMap<String, String> userSelectedLocationInfo;
-    private SelectSlotTimeToBookAppointmentFragment mSelectSlotTimeToBookAppointmentFragment;
-    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,6 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        mContext = SelectSlotToBookAppointmentBaseActivity.this;
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
       /*  String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
@@ -79,7 +76,7 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity {
 
         //extras.putString(getString(R.string.toolbarTitle), getIntent().getStringExtra(getString(R.string.toolbarTitle)));
         // extras.putString(getString(R.string.clicked_item_data_type_value), getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value)));
-        mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(extras);
+        SelectSlotTimeToBookAppointmentFragment mSelectSlotTimeToBookAppointmentFragment = SelectSlotTimeToBookAppointmentFragment.newInstance(extras);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.viewContainer, mSelectSlotTimeToBookAppointmentFragment);

@@ -42,6 +42,7 @@ import butterknife.ButterKnife;
 
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.ListViewHolder> {
 
+    public static final String DOCTOR_ID = "doctor_id";
     private final String TAG = getClass().getName();
     Context mContext;
     ArrayList<DoctorDetail> mDataList;
@@ -147,6 +148,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
                 intent.putExtra(mContext.getString(R.string.one_day_visit_date), toDisplay);
                 intent.putExtra(mContext.getString(R.string.opd_id), dataObject.getOpdId());
+                intent.putExtra(DOCTOR_ID, dataObject.getId());
                 intent.putExtra(mContext.getString(R.string.doctor_image), dataObject.getDocImg());
                 mContext.startActivity(intent);
             }

@@ -37,7 +37,7 @@ public class SingleVisitDetailHelper implements ConnectionListener {
 
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == RescribeConstants.TASK_ONE_DAY_VISIT) {
+                if (mOldDataTag.equals(RescribeConstants.TASK_ONE_DAY_VISIT)) {
                     CaseDetailsModel model = (CaseDetailsModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model.getData());
                 }
@@ -70,10 +70,10 @@ public class SingleVisitDetailHelper implements ConnectionListener {
     }
 
     //get case study list
-    public void doGetOneDayVisit(String opdId) {
+    public void doGetOneDayVisit(String opdId, String doctorId) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_ONE_DAY_VISIT, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL + opdId + mContext.getString(R.string.and_sign) + RescribeConstants.PATIENT_ID + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL + opdId + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID + "&docId=" + doctorId, mContext));
         mConnectionFactory.createConnection(RescribeConstants.TASK_ONE_DAY_VISIT);
     }
 }

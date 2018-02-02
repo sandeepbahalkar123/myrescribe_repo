@@ -12,6 +12,7 @@ import com.rescribe.model.login.ForgetPasswordModel;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.ResetPasswordRequestModel;
 import com.rescribe.model.login.SignUpModel;
+import com.rescribe.model.login.SocialLoginRequestModel;
 import com.rescribe.model.requestmodel.login.LoginRequestModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
 import com.rescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
@@ -75,6 +76,9 @@ public class LoginHelper implements ConnectionListener {
                         mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                         break;
                     case RescribeConstants.ACTIVE_STATUS:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_LOGIN_WITH_SOCIAL:
                         mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                         break;
                 }
@@ -182,5 +186,13 @@ public class LoginHelper implements ConnectionListener {
         mConnectionFactory.setPostParams(model);
         mConnectionFactory.setUrl(Config.VERIFY_FORGET_PASSWORD_OTP);
         mConnectionFactory.createConnection(RescribeConstants.TASK_VERIFY_FORGET_PASSWORD_OTP);
+    }
+
+    public void doLoginBySocial(SocialLoginRequestModel signUpRequest) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_LOGIN_WITH_SOCIAL, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(signUpRequest);
+        mConnectionFactory.setUrl(Config.SOCIAL_SIGN_IN_URL);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_LOGIN_WITH_SOCIAL);
     }
 }

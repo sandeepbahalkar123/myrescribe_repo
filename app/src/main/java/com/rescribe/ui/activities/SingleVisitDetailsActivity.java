@@ -36,6 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.adapters.DoctorListAdapter.DOCTOR_ID;
 import static com.rescribe.adapters.SingleVisitAdapter.TEXT_LIMIT;
 
 /**
@@ -143,7 +144,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 .into(mDoctorImg);
 
         mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
-        mSingleVisitDetailHelper.doGetOneDayVisit(mIntent.getStringExtra(getString(R.string.opd_id)));
+        mSingleVisitDetailHelper.doGetOneDayVisit(mIntent.getStringExtra(getString(R.string.opd_id)), mIntent.getStringExtra(DOCTOR_ID));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         title.setText(getString(R.string.visit_details));

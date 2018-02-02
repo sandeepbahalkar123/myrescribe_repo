@@ -25,9 +25,9 @@ import java.util.ArrayList;
 
 public class NotificationHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
-    HelperResponse mHelperResponseManager;
+    private final String TAG = this.getClass().getName();
+    private Context mContext;
+    private HelperResponse mHelperResponseManager;
 
     public NotificationHelper(Context context) {
         this.mContext = context;
@@ -41,7 +41,7 @@ public class NotificationHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == RescribeConstants.TASK_NOTIFICATION) {
+                if (mOldDataTag.equals(RescribeConstants.TASK_NOTIFICATION)) {
                     NotificationModel model = (NotificationModel) customResponse;
                     mHelperResponseManager.onSuccess(mOldDataTag, model);
                 }

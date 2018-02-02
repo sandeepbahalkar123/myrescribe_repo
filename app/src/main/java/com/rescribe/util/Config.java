@@ -15,6 +15,8 @@ public class Config {
     public static final String VERIFY_FORGET_PASSWORD_OTP = "authApi/authenticate/verifyOtpByNumber"; // new
     public static final String RESET_PASSWORD = "authApi/authenticate/resetpassword"; // new
 
+    public static final String SOCIAL_SIGN_IN_URL = "authApi/authenticate/patientSocialLogin";
+
     public static final String SIGN_UP_URL = "authApi/authenticate/patientSignUp";
     public static final String DOCTOR_LIST_BY_LOCATION = "api/doctors/getDoctorListByLocation";
     public static final String REVIEW_URL = "api/doctors/getReviewsForDoctor?docId=10";

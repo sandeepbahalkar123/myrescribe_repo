@@ -144,7 +144,6 @@
     <string name="colon_sign">:</string>
     <string name="bp_min">BpMin</string>
     <string name="dash">-</string>
-    <string name="and_sign"><![CDATA[&]]></string>
     <string name="systolic_pressure">Systolic BP</string>
     <string name="diastolic_pressure">Diastolic BP</string>
     <!--//*** Google Map key-->

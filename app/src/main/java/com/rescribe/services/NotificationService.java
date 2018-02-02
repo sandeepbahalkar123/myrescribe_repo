@@ -58,6 +58,8 @@ public class NotificationService extends Service implements HelperResponse {
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
 
+    NotificationHelper mNotificationHelper;
+
     @Override
     public void onCreate() {
     }
@@ -71,7 +73,7 @@ public class NotificationService extends Service implements HelperResponse {
         boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.medication_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {
-            NotificationHelper mNotificationHelper = new NotificationHelper(this);
+            mNotificationHelper = new NotificationHelper(this);
             mNotificationHelper.doGetNotificationList();
         } else stopSelf();
 
@@ -184,7 +186,7 @@ public class NotificationService extends Service implements HelperResponse {
                     }
                 }
 
-                NotificationData filteredData = getFilteredData(notificationDataForHeader, slot);
+                NotificationData filteredData = mNotificationHelper.getFilteredData(notificationDataForHeader, slot);
 
                 int notification_id = 0;
                 String medicineSlot = null;
@@ -214,25 +216,6 @@ public class NotificationService extends Service implements HelperResponse {
         }
     }
 
-    private NotificationData getFilteredData(NotificationData notificationData, String slot) {
-
-        String slotLower = slot.toLowerCase();
-
-        ArrayList<Medication> notificationListForNotification = new ArrayList<>();
-        NotificationData notificationDataForNotification = new NotificationData();
-
-        if (notificationData.getMedication() != null) {
-            for (Medication medication : notificationData.getMedication()) {
-                if (medication.getMedicinSlot().contains(slotLower))
-                    notificationListForNotification.add(medication);
-            }
-
-            notificationDataForNotification.setMedication(notificationListForNotification);
-            notificationDataForNotification.setPrescriptionDate(notificationData.getPrescriptionDate());
-        }
-
-        return notificationDataForNotification;
-    }
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {

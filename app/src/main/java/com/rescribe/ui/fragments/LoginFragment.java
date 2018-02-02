@@ -226,6 +226,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, true);
                 startActivity(intent);
                 getActivity().finish();
             } else {

@@ -7,6 +7,8 @@ import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.notification.Medication;
+import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
@@ -14,6 +16,8 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
+
+import java.util.ArrayList;
 
 /**
  * Created by jeetal on 20/7/17.
@@ -77,4 +81,23 @@ public class NotificationHelper implements ConnectionListener {
     }
 
 
+    public NotificationData getFilteredData(NotificationData notificationData, String slot) {
+
+        String slotLower = slot.toLowerCase();
+
+        ArrayList<Medication> notificationListForNotification = new ArrayList<>();
+        NotificationData notificationDataForNotification = new NotificationData();
+
+        if (notificationData.getMedication() != null) {
+            for (Medication medication : notificationData.getMedication()) {
+                if (medication.getMedicinSlot().contains(slotLower))
+                    notificationListForNotification.add(medication);
+            }
+
+            notificationDataForNotification.setMedication(notificationListForNotification);
+            notificationDataForNotification.setPrescriptionDate(notificationData.getPrescriptionDate());
+        }
+
+        return notificationDataForNotification;
+    }
 }

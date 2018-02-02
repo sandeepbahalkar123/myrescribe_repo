@@ -17,7 +17,7 @@ public class RescribeConstants {
     public static final String YES = "yes";
     public static final String DOCUMENTS = "documents";
     public static final String ALERT = "alert";
-    public static final String ID = "_id";
+    public static final String APP_OPENING_FROM_LOGIN = "APP_OPENING_FROM_LOGIN";
     public static final String USER_ID = "User-ID";
     public static final String DEVICE_TOKEN = "devicetoken";
     public static final String DEVICEID = "Device-Id";
@@ -182,6 +182,7 @@ public class RescribeConstants {
     public static final String GMAIL_LOGIN = "gmail_login";
     public static final String FACEBOOK_LOGIN = "facebook_login";
     public static final String CHAT_REQUEST = "chat_request";
+
 
     public static final int UPLOADING = 1;
     public static final int DOWNLOADING = 1;

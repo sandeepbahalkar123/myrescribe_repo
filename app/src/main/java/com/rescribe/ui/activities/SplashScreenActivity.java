@@ -50,37 +50,38 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void doNext() {
         new Handler().postDelayed(new Runnable() {
             @Override
-            public void run() {if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
-                if (getIntent().getExtras() != null) {
-                    String dataText = getIntent().getExtras().getString(FCMService.FCM_BODY);
-                    if (dataText != null) {
+            public void run() {
+                if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
+                    if (getIntent().getExtras() != null) {
+                        String dataText = getIntent().getExtras().getString(FCMService.FCM_BODY);
+                        if (dataText != null) {
 
-                        Intent intent = new Intent(SplashScreenActivity.this, SelectSlotToBookAppointmentBaseActivity.class);
+                            Intent intent = new Intent(SplashScreenActivity.this, SelectSlotToBookAppointmentBaseActivity.class);
 
-                        Gson gson = new Gson();
-                        FCMTokenData fcmTokenData = gson.fromJson(dataText, FCMTokenData.class);
-                        intent.putExtra(TOKEN_DATA, fcmTokenData);
-                        intent.setAction(TOKEN_DATA_ACTION);
+                            Gson gson = new Gson();
+                            FCMTokenData fcmTokenData = gson.fromJson(dataText, FCMTokenData.class);
+                            intent.putExtra(TOKEN_DATA, fcmTokenData);
+                            intent.setAction(TOKEN_DATA_ACTION);
 
-                        // call book appointment
-                        intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-                        intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
-                        DoctorList doctorListData1 = new DoctorList();
-                        doctorListData1.setDocId(fcmTokenData.getDocId());
-                        ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+                            // call book appointment
+                            intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                            DoctorList doctorListData1 = new DoctorList();
+                            doctorListData1.setDocId(fcmTokenData.getDocId());
+                            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
 
-                        startActivity(intent);
+                            startActivity(intent);
 
-                        int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, mContext);
-                        RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, preCount + 1, mContext);
+                            int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, mContext);
+                            RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, preCount + 1, mContext);
 
-                    } else callDashBoard();
-                } else
-                    callDashBoard();
-            } else {
-                Intent intentObj = new Intent(SplashScreenActivity.this, LoginSignUpActivity.class);
-                startActivity(intentObj);
-            }
+                        } else callDashBoard();
+                    } else
+                        callDashBoard();
+                } else {
+                    Intent intentObj = new Intent(SplashScreenActivity.this, LoginSignUpActivity.class);
+                    startActivity(intentObj);
+                }
                 finish();
             }
 

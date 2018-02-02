@@ -315,6 +315,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                 Intent intent = new Intent(this, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, true);
                 startActivity(intent);
                 finish();
             } else {

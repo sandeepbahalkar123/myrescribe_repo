@@ -53,6 +53,7 @@ import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.helpers.login.LoginHelper;
+import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -65,6 +66,9 @@ import com.rescribe.model.dashboard_api.DashboardMenuData;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
+import com.rescribe.model.notification.Medication;
+import com.rescribe.model.notification.NotificationData;
+import com.rescribe.model.notification.NotificationModel;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DeleteUnreadNotificationAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
@@ -93,6 +97,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -104,6 +109,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.facebook.login.widget.ProfilePictureView.TAG;
+import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
+import static com.rescribe.notification.DosesAlarmTask.LUNCH_NOTIFICATION_ID;
 import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocation.REQUEST_CHECK_SETTINGS;
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
@@ -166,6 +176,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private String activityCreatedTimeStamp;
     private final static String FOLDER_PATH = "images/dashboard/cardBgImage/android/";
     private String imageBaseURL;
+    private NotificationHelper mNotificationPrescriptionHelper;
+    private boolean mIsAppOpenFromLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +186,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         ButterKnife.bind(this);
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
         mContext = HomePageActivity.this;
+
+        mIsAppOpenFromLogin = getIntent().getBooleanExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, false);
 
         activityCreatedTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
 
@@ -190,7 +204,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         custom_progress_bar.setVisibility(View.VISIBLE);
 
-        appDBHelper = new AppDBHelper(mContext);
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mDashboardDoctorListsToShowDashboardDoctor = new ArrayList<>();
@@ -351,6 +364,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
                     custom_progress_bar.setVisibility(View.GONE);
                 }
+
+                if (mIsAppOpenFromLogin) {
+                    mIsAppOpenFromLogin = false;
+                    doGetMedicationNotificationOnNewLogin();
+                }
                 break;
 
             case ACTIVE_STATUS:
@@ -365,6 +383,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     }
                     //     CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
+                break;
+            case RescribeConstants.TASK_NOTIFICATION:
+                doProcessReceivedMedicationNotificationData((NotificationModel) customResponse);
+
+                break;
         }
     }
 
@@ -584,7 +607,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 Chat count is not showing now.
          <--
         */
-         //-->END
+        //-->END
 
         ArrayList<DashboardMenuList> dashboardMenuList = mDashboardMenuData.getDashboardMenuList();
         //------- Menus received from server, like find_doc,ongoing_medication : START
@@ -1075,4 +1098,106 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 break;
         }
     }
+
+    //-- Medication Prescription notification configuration : START
+
+    private void doGetMedicationNotificationOnNewLogin() {
+        //notification api called
+        Calendar c = Calendar.getInstance();
+        int hour24 = c.get(Calendar.HOUR_OF_DAY);
+        String slot = CommonMethods.getMealTime(hour24, this);
+
+        if (!getString(R.string.break_fast).equalsIgnoreCase(slot)) {
+            mNotificationPrescriptionHelper = new NotificationHelper(this);
+            mNotificationPrescriptionHelper.doGetNotificationList();
+        }
+    }
+
+    private void doProcessReceivedMedicationNotificationData(NotificationModel prescriptionDataReceived) {
+
+        Calendar c = Calendar.getInstance();
+        int hour24 = c.get(Calendar.HOUR_OF_DAY);
+        String slot = CommonMethods.getMealTime(hour24, this);
+        //--------
+
+        List<NotificationData> notPrescriptionDataList = prescriptionDataReceived.getNotificationPrescriptionModel().getPresriptionNotification();
+        if (!notPrescriptionDataList.isEmpty()) {
+            ArrayList<Medication> notificationDataList;
+            NotificationData notificationDataForHeader = new NotificationData();
+            String date = CommonMethods.getCurrentDateTime();
+            CommonMethods.Log(TAG, date);
+            //Current date and slot data is sorted to show in header of UI
+            for (NotificationData notificationD : notPrescriptionDataList) {
+                if (notificationD.getPrescriptionDate().equals(CommonMethods.getCurrentDateTime())) {
+                    String prescriptionDate = notificationD.getPrescriptionDate();
+                    notificationDataList = notificationD.getMedication();
+                    notificationDataForHeader.setMedication(notificationDataList);
+                    notificationDataForHeader.setPrescriptionDate(prescriptionDate);
+                }
+            }
+
+            if (getString(R.string.mlunch).equalsIgnoreCase(slot)) {
+                // save slot=breakfast for mLunch slot
+                doStoreMedicationNotificationInDb(notificationDataForHeader, getString(R.string.break_fast));
+            } else if (getString(R.string.msnacks).equalsIgnoreCase(slot)) {
+                // save slot=breakfast for Evening(Snacks) firstly
+                doStoreMedicationNotificationInDb(notificationDataForHeader, getString(R.string.break_fast));
+                //----------------
+                // save slot=LUNCH for Evening(Snacks) Secondly
+                doStoreMedicationNotificationInDb(notificationDataForHeader, getString(R.string.mlunch));
+            } else if (getString(R.string.mdinner).equalsIgnoreCase(slot)) {
+                // save slot=breakfast for Dinner firstly
+                doStoreMedicationNotificationInDb(notificationDataForHeader, getString(R.string.break_fast));
+                //----------------
+                // save slot=LUNCH for Dinner Secondly
+                doStoreMedicationNotificationInDb(notificationDataForHeader, getString(R.string.mlunch));
+                //----------------
+                // save slot=Snacks for Dinner thirdly
+                doStoreMedicationNotificationInDb(notificationDataForHeader, getString(R.string.msnacks));
+            }
+        }
+    }
+
+    private void doStoreMedicationNotificationInDb(NotificationData notificationDataForHeader, String slot) {
+
+        //----
+        NotificationData filteredData = mNotificationPrescriptionHelper.getFilteredData(notificationDataForHeader, slot);
+        if (filteredData.getMedication() != null) {
+            if (!filteredData.getMedication().isEmpty()) {
+                //----
+
+                int notification_id = 0;
+                String medicineSlot = null;
+
+                if (slot.equals(getString(R.string.break_fast))) {
+                    medicineSlot = getString(R.string.breakfast_medication);
+                    notification_id = BREAKFAST_NOTIFICATION_ID;
+                } else if (slot.equals(getString(R.string.mlunch))) {
+                    medicineSlot = getString(R.string.lunch_medication);
+                    notification_id = LUNCH_NOTIFICATION_ID;
+                } else if (slot.equals(getString(R.string.msnacks))) {
+                    medicineSlot = getString(R.string.snacks_medication);
+                    notification_id = EVENING_NOTIFICATION_ID;
+                } else if (slot.equals(getString(R.string.mdinner))) {
+                    medicineSlot = getString(R.string.dinner_medication);
+                    notification_id = DINNER_NOTIFICATION_ID;
+                }
+
+                if (medicineSlot != null) {
+
+                    String notificationTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
+
+                    //---- Save notification in db---
+                    String timeStamp = CommonMethods.getCurrentDate() + " " + notificationTime;
+                    int id = (int) System.currentTimeMillis(); // medication.getMedicineId();
+
+                    String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot + "?";
+
+                    appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(notification_id), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, new Gson().toJson(filteredData), timeStamp);
+                }
+            }
+        }
+    }
+    //-- Medication Prescription notification configuration : END
+
 }

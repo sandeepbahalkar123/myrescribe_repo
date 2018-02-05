@@ -78,7 +78,7 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
             }
         });
 
-        if (item.isTabSelected())
+        if (item.isTabSelected() == 1)
             itemHolder.medicationCheckBox.setChecked(true);
         else
             itemHolder.medicationCheckBox.setChecked(false);

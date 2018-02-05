@@ -391,6 +391,10 @@
     <string name="enter_new_password_again">New password again</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="password_not_matched">Password not matched</string>
+    <string name="your_token">Your Token Number</string>
+    <string name="is_confirm">is confirmed</string>
+    <string name="approx_time">( Approx Time )</string>
+    <string name="ahead_message">Patients are ahead of you!</string>
 
     <!--************************-->
 </resources>

@@ -40,6 +40,10 @@ public class Medication implements CustomResponse {
     @Expose
     private String quantity;
 
+    @SerializedName("isTaken")
+    @Expose
+    private int isTabSelected;
+
     private boolean isSnacksThere = true;
     private boolean isLunchExpanded = false;
     private boolean isDinnerExpanded = false;
@@ -124,11 +128,11 @@ public class Medication implements CustomResponse {
         isBreakThere = breakThere;
     }
 
-    public boolean isTabSelected() {
+    public int isTabSelected() {
         return isTabSelected;
     }
 
-    public void setTabSelected(boolean tabSelected) {
+    public void setTabSelected(int tabSelected) {
         isTabSelected = tabSelected;
     }
 
@@ -140,7 +144,6 @@ public class Medication implements CustomResponse {
     private boolean isLunchThere = true;
     private boolean isDinnerThere = true;
     private boolean isBreakThere = true;
-    private boolean isTabSelected = false;
 
     public Integer getId() {
         return id;

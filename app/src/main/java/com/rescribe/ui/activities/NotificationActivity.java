@@ -271,7 +271,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
-            selectViewTab.setChecked(mTodayDataList.get(i).isTabSelected());
+            selectViewTab.setChecked(mTodayDataList.get(i).isTabSelected() == 1);
             selectViewTab.setEnabled(mTodayDataList.get(i).isTabWebService());
             final int finalI = i;
             selectViewTab.setOnClickListener(new View.OnClickListener() {
@@ -311,7 +311,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
 
                 CheckBox checkBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
-                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked()? 1:0);
                 mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                 if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size()) {

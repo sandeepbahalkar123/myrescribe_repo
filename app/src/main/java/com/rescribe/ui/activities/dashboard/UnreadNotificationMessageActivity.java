@@ -450,9 +450,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
             for (Medication medication : medications) {
                 if (medication.getMedicineId() == medicationToUpdate.getMedicineId())
-                    medication.setTabSelected(medicationToCheck);
+                    medication.setTabSelected(medicationToCheck ? 1 : 0);
 
-                if (medication.isTabSelected())
+                if (medication.isTabSelected() == 1)
                     tempArrayForId.add(medication.getMedicineId());
             }
 

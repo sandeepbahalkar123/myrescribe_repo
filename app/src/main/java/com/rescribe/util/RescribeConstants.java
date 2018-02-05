@@ -238,7 +238,10 @@ public class RescribeConstants {
     public static final String RATING = "rating";
     public static final String MIXED_APPOINTMENT_TYPE = "mixed";
     public static final String LOCATION_ID = "location_id";
+
+    public static final String AHEAD_COUNT = "ahead_count";
     public static final String TOKEN_NO = "token_no";
+
     public static final String FROM = "from";
 
     public static final String GMAIL = "gmail";

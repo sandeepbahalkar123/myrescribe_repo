@@ -19,6 +19,10 @@ public class ClinicTokenDetails implements Parcelable {
     @Expose
     private int waitingTime;
 
+    @SerializedName("waitingPatientCount")
+    @Expose
+    private int waitingPatientCount;
+
     public final static Parcelable.Creator<ClinicTokenDetails> CREATOR = new Creator<ClinicTokenDetails>() {
 
 
@@ -39,12 +43,14 @@ public class ClinicTokenDetails implements Parcelable {
         this.scheduledTimeStamp = ((String) in.readValue((String.class.getClassLoader())));
         this.tokenNumber = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.waitingTime = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.waitingPatientCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(scheduledTimeStamp);
         dest.writeValue(tokenNumber);
         dest.writeValue(waitingTime);
+        dest.writeValue(waitingPatientCount);
     }
 
     public int describeContents() {
@@ -81,5 +87,13 @@ public class ClinicTokenDetails implements Parcelable {
 
     public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
+    }
+
+    public int getWaitingPatientCount() {
+        return waitingPatientCount;
+    }
+
+    public void setWaitingPatientCount(int waitingPatientCount) {
+        this.waitingPatientCount = waitingPatientCount;
     }
 }

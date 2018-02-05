@@ -1,7 +1,6 @@
 package com.rescribe.ui.activities.book_appointment.confirmation_type_activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,15 +30,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.ResponseAppointmentConfirmationModel;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MapsActivity;
-import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -51,8 +47,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.CANCEL_TYPE;
-import static com.rescribe.util.RescribeConstants.MIXED_APPOINTMENT_TYPE;
-import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
+import static com.rescribe.util.RescribeConstants.TOKEN_NO;
 
 
 /**
@@ -61,13 +56,16 @@ import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
 
 @RuntimePermissions
 public class ConfirmTokenInfoActivity extends AppCompatActivity implements HelperResponse {
-    public static final int RESCHEDULE_OK = 200;
     @BindView(R.id.bookAppointmentBackButton)
     ImageView bookAppointmentBackButton;
     @BindView(R.id.title)
     CustomTextView title;
-    @BindView(R.id.confirmMessageHeader)
-    CustomTextView mConfirmMessageHeader;
+
+    @BindView(R.id.tokenNumberTextView)
+    CustomTextView tokenNumberTextView;
+    @BindView(R.id.patientAheadTextView)
+    CustomTextView patientAheadTextView;
+
     @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
     @BindView(R.id.showlocation)
@@ -119,11 +117,12 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
     private Intent intent;
     private int mTokenNo;
     private int mLocationId;
+    private int mAheadCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.appointment_confirmation_layout);
+        setContentView(R.layout.token_confirmation_layout);
         ButterKnife.bind(this);
         initialize();
         title.setText(getString(R.string.token_confirmation));
@@ -142,14 +141,17 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
     private void setUpDataInViews() {
         Bundle extras = getIntent().getExtras();
 
-
         if (extras != null) {
             mDoctorObject = extras.getParcelable(getString(R.string.clicked_item_data));
-            mTokenNo = Integer.parseInt(extras.getString(RescribeConstants.TOKEN_NO));
+            if (extras.getString(TOKEN_NO) != null) {
+                if (!extras.getString(TOKEN_NO).isEmpty())
+                    mTokenNo = Integer.parseInt(extras.getString(RescribeConstants.TOKEN_NO));
+            }
+            mAheadCount = extras.getInt(RescribeConstants.AHEAD_COUNT);
             mLocationId = Integer.parseInt(extras.getString(RescribeConstants.LOCATION_ID));
             callType = extras.getString(RescribeConstants.CALL_FROM_DASHBOARD);
-            mConfirmMessageHeader.setText(getString(R.string.token_confirmed).replace("$$", "" + mTokenNo));
-
+            tokenNumberTextView.setText(String.valueOf(mTokenNo));
+            patientAheadTextView.setText(String.valueOf(mAheadCount));
         }
         if (mDoctorObject != null) {
             rescheduleButton.setVisibility(View.GONE);
@@ -180,15 +182,21 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
                 mobileNumber.setText(mDoctorObject.getDocPhone());
                 phoneNumberLayout.setVisibility(View.VISIBLE);
             }
-            if (!mDoctorObject.getAptTime().isEmpty() || !mDoctorObject.getAptDate().isEmpty()) {
+            if (!mDoctorObject.getAptDate().isEmpty()) {
                 String dateValueToShow = (String) DateFormat.format("EEE", CommonMethods.convertStringToDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD));
                 String ordinal = CommonMethods.ordinal(CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "dd"));
-                String timeToShow = CommonMethods.formatDateTime(mDoctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.hh_mm_a,
-                        RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.TIME).toLowerCase();
-                String dateToShow = dateValueToShow + ", " + ordinal + " " + CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "MMM yyyy");
-                if (!RescribeConstants.BLANK.equalsIgnoreCase(timeToShow)) {
-                    dateToShow = dateToShow + " @" + timeToShow;
+
+                String timeToShow = "";
+                if (!mDoctorObject.getAptDate().isEmpty()) {
+                    timeToShow = CommonMethods.formatDateTime(mDoctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.hh_mm_a,
+                            RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.TIME).toLowerCase();
                 }
+
+                String dateToShow = dateValueToShow + ", " + ordinal + " " + CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "MMM yyyy");
+                if (!RescribeConstants.BLANK.equalsIgnoreCase(timeToShow))
+                    dateToShow = dateToShow + " @" + timeToShow;
+                else
+
                 showTimedate.setText(dateToShow);
             }
         }
@@ -302,11 +310,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
         textheading.setText(mContext.getString(R.string.appointment));
         messageView.setGravity(Gravity.CENTER);
         icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.bookappointment));
-        if (type.equals(CANCEL_TYPE)) {
-            isCanceled = true;
-        } else {
-            isCanceled = false;
-        }
+        isCanceled = type.equals(CANCEL_TYPE);
         messageView.setText(message);
 
         //-----------------

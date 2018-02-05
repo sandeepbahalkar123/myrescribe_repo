@@ -51,6 +51,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.ConfirmTokenModel;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetails;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
@@ -64,6 +65,7 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity;
+import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmTokenInfoActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -195,6 +197,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private String from;
     private String aptId;
     private String type;
+    private int aheadCount;
 
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -493,6 +496,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mWaitingTime.setText("" + clinicTokenDetails.getWaitingTime());
                         mScheduledAppointmentsTimeStamp.setText("" + clinicTokenDetails.getScheduledTimeStamp());
                         mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
+                        aheadCount = clinicTokenDetails.getWaitingPatientCount();
                     } else {
                         showTokenStatusMessageBox(-1, common.getStatusMessage(), mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
                     }
@@ -507,25 +511,24 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
                 //get token flow redirected to confirmation page .
                 if (customResponse != null) {
-                    CommonBaseModelContainer temp2 = (CommonBaseModelContainer) customResponse;
-                    CommonMethods.showToast(getActivity(), temp2.getCommonRespose().getStatusMessage());
-                    if (temp2.getCommonRespose().isSuccess()) {
+                    ConfirmTokenModel confirmTokenModel = (ConfirmTokenModel) customResponse;
+                    CommonMethods.showToast(getActivity(), confirmTokenModel.getCommon().getStatusMessage());
+                    if (confirmTokenModel.getCommon().isSuccess()) {
                         if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(RescribeConstants.MIXED_APPOINTMENT_TYPE)) {
                             bundleData = new Bundle();
                             mClickedDoctorObject.setTypedashboard(false);
                             mClickedDoctorObject.setAppointmentTypeMixed(true);
-                            /*mClickedDoctorObject.setDocLocationId(mSelectedClinicDataObject.getLocationId());
-                            mClickedDoctorObject.setTokenNo(Integer.parseInt(mReceivedTokenNumber.getText().toString()));*/
+
                             mClickedDoctorObject.setAddressOfDoctorString(mSelectedClinicDataObject.getClinicAddress());
                             CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.DATE_PATTERN.hh_mm_a,RescribeConstants.TIME);
                             mClickedDoctorObject.setAptTime(CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a,RescribeConstants.TIME));
                             mClickedDoctorObject.setAptDate(mSelectedTimeSlotDate);
                             bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
                             bundleData.putString(RescribeConstants.LOCATION_ID,""+mSelectedClinicDataObject.getLocationId());
-                            bundleData.putString(RescribeConstants.TOKEN_NO,mReceivedTokenNumber.getText().toString());
-                            Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
+                            bundleData.putString(RescribeConstants.TOKEN_NO, String.valueOf(confirmTokenModel.getData().getTokenDetail().getTokenNumber()));
+                            bundleData.putInt(RescribeConstants.AHEAD_COUNT, aheadCount);
+                            Intent intentObject = new Intent(getContext(), ConfirmTokenInfoActivity.class);
                             intentObject.putExtras(bundleData);
-
                             startActivity(intentObject);
                     }
                 }

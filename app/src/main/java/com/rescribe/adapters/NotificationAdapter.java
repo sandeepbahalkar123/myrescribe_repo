@@ -423,7 +423,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     .inflate(R.layout.tablet_list, parent, false);
 
             final CheckBox selectViewTab = (CheckBox) view.findViewById(R.id.selectViewTab);
-            selectViewTab.setChecked(mMedicationListAdapter.get(i).isTabSelected());
+            selectViewTab.setChecked(mMedicationListAdapter.get(i).isTabSelected() == 1);
             ImageView tabTypeView = (ImageView) view.findViewById(R.id.tabTypeView);
             TextView tabNameTextView = (TextView) view.findViewById(R.id.tabNameTextView);
             TextView tabCountTextView = (TextView) view.findViewById(R.id.tabCountTextView);
@@ -451,7 +451,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public int getSelectedCount(List<Medication> data) {
         int count = 0;
         for (Medication medicationData : data) {
-            if (medicationData.isTabSelected())
+            if (medicationData.isTabSelected() == 1)
                 count += 1;
         }
         return count;
@@ -477,7 +477,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                 switch (mSlotType) {
                     case BREAK_FAST:
-                        mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                        mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked() ? 1 : 0);
                         mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                         if (getSelectedCount(mDataSet.get(mPos).getMedication().getBreakfast()) == mDataSet.get(mPos).getMedication().getBreakfast().size()) {
@@ -489,7 +489,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         break;
                     case LUNCH:
-                        mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                        mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked() ? 1 : 0);
                         mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                         if (getSelectedCount(mDataSet.get(mPos).getMedication().getLunch()) == mDataSet.get(mPos).getMedication().getLunch().size()) {
@@ -499,7 +499,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         break;
                     case SNACKS:
-                        mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                        mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked() ? 1 : 0);
                         mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                         if (getSelectedCount(mDataSet.get(mPos).getMedication().getSnacks()) == mDataSet.get(mPos).getMedication().getSnacks().size()) {
@@ -509,7 +509,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         break;
                     case DINNER:
-                        mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked());
+                        mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked() ? 1 : 0);
                         mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                         if (getSelectedCount(mDataSet.get(mPos).getMedication().getDinner()) == mDataSet.get(mPos).getMedication().getDinner().size()) {
@@ -592,7 +592,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             CheckBox mCheckBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
             switch (mSlotType) {
                 case BREAK_FAST:
-                    mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(false);
+                    mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabSelected(0);
                     mDataSet.get(mPos).getMedication().getBreakfast().get(Integer.parseInt(counter)).setTabWebService(true);
                     mView.findViewById(R.id.selectViewTab).setEnabled(true);
                     mView.findViewById(R.id.selectViewTab).setSelected(false);
@@ -600,7 +600,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                     break;
                 case LUNCH:
-                    mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(false);
+                    mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabSelected(0);
                     mDataSet.get(mPos).getMedication().getLunch().get(Integer.parseInt(counter)).setTabWebService(true);
                     mView.findViewById(R.id.selectViewTab).setEnabled(true);
                     mView.findViewById(R.id.selectViewTab).setSelected(false);
@@ -608,7 +608,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                     break;
                 case SNACKS:
-                    mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(false);
+                    mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabSelected(0);
                     mDataSet.get(mPos).getMedication().getSnacks().get(Integer.parseInt(counter)).setTabWebService(true);
                     mView.findViewById(R.id.selectViewTab).setEnabled(true);
                     mView.findViewById(R.id.selectViewTab).setSelected(false);
@@ -616,7 +616,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                     break;
                 case DINNER:
-                    mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(false);
+                    mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabSelected(0);
                     mDataSet.get(mPos).getMedication().getDinner().get(Integer.parseInt(counter)).setTabWebService(true);
                     mView.findViewById(R.id.selectViewTab).setEnabled(true);
                     mView.findViewById(R.id.selectViewTab).setSelected(false);

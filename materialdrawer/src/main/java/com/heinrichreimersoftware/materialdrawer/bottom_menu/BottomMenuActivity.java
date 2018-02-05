@@ -188,7 +188,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         }
 
         bottomMenus.get(appIconIndex).setNotificationCount(count);
-        bottomMenuAdapter.notifyItemChanged(appIconIndex);
+        bottomMenuAdapter.notifyDataSetChanged();
     }
 
     public void closeSheet() {

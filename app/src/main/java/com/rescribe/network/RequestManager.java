@@ -32,6 +32,7 @@ import com.rescribe.interfaces.Connector;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.ConfirmTokenModel;
 import com.rescribe.model.book_appointment.complaints.ComplaintsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.BookAppointmentBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
@@ -704,12 +705,16 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseAppointmentConfirmationModel, mOldDataTag);
                         break;
 
+                    case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION://This is for to patient confirm received notifiation for specific time.
+                        ConfirmTokenModel confirmTokenModel = new Gson().fromJson(data, ConfirmTokenModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, confirmTokenModel, mOldDataTag);
+                        break;
+
                     //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------
                     case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR: //This is for fav doc
                     case RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER: //This is for save article
                     case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER: //This is to set alert for book appoint token remainder
                     case RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER://This is for to patient rejected received notifiation for specific time.
-                    case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION://This is for to patient confirm received notifiation for specific time.
                     case RescribeConstants.TASK_DO_SKIP_INVESTIGATION://This is for to skip investigation.
                         CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);

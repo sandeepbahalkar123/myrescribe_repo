@@ -12,7 +12,16 @@ public class VisitCommonData implements CustomResponse{
     private Integer id;
     @SerializedName("name")
     @Expose
-    private String name;
+    private String name = "";
+    @SerializedName("url")
+    @Expose
+    private String url = "";
+    @SerializedName("medicinename")
+    @Expose
+    private String medicinename = "";
+    @SerializedName("remarks")
+    @Expose
+    private String remarks = "";
 
     public String getVitalValue() {
         return vitalValue;
@@ -40,4 +49,27 @@ public class VisitCommonData implements CustomResponse{
         this.name = name;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getMedicinename() {
+        return medicinename;
+    }
+
+    public void setMedicinename(String medicinename) {
+        this.medicinename = medicinename;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 }

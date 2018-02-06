@@ -111,15 +111,17 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         mMobileNumber.setText("+91 - " + patientMobileNo);
         mPatientName.setText(patientName);
 
-        int color2 = mColorGenerator.getColor(patientName);
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .width(Math.round(getResources().getDimension(R.dimen.dp40))) // width in px
-                .height(Math.round(getResources().getDimension(R.dimen.dp40)))
-                .useFont(Typeface.defaultFromStyle(Typeface.BOLD))// height in px
-                .endConfig()
-                .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
-        imageUrl.setImageDrawable(drawable);
+        if (!patientName.isEmpty()) {
+            int color2 = mColorGenerator.getColor(patientName);
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(Math.round(getResources().getDimension(R.dimen.dp40))) // width in px
+                    .height(Math.round(getResources().getDimension(R.dimen.dp40)))
+                    .useFont(Typeface.defaultFromStyle(Typeface.BOLD))// height in px
+                    .endConfig()
+                    .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
+            imageUrl.setImageDrawable(drawable);
+        }
 
         linearTableLayout.removeAllViews();
 

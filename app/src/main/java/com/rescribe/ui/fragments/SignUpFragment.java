@@ -89,21 +89,6 @@ public class SignUpFragment extends Fragment implements HelperResponse{
         final String[] salutation = {"Mr.", "Mrs.", "Miss.", "Other."};
         final String[] gender = {"MALE", "FEMALE", "TRANSGENDER"};
 
-        ArrayAdapter salutationSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_spinner_item, salutation);
-        salutationSpinnerAdapter.setDropDownViewResource(R.layout.signup_spinner_item_view);
-        salutationSpinner.setAdapter(salutationSpinnerAdapter);
-
-        salutationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                salutationValue = position + 1;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
         ArrayAdapter genderSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_spinner_item, gender);
         genderSpinnerAdapter.setDropDownViewResource(R.layout.signup_spinner_item_view);
         genderSpinner.setAdapter(genderSpinnerAdapter);
@@ -112,6 +97,27 @@ public class SignUpFragment extends Fragment implements HelperResponse{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 genderValue = gender[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        ArrayAdapter salutationSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_spinner_item, salutation);
+        salutationSpinnerAdapter.setDropDownViewResource(R.layout.signup_spinner_item_view);
+        salutationSpinner.setAdapter(salutationSpinnerAdapter);
+
+        salutationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                salutationValue = position + 1;
+                if (salutationValue == 1)
+                    genderSpinner.setSelection(0);
+                else if (salutationValue == 2 || salutationValue == 3)
+                    genderSpinner.setSelection(1);
+                else if (salutationValue == 4)
+                    genderSpinner.setSelection(2);
             }
 
             @Override

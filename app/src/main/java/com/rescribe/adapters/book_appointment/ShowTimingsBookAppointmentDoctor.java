@@ -1,6 +1,7 @@
 package com.rescribe.adapters.book_appointment;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -61,10 +63,17 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
         holder.showTime.setText(s);
         //-----------
 
+        Date fromTimeDate = CommonMethods.convertStringToDate(mSelectedDate + " " + fromTime, RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+        Date currentDate = Calendar.getInstance().getTime();
+
+        if (currentDate.getTime() > fromTimeDate.getTime())
+            holder.showTime.setPaintFlags(holder.showTime.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
         if (timeSlotData.isAvailable()) {
             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
         } else {
             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.Gray));
+            holder.showTime.setPaintFlags(holder.showTime.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
         holder.view.setOnClickListener(new View.OnClickListener() {

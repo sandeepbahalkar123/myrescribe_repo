@@ -150,7 +150,6 @@
     <string name="times">times</string>
     <string name="days">days</string>
     <string name="enter_otp_for_login">Otp For Login</string>
-    <string name="your_health">Your Own Healthcare Repository</string>
     <string name="using_otp">Using OTP</string>
     <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
     <string name="no_investigation">Investigation not available</string>
@@ -395,6 +394,7 @@
     <string name="is_confirm">is confirmed</string>
     <string name="approx_time">( Approx Time )</string>
     <string name="ahead_message">Patients are ahead of you!</string>
+    <string name="your_health">\"Your Own Healthcare Repository\"</string>
 
     <!--************************-->
 </resources>

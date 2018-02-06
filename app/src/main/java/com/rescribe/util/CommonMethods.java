@@ -51,6 +51,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CommonMethods {
 
@@ -59,6 +60,7 @@ public class CommonMethods {
     private static boolean encryptionIsOn = true;
     private static String aBuffer = "";
     private static CheckIpConnection mCheckIpConnection;
+
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatePickerDialogListener mDatePickerDialogListener;
 

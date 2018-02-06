@@ -1,8 +1,8 @@
 package com.rescribe.adapters;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
@@ -16,16 +16,19 @@ import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.case_details.PatientHistory;
 import com.rescribe.model.case_details.Range;
 import com.rescribe.model.case_details.VisitCommonData;
 import com.rescribe.model.case_details.Vital;
+import com.rescribe.ui.activities.WebViewActivity;
+import com.rescribe.ui.activities.ZoomImageViewActivity;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,11 @@ import butterknife.ButterKnife;
 public class SingleVisitAdapter extends BaseExpandableListAdapter {
     private int mPosition = 0;
     private Context mContext;
-    private static final String CHILD_TYPE_1 = "vitals";
+
+    private static final String CHILD_TYPE_VITALS = "vitals";
+    private static final String CHILD_TYPE_ATTACHMENTS = "attachments";
+    private static final String CHILD_TYPE_ALLERGIES = "allergies";
+
     private List<PatientHistory> mListDataHeader = new ArrayList<>(); // header titles
     List<VisitCommonData> mVisitDetailList = new ArrayList<>();
     List<VisitCommonData> mCommonDataVisitList = new ArrayList<>();
@@ -80,18 +87,28 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
+        final ChildViewHolder childViewHolder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.visit_details_child_item_layout, parent, false);
+
+            childViewHolder = new ChildViewHolder(convertView);
+            convertView.setTag(childViewHolder);
+        } else {
+            childViewHolder = (ChildViewHolder) convertView.getTag();
+        }
+
         // Onclick of vitals UI is different from those of other case details
-        final List<VisitCommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         String headerName = mListDataHeader.get(groupPosition).getCaseDetailName();
         switch (headerName) {
-            case CHILD_TYPE_1:
+            case CHILD_TYPE_VITALS:
                 //set data and UI for vitals
-                convertView = inflater.inflate(R.layout.vitals_main_activity, null);
-                convertView.setTag(headerName);
-                TableLayout tableLayout = (TableLayout) convertView.findViewById(R.id.table);
-                View divider = convertView.findViewById(R.id.adapter_divider);
-                tableLayout.removeAllViews();
+
+                childViewHolder.tableLayout.removeAllViews();
+
+                childViewHolder.tableLayout.setVisibility(View.VISIBLE);
+                childViewHolder.itemsLayout.setVisibility(View.GONE);
+
                 mPosition = 0;
                 List<Vital> vital = new ArrayList<>();
                 int size = mListDataHeader.get(groupPosition).getVitals().size();
@@ -101,50 +118,96 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                     vital.add(mListDataHeader.get(groupPosition).getVitals().get(i));
                     if (tempSize > i) {
                         if (count == 3) {
-                            tableLayout.addView(addTableRow(vital, groupPosition));
+                            childViewHolder.tableLayout.addView(addVitalsTableRow(vital, groupPosition));
                             vital.clear();
                             count = 1;
                         } else
                             count++;
                     } else if (count == size % 3) {
-                        tableLayout.addView(addTableRow(vital, groupPosition));
+                        childViewHolder.tableLayout.addView(addVitalsTableRow(vital, groupPosition));
                         vital.clear();
                         count = 1;
                     } else count++;
                 }
 
-                if (isLastChild)
-                    divider.setVisibility(View.VISIBLE);
-                else
-                    divider.setVisibility(View.GONE);
+                break;
+
+            case CHILD_TYPE_ATTACHMENTS:
+
+                childViewHolder.tableLayout.setVisibility(View.VISIBLE);
+                childViewHolder.itemsLayout.setVisibility(View.GONE);
+
+                childViewHolder.tableLayout.removeAllViews();
+
+                List<VisitCommonData> attachments = new ArrayList<>();
+                int size1 = mListDataHeader.get(groupPosition).getCommonData().size();
+
+                for (int i = 0; i < size1; i++) {
+                    attachments.add(mListDataHeader.get(groupPosition).getCommonData().get(i));
+                    int check = i + 1;
+                    if (check % 3 == 0 || check == size1) {
+                        childViewHolder.tableLayout.addView(addAttachmentsTableRow(attachments));
+                        attachments.clear();
+                    }
+                }
 
                 break;
 
             default:
                 // set data and UI for other case study
-                convertView = inflater.inflate(R.layout.history_child_item_layout, null);
-                convertView.setTag(headerName);
-                TextView txtListChild = (TextView) convertView.findViewById(R.id.textView_name);
-                View dividerLine = convertView.findViewById(R.id.adapter_divider_bottom);
-                txtListChild.setText(childObject.get(childPosition).getName());
 
-                if (isLastChild) {
-                    dividerLine.setVisibility(View.VISIBLE);
-                } else {
-                    dividerLine.setVisibility(View.GONE);
-                }
+                final List<VisitCommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
+
+                childViewHolder.tableLayout.setVisibility(View.GONE);
+                childViewHolder.itemsLayout.setVisibility(View.VISIBLE);
+
+                String textToShow;
+                if (headerName.equalsIgnoreCase(CHILD_TYPE_ALLERGIES)) {
+                    textToShow = childObject.get(childPosition).getName();
+                    if (!childObject.get(childPosition).getMedicinename().isEmpty())
+                        textToShow += "/" + childObject.get(childPosition).getMedicinename();
+                    if (!childObject.get(childPosition).getRemarks().isEmpty())
+                        textToShow += "/" + childObject.get(childPosition).getRemarks();
+                } else textToShow = childObject.get(childPosition).getName();
+
+                childViewHolder.textView_name.setText(textToShow);
+
                 break;
         }
+
+        if (isLastChild)
+            childViewHolder.divider.setVisibility(View.VISIBLE);
+        else
+            childViewHolder.divider.setVisibility(View.GONE);
 
         return convertView;
     }
 
+    class ChildViewHolder {
+
+        @BindView(R.id.divider)
+        View divider;
+
+        @BindView(R.id.table)
+        LinearLayout tableLayout;
+
+        @BindView(R.id.textView_name)
+        TextView textView_name;
+
+        @BindView(R.id.items_layout)
+        LinearLayout itemsLayout;
+
+        ChildViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
     // Created dynamic grid function to list of  vitals
-    private View addTableRow(final List<Vital> vital, final int groupPosition) {
+    private View addVitalsTableRow(final List<Vital> vital, final int groupPosition) {
         int i;
         String categoryForBpMax = "";
         String categoryForBpMin = "";
-        TableRow tableRow = new TableRow(mContext);
+        LinearLayout tableRow = new LinearLayout(mContext);
         for (i = 0; i < vital.size(); i++) {
             View item = LayoutInflater.from(mContext)
                     .inflate(R.layout.vital_item_row, tableRow, false);
@@ -215,6 +278,60 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
             tableRow.addView(item);
             mPosition++;
+        }
+        return tableRow;
+    }
+
+    // Created dynamic grid function to list of  vitals
+    private View addAttachmentsTableRow(final List<VisitCommonData> attachments) {
+
+        LinearLayout tableRow = new LinearLayout(mContext);
+
+        for (int i = 0; i < attachments.size(); i++) {
+            View item = LayoutInflater.from(mContext)
+                    .inflate(R.layout.attachment_item_row, tableRow, false);
+
+            item.setTag(attachments.get(i));
+            ImageView attachmentImage = (ImageView) item.findViewById(R.id.attachmentImage);
+            TextView titleText = (TextView) item.findViewById(R.id.titleText);
+
+            titleText.setText(attachments.get(i).getName());
+
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.dontAnimate();
+            requestOptions.error(R.drawable.ic_file);
+            requestOptions.placeholder(R.drawable.ic_file);
+
+            Glide.with(mContext)
+                    .load(attachments.get(i).getUrl())
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(attachmentImage);
+
+            //dialog is opened to see info of vitals , Note : BpMin and BpMax is together shown as Bp
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Show Image or WebView.
+
+                    String tag = ((VisitCommonData) v.getTag()).getUrl();
+                    String fileExtension = tag.substring(tag.lastIndexOf("."));
+
+                    if (fileExtension.contains(".doc") || fileExtension.contains(".odt") || fileExtension.contains(".ppt") || fileExtension.contains(".odp") || fileExtension.contains(".xls") || fileExtension.contains(".ods") || fileExtension.contains(".pdf")) {
+                        Intent intent = new Intent(mContext, WebViewActivity.class);
+                        intent.putExtra(mContext.getString(R.string.title_activity_selected_docs), tag);
+                        intent.putExtra(mContext.getString(R.string.file_extension), fileExtension);
+                        mContext.startActivity(intent);
+                    } else {
+                        // do stuff here
+                        Intent intent = new Intent(mContext, ZoomImageViewActivity.class);
+                        intent.putExtra(RescribeConstants.DOCUMENTS, tag);
+                        intent.putExtra(RescribeConstants.IS_URL, true);
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+
+            tableRow.addView(item);
         }
         return tableRow;
     }
@@ -324,8 +441,11 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return (this.mListDataHeader.get(groupPosition).getCommonData())
-                .size();
+        if (this.mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase(CHILD_TYPE_ATTACHMENTS) || this.mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase(CHILD_TYPE_VITALS))
+            return 1;
+        else
+            return (this.mListDataHeader.get(groupPosition).getCommonData())
+                    .size();
     }
 
     @Override
@@ -428,22 +548,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    static class ChildViewHolder {
-        //---------
-
-        @BindView(R.id.textView_name)
-        TextView txtListChild;
-        @BindView(R.id.adapter_divider_bottom)
-        View mDividerLine;
-        @BindView(R.id.expandVisitDetailsLayout)
-        LinearLayout mExpandVisitDetailsLayout;
-
-        ChildViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
-    static class GroupViewHolder {
+    class GroupViewHolder {
         //---------
 
         @BindView(R.id.viewDetailHeaderLabel)

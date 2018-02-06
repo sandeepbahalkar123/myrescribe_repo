@@ -46,7 +46,7 @@ public class BottomSheetMenuAdapter extends RecyclerView.Adapter<BottomSheetMenu
     @Override
     public BottomSheetMenuAdapter.ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.vitals_main_activity, parent, false);
+                .inflate(R.layout.menu_item, parent, false);
 
         int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         int width = (widthPixels * 20) / 100;

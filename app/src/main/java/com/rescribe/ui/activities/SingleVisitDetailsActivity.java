@@ -183,18 +183,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
             }
         });
 
-     /*   mHistoryExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-
-
-                List<PatientHistory> listDataList = mSingleVisitAdapter.getListDataList();
-                List<VisitCommonData> childObject = listDataList.get(groupPosition).getCommonData();
-
-                // TODO , CLICK PENDING
-                return false;
-            }
-        });*/
         mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
 
         {

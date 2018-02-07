@@ -72,6 +72,8 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                     intent = new Intent(mContext, ConfirmTokenInfoActivity.class);
                     bundleData.putString(RescribeConstants.LOCATION_ID, "" + userSelectedDoctorListDataObject.getClinicDataList().get(0).getLocationId());
                     bundleData.putString(RescribeConstants.TOKEN_NO, userSelectedDoctorListDataObject.getTokenNumber());
+                    bundleData.putString(RescribeConstants.WAITING_TIME, userSelectedDoctorListDataObject.getWaitingPatientTime());
+                    bundleData.putString(RescribeConstants.WAITING_COUNT, userSelectedDoctorListDataObject.getWaitingPatientCount());
                 } else {
                     intent = new Intent(mParentActivity, ConfirmAppointmentActivity.class);
                     bundleData.putString(RescribeConstants.LOCATION_ID, "" + 0);

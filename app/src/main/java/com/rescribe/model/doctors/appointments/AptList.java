@@ -98,6 +98,15 @@ public class AptList implements CustomResponse, Serializable {
     @SerializedName("tokenNumber")
     @Expose
     private String tokenNumber;
+
+    @SerializedName("waitingPatientCount")
+    @Expose
+    private String waitingPatientCount;
+
+    @SerializedName("waitingPatientTime")
+    @Expose
+    private String waitingPatientTime;
+
     //--------------------------
 
     public String getClinic_name() {
@@ -240,5 +249,21 @@ public class AptList implements CustomResponse, Serializable {
 
     public void setConfirmationType(String confirmationType) {
         this.confirmationType = confirmationType;
+    }
+
+    public String getWaitingPatientCount() {
+        return waitingPatientCount;
+    }
+
+    public void setWaitingPatientCount(String waitingPatientCount) {
+        this.waitingPatientCount = waitingPatientCount;
+    }
+
+    public String getWaitingPatientTime() {
+        return waitingPatientTime;
+    }
+
+    public void setWaitingPatientTime(String waitingPatientTime) {
+        this.waitingPatientTime = waitingPatientTime;
     }
 }

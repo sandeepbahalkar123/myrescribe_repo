@@ -69,13 +69,6 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
         if (currentDate.getTime() > fromTimeDate.getTime())
             holder.showTime.setPaintFlags(holder.showTime.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        if (timeSlotData.isAvailable()) {
-            holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
-        } else {
-            holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.Gray));
-            holder.showTime.setPaintFlags(holder.showTime.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +85,7 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
 
                 if ((currentDate.getTime() > fromTimeDate.getTime()) && (mSelectedDate.equalsIgnoreCase(mFormattedCurrentDateString))) {
                     CommonMethods.showToast(mContext, mContext.getString(R.string.book_time_slot_err));
+                    holder.showTime.setPaintFlags(holder.showTime.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
                     if (tag1.isAvailable()) {
                         fromTime = tag1.getFromTime();
@@ -124,11 +118,9 @@ public class ShowTimingsBookAppointmentDoctor extends RecyclerView.Adapter<ShowT
             holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.white));
         } else {
             holder.mainLayout.setBackground(ContextCompat.getDrawable(mContext, R.drawable.tab_white));
-            if (timeSlotData.isAvailable()) {
-                holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
-            } else {
-                holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.Gray));
-            }
+            holder.showTime.setTextColor(ContextCompat.getColor(mContext, R.color.tagColor));
+            if (!timeSlotData.isAvailable())
+                holder.showTime.setPaintFlags(holder.showTime.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
         holder.view.setTag("" + position);

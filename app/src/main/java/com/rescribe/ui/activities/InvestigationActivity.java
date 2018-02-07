@@ -28,7 +28,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
 import com.rescribe.model.investigation.InvestigationData;
-import com.rescribe.model.investigation.InvestigationListModel;
 import com.rescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.rescribe.model.investigation.request.InvestigationUploadByGmailRequest;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -291,12 +290,21 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 ClipData clip = ClipData.newPlainText(RescribeConstants.EMAIL, email);
                 clipboard.setPrimaryClip(clip);
 
+                int selectedCount = 0;
+                for (InvestigationData dataObject : investigation) {
+                    if (dataObject.isSelected())
+                        selectedCount += 1;
+                }
+                if (selectedCount == investigation.size())
+                    AppDBHelper.getInstance(this).deleteUnreadReceivedNotificationMessage(mUnreadInvestigationMsgID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+
                 for (InvestigationData dataObject : investigationTemp) {
                     if (dataObject.isSelected() && !dataObject.isUploaded()) {
                         dataObject.setUploaded(dataObject.isSelected());
                         appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isUploaded(), "");
                     }
                 }
+
                 changeOriginalData(investigationTemp);
                 buttonEnable();
                 buttonManage(View.VISIBLE);

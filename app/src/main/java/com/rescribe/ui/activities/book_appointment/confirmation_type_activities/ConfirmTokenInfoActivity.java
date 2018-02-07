@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
-import android.text.format.DateFormat;
 import android.text.style.UnderlineSpan;
 import android.view.Gravity;
 import android.view.View;
@@ -40,6 +39,10 @@ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -48,6 +51,8 @@ import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.CANCEL_TYPE;
 import static com.rescribe.util.RescribeConstants.TOKEN_NO;
+import static com.rescribe.util.RescribeConstants.WAITING_COUNT;
+import static com.rescribe.util.RescribeConstants.WAITING_TIME;
 
 
 /**
@@ -65,6 +70,9 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
     CustomTextView tokenNumberTextView;
     @BindView(R.id.patientAheadTextView)
     CustomTextView patientAheadTextView;
+
+    @BindView(R.id.timeInMinutesTextView)
+    CustomTextView timeInMinutesTextView;
 
     @BindView(R.id.locationTextView)
     CustomTextView locationTextView;
@@ -117,7 +125,8 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
     private Intent intent;
     private int mTokenNo;
     private int mLocationId;
-    private int mAheadCount;
+    private int mWaitingTime;
+    private int mWaitingCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -147,11 +156,22 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
                 if (!extras.getString(TOKEN_NO).isEmpty())
                     mTokenNo = Integer.parseInt(extras.getString(RescribeConstants.TOKEN_NO));
             }
-            mAheadCount = extras.getInt(RescribeConstants.AHEAD_COUNT);
+
+            if (extras.getString(WAITING_TIME) != null) {
+                if (!extras.getString(WAITING_TIME).isEmpty())
+                    mWaitingTime = Integer.parseInt(extras.getString(RescribeConstants.WAITING_TIME));
+            }
+
+            if (extras.getString(WAITING_COUNT) != null) {
+                if (!extras.getString(WAITING_COUNT).isEmpty())
+                    mWaitingCount = Integer.parseInt(extras.getString(RescribeConstants.WAITING_COUNT));
+            }
+
             mLocationId = Integer.parseInt(extras.getString(RescribeConstants.LOCATION_ID));
             callType = extras.getString(RescribeConstants.CALL_FROM_DASHBOARD);
             tokenNumberTextView.setText(String.valueOf(mTokenNo));
-            patientAheadTextView.setText(String.valueOf(mAheadCount));
+            patientAheadTextView.setText(String.valueOf(mWaitingCount));
+            timeInMinutesTextView.setText(String.valueOf(mWaitingTime));
         }
         if (mDoctorObject != null) {
             rescheduleButton.setVisibility(View.GONE);
@@ -182,23 +202,25 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
                 mobileNumber.setText(mDoctorObject.getDocPhone());
                 phoneNumberLayout.setVisibility(View.VISIBLE);
             }
-            if (!mDoctorObject.getAptDate().isEmpty()) {
-                String dateValueToShow = (String) DateFormat.format("EEE", CommonMethods.convertStringToDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD));
-                String ordinal = CommonMethods.ordinal(CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "dd"));
 
-                String timeToShow = "";
-                if (!mDoctorObject.getAptDate().isEmpty()) {
-                    timeToShow = CommonMethods.formatDateTime(mDoctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.hh_mm_a,
-                            RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.TIME).toLowerCase();
-                }
+            Calendar now = Calendar.getInstance();
+            now.add(Calendar.MINUTE, mWaitingTime);
 
-                String dateToShow = dateValueToShow + ", " + ordinal + " " + CommonMethods.getFormattedDate(mDoctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, "MMM yyyy");
-                if (!RescribeConstants.BLANK.equalsIgnoreCase(timeToShow))
-                    dateToShow = dateToShow + " @" + timeToShow;
-                else
+            SimpleDateFormat formatterEEE = new SimpleDateFormat("EEE", Locale.US);
+            String dateValueToShow = formatterEEE.format(now.getTime());
 
-                showTimedate.setText(dateToShow);
-            }
+            SimpleDateFormat formatterDD = new SimpleDateFormat("dd", Locale.US);
+            String ordinal = CommonMethods.ordinal(formatterDD.format(now.getTime()));
+
+            SimpleDateFormat formatterMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.US);
+            String monthYear = formatterMM_YYYY.format(now.getTime());
+
+            SimpleDateFormat formatterHH_MM_A = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
+            String timeToShow = formatterHH_MM_A.format(now.getTime()).toLowerCase();
+
+            String dateToShow = dateValueToShow + ", " + ordinal + " " + monthYear;
+            dateToShow = dateToShow + " @" + timeToShow;
+            showTimedate.setText(dateToShow);
         }
     }
 
@@ -226,7 +248,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
         switch (view.getId()) {
             case R.id.cancelButton:
 
-                showTokenStatusMessageBox(mContext.getString(R.string.cancel_msg), mDoctorObject.getAptId(), CANCEL_TYPE);
+                showTokenStatusMessageBox(mContext.getString(R.string.cancel_token_msg), mDoctorObject.getTokenNumber(), CANCEL_TYPE);
 
                 break;
 
@@ -296,7 +318,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
 
     }
 
-    public void showTokenStatusMessageBox(String message, final String aptId, final String type) {
+    public void showTokenStatusMessageBox(String message, final String tokenId, final String type) {
 
         final Dialog dialog = new Dialog(mContext);
 
@@ -307,9 +329,9 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
         TextView messageView = (TextView) dialog.findViewById(R.id.messageView);
         ImageView icon_get_token = (ImageView) dialog.findViewById(R.id.icon);
         TextView textheading = (TextView) dialog.findViewById(R.id.textheading);
-        textheading.setText(mContext.getString(R.string.appointment));
+        textheading.setText(mContext.getString(R.string.token));
         messageView.setGravity(Gravity.CENTER);
-        icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.bookappointment));
+        icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.token_icon));
         isCanceled = type.equals(CANCEL_TYPE);
         messageView.setText(message);
 

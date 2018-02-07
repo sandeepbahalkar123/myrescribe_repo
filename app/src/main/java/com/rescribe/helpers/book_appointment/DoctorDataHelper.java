@@ -52,7 +52,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == RescribeConstants.TASK_GET_DOCTOR_DATA) {
+                if (mOldDataTag.equals(RescribeConstants.TASK_GET_DOCTOR_DATA)) {
                     BookAppointmentBaseModel receivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
                     if (receivedBookAppointmentBaseModel != null) {
                         DoctorServicesModel mReceivedDoctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
@@ -154,41 +154,9 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_DOCTOR_DATA);
-        /*try {
-            InputStream is = mContext.getAssets().open("doctor_data_22_nov_2017.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "doctor_data_22_nov_2017" + json);
-
-            Gson gson = new Gson();
-            BookAppointmentBaseModel bookAppointmentBaseModel = gson.fromJson(json, BookAppointmentBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_GET_DOCTOR_DATA);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
     }
 
     public void doGetDrawerFilterConfigurationData(String cityName) {
-/*        try {
-            InputStream is = mContext.getAssets().open("book_appointment_filter_drawer.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "book_appointment_filter_drawer" + json);
-
-            BookAppointFilterBaseModel bookAppointmentBaseModel = new Gson().fromJson(json, BookAppointFilterBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, bookAppointmentBaseModel, RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
-
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.GET_BOOK_APPOINTMENT_FILTER_APPOINTMENT_DATA + cityName);
@@ -201,22 +169,6 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.GET_COMPLAINTS_LIST);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_COMPLAINTS);
-
-       /* try {
-            InputStream is = mContext.getAssets().open("complaint_list");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "complaint_list" + json);
-
-            ComplaintsBaseModel complaintsBaseModel = new Gson().fromJson(json, ComplaintsBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, complaintsBaseModel, RescribeConstants.TASK_GET_COMPLAINTS);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
     }
 
     public void doGetReviewsList(String docId) {

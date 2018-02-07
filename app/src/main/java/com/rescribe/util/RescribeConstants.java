@@ -184,6 +184,8 @@ public class RescribeConstants {
     public static final String FACEBOOK_LOGIN = "facebook_login";
     public static final String CHAT_REQUEST = "chat_request";
 
+    public static final String WAITING_TIME = "waiting_time";
+    public static final String WAITING_COUNT = "waiting_count";
 
     public static final int UPLOADING = 1;
     public static final int DOWNLOADING = 1;
@@ -238,8 +240,6 @@ public class RescribeConstants {
     public static final String RATING = "rating";
     public static final String MIXED_APPOINTMENT_TYPE = "mixed";
     public static final String LOCATION_ID = "location_id";
-
-    public static final String AHEAD_COUNT = "ahead_count";
     public static final String TOKEN_NO = "token_no";
 
     public static final String FROM = "from";

@@ -117,6 +117,8 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         if (mAptListObject.getConfirmationType().equalsIgnoreCase(getString(R.string.token))) {
             intent = new Intent(getActivity(), ConfirmTokenInfoActivity.class);
             bundleData.putString(RescribeConstants.TOKEN_NO, mAptListObject.getTokenNumber());
+            bundleData.putString(RescribeConstants.WAITING_TIME, mAptListObject.getWaitingPatientTime());
+            bundleData.putString(RescribeConstants.WAITING_COUNT, mAptListObject.getWaitingPatientCount());
         } else {
             bundleData.putString(RescribeConstants.TOKEN_NO, "" + 0);
             intent = new Intent(getActivity(), ConfirmAppointmentActivity.class);

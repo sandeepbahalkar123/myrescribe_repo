@@ -30,8 +30,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:paddingTop="@dimen/dp28"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/dp28">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -51,8 +51,8 @@
                             android:id="@+id/tokenNumberTextView"
                             android:layout_width="@dimen/dp28"
                             android:layout_height="@dimen/dp28"
-                            android:layout_marginStart="@dimen/dp8"
                             android:layout_marginEnd="@dimen/dp8"
+                            android:layout_marginStart="@dimen/dp8"
                             android:background="@drawable/circular_back"
                             android:gravity="center"
                             android:textColor="@color/white"
@@ -83,14 +83,14 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp22"
                             app:customFont="@string/roboto_bold"
-                            tools:text="@string/appointment_confirmed" />
+                            tools:text="10 Dec 2018 @ 10:00 am" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:customFont="@string/roboto_bold"
+                            android:text="@string/approx_time"
                             android:textSize="@dimen/sp14"
-                            android:text="@string/approx_time" />
+                            app:customFont="@string/roboto_bold" />
 
                     </LinearLayout>
 
@@ -98,15 +98,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:layout_marginTop="@dimen/dp28"
-                        android:layout_marginBottom="@dimen/dp28"
                         android:orientation="horizontal">
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/patientAheadTextView"
                             android:layout_width="@dimen/dp28"
                             android:layout_height="@dimen/dp28"
-                            android:layout_margin="@dimen/dp8"
+                            android:layout_marginBottom="@dimen/dp8"
+                            android:layout_marginEnd="@dimen/dp8"
+                            android:layout_marginRight="@dimen/dp8"
+                            android:layout_marginTop="@dimen/dp8"
                             android:background="@drawable/circular_back"
                             android:gravity="center"
                             android:textColor="@color/white"
@@ -118,8 +119,46 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ahead_message"
-                            android:textSize="@dimen/sp14"
                             android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/dp16">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/doctor_will_see_you_in"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/timeInMinutesTextView"
+                            android:layout_width="@dimen/dp28"
+                            android:layout_height="@dimen/dp28"
+                            android:layout_marginEnd="@dimen/dp8"
+                            android:layout_marginStart="@dimen/dp8"
+                            android:background="@drawable/circular_back"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp16"
+                            app:customFont="@string/roboto_bold"
+                            tools:text="10" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mins"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
                             app:customFont="@string/roboto_medium" />
 
                     </LinearLayout>

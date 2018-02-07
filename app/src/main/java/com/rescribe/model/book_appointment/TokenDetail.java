@@ -9,6 +9,14 @@ public class TokenDetail {
     @Expose
     private int tokenNumber;
 
+    @SerializedName("waitingPatientCount")
+    @Expose
+    private String waitingPatientCount;
+
+    @SerializedName("waitingPatientTime")
+    @Expose
+    private String waitingPatientTime;
+
     public int getTokenNumber() {
         return tokenNumber;
     }
@@ -17,4 +25,19 @@ public class TokenDetail {
         this.tokenNumber = tokenNumber;
     }
 
+    public String getWaitingPatientCount() {
+        return waitingPatientCount;
+    }
+
+    public void setWaitingPatientCount(String waitingPatientCount) {
+        this.waitingPatientCount = waitingPatientCount;
+    }
+
+    public String getWaitingPatientTime() {
+        return waitingPatientTime;
+    }
+
+    public void setWaitingPatientTime(String waitingPatientTime) {
+        this.waitingPatientTime = waitingPatientTime;
+    }
 }

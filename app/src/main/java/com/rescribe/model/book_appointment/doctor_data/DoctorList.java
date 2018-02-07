@@ -23,11 +23,6 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("doc_location_id")
     @Expose
     private int docLocationId;
-
-    /*@SerializedName("aptId")
-    @Expose
-    private int aptId;*/
-
     @SerializedName("aptId")
     @Expose
     private String aptId;
@@ -96,6 +91,14 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @Expose
     private String tokenNumber;
 
+    @SerializedName("waitingPatientCount")
+    @Expose
+    private String waitingPatientCount;
+
+    @SerializedName("waitingPatientTime")
+    @Expose
+    private String waitingPatientTime;
+
     //------
     private int sizeOfList = 0;
     private double latitude = 0.0;
@@ -152,6 +155,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.isAppointmentTypeMixed = ((boolean) in.readValue((Boolean.class.getClassLoader())));
             instance.type = ((String) in.readValue((String.class.getClassLoader())));
             instance.tokenNumber = ((String) in.readValue((String.class.getClassLoader())));
+            instance.waitingPatientTime = ((String) in.readValue((String.class.getClassLoader())));
+            instance.waitingPatientCount = ((String) in.readValue((String.class.getClassLoader())));
             //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
             return instance;
         }
@@ -372,33 +377,22 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     public void setAppointmentTypeMixed(boolean appointmentTypeMixed) {
         isAppointmentTypeMixed = appointmentTypeMixed;
     }
-/* public ArrayList<ReviewList> getReviewList() {
-=======
-    public String getType() {
-        return type;
+
+    public String getWaitingPatientCount() {
+        return waitingPatientCount;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setWaitingPatientCount(String waitingPatientCount) {
+        this.waitingPatientCount = waitingPatientCount;
     }
 
-    public String getTokenNumber() {
-        return tokenNumber;
+    public String getWaitingPatientTime() {
+        return waitingPatientTime;
     }
 
-    public void setTokenNumber(String tokenNumber) {
-        this.tokenNumber = tokenNumber;
+    public void setWaitingPatientTime(String waitingPatientTime) {
+        this.waitingPatientTime = waitingPatientTime;
     }
-
-    /* public ArrayList<ReviewList> getReviewList() {
->>>>>>> ganesh
-        return reviewList;
-    }
-
-    public void setReviewList(ArrayList<ReviewList> reviewList) {
-        this.reviewList = reviewList;
-    }*/
-
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(docId);
@@ -431,6 +425,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(isAppointmentTypeMixed);
         dest.writeValue(type);
         dest.writeValue(tokenNumber);
+        dest.writeValue(waitingPatientTime);
+        dest.writeValue(waitingPatientCount);
     }
 
 

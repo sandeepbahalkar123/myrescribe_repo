@@ -209,6 +209,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         String categoryForBpMin = "";
         LinearLayout tableRow = new LinearLayout(mContext);
         for (i = 0; i < vital.size(); i++) {
+
             View item = LayoutInflater.from(mContext)
                     .inflate(R.layout.vital_item_row, tableRow, false);
             LinearLayout vitalLinearlayout = (LinearLayout) item.findViewById(R.id.vitalCellLinearLayout);
@@ -276,6 +277,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                     noOfVitals.setTextColor(ContextCompat.getColor(mContext, R.color.view_detail_color));
                 }
             }
+
             tableRow.addView(item);
             mPosition++;
         }

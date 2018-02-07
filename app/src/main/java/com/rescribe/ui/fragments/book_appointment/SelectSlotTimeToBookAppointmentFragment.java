@@ -197,7 +197,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private String from;
     private String aptId;
     private String type;
-    private int aheadCount;
+
+    private int waitingCount;
 
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -496,7 +497,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mWaitingTime.setText("" + clinicTokenDetails.getWaitingTime());
                         mScheduledAppointmentsTimeStamp.setText("" + clinicTokenDetails.getScheduledTimeStamp());
                         mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
-                        aheadCount = clinicTokenDetails.getWaitingPatientCount();
+                        waitingCount = clinicTokenDetails.getWaitingPatientCount();
                     } else {
                         showTokenStatusMessageBox(-1, common.getStatusMessage(), mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
                     }
@@ -526,7 +527,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
                             bundleData.putString(RescribeConstants.LOCATION_ID, "" + mSelectedClinicDataObject.getLocationId());
                             bundleData.putString(RescribeConstants.TOKEN_NO, String.valueOf(confirmTokenModel.getData().getTokenDetail().getTokenNumber()));
-                            bundleData.putInt(RescribeConstants.AHEAD_COUNT, aheadCount);
+                            bundleData.putString(RescribeConstants.WAITING_TIME, confirmTokenModel.getData().getTokenDetail().getWaitingPatientTime());
+                            bundleData.putString(RescribeConstants.WAITING_COUNT, confirmTokenModel.getData().getTokenDetail().getWaitingPatientCount());
                             Intent intentObject = new Intent(getContext(), ConfirmTokenInfoActivity.class);
                             intentObject.putExtras(bundleData);
                             startActivity(intentObject);

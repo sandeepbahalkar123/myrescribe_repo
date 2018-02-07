@@ -224,7 +224,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 if (mDoctorObject.isAppointmentTypeMixed()) {
                     showTokenStatusMessageBox(mContext.getString(R.string.cancel_token_msg), "0", MIXED_APPOINTMENT_TYPE);
                 } else {
-                    showTokenStatusMessageBox(mContext.getString(R.string.cancel_msg), mDoctorObject.getAptId(), CANCEL_TYPE);
+                    showTokenStatusMessageBox(mContext.getString(R.string.cancel_appointment_msg), mDoctorObject.getAptId(), CANCEL_TYPE);
 
                 }
                 break;

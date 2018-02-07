@@ -201,7 +201,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
 
                     boolean inRange = dateOfApp.before(next48HrDate);
 
-                    if (inRange)
+                    if (inRange && !aptListObject.getAptId().isEmpty())
                         customNotification(aptListObject, index);
                 }
 

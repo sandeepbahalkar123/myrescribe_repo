@@ -197,7 +197,7 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
             final ArrayList<Entry> tempEntries = new ArrayList<>();
             final HashSet<String> tempLabels = new HashSet<>();
             final ArrayList<String> tempLabelsArrayList = new ArrayList<>();
-             //To add circle color
+            //To add circle color
             List<Integer> circleColors = new ArrayList<>();
 
             for (int i = 0; i < vitalGraphDetailList.size(); i++) {
@@ -249,9 +249,9 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mGraphCard.getXAxis().setAxisLineWidth(2.0f);
                 mGraphCard.getAxisRight().setAxisLineWidth(2.0f);
                 mGraphCard.getAxisLeft().setAxisLineWidth(2.0f);
-                mGraphCard.getAxisLeft().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
-                mGraphCard.getAxisRight().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
-                mGraphCard.getXAxis().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
+                mGraphCard.getAxisLeft().setAxisLineColor(ContextCompat.getColor(this, R.color.graph_color));
+                mGraphCard.getAxisRight().setAxisLineColor(ContextCompat.getColor(this, R.color.graph_color));
+                mGraphCard.getXAxis().setAxisLineColor(ContextCompat.getColor(this, R.color.graph_color));
                 mGraphCard.getAxisRight().setGridColor(Color.TRANSPARENT); // left y-axis
                 //--------
                 mGraphCard.getDescription().setEnabled(false);
@@ -329,13 +329,13 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 vitalValue = vitalValue.replaceAll("[^0-9/.]", "");
                 if (vitalValue.contains("/")) {
                     String[] split = vitalValue.split("/");
-                    Bitmap bitmapViewSystolic = createBitmapFromLayoutWithText( split[0], data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
+                    Bitmap bitmapViewSystolic = createBitmapFromLayoutWithText(split[0], data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : getResources().getColor(R.color.white));
                     Drawable drawableSystolic = new BitmapDrawable(getResources(), bitmapViewSystolic);
                     Bitmap bitmapViewDiasystolic = createBitmapFromLayoutWithText(split[1], data.getSelfTrackerFlag() ? getResources().getColor(R.color.black) : Color.YELLOW);
                     Drawable drawableDiasystolic = new BitmapDrawable(getResources(), bitmapViewDiasystolic);
 
-                    maxTempEntries.add(new Entry(i, Float.parseFloat(split[0]),drawableSystolic));
-                    minTempEntries.add(new Entry(i, Float.parseFloat(split[1]),drawableDiasystolic));
+                    maxTempEntries.add(new Entry(i, Float.parseFloat(split[0]), drawableSystolic));
+                    minTempEntries.add(new Entry(i, Float.parseFloat(split[1]), drawableDiasystolic));
                 }
             }
 
@@ -377,9 +377,9 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 mGraphCard.getXAxis().setAxisLineWidth(2.0f);
                 mGraphCard.getAxisRight().setAxisLineWidth(2.0f);
                 mGraphCard.getAxisLeft().setAxisLineWidth(2.0f);
-                mGraphCard.getAxisLeft().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
-                mGraphCard.getAxisRight().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
-                mGraphCard.getXAxis().setAxisLineColor(ContextCompat.getColor(this,R.color.graph_color));
+                mGraphCard.getAxisLeft().setAxisLineColor(ContextCompat.getColor(this, R.color.graph_color));
+                mGraphCard.getAxisRight().setAxisLineColor(ContextCompat.getColor(this, R.color.graph_color));
+                mGraphCard.getXAxis().setAxisLineColor(ContextCompat.getColor(this, R.color.graph_color));
                 mGraphCard.getAxisLeft().setGridColor(Color.TRANSPARENT);
                 mGraphCard.getAxisRight().setGridColor(Color.TRANSPARENT);
                 mGraphCard.getXAxis().setGridColor(Color.TRANSPARENT);
@@ -577,12 +577,21 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
                 MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 
+        //--------------
+        int dpPerChar = getResources().getDimensionPixelSize(R.dimen.dp24);
+        int bitmapSize = getResources().getDimensionPixelSize(R.dimen.dp34);
+        if (text.length() > 4) {
+            dpPerChar = CommonMethods.convertDpToPixel(text.length() * 6); // Assumed each char takes 6dp
+            bitmapSize = CommonMethods.convertDpToPixel((text.length() * 6) + 6);// Assumed each char takes 6dp
+        }
+        //--------------
+
         //Assign a size and position to the view and all of its descendants
-        view.layout(0, 0, getResources().getDimensionPixelSize(R.dimen.dp24), getResources().getDimensionPixelSize(R.dimen.dp24));
+        view.layout(0, 0, dpPerChar, dpPerChar);
 
         //Create the bitmap
-        Bitmap bitmap = Bitmap.createBitmap(getResources().getDimensionPixelSize(R.dimen.dp30),
-                getResources().getDimensionPixelSize(R.dimen.dp30),
+        Bitmap bitmap = Bitmap.createBitmap(bitmapSize,
+                bitmapSize,
                 Bitmap.Config.ARGB_8888);
         //Create a canvas with the specified bitmap to draw into
         Canvas c = new Canvas(bitmap);
@@ -594,12 +603,12 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
 
     @Override
     public void onBackPressed() {
-        if(isVitalAdded){
-            Intent intent = new Intent(this,VitalGraphActivity.class);
+        if (isVitalAdded) {
+            Intent intent = new Intent(this, VitalGraphActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }

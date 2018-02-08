@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class TokenData {
 
-    @SerializedName("tokenDetail")
+    @SerializedName("tokenDetails")
     @Expose
     private TokenDetail tokenDetail;
 

@@ -14,7 +14,7 @@ public class PatientHistory implements CustomResponse{
     private Integer caseDetailId;
     @SerializedName("caseDetailName")
     @Expose
-    private String caseDetailName;
+    private String caseDetailName = "";
     @SerializedName("caseDetailData")
     @Expose
     private List<VisitCommonData>  caseDetailData = null;

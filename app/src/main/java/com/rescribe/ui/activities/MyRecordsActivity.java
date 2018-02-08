@@ -1,6 +1,5 @@
 package com.rescribe.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +10,6 @@ import android.widget.FrameLayout;
 
 import com.rescribe.R;
 import com.rescribe.ui.fragments.my_record.MyRecordListFragmentContainer;
-import com.rescribe.util.RescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,15 +33,6 @@ public class MyRecordsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mFragmentManager = getSupportFragmentManager();
         loadFragment(MyRecordListFragmentContainer.newInstance(), false);
-    }
-
-    @Override
-    public void onBackPressed() {
-       /* Intent intent = new Intent(MyRecordsActivity.this, HomePageActivity.class);
-        intent.putExtra(RescribeConstants.ALERT, false);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);*/
-        super.onBackPressed();
     }
 
     private void loadFragment(Fragment fragment, boolean requiredBackStack) {

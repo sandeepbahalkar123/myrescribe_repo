@@ -1,5 +1,6 @@
 package com.rescribe.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -165,9 +166,9 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 if (headerName.equalsIgnoreCase(CHILD_TYPE_ALLERGIES)) {
                     textToShow = childObject.get(childPosition).getName();
                     if (!childObject.get(childPosition).getMedicinename().isEmpty())
-                        textToShow += "/" + childObject.get(childPosition).getMedicinename();
+                        textToShow += "-" + childObject.get(childPosition).getMedicinename();
                     if (!childObject.get(childPosition).getRemarks().isEmpty())
-                        textToShow += "/" + childObject.get(childPosition).getRemarks();
+                        textToShow += "-" + childObject.get(childPosition).getRemarks();
                 } else textToShow = childObject.get(childPosition).getName();
 
                 childViewHolder.textView_name.setText(textToShow);
@@ -264,7 +265,6 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 //---*************** Show vaital_display_name instead of unitName (EXCEPT BP CASE) : START
                 //  vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName());
                 vital_name.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getDisplayName());
-                //---*************** Show vaital_display_name instead of unitName : END
 
                 noOfVitals.setText(mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitValue());
                 if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory().equalsIgnoreCase(mContext.getResources().getString(R.string.severeRange))) {
@@ -285,6 +285,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     }
 
     // Created dynamic grid function to list of  vitals
+    @SuppressLint("CheckResult")
     private View addAttachmentsTableRow(final List<VisitCommonData> attachments) {
 
         LinearLayout tableRow = new LinearLayout(mContext);
@@ -491,50 +492,49 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             groupViewHolder.mDivider.setVisibility(View.VISIBLE);
         }
 
-        String s1 = mListDataHeader.get(groupPosition).getCaseDetailName();
-        groupViewHolder.lblListHeader.setText(s1.substring(0, 1).toUpperCase() + s1.substring(1));
-        groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(mListDataHeader.get(groupPosition).getCaseDetailName()));
-        if (mListDataHeader.get(groupPosition).getCommonData() != null) {
-            mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
+        if (mListDataHeader.get(groupPosition).getCaseDetailName() != null) {
+            groupViewHolder.lblListHeader.setText(CommonMethods.toCamelCase(mListDataHeader.get(groupPosition).getCaseDetailName()));
+            groupViewHolder.mViewDetailIcon.setImageResource(CommonMethods.getCaseStudyIcons(mListDataHeader.get(groupPosition).getCaseDetailName()));
 
-            if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
-                if (!mListDataHeader.get(groupPosition).getVitals().isEmpty())
-                    if (mVisitDetailList.get(0).getName().equalsIgnoreCase("bp")) {
-                        String bpValue = mVisitDetailList.get(0).getVitalValue();
+            if (mListDataHeader.get(groupPosition).getCommonData() != null) {
+                mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
 
-                        String[] unitDataObject = bpValue.split("/");
-                        String unitBpMax = unitDataObject[0];
-                        String unitBpMin = unitDataObject.length > 1 ? unitDataObject[1] : "";
+                if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
+                    if (!mListDataHeader.get(groupPosition).getVitals().isEmpty())
+                        if (mVisitDetailList.get(0).getName().equalsIgnoreCase("bp")) {
+                            String bpValue = mVisitDetailList.get(0).getVitalValue();
 
-                        // Find Unit
-                        String unitString = "";
-                        if (unitBpMax.contains(" "))
-                            unitString = unitBpMax.substring(unitBpMax.indexOf(" "), unitBpMax.length());
+                            String[] unitDataObject = bpValue.split("/");
+                            String unitBpMax = unitDataObject[0];
+                            String unitBpMin = unitDataObject.length > 1 ? unitDataObject[1] : "";
 
-                        // Find Digits
-                        String digitSystolic = unitBpMax.split(" ")[0];
-                        String digitDiastolic = unitBpMin.split(" ")[0];
+                            // Find Unit
+                            String unitString = "";
+                            if (unitBpMax.contains(" "))
+                                unitString = unitBpMax.substring(unitBpMax.indexOf(" "), unitBpMax.length());
 
-                        // Final String
-                        String finalString = digitSystolic + "/ " + digitDiastolic + " " + unitString + "...";
+                            // Find Digits
+                            String digitSystolic = unitBpMax.split(" ")[0];
+                            String digitDiastolic = unitBpMin.split(" ")[0];
 
-                        groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + " - " + finalString);
+                            // Final String
+                            String finalString = digitSystolic + "/ " + digitDiastolic + " " + unitString + "...";
 
-                    } else {
-                        groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+                            groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + " - " + finalString);
 
-                    }
-            } else if (mVisitDetailList.size() > 1) {
-                groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
-            } else {
-//                SpannableString s = CommonMethods.addTextToStringAtLast(mVisitDetailList.get(0).getName(), 5, "...", ContextCompat.getColor(mContext, R.color.view_detail_color));
-                String text = mVisitDetailList.get(0).getName();
-                if (text.length() > TEXT_LIMIT)
-                    groupViewHolder.mDetailFirstPoint.setText(text.substring(0, TEXT_LIMIT - 1) + "...");
-                else groupViewHolder.mDetailFirstPoint.setText(text);
+                        } else {
+                            groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+
+                        }
+                } else if (mVisitDetailList.size() > 1) {
+                    groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+                } else {
+                    String text = mVisitDetailList.get(0).getName();
+                    if (text.length() > TEXT_LIMIT)
+                        groupViewHolder.mDetailFirstPoint.setText(text.substring(0, TEXT_LIMIT - 1) + "...");
+                    else groupViewHolder.mDetailFirstPoint.setText(text);
+                }
             }
-            //groupViewHolder.mDetailFirstPoint.setText(setStringLength(mVisitDetailList.get(0).getName()));// + ".......");
-
         }
         return convertView;
     }

@@ -16,6 +16,7 @@
     <string name="investigations">Investigations</string>
     <string name="visit_details">Visit Details</string>
     <string name="doctor_details">Doctor Visits</string>
+    <string name="details">Details</string>
     <string name="before">Before</string>
     <string name="enter_mobile_no">Mobile No.</string>
     <string name="log_in">Login</string>
@@ -106,7 +107,7 @@
     <string name="back">Back</string>
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
-    <string name="details">&#160;Details</string>
+
     <string name="forgot_password">Forgot  password?</string>
     <string name="forgot_password_header">Forgot Password</string>
     <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>

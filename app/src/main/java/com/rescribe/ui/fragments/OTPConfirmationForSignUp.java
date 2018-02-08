@@ -36,10 +36,8 @@ import static com.rescribe.util.RescribeConstants.FACEBOOK;
 import static com.rescribe.util.RescribeConstants.GMAIL;
 
 public class OTPConfirmationForSignUp extends Fragment implements HelperResponse, OTPListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+    public static final String SIGN_UP_DETAILS = "sign_up_details";
 
     private CountDownTimer mCountDownTimer;
     private final long mStartTime = 30 * 1000;
@@ -62,11 +60,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
 
     private SignUpRequestModel mSignUpRequestModel;
 
-    private String mMobileNo;
     private int mResendOTPCount = 0;
-//
-//    @BindView(R.id.progressBar)
-//    LinearLayout mProgressBar;
 
     public OTPConfirmationForSignUp() {
         // Required empty public constructor
@@ -84,7 +78,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
 
         if (getArguments() != null) {
             Bundle arguments = getArguments();
-            mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
+            mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(SIGN_UP_DETAILS);
             mHeaderMessageForMobileOTP.setText(String.format(getString(R.string.message_for_mobile_otp), mSignUpRequestModel.getMobileNumber()));
         }
 
@@ -118,7 +112,6 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
 
         @Override
         public void onTick(long millisUntilFinished) {
-//			mProgressText.setText(" "+millisUntilFinished / 1000 + " secs" );
             if (getActivity() != null) {
                 if (!getActivity().isFinishing()) {
                     String format = "" + (millisUntilFinished / 1000);
@@ -133,14 +126,17 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         if (mOtpEditText.getText().toString().trim().length() == 4) {
             SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
             model.setMobileNumber(mSignUpRequestModel.getMobileNumber());
-            model.setOTP(mOtpEditText.getText().toString().trim());
+            model.setOtp(mOtpEditText.getText().toString().trim());
             model.setPassword(mSignUpRequestModel.getPassword());
             model.setName(mSignUpRequestModel.getName());
-            model.seteMailID(mSignUpRequestModel.getEmailId());
+            model.setEmailId(mSignUpRequestModel.getEmailId());
 
             model.setSalutation(mSignUpRequestModel.getSalutation());
             model.setAge(mSignUpRequestModel.getAge());
             model.setGender(mSignUpRequestModel.getGender());
+
+            model.setAuthSocialToken(mSignUpRequestModel.getAuthSocialToken());
+            model.setAuthSocialType(mSignUpRequestModel.getAuthSocialType());
 
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
             loginHelper.doVerifyGeneratedSignUpOTP(model);

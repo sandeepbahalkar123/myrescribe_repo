@@ -181,7 +181,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                 if (mYearList.size() == 1) {
                     mYearSpinnerView.setVisibility(View.GONE);
                     mYearSpinnerSingleItem.setVisibility(View.VISIBLE);
-                    SpannableString contentViewAllFavorite = new SpannableString(mYearList.get(0).toString());
+                    SpannableString contentViewAllFavorite = new SpannableString(mYearList.get(0));
                     contentViewAllFavorite.setSpan(new UnderlineSpan(), 0, contentViewAllFavorite.length(), 0);
                     mYearSpinnerSingleItem.setText(contentViewAllFavorite);
                 } else {

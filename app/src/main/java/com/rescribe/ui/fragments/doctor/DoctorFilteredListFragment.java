@@ -65,7 +65,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
         ButterKnife.bind(this, mRootView);
         mContext = inflater.getContext();
 
-        titleTextView.setText(getString(R.string.doctor_details) + getString(R.string.details));
+        titleTextView.setText(getString(R.string.doctor_details) + " " + getString(R.string.details));
 
         setHasOptionsMenu(true);
 

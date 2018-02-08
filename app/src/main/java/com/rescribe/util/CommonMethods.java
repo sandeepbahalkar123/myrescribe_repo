@@ -51,7 +51,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CommonMethods {
 
@@ -677,7 +676,7 @@ public class CommonMethods {
             abbreviation = R.drawable.preoperativeprecautions; // not found
         else if (caseStudyName.contains("post-operative care"))
             abbreviation = R.drawable.postoperativecare; // not found
-        else if (caseStudyName.contains("pain score"))
+        else if (caseStudyName.contains("pain score") || caseStudyName.contains("pain scale"))
             abbreviation = R.drawable.painscore; // not found
         else if (caseStudyName.contains("exercise"))
             abbreviation = R.drawable.exercise; // not found
@@ -823,6 +822,7 @@ public class CommonMethods {
     }
 
     public static String toCamelCase(String input) {
+
         StringBuilder result = new StringBuilder();
         char firstChar = input.charAt(0);
         result.append(Character.toUpperCase(firstChar));

@@ -22,9 +22,9 @@ import com.rescribe.util.RescribeConstants;
 
 public class SingleVisitDetailHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
-    HelperResponse mHelperResponseManager;
+    private String TAG = this.getClass().getName();
+    private Context mContext;
+    private HelperResponse mHelperResponseManager;
 
     public SingleVisitDetailHelper(Context context, HelperResponse oneDayVisitActivity) {
         this.mContext = context;

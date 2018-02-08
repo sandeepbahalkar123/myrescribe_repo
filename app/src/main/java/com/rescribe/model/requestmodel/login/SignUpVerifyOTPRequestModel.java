@@ -8,37 +8,75 @@ import java.io.Serializable;
 
 public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable {
 
-    @SerializedName("mobileNumber")
-    @Expose
-    private String mobileNumber;
-    @SerializedName("otp")
-    @Expose
-    private String OTP;
-    @SerializedName("password")
-    @Expose
-    private String password;
-
-    private String name;
-    private String eMailID;
-
-    @SerializedName("salutation")
-    @Expose
-    private int salutation;
-
     @SerializedName("age")
     @Expose
     private String age;
-
+    @SerializedName("authSocialToken")
+    @Expose
+    private String authSocialToken;
+    @SerializedName("authSocialType")
+    @Expose
+    private String authSocialType;
+    @SerializedName("emailId")
+    @Expose
+    private String emailId;
     @SerializedName("gender")
     @Expose
     private String gender;
+    @SerializedName("mobileNumber")
+    @Expose
+    private String mobileNumber;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("password")
+    @Expose
+    private String password;
+    @SerializedName("salutation")
+    @Expose
+    private int salutation;
+    @SerializedName("otp")
+    @Expose
+    private String otp;
 
-    public String getOTP() {
-        return OTP;
+    public String getAge() {
+        return age;
     }
 
-    public void setOTP(String OTP) {
-        this.OTP = OTP;
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getAuthSocialToken() {
+        return authSocialToken;
+    }
+
+    public void setAuthSocialToken(String authSocialToken) {
+        this.authSocialToken = authSocialToken;
+    }
+
+    public String getAuthSocialType() {
+        return authSocialType;
+    }
+
+    public void setAuthSocialType(String authSocialType) {
+        this.authSocialType = authSocialType;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getMobileNumber() {
@@ -49,14 +87,6 @@ public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable
         this.mobileNumber = mobileNumber;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getName() {
         return name;
     }
@@ -65,12 +95,12 @@ public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable
         this.name = name;
     }
 
-    public String geteMailID() {
-        return eMailID;
+    public String getPassword() {
+        return password;
     }
 
-    public void seteMailID(String eMailID) {
-        this.eMailID = eMailID;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getSalutation() {
@@ -81,19 +111,11 @@ public class SignUpVerifyOTPRequestModel implements CustomResponse, Serializable
         this.salutation = salutation;
     }
 
-    public String getAge() {
-        return age;
+    public String getOtp() {
+        return otp;
     }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 }

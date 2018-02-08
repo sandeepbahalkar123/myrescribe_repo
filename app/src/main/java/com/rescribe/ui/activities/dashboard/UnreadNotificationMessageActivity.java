@@ -183,18 +183,6 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         }
     }
 
-   /* private ArrayList<UnreadSavedNotificationMessageData> sortListByMealTime(ArrayList<UnreadSavedNotificationMessageData> medicationAlertList) {
-        ArrayList<UnreadSavedNotificationMessageData> sortedMealTimeWiseList = new ArrayList<>();
-        for(int i =0;i<medicationAlertList.size();i++){
-            UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = new UnreadSavedNotificationMessageData();
-            if(medicationAlertList.get(i).getNotificationMessage().contains(mealTime)){
-                unreadSavedNotificationMessageData = medicationAlertList.get(i);
-                sortedMealTimeWiseList.add(unreadSavedNotificationMessageData);
-            }
-        }
-        return sortedMealTimeWiseList;
-    }*/
-
     private void setAppointmentAlertListAdapter(ArrayList<UnreadSavedNotificationMessageData> appAlertList) {
 
         UnreadSavedNotificationMessageData unreadSavedNotificationMessageData = appAlertList.get(0);
@@ -432,8 +420,13 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
         for (UnreadSavedNotificationMessageData unreadSavedNotificationMessageData : dataArrayList) {
             NotificationData notificationData = gson.fromJson(unreadSavedNotificationMessageData.getNotificationData(), NotificationData.class);
-            listDataChild.put(unreadSavedNotificationMessageData.getNotificationMessage(), notificationData.getMedication());
-            medicNotificationTimeId.put(unreadSavedNotificationMessageData.getNotificationMessage(), unreadSavedNotificationMessageData.getNotificationTimeStamp() + "|" + unreadSavedNotificationMessageData.getId());
+            for (Medication medication : notificationData.getMedication()) {
+                if (medication.isTabSelected() == 0) {
+                    listDataChild.put(unreadSavedNotificationMessageData.getNotificationMessage(), notificationData.getMedication());
+                    medicNotificationTimeId.put(unreadSavedNotificationMessageData.getNotificationMessage(), unreadSavedNotificationMessageData.getNotificationTimeStamp() + "|" + unreadSavedNotificationMessageData.getId());
+                    break;
+                }
+            }
         }
     }
 

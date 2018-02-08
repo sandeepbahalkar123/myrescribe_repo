@@ -34,9 +34,9 @@ import java.util.TreeSet;
 
 public class DoctorHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
-    HelperResponse mHelperResponseManager;
+    private String TAG = this.getClass().getName();
+    private Context mContext;
+    private HelperResponse mHelperResponseManager;
     private Map<String, Map<String, ArrayList<DoctorDetail>>> yearWiseSortedDoctorList = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public DoctorHelper(Context context) {
@@ -55,22 +55,26 @@ public class DoctorHelper implements ConnectionListener {
         //CommonMethods.Log(TAG, customResponse.toString());
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == RescribeConstants.TASK_DOCTOR_LIST) {
-                    DoctorBaseModel baseModel = (DoctorBaseModel) customResponse;
-                    if (baseModel != null) {
-                        DoctorDataModel doctorDataModel = baseModel.getDoctorDataModel();
-                        if (doctorDataModel.getDoctorInfoMonthContainer() != null) {
-                            DoctorInfoMonthContainer doctorInfoMonthContainer = doctorDataModel.getDoctorInfoMonthContainer();
-                            if (doctorInfoMonthContainer.getYear() != null)
-                                yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+                switch (mOldDataTag) {
+                    case RescribeConstants.TASK_DOCTOR_LIST:
+                        DoctorBaseModel baseModel = (DoctorBaseModel) customResponse;
+                        if (baseModel != null) {
+                            DoctorDataModel doctorDataModel = baseModel.getDoctorDataModel();
+                            if (doctorDataModel.getDoctorInfoMonthContainer() != null) {
+                                DoctorInfoMonthContainer doctorInfoMonthContainer = doctorDataModel.getDoctorInfoMonthContainer();
+                                if (doctorInfoMonthContainer.getYear() != null)
+                                    yearWiseSortedDoctorList.put(doctorInfoMonthContainer.getYear(), doctorInfoMonthContainer.getMonthWiseSortedDoctorList());
+                            }
                         }
-                    }
-                    mHelperResponseManager.onSuccess(mOldDataTag, baseModel);
-                } else if (mOldDataTag == RescribeConstants.TASK_DOCTOR_APPOINTMENT) {
-                    DoctorAppointmentModel doctorAppointmentModel = (DoctorAppointmentModel) customResponse;
-                    mHelperResponseManager.onSuccess(mOldDataTag, doctorAppointmentModel);
-                } else if (mOldDataTag == RescribeConstants.TASK_DOCTOR_LIST_FILTERING) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        mHelperResponseManager.onSuccess(mOldDataTag, baseModel);
+                        break;
+                    case RescribeConstants.TASK_DOCTOR_APPOINTMENT:
+                        DoctorAppointmentModel doctorAppointmentModel = (DoctorAppointmentModel) customResponse;
+                        mHelperResponseManager.onSuccess(mOldDataTag, doctorAppointmentModel);
+                        break;
+                    case RescribeConstants.TASK_DOCTOR_LIST_FILTERING:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:

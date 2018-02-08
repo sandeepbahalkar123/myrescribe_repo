@@ -26,6 +26,8 @@
         android:layout_marginLeft="@dimen/dp4"
         android:layout_marginStart="@dimen/dp4"
         android:layout_marginTop="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp2"
+        android:layout_marginEnd="@dimen/dp2"
         android:layout_toEndOf="@id/bigIcon"
         android:layout_toRightOf="@+id/bigIcon"
         android:orientation="vertical"

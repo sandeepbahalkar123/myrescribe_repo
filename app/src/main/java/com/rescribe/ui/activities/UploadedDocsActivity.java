@@ -39,9 +39,6 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
     Button uploadButton;
 
     private Context mContext;
-    private UploadedImageAdapter uploadedImageAdapter;
-    private ArrayList<InvestigationData> investigation;
-    //    private Set<Image> photoSet = new HashSet<>();
     private ArrayList<Image> photoPaths = new ArrayList<>();
     private AppDBHelper appDBHelper;
     private ArrayList<InvestigationData> investigationTemp;
@@ -68,13 +65,13 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
         appDBHelper = new AppDBHelper(mContext);
         investigationHelper = new InvestigationHelper(mContext, this);
 
-        investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
+        ArrayList<InvestigationData> investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
         investigationTemp = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_TEMP_DATA);
 
         for (InvestigationData dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
 
-        uploadedImageAdapter = new UploadedImageAdapter(mContext, photoPaths);
+        UploadedImageAdapter uploadedImageAdapter = new UploadedImageAdapter(mContext, photoPaths);
         recyclerView.setAdapter(uploadedImageAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         recyclerView.setLayoutManager(layoutManager);
@@ -87,15 +84,13 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
     public void onViewClicked() {
 
         int selectedImageCount = 0;
-//        ArrayList<Image> photos = new ArrayList<>();
-        String imageIds = "";
-        String invIds = "";
+        StringBuilder imageIds = new StringBuilder();
+        StringBuilder invIds = new StringBuilder();
 
         for (Image image : photoPaths) {
             if (image.isSelected()) {
-//                photos.add(image);
                 selectedImageCount++;
-                imageIds = imageIds + "," + imageIds;
+                imageIds.append(",").append(imageIds);
             }
         }
 
@@ -105,10 +100,10 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
 
             for (InvestigationData dataObject : investigationTemp) {
                 if (dataObject.isSelected() && !dataObject.isUploaded())
-                    invIds = invIds + "," + dataObject.getId();
+                    invIds.append(",").append(dataObject.getId());
             }
 
-            investigationHelper.uploadFromAlreadyUploaded(imageIds, invIds);
+            investigationHelper.uploadFromAlreadyUploaded(imageIds.toString(), invIds.toString());
 
         } else {
             CommonMethods.showToast(mContext, "Please select at least one document");

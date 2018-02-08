@@ -20,6 +20,7 @@ import java.io.Serializable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.ui.fragments.OTPConfirmationForSignUp.SIGN_UP_DETAILS;
 import static com.rescribe.util.RescribeConstants.FROM;
 
 /**
@@ -43,7 +44,7 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
         mActionBar.setDisplayHomeAsUpEnabled(true);
         String header = getIntent().getStringExtra(getString(R.string.title));
         from = getIntent().getStringExtra(FROM);
-        loadFragment(getIntent().getStringExtra(getString(R.string.type)), getIntent().getSerializableExtra(getString(R.string.details)), header);
+        loadFragment(getIntent().getStringExtra(getString(R.string.type)), getIntent().getSerializableExtra(SIGN_UP_DETAILS), header);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         if (serializableExtra != null)
-            bundle.putSerializable(getString(R.string.details), serializableExtra);
+            bundle.putSerializable(SIGN_UP_DETAILS, serializableExtra);
 
         if (type.equalsIgnoreCase(getString(R.string.enter_otp))) {
             OTPConfirmationForSignUp otpConfirmationForSignUp = new OTPConfirmationForSignUp();

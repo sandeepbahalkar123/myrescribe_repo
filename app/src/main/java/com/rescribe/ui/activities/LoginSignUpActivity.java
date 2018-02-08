@@ -50,6 +50,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.rescribe.ui.fragments.OTPConfirmationForSignUp.SIGN_UP_DETAILS;
 import static com.rescribe.util.RescribeConstants.FACEBOOK;
 import static com.rescribe.util.RescribeConstants.GMAIL;
 
@@ -164,9 +165,8 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                         if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.sign_up))) {
 
                             Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
-
                             intentObj.putExtra(getString(R.string.type), getString(R.string.login_with_facebook));
-                            intentObj.putExtra(getString(R.string.details), signUpRequestSocial);
+                            intentObj.putExtra(SIGN_UP_DETAILS, signUpRequestSocial);
                             intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                             startActivity(intentObj);
 
@@ -227,7 +227,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                 //-----------
                 Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                 intentObj.putExtra(getString(R.string.type), getString(R.string.login_with_gmail));
-                intentObj.putExtra(getString(R.string.details), signUpRequestSocial);
+                intentObj.putExtra(SIGN_UP_DETAILS, signUpRequestSocial);
                 intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                 startActivity(intentObj);
 
@@ -358,7 +358,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
 
                 Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                 intentObj.putExtra(getString(R.string.type), signUpRequestSocial.getAuthSocialType().equalsIgnoreCase(GMAIL) ? getString(R.string.login_with_gmail) : getString(R.string.login_with_facebook));
-                intentObj.putExtra(getString(R.string.details), signUpRequestSocial);
+                intentObj.putExtra(SIGN_UP_DETAILS, signUpRequestSocial);
                 intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                 startActivity(intentObj);
 

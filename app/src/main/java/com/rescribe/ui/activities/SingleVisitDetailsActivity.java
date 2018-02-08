@@ -66,15 +66,10 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     CustomTextView title;
     private int mLastExpandedPosition = -1;
     Intent mIntent;
-    private String TAG = getClass().getName();
-    private SingleVisitDetailHelper mSingleVisitDetailHelper;
     private SingleVisitAdapter mSingleVisitAdapter;
-    private ColorGenerator mColorGenerator;
-    private Context mContext;
-    private String mDocName;
-    private String doctorName = "";
     private boolean isBpMin = false;
     private boolean isBpMax = false;
+    private String mDocId;
 
 
     @Override
@@ -88,16 +83,20 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 
     private void initialize() {
 
-        mContext = SingleVisitDetailsActivity.this;
-        mColorGenerator = ColorGenerator.MATERIAL;
+        Context mContext = SingleVisitDetailsActivity.this;
+        ColorGenerator mColorGenerator = ColorGenerator.MATERIAL;
         mIntent = getIntent();
         if (getIntent().getExtras() != null) {
-            mDocName = mIntent.getStringExtra(getString(R.string.name));
+            String mDocName = mIntent.getStringExtra(getString(R.string.name));
+            String doctorName = "";
             if (mIntent.getStringExtra(getString(R.string.name)).contains("Dr.")) {
                 doctorName = mIntent.getStringExtra(getString(R.string.name));
             } else {
                 doctorName = "Dr. " + mIntent.getStringExtra(getString(R.string.name));
             }
+
+            mDocId = mIntent.getStringExtra(DOCTOR_ID);
+
             mDoctorName.setText(doctorName);
             mDoctorSpecialization.setText(mIntent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
@@ -143,8 +142,8 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 .apply(requestOptions)
                 .into(mDoctorImg);
 
-        mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
-        mSingleVisitDetailHelper.doGetOneDayVisit(mIntent.getStringExtra(getString(R.string.opd_id)), mIntent.getStringExtra(DOCTOR_ID));
+        SingleVisitDetailHelper mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
+        mSingleVisitDetailHelper.doGetOneDayVisit(mIntent.getStringExtra(getString(R.string.opd_id)), mDocId);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         title.setText(getString(R.string.visit_details));
@@ -200,7 +199,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        String bpMin = "";
         VisitData visitData = (VisitData) customResponse;
         if (visitData != null) {
             mHistoryExpandableListView.setVisibility(View.VISIBLE);
@@ -234,7 +232,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                         if (dataObject.getUnitName().contains(getString(R.string.bp_max)) || dataObject.getUnitName().contains(getString(R.string.bp_min))) {
                             Vital vital = new Vital();
                             if (pos == null) {
-                                vital.setUnitName(getString(R.string.bp)+" " + dataObject.getUnitValue());
+                                vital.setUnitName(getString(R.string.bp) + " " + dataObject.getUnitValue());
                                 vital.setUnitValue(dataObject.getUnitValue());
                                 vital.setCategory(dataObject.getCategory());
                                 vital.setIcon(dataObject.getIcon());
@@ -270,18 +268,18 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                         }
 
                     } else {
-                        Vital vital = new Vital();
+                        Vital vital;
                         if (dataObject.getUnitName().contains(getString(R.string.bp_max))) {
                             vital = vitalList.get(j);
-                            vital.setUnitName("Systolic BP"+" "+vital.getUnitValue());
+                            vital.setUnitName("Systolic BP" + " " + vital.getUnitValue());
                             vital.setDisplayName("Systolic BP");
                             vitalSortedList.add(vital);
                         } else if (dataObject.getUnitName().contains(getString(R.string.bp_min))) {
                             vital = vitalList.get(j);
-                            vital.setUnitName("Diastolic BP"+" "+vital.getUnitValue());
+                            vital.setUnitName("Diastolic BP" + " " + vital.getUnitValue());
                             vital.setDisplayName("Diastolic BP");
                             vitalSortedList.add(vital);
-                        }else{
+                        } else {
                             vital = vitalList.get(j);
                             vitalSortedList.add(vital);
                         }

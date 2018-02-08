@@ -28,6 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.rescribe.ui.fragments.OTPConfirmationForSignUp.SIGN_UP_DETAILS;
+
 public class SocialSignUpInputFragment extends Fragment implements HelperResponse {
 
     @BindView(R.id.editTextName)
@@ -75,7 +77,7 @@ public class SocialSignUpInputFragment extends Fragment implements HelperRespons
         ButterKnife.bind(this, inflate);
         if (getArguments() != null) {
             Bundle arguments = getArguments();
-            mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(getString(R.string.details));
+            mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(SIGN_UP_DETAILS);
             if (mSignUpRequestModel.getEmailId() == null || mSignUpRequestModel.getEmailId().isEmpty())
                 mEmailLayout.setVisibility(View.GONE);
             else {

@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -56,6 +57,7 @@ import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetails;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.request_appointment_confirmation.Reschedule;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.ResponseAppointmentConfirmationModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
@@ -91,8 +93,6 @@ import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
 import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_ID;
 import static com.rescribe.util.RescribeConstants.FROM;
-import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
-import static com.rescribe.util.RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
@@ -196,9 +196,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private String from;
     private String aptId;
-    private String type;
-
-    private int waitingCount;
 
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -277,7 +274,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         Bundle arguments = getArguments();
         if (arguments != null) {
             aptId = arguments.getString(APPOINTMENT_ID);
-            type = arguments.getString(RESHEDULE_TYPE);
             from = arguments.getString(FROM);
             fcmTokenData = arguments.getParcelable(TOKEN_DATA);
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
@@ -307,6 +303,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     }
 
+    @SuppressLint("CheckResult")
     private void setDataInViews() {
         if (mClickedDoctorObject.getClinicDataList().size() > 0) {
             mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
@@ -497,7 +494,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mWaitingTime.setText("" + clinicTokenDetails.getWaitingTime());
                         mScheduledAppointmentsTimeStamp.setText("" + clinicTokenDetails.getScheduledTimeStamp());
                         mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
-                        waitingCount = clinicTokenDetails.getWaitingPatientCount();
                     } else {
                         showTokenStatusMessageBox(-1, common.getStatusMessage(), mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
                     }
@@ -519,7 +515,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             bundleData = new Bundle();
                             mClickedDoctorObject.setTypedashboard(false);
                             mClickedDoctorObject.setAppointmentTypeMixed(true);
-
                             mClickedDoctorObject.setAddressOfDoctorString(mSelectedClinicDataObject.getClinicAddress());
                             CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
                             mClickedDoctorObject.setAptTime(CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME));
@@ -571,14 +566,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 break;
 
-            case TASK_CANCEL_RESCHEDULE_APPOINTMENT:
+          /*  case TASK_CANCEL_RESCHEDULE_APPOINTMENT:
                 ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
                 if (mResponseAppointmentConfirmationModel.getCommon() != null)
                     if (mResponseAppointmentConfirmationModel.getCommon().isSuccess())
-                        mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()));
+                        mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()), null);
                     else
                         Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-                break;
+                break;*/
         }
     }
 
@@ -693,9 +688,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         CommonMethods.showToast(getContext(), getString(R.string.time_select_err));
                     } else {
                         if (from != null) {
-                            mDoctorDataHelper.doCancelResheduleAppointmentRequest(aptId, 4, type);
+//                            mDoctorDataHelper.doCancelResheduleAppointmentRequest(aptId, 4, type);
+                            Reschedule reschedule = new Reschedule();
+                            reschedule.setAptId(aptId);
+                            reschedule.setStatus("4");
+
+                            mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()), reschedule);
                         } else {
-                            mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()));
+                            mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()), null);
                         }
                     }
                 }

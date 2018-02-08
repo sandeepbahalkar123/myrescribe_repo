@@ -29,6 +29,10 @@ public class RequestAppointmentConfirmationModel implements CustomResponse{
     @Expose
     private String toTime;
 
+    @SerializedName("reschedule")
+    @Expose
+    private Reschedule reschedule;
+
     public Integer getPatientId() {
         return patientId;
     }
@@ -85,4 +89,12 @@ public class RequestAppointmentConfirmationModel implements CustomResponse{
         this.toTime = toTime;
     }
 
+
+    public Reschedule getReschedule() {
+        return reschedule;
+    }
+
+    public void setReschedule(Reschedule reschedule) {
+        this.reschedule = reschedule;
+    }
 }

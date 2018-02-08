@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class LoginData {
     @SerializedName("authToken")
     @Expose
-    private String authToken;
+    private String authToken = "";
     @SerializedName("patientDetail")
     @Expose
     private PatientDetail patientDetail;

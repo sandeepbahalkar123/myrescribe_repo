@@ -218,15 +218,10 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
 
                 for (Image image : photoPaths) {
                     try {
-                    /*UploadNotificationConfig uploadNotificationConfig = new UploadNotificationConfig();
-                    uploadNotificationConfig.setTitleForAllStatuses("Document Upload");
-                    uploadNotificationConfig.setIconColorForAllStatuses(Color.parseColor("#04abdf"));*/
-
                         Device device = Device.getInstance(mContext);
                         String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
 
                         String uploadId = new MultipartUploadRequest(SelectedDocsActivity.this, Config.BASE_URL + Config.INVESTIGATION_UPLOAD)
-//                            .setNotificationConfig(uploadNotificationConfig)
                                 .setMaxRetries(RescribeConstants.MAX_RETRIES)
 
                                 .addHeader(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString)

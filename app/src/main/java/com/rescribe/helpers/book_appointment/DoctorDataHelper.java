@@ -17,6 +17,7 @@ import com.rescribe.model.book_appointment.doctor_data.request_model.RequestFavo
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.RequestAppointmentConfirmationModel;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.RequestCancelGetToken;
+import com.rescribe.model.book_appointment.request_appointment_confirmation.Reschedule;
 import com.rescribe.model.book_appointment.request_cancel_appointment.RequestCancelAppointment;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.network.ConnectRequest;
@@ -377,7 +378,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION);
 
     }
-    public void doConfirmAppointmentRequest(int docId, int locationID, String date,String fromTime, String toTime,int slotId) {
+    public void doConfirmAppointmentRequest(int docId, int locationID, String date, String fromTime, String toTime, int slotId, Reschedule reschedule) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CONFIRM_APPOINTMENT, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
@@ -388,6 +389,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mRequestAppointmentConfirmationModel.setToTime(toTime);
         mRequestAppointmentConfirmationModel.setDate(date);
         mRequestAppointmentConfirmationModel.setSlotId(slotId);
+        mRequestAppointmentConfirmationModel.setReschedule(reschedule);
         mRequestAppointmentConfirmationModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
 
         mConnectionFactory.setPostParams(mRequestAppointmentConfirmationModel);
@@ -396,7 +398,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
     }
 
-    public void doCancelResheduleAppointmentRequest(String aptId, int status, String type) {
+    /*public void doCancelResheduleAppointmentRequest(String aptId, int status, String type) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
@@ -410,7 +412,8 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.CANCEL_RESCHDULE_APPOINTMENT);
         mConnectionFactory.createConnection(RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT);
 
-    }
+    }*/
+
     public void doCancelTokenNumber(int docID, int locationId, int tokenNo) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_GET_TOKEN, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();

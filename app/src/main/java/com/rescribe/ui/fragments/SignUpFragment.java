@@ -33,6 +33,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.rescribe.ui.fragments.OTPConfirmationForSignUp.SIGN_UP_DETAILS;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -249,7 +251,7 @@ public class SignUpFragment extends Fragment implements HelperResponse{
                     Intent intentObj = new Intent(getActivity(), AppGlobalContainerActivity.class);
                     intentObj.putExtra(getString(R.string.type), getString(R.string.enter_otp));
                     intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
-                    intentObj.putExtra(getString(R.string.details), mSignUpRequestModel);
+                    intentObj.putExtra(SIGN_UP_DETAILS, mSignUpRequestModel);
                     startActivity(intentObj);
                 }
             } else {

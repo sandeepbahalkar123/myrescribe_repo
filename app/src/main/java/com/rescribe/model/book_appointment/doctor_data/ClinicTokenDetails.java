@@ -9,6 +9,11 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 public class ClinicTokenDetails implements Parcelable {
+
+    @SerializedName("isTokenTaken")
+    @Expose
+    private int isTokenTaken;
+
     @SerializedName("apmtTime")
     @Expose
     private String scheduledTimeStamp;
@@ -40,6 +45,7 @@ public class ClinicTokenDetails implements Parcelable {
     };
 
     protected ClinicTokenDetails(Parcel in) {
+        this.isTokenTaken = ((Integer) in.readValue((String.class.getClassLoader())));
         this.scheduledTimeStamp = ((String) in.readValue((String.class.getClassLoader())));
         this.tokenNumber = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.waitingTime = ((Integer) in.readValue((Integer.class.getClassLoader())));
@@ -47,6 +53,7 @@ public class ClinicTokenDetails implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(isTokenTaken);
         dest.writeValue(scheduledTimeStamp);
         dest.writeValue(tokenNumber);
         dest.writeValue(waitingTime);
@@ -57,16 +64,27 @@ public class ClinicTokenDetails implements Parcelable {
         return 0;
     }
 
+    public int isTokenTaken() {
+        return isTokenTaken;
+    }
+
+    public void setIsTokenTaken(int isTokenTaken) {
+        this.isTokenTaken = isTokenTaken;
+    }
+
     public String getScheduledTimeStamp() {
-        if (scheduledTimeStamp.contains("T")) {
-            String date[] = scheduledTimeStamp.split("T");
-            if (date[1].contains(":")) {
-                String[] split = date[1].split(":");
-                scheduledTimeStamp = split[0] + ":" + split[1] + ":00";
-                scheduledTimeStamp = CommonMethods.formatDateTime(scheduledTimeStamp, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.TIME);
+        if (scheduledTimeStamp != null) {
+            if (scheduledTimeStamp.contains("T")) {
+                String date[] = scheduledTimeStamp.split("T");
+                if (date[1].contains(":")) {
+                    String[] split = date[1].split(":");
+                    scheduledTimeStamp = split[0] + ":" + split[1] + ":00";
+                    scheduledTimeStamp = CommonMethods.formatDateTime(scheduledTimeStamp, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.TIME);
+                }
             }
-        }
-        return scheduledTimeStamp;
+            return scheduledTimeStamp;
+        } else
+            return CommonMethods.formatDateTime("00:00:00", RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.TIME);
     }
 
     public void setScheduledTimeStamp(String scheduledTimeStamp) {

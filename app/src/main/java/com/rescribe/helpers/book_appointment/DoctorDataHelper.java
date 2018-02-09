@@ -238,30 +238,11 @@ public class DoctorDataHelper implements ConnectionListener {
 
         String currentTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
 
-        String url = Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date + "&time=" + currentTimeStamp;
-
-        if (isReqDoctorData) {
-            url = url + "&docDetailReq=" + isReqDoctorData + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
-        }
+        String url = Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date + "&time=" + currentTimeStamp + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + "&docDetailReq=" + isReqDoctorData;;
 
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(taskID);//RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT
 
-       /* try {
-            InputStream is = mContext.getAssets().open("book_appointment_select_time");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "book_appointment_select_time" + json);
-
-            TimeSlotListBaseModel slotListBaseModel = new Gson().fromJson(json, TimeSlotListBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, slotListBaseModel, RescribeConstants.TASK_SLOT_TIME_TO_BOOK_APPOINTMENT);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
     }
 
     public void doGetRecentlyVisitedDoctorPlacesData() {

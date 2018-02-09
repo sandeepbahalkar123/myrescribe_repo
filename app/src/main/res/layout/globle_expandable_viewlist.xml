@@ -7,6 +7,17 @@
     android:orientation="vertical"
     tools:ignore="MissingTranslation">
 
+    <TextView
+        android:id="@+id/appointmentMessageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="@dimen/dp18"
+        android:textSize="@dimen/sp22"
+        android:visibility="gone"
+        android:text="Appointment has already been taken with this doctor"
+        tools:visibility="visible" />
+
     <com.rescribe.ui.customesViews.NonScrollExpandableListView
         android:id="@+id/selectTimeDateExpandableView"
         android:layout_width="match_parent"

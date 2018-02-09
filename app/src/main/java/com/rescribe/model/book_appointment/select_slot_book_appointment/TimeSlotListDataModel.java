@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 public class TimeSlotListDataModel {
 
+    @SerializedName("isAppointmentTaken")
+    @Expose
+    private int isAppointmentTaken;
     @SerializedName("isOpen")
     @Expose
     private boolean isOpen;
@@ -18,6 +21,15 @@ public class TimeSlotListDataModel {
     @SerializedName("docDetail")
     @Expose
     private DoctorList doctorListData;
+
+
+    public int isAppointmentTaken() {
+        return isAppointmentTaken;
+    }
+
+    public void setAppointmentTaken(int appointmentTaken) {
+        isAppointmentTaken = appointmentTaken;
+    }
 
     public boolean isOpen() {
         return isOpen;

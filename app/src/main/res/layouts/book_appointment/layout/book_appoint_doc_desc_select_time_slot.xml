@@ -281,6 +281,17 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tokenMessageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="@dimen/dp18"
+                android:textSize="@dimen/sp22"
+                android:visibility="gone"
+                android:text="Token has already been taken with this doctor"
+                tools:visibility="visible" />
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
@@ -306,7 +317,6 @@
             android:id="@+id/appointmentTypeIsBookButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:background="@color/clickHere"
             android:text="@string/book_appointment"
             android:textAllCaps="false"

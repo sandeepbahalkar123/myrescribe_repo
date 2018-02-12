@@ -29,6 +29,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.rescribe.ui.fragments.OTPConfirmationForSignUp.SIGN_UP_DETAILS;
+import static com.rescribe.util.RescribeConstants.GENDER;
+import static com.rescribe.util.RescribeConstants.SALUTATION;
 
 public class SocialSignUpInputFragment extends Fragment implements HelperResponse {
 
@@ -87,17 +89,14 @@ public class SocialSignUpInputFragment extends Fragment implements HelperRespons
 
             editTextName.setText(mSignUpRequestModel.getName());
 
-            final String[] salutation = {"Mr.", "Mrs.", "Miss", "Other"};
-            final String[] gender = {"MALE", "FEMALE", "TRANSGENDER"};
-
-            ArrayAdapter genderSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_social_spinner_item, gender);
+            ArrayAdapter genderSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_social_spinner_item, GENDER);
             genderSpinnerAdapter.setDropDownViewResource(R.layout.signup_social_spinner_item_view);
             genderSpinner.setAdapter(genderSpinnerAdapter);
 
             genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    genderValue = gender[position];
+                    genderValue = GENDER[position];
                 }
 
                 @Override
@@ -105,7 +104,7 @@ public class SocialSignUpInputFragment extends Fragment implements HelperRespons
                 }
             });
 
-            ArrayAdapter salutationSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_social_spinner_item, salutation);
+            ArrayAdapter salutationSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_social_spinner_item, SALUTATION);
             salutationSpinnerAdapter.setDropDownViewResource(R.layout.signup_social_spinner_item_view);
             salutationSpinner.setAdapter(salutationSpinnerAdapter);
 

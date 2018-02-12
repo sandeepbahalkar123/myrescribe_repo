@@ -83,7 +83,6 @@
                 android:id="@+id/thumbnail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
                 android:layout_gravity="center|top"
                 android:padding="3dip">
 
@@ -102,7 +101,6 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dp14"
-                android:layout_toRightOf="@+id/thumbnail"
                 android:gravity="center|left"
                 android:orientation="vertical">
 
@@ -110,7 +108,6 @@
                     android:id="@+id/clinicName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/thumbnail"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/black"
@@ -125,9 +122,8 @@
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/doctorName"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/thumbnail"
                         android:layout_weight="0.5"
                         android:ellipsize="end"
                         android:maxLines="1"
@@ -166,8 +162,6 @@
                     android:id="@+id/doctorExperience"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/doctorName"
-                    android:layout_toRightOf="@+id/thumbnail"
                     android:gravity="right"
                     android:textColor="@color/grey_shade"
                     android:textSize="10sp"
@@ -178,8 +172,6 @@
                     android:id="@+id/doctorAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/doctorName"
-                    android:layout_toRightOf="@+id/thumbnail"
                     android:gravity="right"
                     android:textColor="@color/black"
                     android:textSize="10sp"
@@ -230,17 +222,19 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:src="@drawable/book"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doctorAppointmentDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
+                    android:textColor="@color/card_date_color"
+                    android:textSize="13sp"
                     android:visibility="invisible"
-                    app:customFont="@string/roboto_medium"
+                    tools:visibility="visible"
+                    app:customFont="@string/roboto_regular"
                     tools:text="Oct 18,2017" />
 
                 <ImageView
@@ -272,6 +266,7 @@
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:visibility="invisible"
+                    tools:visibility="visible"
                     app:customFont="@string/roboto_bold"
                     tools:text="500" />
 

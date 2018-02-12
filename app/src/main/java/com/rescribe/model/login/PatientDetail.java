@@ -20,6 +20,15 @@ public class PatientDetail {
     @SerializedName("patientEmail")
     @Expose
     private String patientEmail;
+    @SerializedName("patientSalutation")
+    @Expose
+    private String patientSalutation;
+    @SerializedName("patientAge")
+    @Expose
+    private String patientAge;
+    @SerializedName("patientGender")
+    @Expose
+    private String patientGender;
 
     public int getPatientId() {
         return patientId;
@@ -61,4 +70,27 @@ public class PatientDetail {
         this.patientEmail = patientEmail;
     }
 
+    public String getPatientSalutation() {
+        return patientSalutation;
+    }
+
+    public void setPatientSalutation(String patientSalutation) {
+        this.patientSalutation = patientSalutation;
+    }
+
+    public String getPatientAge() {
+        return patientAge;
+    }
+
+    public void setPatientAge(String patientAge) {
+        this.patientAge = patientAge;
+    }
+
+    public String getPatientGender() {
+        return patientGender;
+    }
+
+    public void setPatientGender(String patientGender) {
+        this.patientGender = patientGender;
+    }
 }

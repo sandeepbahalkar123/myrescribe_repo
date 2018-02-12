@@ -18,10 +18,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,6 +111,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo) {
 
         mMobileNumber.setText("+91 - " + patientMobileNo);
+
         mPatientName.setText(patientName);
 
         if (!patientName.isEmpty()) {

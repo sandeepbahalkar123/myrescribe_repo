@@ -49,6 +49,7 @@ import permissions.dispatcher.RuntimePermissions;
 
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
+import static com.rescribe.util.RescribeConstants.SALUTATION;
 
 /**
  * Created by jeetal on 3/11/17.
@@ -134,7 +135,13 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
             }
         }
 
-        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this));
+
+        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+        if (!salutation.isEmpty())
+            userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
+        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
 
         mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
@@ -376,7 +383,13 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
                     object.setNotificationCount(notificationCount);
                 }
             }
-            setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, context), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, context));
+
+            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+            if (!salutation.isEmpty())
+                userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
+            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
             //--------------------------
             //---- Update bottom sheet notification_count : END
         }

@@ -243,6 +243,11 @@
                         "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/feedback.png"
                       },
                       {
+                        "name": "Support",
+                        "identifier": "",
+                        "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/support.png"
+                      },
+                      {
                         "name": "Log Out",
                         "identifier": "",
                         "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/logout.png"

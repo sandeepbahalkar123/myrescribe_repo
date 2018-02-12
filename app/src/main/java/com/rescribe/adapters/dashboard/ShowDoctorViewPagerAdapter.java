@@ -1,6 +1,7 @@
 package com.rescribe.adapters.dashboard;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
@@ -240,10 +242,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     String time = "";
                     if (!doctorObject.getAptTime().isEmpty())
                         time = ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a).toLowerCase();
-
-                    SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + time);
-                    content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                    String content = CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD) + time;
                     doctorAppointmentDate.setText(content);
+                    doctorAppointmentDate.setPaintFlags(doctorAppointmentDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 }
 
                 if (clinicDataList.size() > 0) {

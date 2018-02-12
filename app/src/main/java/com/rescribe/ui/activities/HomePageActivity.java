@@ -109,7 +109,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.facebook.login.widget.ProfilePictureView.TAG;
 import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
@@ -117,6 +116,7 @@ import static com.rescribe.notification.DosesAlarmTask.LUNCH_NOTIFICATION_ID;
 import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocation.REQUEST_CHECK_SETTINGS;
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
+import static com.rescribe.util.RescribeConstants.SALUTATION;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
 
 /**
@@ -662,7 +662,14 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             }
         }
 
-        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+
+        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+        if (!salutation.isEmpty())
+            userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
+
+        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
 
     }
 
@@ -963,7 +970,15 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         object.setNotificationCount(notificationCount);
                     }
                 }
-                setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+
+
+                String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+                String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+                if (!salutation.isEmpty())
+                    userName = SALUTATION[Integer.parseInt(salutation) -1 ] + " " + userName;
+                setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+
                 //--------------------------
                 //---- Update bottom sheet notification_count : END
             } else CommonMethods.Log(TAG, "Other Broadcast");

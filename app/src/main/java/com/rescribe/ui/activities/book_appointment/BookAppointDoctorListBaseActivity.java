@@ -55,6 +55,7 @@ import butterknife.OnClick;
 
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
+import static com.rescribe.util.RescribeConstants.SALUTATION;
 
 /**
  * Created by jeetal on 15/9/17.
@@ -246,8 +247,14 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 break;
             }
         }
-        //on click of logo bottomSheetAdapter is opened , for that purpose adapter of bottomSheet is set
-        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+
+
+        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+        if (!salutation.isEmpty())
+            userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
+        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
@@ -432,7 +439,13 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                     object.setNotificationCount(notificationCount);
                 }
             }
-            setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+
+            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+            if (!salutation.isEmpty())
+                userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
+            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
             //--------------------------
             //---- Update bottom sheet notification_count : END
         }

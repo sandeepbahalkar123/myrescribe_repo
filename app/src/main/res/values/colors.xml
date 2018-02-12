@@ -63,6 +63,7 @@
     <!--Switch Button-->
 
     <color name="switch_button_color">#9B9B9B</color>
+    <color name="card_date_color">#0077a7</color>
 
     <!--End Switch Button-->
 </resources>

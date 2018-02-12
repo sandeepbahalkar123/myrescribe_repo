@@ -13,6 +13,8 @@ import com.rescribe.preference.RescribePreferencesManager;
 
 import butterknife.ButterKnife;
 
+import static com.rescribe.util.RescribeConstants.SALUTATION;
+
 /**
  * Created by jeetal on 3/11/17.
  */
@@ -42,22 +44,28 @@ public class ProfileActivity extends DrawerActivity {
                         .setTextColorSecondaryRes(R.color.grey_shade)
         );
 
-        // TODO : HARDEDCODED will get remove once done with APIs.
+
+        String userNameWithSalutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+        if (!salutation.isEmpty())
+            userNameWithSalutation = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userNameWithSalutation;
+
         addProfile(new DrawerProfile()
                 .setId(1)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile_big))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext))
-                .setDescription(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext))
-                .setExtraText("Age: 62 years")
+                .setName(userNameWithSalutation)
+                .setDescription("+91 - " + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext))
+                .setExtraText("Age: " + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AGE, mContext) + " years")
         );
 
         addProfile(new DrawerProfile()
                 .setId(2)
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile_big))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
-                .setName("Mr. Sandeep Deshmukh ")
-                .setDescription("8201888897")
+                .setName("Mr. Sandeep Deshmukh")
+                .setDescription("+91 - 8201888897")
                 .setExtraText("Age: 32 years")
         );
 

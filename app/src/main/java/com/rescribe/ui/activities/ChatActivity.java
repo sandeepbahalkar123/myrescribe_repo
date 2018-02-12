@@ -485,7 +485,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             chatList.setSpecialization(mqttMessage.getSpecialization());
             chatList.setPaidStatus(mqttMessage.getPaidStatus());
             chatList.setImageUrl(mqttMessage.getImageUrl());
-            chatList.setId(mqttMessage.getPatId());
+            chatList.setId(mqttMessage.getDocId());
             chatList.setOnlineStatus(ONLINE);
             chatList.setUnreadMessages(0);
             setUserStatusColor(ONLINE);

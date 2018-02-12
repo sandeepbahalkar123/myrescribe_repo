@@ -318,6 +318,7 @@ public class RescribeConstants {
         public static String hh_mm = "hh:mm";
         public static String MMM_YYYY = "MMM, yyyy";
         public static String MMM_DD_YYYY = "MMM dd,yyyy";
+        public static String MMM_DD = "MMM dd";
         public static String DD_MM_YYYY_hh_mm_ss = "dd-MM-yyyy hh:mm:ss";
         public static String YYYY_MM_DD_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
         public static String YYYY_MM_DD_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
@@ -340,6 +341,9 @@ public class RescribeConstants {
         public static final String IMAGE_ID = "imgId";
         public static final String INV_ID = "invId";
     }
+
+    public static final String[] SALUTATION = {"Mr.", "Mrs.", "Miss", "Other"};
+    public static final String[] GENDER = {"MALE", "FEMALE", "TRANSGENDER"};
 }
 
 

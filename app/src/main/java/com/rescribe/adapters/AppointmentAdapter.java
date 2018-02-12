@@ -84,7 +84,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             Date timeStamp = CommonMethods.convertStringToDate(appointment.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             Calendar cal = Calendar.getInstance();
             cal.setTime(timeStamp);
-            String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup>" + new SimpleDateFormat("MMM yy", Locale.US).format(cal.getTime());
+            String toDisplay = cal.get(Calendar.DAY_OF_MONTH) + "<sup>" + CommonMethods.getSuffixForNumber(cal.get(Calendar.DAY_OF_MONTH)) + "</sup> " + new SimpleDateFormat("MMM yy", Locale.US).format(cal.getTime());
             //------
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 holder.doctorAddress.setText(Html.fromHtml(toDisplay + ", " + appointment.getArea_name() + ", " + appointment.getCity_name(), Html.FROM_HTML_MODE_LEGACY));

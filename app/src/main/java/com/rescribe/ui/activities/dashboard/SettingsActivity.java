@@ -30,9 +30,6 @@ import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
-import com.rescribe.notification.AppointmentAlarmTask;
-import com.rescribe.notification.DosesAlarmTask;
-import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
@@ -60,6 +57,7 @@ import butterknife.OnClick;
 import static com.rescribe.singleton.RescribeApplication.appUnreadNotificationMessageList;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
+import static com.rescribe.util.RescribeConstants.SALUTATION;
 
 /**
  * Created by jeetal on 3/11/17.
@@ -158,8 +156,13 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             }
         }
 
-        setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
 
+        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+        if (!salutation.isEmpty())
+            userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
+        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
 
         initialize();
 
@@ -434,7 +437,15 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                     object.setNotificationCount(notificationCount);
                 }
             }
-            setUpAdapterForBottomSheet(profileImageString, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext), RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+
+
+            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+            if (!salutation.isEmpty())
+                userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
+            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+
             //--------------------------
             //---- Update bottom sheet notification_count : END
         }

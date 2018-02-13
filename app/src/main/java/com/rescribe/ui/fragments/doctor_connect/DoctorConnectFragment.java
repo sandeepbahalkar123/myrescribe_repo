@@ -16,6 +16,7 @@ import com.rescribe.adapters.DoctorConnectAdapter;
 import com.rescribe.helpers.doctor_connect.DoctorConnectHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.DoctorConnectDataModel;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -23,11 +24,15 @@ import com.rescribe.ui.activities.DoctorConnectActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.rescribe.ui.activities.DoctorConnectActivity.FREE;
+import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 
 /**
  * Created by jeetal on 5/9/17.
@@ -39,10 +44,7 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
     Unbinder unbinder;
-    private View mRootView;
-    private DoctorConnectAdapter doctorConnectAdapter;
     private DoctorConnectHelper mDoctorConnectHelper;
-    private DoctorConnectBaseModel doctorConnectBaseModel;
     private DoctorConnectDataModel mDoctorConnectDataModel = new DoctorConnectDataModel();
 
 
@@ -59,7 +61,7 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
+        View mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -87,6 +89,9 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     }
 
     public void setAdapter() {
+
+        ArrayList<ChatDoctor> chatDoctors = new ArrayList<>();
+
         //Added Dr. to doctorName
         for (int i = 0; i < mDoctorConnectDataModel.getChatDoctor().size(); i++) {
             String doctorName = mDoctorConnectDataModel.getChatDoctor().get(i).getDoctorName();
@@ -103,8 +108,20 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
             } else {
                 mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName("Dr. " + doctorName);
             }
+
+            if (mDoctorConnectDataModel.getChatDoctor().get(i).getPaidStatus() == FREE)
+                chatDoctors.add(mDoctorConnectDataModel.getChatDoctor().get(i));
         }
-        doctorConnectAdapter = new DoctorConnectAdapter(getActivity(), mDoctorConnectDataModel.getChatDoctor());
+
+        if (chatDoctors.isEmpty()) {
+            emptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            emptyListView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
+
+        DoctorConnectAdapter doctorConnectAdapter = new DoctorConnectAdapter(getActivity(), chatDoctors);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -117,7 +134,7 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DOCTOR_CONNECT)) {
-            doctorConnectBaseModel = (DoctorConnectBaseModel) customResponse;
+            DoctorConnectBaseModel doctorConnectBaseModel = (DoctorConnectBaseModel) customResponse;
             mDoctorConnectDataModel = doctorConnectBaseModel.getDoctorConnectDataModel();
             DoctorConnectActivity activity = (DoctorConnectActivity) getActivity();
             if (mDoctorConnectDataModel != null) {

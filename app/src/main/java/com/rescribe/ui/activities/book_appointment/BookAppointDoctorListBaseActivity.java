@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,18 +25,20 @@ import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
+import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.services.MQTTService;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.ConnectSplashActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.ui.activities.SelectedRecordsGroupActivity;
 import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
-import com.rescribe.ui.activities.dashboard.SupportActivity;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticles;
@@ -53,6 +56,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
+import static com.rescribe.services.MQTTService.NOTIFY;
+import static com.rescribe.services.MQTTService.TOPIC;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.APP_LOGO;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.BOOK;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.CONNECT;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.HOME;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.SETTINGS;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.SALUTATION;
@@ -81,7 +92,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
     private int PLACE_PICKER_REQUEST = 1;
-    private HashMap<String, String> mComplaintsUserSearchFor = new HashMap<>();
 
     private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
 
@@ -91,6 +101,35 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
     private String callType = "";
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(NOTIFY)) {
+
+                    String topic = intent.getStringExtra(MQTTService.TOPIC_KEY);
+
+                    if (intent.getBooleanExtra(MQTTService.DELIVERED, false)) {
+
+                        Log.d(TAG, "Delivery Complete");
+                        Log.d(TAG + " MSG_ID", intent.getStringExtra(MQTTService.MESSAGE_ID));
+
+                    } else if (topic.equals(TOPIC[MESSAGE_TOPIC])) {
+
+                        // User message
+                        CommonMethods.Log(TAG, "User message");
+                        MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
+
+                        int unreadMessageCount = appDBHelper.unreadMessageCount();
+                        setConnectBadgeCount(unreadMessageCount);
+
+                    }
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,15 +255,15 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 CommonMethods.Log(TAG, "Resource does not exist");
 
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
-            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.appointment)));
+            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(APP_LOGO));
+            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(BOOK));
             bottomMenu.setNotificationCount(notificationCount);
             addBottomMenu(bottomMenu);
         }
 
         bottomSheetMenus.clear();
         for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
-            if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
+            if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
@@ -252,9 +291,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
         String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
 
+        String salutationText = "";
+
         if (!salutation.isEmpty())
-            userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
-        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+            salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
@@ -297,20 +339,16 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     @Override
     public void onBottomMenuClick(BottomMenu bottomMenu) {
         String menuName = bottomMenu.getMenuName();
-
-        if (menuName.equalsIgnoreCase(getString(R.string.home))) {
+        if (menuName.equalsIgnoreCase(HOME)) {
             finish();
-        } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
+        } else if (menuName.equalsIgnoreCase(SETTINGS)) {
             Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, SettingsActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
             finish();
-
-        } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
-            Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, SupportActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+        } else if (menuName.equalsIgnoreCase(CONNECT)) {
+            Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, ConnectSplashActivity.class);
             startActivity(intent);
-            finish();
         }
         super.onBottomMenuClick(bottomMenu);
     }
@@ -443,9 +481,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
             String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
 
+            String salutationText = "";
+
             if (!salutation.isEmpty())
-                userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
-            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
             //--------------------------
             //---- Update bottom sheet notification_count : END
         }
@@ -458,5 +499,22 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             mUpdateAppUnreadNotificationCount = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(
+                MQTTService.NOTIFY));
+
+        int unreadMessageCount = appDBHelper.unreadMessageCount();
+        setConnectBadgeCount(unreadMessageCount);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 }

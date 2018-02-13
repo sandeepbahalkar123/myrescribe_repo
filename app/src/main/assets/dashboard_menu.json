@@ -130,7 +130,7 @@
       "selectedIconImageUrl": "home_selected"
     },
     {
-      "name": "Appointment",
+      "name": "Book",
       "identifier": "bottomMenu_Appointment",
       "iconImageUrl": "appointment",
       "selectedIconImageUrl": "appointment_selected"
@@ -244,7 +244,7 @@
                       },
                       {
                         "name": "Support",
-                        "identifier": "",
+                        "identifier": "setting_Support",
                         "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/support.png"
                       },
                       {
@@ -320,6 +320,11 @@
           }
         ]
       }
+    },{
+      "name": "Connect",
+      "identifier": "bottomMenu_Connect",
+      "iconImageUrl": "menu_connect",
+      "selectedIconImageUrl": "menu_connect_selected"
     },
     {
       "name": "Settings",
@@ -390,30 +395,14 @@
             "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/feedback.png"
           },
           {
+            "name": "Support",
+            "identifier": "setting_Support",
+            "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/support.png"
+          },
+          {
             "name": "Log Out",
             "identifier": "setting_Logout",
             "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/logout.png"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Support",
-      "identifier": "bottomMenu_Support",
-      "iconImageUrl": "support",
-      "selectedIconImageUrl": "support_selected",
-      "clickEvent": {
-        "bgImageUrl": "support_bg",
-        "clickOptions": [
-          {
-            "name": "Contact Number",
-            "identifier": "support_Contact",
-            "iconImageUrl": "contactnumber"
-          },
-          {
-            "name": "Support Email Id",
-            "identifier": "support_Email",
-            "iconImageUrl": "supportemailid"
           }
         ]
       }

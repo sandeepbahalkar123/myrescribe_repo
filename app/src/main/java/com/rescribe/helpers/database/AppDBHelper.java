@@ -421,6 +421,15 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return cnt;
     }
 
+    public int unreadMessageCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "select * from " + MESSAGE_TABLE;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }
+
     public ArrayList<MQTTMessage> getUnreadMessagesById(int id) {
         SQLiteDatabase db = getReadableDatabase();
         String countQuery = "select * from " + MESSAGE_TABLE + " where " + CHAT_USER_ID + " = " + id;

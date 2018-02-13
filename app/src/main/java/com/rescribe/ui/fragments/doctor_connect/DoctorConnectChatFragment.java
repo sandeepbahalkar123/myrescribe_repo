@@ -42,9 +42,7 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     RelativeLayout emptyListView;
     Unbinder unbinder;
     DoctorConnectChatAdapter mDoctorConnectChatAdapter;
-    private View mRootView;
     private DoctorConnectChatHelper mDoctorConnectChatHelper;
-    private RecentChatDoctorModel mDoctorConnectChatBaseModel;
     private ArrayList<ChatDoctor> chatDoctors = new ArrayList<>();
     private String patientId;
 
@@ -61,7 +59,7 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
+        View mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
         return mRootView;
@@ -91,7 +89,7 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.CHAT_USERS)) {
-            mDoctorConnectChatBaseModel = (RecentChatDoctorModel) customResponse;
+            RecentChatDoctorModel mDoctorConnectChatBaseModel = (RecentChatDoctorModel) customResponse;
             if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel() == null) {
                 emptyListView.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);

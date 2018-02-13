@@ -68,18 +68,28 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     LinearLayout mLocationHeaderView;
     @BindView(R.id.locationContentRecycleView)
     RecyclerView mLocationContentRecycleView;
+
     @BindView(R.id.genderMaleIcon)
     ImageView mGenderMaleIcon;
     @BindView(R.id.genderMaleText)
     CustomTextView mGenderMaleText;
     @BindView(R.id.genderMaleLayout)
     LinearLayout mGenderMaleLayout;
+
     @BindView(R.id.genderFemaleIcon)
     ImageView mGenderFemaleIcon;
     @BindView(R.id.genderFemaleText)
     CustomTextView mGenderFemaleText;
     @BindView(R.id.genderFemaleLayout)
     LinearLayout mGenderFemaleLayout;
+
+    @BindView(R.id.genderTransgenderIcon)
+    ImageView mGenderTransgenderIcon;
+    @BindView(R.id.genderTransgenderText)
+    CustomTextView mGenderTransgenderText;
+    @BindView(R.id.genderTransgenderLayout)
+    LinearLayout mGenderTransgenderLayout;
+
     @BindView(R.id.distanceHeaderView)
     LinearLayout distanceHeaderView;
     @BindView(R.id.distanceSeekBar)
@@ -325,11 +335,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         mDistanceSeekBarValueIndicator.setText(mDistanceSeekBar.getProgress() + "");
 
         //-----------------
-        mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
-        mGenderMaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
-        mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);
-        mGenderFemaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
-        //-----------------
         mAvailSunday.setBackgroundResource(R.drawable.select_days_circle_default);
         mAvailSunday.setTextColor(ContextCompat.getColor(getActivity(), R.color.tagColor));
         mAvailMonday.setBackgroundResource(R.drawable.select_days_circle_default);
@@ -523,22 +528,27 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
         return b;
     }
 
-    @OnClick({R.id.genderMaleLayout, R.id.genderFemaleLayout})
+    @OnClick({R.id.genderMaleLayout, R.id.genderFemaleLayout, R.id.genderTransgenderLayout})
     public void onGenderClicked(View view) {
         switch (view.getId()) {
             case R.id.genderMaleLayout:
                 mSelectedGender = mGenderMaleText.getText().toString();
-                mGenderMaleIcon.setImageResource(R.drawable.icon_male_after_click);
-                mGenderMaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
+
+                mGenderTransgenderIcon.setImageResource(R.drawable.icon_transgender_default);
+                mGenderMaleIcon.setImageResource(R.drawable.icon_male_selected);
                 mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);
-                mGenderFemaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
                 break;
             case R.id.genderFemaleLayout:
                 mSelectedGender = mGenderFemaleText.getText().toString();
-                mGenderFemaleIcon.setImageResource(R.drawable.icon_female_after_click);
-                mGenderFemaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.female_select));
+                mGenderTransgenderIcon.setImageResource(R.drawable.icon_transgender_default);
                 mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
-                mGenderMaleText.setTextColor(ContextCompat.getColor(getActivity(), R.color.gender_drawer));
+                mGenderFemaleIcon.setImageResource(R.drawable.icon_female_selected);
+                break;
+            case R.id.genderTransgenderLayout:
+                mSelectedGender = mGenderTransgenderText.getText().toString();
+                mGenderTransgenderIcon.setImageResource(R.drawable.icon_transgender_selected);
+                mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
+                mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);
                 break;
         }
     }

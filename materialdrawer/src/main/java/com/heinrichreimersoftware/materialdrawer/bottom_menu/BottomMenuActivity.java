@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.appIconIndex;
+import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.connectIndex;
 
 @SuppressWarnings("unused")
 @SuppressLint("Registered")
@@ -51,7 +52,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     private TextView mMobileNumber;
     private ColorGenerator mColorGenerator;
     private TextView bottomSheetBadgeView;
-    private TextView bottomMenuBadgeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,11 +108,11 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         bottomSheetMenuLayout.startAnimation(slideUpAnimation);
     }
 
-    public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo) {
+    public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo, String salutationText) {
 
         mMobileNumber.setText("+91 - " + patientMobileNo);
 
-        mPatientName.setText(patientName);
+        mPatientName.setText(salutationText + " " + patientName);
 
         if (!patientName.isEmpty()) {
             int color2 = mColorGenerator.getColor(patientName);
@@ -187,13 +187,26 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         if (bottomSheetBadgeView != null && count > 0) {
             bottomSheetBadgeView.setVisibility(View.VISIBLE);
             bottomSheetBadgeView.setText(String.valueOf(count));
-        }else{
+        } else if (bottomSheetBadgeView != null) {
             bottomSheetBadgeView.setVisibility(View.GONE);
             bottomSheetBadgeView.setText(String.valueOf(count));
         }
 
-        bottomMenus.get(appIconIndex).setNotificationCount(count);
-        bottomMenuAdapter.notifyDataSetChanged();
+        if (bottomMenuAdapter != null) {
+            if (bottomMenuAdapter.getItemCount() > 0) {
+                bottomMenus.get(appIconIndex).setNotificationCount(count);
+                bottomMenuAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    public void setConnectBadgeCount(int count) {
+        if (bottomMenuAdapter != null) {
+            if (bottomMenuAdapter.getItemCount() > 0) {
+                bottomMenus.get(connectIndex).setNotificationCount(count);
+                bottomMenuAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     public void closeSheet() {
@@ -206,7 +219,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
         animation1.setDuration(ANIMATION_DUR);
         bottomSheetMenu.startAnimation(animation1);
-
         bottomSheetMenuLayout.startAnimation(slideDownAnimation);
 
         animation1.setAnimationListener(new Animation.AnimationListener() {

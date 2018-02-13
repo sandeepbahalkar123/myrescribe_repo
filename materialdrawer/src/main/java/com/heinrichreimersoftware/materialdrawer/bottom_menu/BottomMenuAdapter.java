@@ -1,5 +1,6 @@
 package com.heinrichreimersoftware.materialdrawer.bottom_menu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
@@ -17,15 +18,14 @@ import java.util.ArrayList;
 
 public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.ListViewHolder> {
 
-    private static final String DRAWABLE = "drawable";
-    private final Context mContext;
     private OnBottomMenuClickListener mBottomMenuListClickListener;
     private ArrayList<BottomMenu> bottomMenus;
     static int appIconIndex;
+    static int connectIndex;
+    static final String CONNECT = "Connect";
 
     BottomMenuAdapter(Context mContext, ArrayList<BottomMenu> bottomMenus) {
         this.bottomMenus = bottomMenus;
-        this.mContext = mContext;
 
         try {
             this.mBottomMenuListClickListener = ((OnBottomMenuClickListener) mContext);
@@ -50,7 +50,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
     }
 
     @Override
-    public void onBindViewHolder(ListViewHolder holder, final int position) {
+    public void onBindViewHolder(ListViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final BottomMenu bottomMenu = bottomMenus.get(position);
         holder.bottomMenuName.setText(bottomMenu.getMenuName());
 
@@ -64,9 +64,11 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
         holder.menuBottomIcon.setImageDrawable(bottomMenu.getMenuIcon());
 
 //for app logo
+
         if (bottomMenu.isAppIcon()) {
             holder.bottomMenuName.setVisibility(View.GONE);
             holder.bottomMenuTab.setVisibility(View.GONE);
+            holder.showConnectCountTextView.setVisibility(View.GONE);
 
             appIconIndex = position;
             if (bottomMenu.getNotificationCount() > 0) {
@@ -78,6 +80,16 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
         } else {
 
             holder.showCount.setVisibility(View.GONE);
+
+            if (bottomMenu.getMenuName().equalsIgnoreCase(CONNECT)) {
+
+                connectIndex = position;
+                if (bottomMenu.getNotificationCount() > 0) {
+                    holder.showConnectCountTextView.setText(String.valueOf(bottomMenu.getNotificationCount()));
+                    holder.showConnectCountTextView.setVisibility(View.VISIBLE);
+                } else
+                    holder.showConnectCountTextView.setVisibility(View.GONE);
+            } else holder.showConnectCountTextView.setVisibility(View.GONE);
 
             if (bottomMenu.isSelected()) {
                 holder.bottomMenuTab.setVisibility(View.VISIBLE);
@@ -101,6 +113,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
         ImageView menuBottomIcon;
         TextView bottomMenuName;
         TextView showCount;
+        TextView showConnectCountTextView;
         View spaceView;
         TextView bottomMenuTab;
 
@@ -114,14 +127,13 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
             bottomMenuTab = (TextView) view.findViewById(R.id.bottomMenuTab);
             spaceView = (View) view.findViewById(R.id.spaceView);
             showCount = (TextView) view.findViewById(R.id.showCountTextView);
+            showConnectCountTextView = (TextView) view.findViewById(R.id.showConnectCountTextView);
         }
     }
 
     public interface OnBottomMenuClickListener {
         void onBottomSheetMenuClick(BottomSheetMenu bottomMenu);
-
         void onBottomMenuClick(BottomMenu bottomMenu);
-
         void onProfileImageClick();
     }
 

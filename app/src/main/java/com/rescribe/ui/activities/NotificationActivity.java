@@ -53,6 +53,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.APP_LOGO;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.NOTIFICATION_ID;
@@ -122,7 +123,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                     CommonMethods.Log(TAG, "Resource does not exist");
 
                 bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(APP_LOGO));
                 bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.alerts)));
                 addBottomMenu(bottomMenu);
             }

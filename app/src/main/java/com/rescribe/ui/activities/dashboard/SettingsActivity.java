@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,14 +26,17 @@ import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.ClickEvent;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.services.MQTTService;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.ConnectSplashActivity;
 import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationSettingActivity;
@@ -54,10 +58,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
+import static com.rescribe.services.MQTTService.NOTIFY;
+import static com.rescribe.services.MQTTService.TOPIC;
 import static com.rescribe.singleton.RescribeApplication.appUnreadNotificationMessageList;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.APP_LOGO;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.BOOK;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.CONNECT;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.HOME;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.SETTINGS;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.SALUTATION;
+import static com.rescribe.util.RescribeConstants.TITLE;
 
 /**
  * Created by jeetal on 3/11/17.
@@ -81,13 +94,41 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     RelativeLayout selectMenuLayout;
     @BindView(R.id.title)
     CustomTextView title;
-    private SettingsAdapter mSettingsAdapter;
     private Context mContext;
     private AppDBHelper appDBHelper;
 
     private DashboardBottomMenuList mCurrentSelectedBottomMenu;
     private String profileImageString;
     private BroadcastReceiver mUpdateAppUnreadNotificationCount;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(NOTIFY)) {
+
+                    String topic = intent.getStringExtra(MQTTService.TOPIC_KEY);
+
+                    if (intent.getBooleanExtra(MQTTService.DELIVERED, false)) {
+
+                        Log.d(TAG, "Delivery Complete");
+                        Log.d(TAG + " MSG_ID", intent.getStringExtra(MQTTService.MESSAGE_ID));
+
+                    } else if (topic.equals(TOPIC[MESSAGE_TOPIC])) {
+
+                        // User message
+                        CommonMethods.Log(TAG, "User message");
+                        MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
+
+                        int unreadMessageCount = appDBHelper.unreadMessageCount();
+                        setConnectBadgeCount(unreadMessageCount);
+
+                    }
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,11 +159,11 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             else
                 CommonMethods.Log(TAG, "Resource does not exist");
             bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
+            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(APP_LOGO));
             bottomMenu.setNotificationCount(notificationCount);
 
-            if (dashboardBottomMenuList.getName().equals(getString(R.string.settings))) {
-                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.settings)));
+            if (dashboardBottomMenuList.getName().equals(SETTINGS)) {
+                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(SETTINGS));
                 mCurrentSelectedBottomMenu = dashboardBottomMenuList;
             }
             addBottomMenu(bottomMenu);
@@ -130,7 +171,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
         bottomSheetMenus.clear();
         for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
-            if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
+            if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
@@ -160,9 +201,12 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
         String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
 
+        String salutationText = "";
+
         if (!salutation.isEmpty())
-            userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
-        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+            salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
 
         initialize();
 
@@ -182,7 +226,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         ClickEvent clickEvent = mCurrentSelectedBottomMenu.getClickEvent();
         if (clickEvent != null) {
             ArrayList<ClickOption> clickOptions = clickEvent.getClickOptions();
-            mSettingsAdapter = new SettingsAdapter(this, clickOptions, this);
+            SettingsAdapter mSettingsAdapter = new SettingsAdapter(this, clickOptions, this);
 
             LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             settingsMenuList.setLayoutManager(linearlayoutManager);
@@ -197,19 +241,12 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
         String menuName = bottomMenu.getMenuName();
 
-        if (menuName.equalsIgnoreCase(getString(R.string.home))) {
+        if (menuName.equalsIgnoreCase(HOME)) {
             finish();
-        } else if (menuName.equalsIgnoreCase(getString(R.string.profile))) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+        } else if (menuName.equalsIgnoreCase(CONNECT)) {
+            Intent intent = new Intent(this, ConnectSplashActivity.class);
             startActivity(intent);
-            finish();
-        } else if (menuName.equalsIgnoreCase(getString(R.string.support))) {
-            Intent intent = new Intent(this, SupportActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
-            finish();
-        } else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
+        } else if (menuName.equalsIgnoreCase(BOOK)) {
             Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             Bundle bundle = new Bundle();
@@ -234,14 +271,18 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     @Override
     public void onClickOfSettingMenuOption(ClickOption clickedOption) {
         //TODO : here 's' is added bcaz API giving notifications as name.
-        if (clickedOption.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
+        if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.NOTIFICATIONS)) {
             Intent intent = new Intent(SettingsActivity.this, NotificationSettingActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), clickedOption);
             b.putString(getString(R.string.toolbarTitle), clickedOption.getName());
             intent.putExtras(b);
             startActivity(intent);
-        } else if (clickedOption.getName().equalsIgnoreCase(getString(R.string.logout))) {
+        } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.SUPPORT)) {
+            Intent intent = new Intent(SettingsActivity.this, SupportActivity.class);
+            intent.putExtra(TITLE, clickedOption.getName());
+            startActivity(intent);
+        } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.LOG_OUT)) {
             ActiveRequest activeRequest = new ActiveRequest();
             String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
             activeRequest.setId(Integer.parseInt(patientId));
@@ -403,6 +444,23 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         super.onDestroy();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        registerReceiver(receiver, new IntentFilter(
+                MQTTService.NOTIFY));
+
+        int unreadMessageCount = appDBHelper.unreadMessageCount();
+        setConnectBadgeCount(unreadMessageCount);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
     // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.
     private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
 
@@ -442,9 +500,12 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
             String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
 
+            String salutationText = "";
+
             if (!salutation.isEmpty())
-                userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
-            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
 
             //--------------------------
             //---- Update bottom sheet notification_count : END

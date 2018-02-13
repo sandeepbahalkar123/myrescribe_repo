@@ -344,6 +344,25 @@ public class RescribeConstants {
 
     public static final String[] SALUTATION = {"Mr.", "Mrs.", "Miss", "Other"};
     public static final String[] GENDER = {"MALE", "FEMALE", "TRANSGENDER"};
+
+    public interface BOTTOM_MENU {
+        String HOME = "Home";
+        String BOOK = "Book";
+        String APP_LOGO = "AppLogo";
+        String SETTINGS = "Settings";
+        String CONNECT = "Connect";
+    }
+
+    public interface SETTING_MENU {
+        String NOTIFICATIONS = "Notifications";
+        String HOW_IT_WORKS = "How it Works?";
+        String TERMS_OF_USE = "Terms of Use";
+        String PRIVACY_POLICY = "Privacy Policy";
+        String RECOMMEND_US = "Recommend Us";
+        String FEEDBACK = "Feedback";
+        String SUPPORT = "Support";
+        String LOG_OUT = "Log Out";
+    }
 }
 
 

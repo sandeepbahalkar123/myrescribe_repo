@@ -728,7 +728,7 @@ public class CommonMethods {
             abbreviation = R.drawable.fbs;
         else if (vitalDetailName.equalsIgnoreCase("ppbs"))
             abbreviation = R.drawable.ppbs;
-        else if (vitalDetailName.equalsIgnoreCase("spo_2"))
+        else if (vitalDetailName.equalsIgnoreCase("spo_2") || vitalDetailName.equalsIgnoreCase("oxygen saturation") || vitalDetailName.contains("spo") || vitalDetailName.contains("saturation"))
             abbreviation = R.drawable.spo_2;
         else if (vitalDetailName.equalsIgnoreCase("platelet"))
             abbreviation = R.drawable.platelet;

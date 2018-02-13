@@ -50,6 +50,7 @@ import permissions.dispatcher.RuntimePermissions;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.SALUTATION;
+import static com.rescribe.util.RescribeConstants.TITLE;
 
 /**
  * Created by jeetal on 3/11/17.
@@ -68,10 +69,6 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     CustomTextView emailtextView;
     @BindView(R.id.title)
     CustomTextView title;
-    private AppDBHelper appDBHelper;
-    private String profileImageString;
-    private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
-    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,81 +76,12 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
         setContentView(R.layout.support_base_layout);
         ButterKnife.bind(this);
         initialize();
-
-        int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-        int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-        int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-        //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
-
-        /* START: Notification count is stored in shared-preferences now,
-                check AppDbHelper.insertUnreadReceivedNotificationMessage();
-                Chat count is not showing now.
-             */
-        int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
-        //END
-
-        bottomMenus.clear();
-        dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
-        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
-            BottomMenu bottomMenu = new BottomMenu();
-            int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
-            if (resourceId > 0)
-                bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
-            else
-                CommonMethods.Log(TAG, "Resource does not exist");
-            bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(getString(R.string.app_logo)));
-            bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.support)));
-            bottomMenu.setNotificationCount(notificationCount);
-            addBottomMenu(bottomMenu);
-        }
-        bottomSheetMenus.clear();
-        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
-            if (dashboardBottomMenuLists.get(i).getName().equals(getString(R.string.app_logo))) {
-
-                for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                    if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
-                    }
-                    if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
-                        bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
-
-                        int resourceId = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
-                        if (resourceId > 0)
-                            bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceId));
-                        else
-                            CommonMethods.Log(TAG, "Resource does not exist");
-
-                        bottomSheetMenu.setNotificationCount(notificationCount);
-
-                        //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
-                        addBottomSheetMenu(bottomSheetMenu);
-                    }
-                }
-                break;
-            }
-        }
-
-
-        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
-
-        if (!salutation.isEmpty())
-            userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
-        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
-
-        mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
-        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
-
     }
 
     private void initialize() {
-        mContext = SupportActivity.this;
-        appDBHelper = new AppDBHelper(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        title.setText(getString(R.string.support));
+        title.setText(getIntent().getStringExtra(TITLE));
     }
 
     @NeedsPermission(Manifest.permission.CALL_PHONE)
@@ -172,95 +100,6 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         SupportActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-
-    }
-
-    @Override
-    public void onBottomMenuClick(BottomMenu bottomMenu) {
-
-        String menuName = bottomMenu.getMenuName();
-
-        if (menuName.equalsIgnoreCase(getString(R.string.alerts))) {
-
-            AppDBHelper appDBHelper = new AppDBHelper(this);
-            Cursor cursor = appDBHelper.getPreferences("1");
-            String breakFastTime = "";
-            String lunchTime = "";
-            String dinnerTime = "";
-            String snacksTime = "";
-
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    breakFastTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.BREAKFAST_TIME));
-                    lunchTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.LUNCH_TIME));
-                    dinnerTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.DINNER_TIME));
-                    snacksTime = cursor.getString(cursor.getColumnIndex(AppDBHelper.SNACKS_TIME));
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-
-            Calendar c = Calendar.getInstance();
-            int hour24 = c.get(Calendar.HOUR_OF_DAY);
-
-            String mGetMealTime = CommonMethods.getMealTime(hour24, this);
-            Intent intent = new Intent(this, NotificationActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            intent.putExtra(RescribeConstants.DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            if (mGetMealTime.equals(getString(R.string.break_fast))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.breakfast_medication));
-                intent.putExtra(RescribeConstants.TIME, breakFastTime);
-            } else if (mGetMealTime.equals(getString(R.string.mlunch))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.lunch_medication));
-                intent.putExtra(RescribeConstants.TIME, lunchTime);
-            } else if (mGetMealTime.equals(getString(R.string.msnacks))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.snacks_medication));
-                intent.putExtra(RescribeConstants.TIME, snacksTime);
-            } else if (mGetMealTime.equals(getString(R.string.mdinner))) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            } else if (mGetMealTime.isEmpty()) {
-                intent.putExtra(RescribeConstants.MEDICINE_SLOT, getString(R.string.dinner_medication));
-                intent.putExtra(RescribeConstants.TIME, dinnerTime);
-            }
-
-            startActivity(intent);
-            finish();
-
-        } else if (menuName.equalsIgnoreCase(getString(R.string.profile))) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
-            finish();
-        } else if (menuName.equalsIgnoreCase(getString(R.string.settings))) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
-            finish();
-        } else if (menuName.equalsIgnoreCase(getString(R.string.appointment))) {
-            Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            Bundle bundle = new Bundle();
-            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
-            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
-            intent.putExtras(bundle);
-            startActivity(intent);
-            finish();
-        } else if (menuName.equalsIgnoreCase(getString(R.string.home))) {
-            finish();
-        }
-        super.onBottomMenuClick(bottomMenu);
-    }
-
-    @Override
-    public void onProfileImageClick() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
-
-        super.onProfileImageClick();
     }
 
     @OnClick({R.id.callTextView, R.id.emailtextView})
@@ -280,118 +119,6 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
                 }
 
                 break;
-        }
-    }
-
-    @Override
-    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
-        if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.vital_graph))) {
-            Intent intent = new Intent(this, VitalGraphActivity.class);
-            startActivity(intent);
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
-            Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
-            startActivity(intent);
-
-            RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, 0, this);
-            setBadgeCount(0);
-
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
-            MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
-            int completeCount = 0;
-            for (Image image : myRecordsData.getImageArrayList()) {
-                if (image.isUploading() == RescribeConstants.COMPLETED)
-                    completeCount++;
-            }
-            Intent intent;
-            if (completeCount == myRecordsData.getImageArrayList().size()) {
-                appDBHelper.deleteMyRecords();
-                intent = new Intent(this, MyRecordsActivity.class);
-            } else {
-                intent = new Intent(this, SelectedRecordsGroupActivity.class);
-                intent.putExtra(RescribeConstants.UPLOADING_STATUS, true);
-                intent.putExtra(RescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
-                intent.putExtra(RescribeConstants.OPD_ID, myRecordsData.getDocId());
-                intent.putExtra(RescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
-                intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
-            }
-            startActivity(intent);
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
-            Intent intent = new Intent(this, PrescriptionActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
-        if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.doctor_details))) {
-            Intent intent = new Intent(this, DoctorListActivity.class);
-            startActivity(intent);
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
-            Intent intent = new Intent(this, AppointmentActivity.class);
-            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
-            startActivity(intent);
-        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
-            Intent intent = new Intent(this, SavedArticles.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
-
-        super.onBottomSheetMenuClick(bottomMenu);
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mUpdateAppUnreadNotificationCount != null) {
-            unregisterReceiver(mUpdateAppUnreadNotificationCount);
-            mUpdateAppUnreadNotificationCount = null;
-        }
-        super.onDestroy();
-    }
-
-    // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.
-    private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-            int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-            int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-            // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
-
-              /* START: Notification count is stored in shared-preferences now,
-                check AppDbHelper.insertUnreadReceivedNotificationMessage();
-                Chat count is not showing now.
-             */
-            int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
-            //END
-
-            //--- Update count on App_logo
-            for (BottomMenu object :
-                    bottomMenus) {
-                if (object.isAppIcon()) {
-                    object.setNotificationCount(notificationCount);
-                }
-            }
-            doNotifyDataSetChanged();
-            //--------------- :END
-            //---- Update bottom sheet notification_count : START
-            ArrayList<BottomSheetMenu> bottomSheetMenus = SupportActivity.this.bottomSheetMenus;
-            for (BottomSheetMenu object :
-                    bottomSheetMenus) {
-                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
-                    object.setNotificationCount(notificationCount);
-                }
-            }
-
-            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
-
-            if (!salutation.isEmpty())
-                userName = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userName;
-            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
-            //--------------------------
-            //---- Update bottom sheet notification_count : END
         }
     }
 }

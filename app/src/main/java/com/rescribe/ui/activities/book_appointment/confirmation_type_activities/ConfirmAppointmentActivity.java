@@ -166,17 +166,19 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
 
             doctorName.setText(drName);
             aboutDoctor.setText(mDoctorObject.getDegree());
-            clinicAddress.setText(mDoctorObject.getAddressOfDoctorString());
-            if (!mDoctorObject.getAddressOfDoctorString().isEmpty()) {
+            if (mDoctorObject.getAddressOfDoctorString() != null) {
+                clinicAddress.setText(mDoctorObject.getAddressOfDoctorString());
+                if (!mDoctorObject.getAddressOfDoctorString().isEmpty()) {
 
-                RequestOptions requestOptions = new RequestOptions();
-                requestOptions.placeholder(R.drawable.staticmap);
-                requestOptions.error(R.drawable.staticmap);
-                requestOptions.centerCrop();
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.placeholder(R.drawable.staticmap);
+                    requestOptions.error(R.drawable.staticmap);
+                    requestOptions.centerCrop();
 
-                Glide.with(mContext)
-                        .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x300")
-                        .into(locationImageView);
+                    Glide.with(mContext)
+                            .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x300")
+                            .into(locationImageView);
+                }
             }
             if (!mDoctorObject.getNameOfClinicString().isEmpty()) {
                 clinicName.setText(mDoctorObject.getNameOfClinicString());
@@ -269,20 +271,6 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
             ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
             if (mResponseAppointmentConfirmationModel.getCommon() != null)
                 if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
-                    if (!isCanceled) {
-                        if (mDoctorObject.isTypedashboard()) {
-//                            Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-//                            intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-//                            intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
-//                            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mDoctorObject);
-//                            startActivity(intent1);
-//                            setResult(RESCHEDULE_OK);
-//                            finish();
-                        } else {
-                            setResult(Activity.RESULT_OK);
-                            finish();
-                        }
-                    } else {
                         Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ConfirmAppointmentActivity.this, BookAppointDoctorListBaseActivity.class);
                         Bundle bundle = new Bundle();
@@ -293,7 +281,6 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
-                    }
                 } else {
                     Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -357,7 +344,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type.equalsIgnoreCase(CANCEL_TYPE) || type.equalsIgnoreCase(RESHEDULE_TYPE)) {
+                if (type.equalsIgnoreCase(RESHEDULE_TYPE)) {
 
                     Intent intent1 = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
                     intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
@@ -373,7 +360,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
 
                     dialog.cancel();
                 } else {
-                    mDoctorDataHelper.doCancelTokenNumber(mDoctorObject.getDocId(), mLocationId, mTokenNo);
+                    mDoctorDataHelper.doCancelAppointmentRequest(aptId, type);
                     dialog.cancel();
                 }
             }

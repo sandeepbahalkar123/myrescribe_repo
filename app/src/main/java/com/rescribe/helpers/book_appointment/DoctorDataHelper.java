@@ -379,7 +379,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
     }
 
-    /*public void doCancelResheduleAppointmentRequest(String aptId, int status, String type) {
+    public void doCancelAppointmentRequest(String aptId, String type) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
@@ -393,7 +393,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.setUrl(Config.CANCEL_RESCHDULE_APPOINTMENT);
         mConnectionFactory.createConnection(RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT);
 
-    }*/
+    }
 
     public void doCancelTokenNumber(int docID, int locationId, int tokenNo) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_GET_TOKEN, Request.Method.POST, true);

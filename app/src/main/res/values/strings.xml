@@ -228,6 +228,7 @@
     <string name="select_gender"><u>Select Gender</u></string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="transgender">Transgender</string>
     <string name="clinic_fees">Clinic Fees</string>
     <string name="availability">Availability</string>
     <string name="doctor">Doctor</string>
@@ -311,7 +312,6 @@
     <string name="platform"><![CDATA[&platform=]]></string>
     <string name="android">android</string>
     <string name="screen_resolution"><![CDATA[&screenResolution=]]></string>
-    <string name="app_logo">AppLogo</string>
     <string name="sponsored_doctor">Featured Doctors</string>
     <string name="recently_visit_doctor">Recently Visited Doctors</string>
     <string name="practices_at_locations">Practices at $$ locations</string>

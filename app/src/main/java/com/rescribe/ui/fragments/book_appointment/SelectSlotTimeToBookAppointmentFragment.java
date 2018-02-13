@@ -93,6 +93,7 @@ import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
 import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_ID;
 import static com.rescribe.util.RescribeConstants.FROM;
+import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
@@ -202,6 +203,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     private String from;
     private String aptId;
+    private String isReschedule;
 
 
     public SelectSlotTimeToBookAppointmentFragment() {
@@ -281,6 +283,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         if (arguments != null) {
             aptId = arguments.getString(APPOINTMENT_ID);
             from = arguments.getString(FROM);
+            isReschedule = arguments.getString(RESHEDULE_TYPE);
             fcmTokenData = arguments.getParcelable(TOKEN_DATA);
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
             mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
@@ -727,15 +730,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         CommonMethods.showToast(getContext(), getString(R.string.time_select_err));
                     } else {
                         if (from != null) {
-//                            mDoctorDataHelper.doCancelResheduleAppointmentRequest(aptId, 4, type);
-                            Reschedule reschedule = new Reschedule();
-                            reschedule.setAptId(aptId);
-                            reschedule.setStatus("4");
-
-                            mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()), reschedule);
-                        } else {
+                            if (isReschedule.equalsIgnoreCase(RESHEDULE_TYPE)) {
+                                Reschedule reschedule = new Reschedule();
+                                reschedule.setAptId(aptId);
+                                reschedule.setStatus("4");
+                                mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()), reschedule);
+                            } else
+                                mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()), null);
+                        } else
                             mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()), null);
-                        }
                     }
                 }
 

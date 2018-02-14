@@ -366,7 +366,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             mDocRatingBar.setRating((float) mClickedDoctorObject.getRating());
         }
         //----------
-        mDoctorName.setText("" + mClickedDoctorObject.getDocName());
+        if (mClickedDoctorObject.getDocName().contains("Dr."))
+            mDoctorName.setText("" + mClickedDoctorObject.getDocName());
+        else mDoctorName.setText("Dr. " + mClickedDoctorObject.getDocName());
+
         mDoctorSpecialization.setText("" + mClickedDoctorObject.getDegree());
         //------------
         mDoctorExperienceLayout.setVisibility(View.GONE);
@@ -443,6 +446,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case TASKID_TIME_SLOT:
                 TimeSlotListBaseModel slotListBaseModel = (TimeSlotListBaseModel) customResponse;
                 if (slotListBaseModel != null) {
+
+                    tokenMessageTextView.setVisibility(View.GONE);
+
                     TimeSlotListDataModel selectSlotList = slotListBaseModel.getTimeSlotListDataModel();
                     if (selectSlotList != null) {
                         if (selectSlotList.isAppointmentTaken() == 0 || from != null) {
@@ -525,7 +531,18 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             appointmentTypeIsTokenButton.setVisibility(View.VISIBLE);
 
                             mWaitingTime.setText("" + clinicTokenDetails.getWaitingTime());
-                            mScheduledAppointmentsTimeStamp.setText("" + clinicTokenDetails.getScheduledTimeStamp());
+
+                            try {
+                                Calendar cal = Calendar.getInstance();
+                                SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
+                                cal.setTime(sdf.parse(clinicTokenDetails.getScheduledTimeStamp()));
+                                cal.add(Calendar.MINUTE, clinicTokenDetails.getWaitingTime());
+                                String timeToShow = sdf.format(cal.getTime()).toLowerCase();
+                                mScheduledAppointmentsTimeStamp.setText(timeToShow);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                             mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
                         } else {
                             mConfirmedTokenMainLayout.setVisibility(View.GONE);

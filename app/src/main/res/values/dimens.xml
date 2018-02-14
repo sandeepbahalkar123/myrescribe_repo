@@ -69,6 +69,7 @@
     <dimen name="dp32">32dp</dimen>
     <dimen name="dp90">90dp</dimen>
     <dimen name="dp41">41dp</dimen>
+    <dimen name="dp58">58dp</dimen>
 
     <!--End Switch Button-->
 </resources>

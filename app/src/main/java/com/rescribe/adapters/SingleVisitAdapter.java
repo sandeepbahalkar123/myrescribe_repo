@@ -44,6 +44,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     private static final String CHILD_TYPE_VITALS = "vitals";
     private static final String CHILD_TYPE_ATTACHMENTS = "attachments";
     private static final String CHILD_TYPE_ALLERGIES = "allergies";
+    private static final String CHILD_TYPE_PRESCRIPTIONS = "prescriptions";
 
     private List<PatientHistory> mListDataHeader = new ArrayList<>(); // header titles
     List<VisitCommonData> mVisitDetailList = new ArrayList<>();
@@ -162,7 +163,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 childViewHolder.tableLayout.setVisibility(View.GONE);
                 childViewHolder.itemsLayout.setVisibility(View.VISIBLE);
 
-                String textToShow;
+                String textToShow = "";
                 if (headerName.equalsIgnoreCase(CHILD_TYPE_ALLERGIES)) {
                     textToShow = childObject.get(childPosition).getName();
                     if (!childObject.get(childPosition).getMedicinename().isEmpty())
@@ -474,7 +475,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
 
             convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.histroy_group_item_layout, parent, false);
+                    .inflate(R.layout.history_group_item_layout, parent, false);
 
             groupViewHolder = new GroupViewHolder(convertView);
             convertView.setTag(groupViewHolder);
@@ -499,7 +500,30 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             if (mListDataHeader.get(groupPosition).getCommonData() != null) {
                 mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
 
-                if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase("vitals")) {
+                if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase(CHILD_TYPE_PRESCRIPTIONS)) {
+
+                    if (!mListDataHeader.get(groupPosition).getCommonData().isEmpty()) {
+
+                        String textToShow = "";
+
+                        String medicineTypeName = mListDataHeader.get(groupPosition).getCommonData().get(0).getMedicineTypeName();
+                        String name = mListDataHeader.get(groupPosition).getCommonData().get(0).getName();
+                        String dosage = mListDataHeader.get(groupPosition).getCommonData().get(0).getDosage();
+
+                        if (!medicineTypeName.isEmpty())
+                            textToShow += medicineTypeName.charAt(0) + ". ";
+                        if (!name.isEmpty())
+                            textToShow += name + " ";
+                        if (!dosage.isEmpty())
+                            textToShow += dosage;
+
+                        if (mListDataHeader.get(groupPosition).getCommonData().size() > 1)
+                            textToShow += "...";
+                        groupViewHolder.mDetailFirstPoint.setText(textToShow);
+
+                    }
+
+                } else if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase(CHILD_TYPE_VITALS)) {
                     if (!mListDataHeader.get(groupPosition).getVitals().isEmpty())
                         if (mVisitDetailList.get(0).getName().equalsIgnoreCase("bp")) {
                             String bpValue = mVisitDetailList.get(0).getVitalValue();

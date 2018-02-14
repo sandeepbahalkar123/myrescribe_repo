@@ -23,6 +23,14 @@ public class VisitCommonData implements CustomResponse{
     @Expose
     private String remarks = "";
 
+    @SerializedName("dosage")
+    @Expose
+    private String dosage = "";
+
+    @SerializedName("medicineTypeName")
+    @Expose
+    private String medicineTypeName = "";
+
     public String getVitalValue() {
         return vitalValue;
     }
@@ -71,5 +79,21 @@ public class VisitCommonData implements CustomResponse{
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getDosage() {
+        return dosage;
+    }
+
+    public void setDosage(String dosage) {
+        this.dosage = dosage;
+    }
+
+    public String getMedicineTypeName() {
+        return medicineTypeName;
+    }
+
+    public void setMedicineTypeName(String medicineTypeName) {
+        this.medicineTypeName = medicineTypeName;
     }
 }

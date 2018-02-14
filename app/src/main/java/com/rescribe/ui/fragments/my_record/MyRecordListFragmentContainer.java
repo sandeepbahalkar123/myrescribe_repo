@@ -202,16 +202,20 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             @Override
             public void run() {
 
+                boolean found = false;
                 for (int i = 0; i < mTimePeriodList.size(); i++) {
                     Year temp = mTimePeriodList.get(i);
-                    if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear()) &&
-                            temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
-                        mViewpager.setCurrentItem(i);
-                        break;
+                    if (temp.getYear().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getYear())) {
+                        if (temp.getMonthName().equalsIgnoreCase(mCurrentSelectedTimePeriodTab.getMonthName())) {
+                            mViewpager.setCurrentItem(i);
+                            found = true;
+                            break;
+                        }
                     }
-
-                //    mViewpager.setCurrentItem(mTimePeriodList.size());
                 }
+
+                if (!found)
+                    mViewpager.setCurrentItem(mTimePeriodList.size() - 1);
             }
         }, 0);
         //---------

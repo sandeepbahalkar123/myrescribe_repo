@@ -84,7 +84,7 @@ public class ClinicTokenDetails implements Parcelable {
             }
             return scheduledTimeStamp;
         } else
-            return CommonMethods.formatDateTime("00:00:00", RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.TIME);
+            return CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
     }
 
     public void setScheduledTimeStamp(String scheduledTimeStamp) {

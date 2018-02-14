@@ -14,15 +14,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16"
-        android:paddingBottom="@dimen/dp16"
-        android:paddingTop="@dimen/dp16"
+        android:paddingBottom="@dimen/dp10"
+        android:paddingTop="@dimen/dp10"
+        tools:visibility="visible"
         android:orientation="vertical"/>
 
     <LinearLayout
         android:id="@+id/items_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dp62"
+        android:layout_marginLeft="@dimen/dp58"
         android:orientation="horizontal">
 
         <com.rescribe.ui.customesViews.CircularImageView

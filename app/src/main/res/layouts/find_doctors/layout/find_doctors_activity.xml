@@ -1,208 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomFrame"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/dp26"
-    android:paddingTop="@dimen/dp16">
+    android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="0px"
-        android:layout_height="0px"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listView"
+    <com.rescribe.ui.customesViews.JCropImageView
+        android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:visibility="visible" />
-
-    <com.rescribe.ui.customesViews.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp20"
-        android:text="@string/still_unsure"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp15"
-        app:customFont="@string/roboto_medium" />
+        app:cropAlign="top"
+        app:cropType="fit_width" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp11"
-        android:background="@drawable/box"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp26"
+        android:paddingTop="@dimen/dp16">
 
-        <AutoCompleteTextView
-            android:id="@+id/complaintsTextView"
+        <View
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:visibility="visible" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:completionThreshold="1"
-            android:hint="@string/type_to_select"
-            android:paddingLeft="@dimen/dp12"
-            android:paddingStart="@dimen/dp12"
+            android:layout_marginTop="@dimen/dp20"
+            android:text="@string/still_unsure"
             android:textColor="@color/black"
-            android:textColorHint="@color/grey_shade"
-            android:textCursorDrawable="@drawable/cursor_black"
             android:textSize="@dimen/sp15"
-            android:theme="@style/AppTheme.AppBarOverlay" />
+            app:customFont="@string/roboto_medium" />
 
-        <ImageView
-            android:id="@+id/complaintsImageView"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="@dimen/dp11"
-            android:paddingRight="@dimen/dp11"
-            android:src="@drawable/right_arrow_circle" />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp11"
+            android:background="@drawable/box"
+            android:orientation="horizontal">
+
+            <AutoCompleteTextView
+                android:id="@+id/complaintsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:completionThreshold="1"
+                android:hint="@string/type_to_select"
+                android:paddingLeft="@dimen/dp12"
+                android:paddingStart="@dimen/dp12"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_shade"
+                android:textCursorDrawable="@drawable/cursor_black"
+                android:textSize="@dimen/sp15"
+                android:theme="@style/AppTheme.AppBarOverlay" />
+
+            <ImageView
+                android:id="@+id/complaintsImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/dp11"
+                android:paddingRight="@dimen/dp11"
+                android:src="@drawable/right_arrow_circle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/favoriteFindDoctorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/favouriteDoctors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp26"
+                android:text="@string/favorite"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_regular" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp6"
+                android:src="@drawable/blue_line_find_doctor" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/viewAllFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/dp13"
+                android:layout_marginRight="@dimen/dp13"
+                android:layout_marginTop="@dimen/dp16"
+                android:text="@string/view_all"
+                android:textColor="#4785ee"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_regular" />
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/favoriteViewPager"
+                android:layout_width="wrap_content"
+                android:layout_height="165dp"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="@dimen/dp10"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sponseredFindDoctorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/sponsoredDoctors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp26"
+                android:text="@string/sponsored_doctor"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_regular" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp6"
+                android:src="@drawable/blue_line_find_doctor" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/viewAllSponsered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/dp13"
+                android:layout_marginRight="@dimen/dp13"
+                android:layout_marginTop="@dimen/dp16"
+                android:text="@string/view_all"
+                android:textColor="#4785ee"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_regular" />
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/sponseredViewPager"
+                android:layout_width="wrap_content"
+                android:layout_height="165dp"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="@dimen/dp10"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/recentlyVisitedFindDoctorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/recentlyvisitedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp26"
+                android:text="@string/recently_visit_doctor"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_regular" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp6"
+                android:src="@drawable/blue_line_find_doctor" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/viewAllRecentVisited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/dp13"
+                android:layout_marginRight="@dimen/dp13"
+                android:layout_marginTop="@dimen/dp16"
+                android:text="@string/view_all"
+                android:textColor="#4785ee"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_regular" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/recentlyViewPager"
+                android:layout_width="wrap_content"
+                android:layout_height="165dp"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="@dimen/dp10"
+                android:visibility="visible" />
+
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/favoriteFindDoctorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/favouriteDoctors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp26"
-            android:text="@string/favorite"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp6"
-            android:src="@drawable/blue_line_find_doctor" />
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/viewAllFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/dp13"
-            android:layout_marginRight="@dimen/dp13"
-            android:layout_marginTop="@dimen/dp16"
-            android:text="@string/view_all"
-            android:textColor="#4785ee"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/favoriteViewPager"
-            android:layout_width="wrap_content"
-            android:layout_height="165dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="@dimen/dp10"
-            android:visibility="visible" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/sponseredFindDoctorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/sponsoredDoctors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp26"
-            android:text="@string/sponsored_doctor"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp6"
-            android:src="@drawable/blue_line_find_doctor" />
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/viewAllSponsered"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/dp13"
-            android:layout_marginRight="@dimen/dp13"
-            android:layout_marginTop="@dimen/dp16"
-            android:text="@string/view_all"
-            android:textColor="#4785ee"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/sponseredViewPager"
-            android:layout_width="wrap_content"
-            android:layout_height="165dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="@dimen/dp10"
-            android:visibility="visible" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/recentlyVisitedFindDoctorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/recentlyvisitedTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp26"
-            android:text="@string/recently_visit_doctor"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp6"
-            android:src="@drawable/blue_line_find_doctor" />
-
-        <com.rescribe.ui.customesViews.CustomTextView
-            android:id="@+id/viewAllRecentVisited"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/dp13"
-            android:layout_marginRight="@dimen/dp13"
-            android:layout_marginTop="@dimen/dp16"
-            android:text="@string/view_all"
-            android:textColor="#4785ee"
-            android:textSize="@dimen/sp14"
-            app:customFont="@string/roboto_regular" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/recentlyViewPager"
-            android:layout_width="wrap_content"
-            android:layout_height="165dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="@dimen/dp10"
-            android:visibility="visible" />
-
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

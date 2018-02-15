@@ -587,11 +587,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     @Override
     public void onButtonClicked(String type, UnreadBookAppointTokenNotificationData unreadNotificationMessageData) {
-        if (type.equalsIgnoreCase(getString(R.string.no))) {
+        if (type.equalsIgnoreCase(getString(R.string.no)))
             mDoctorDataHelper.doRejectBookAppointReceivedToken(unreadNotificationMessageData.getTime(), unreadNotificationMessageData.getDocId(), unreadNotificationMessageData.getLocationId());
-        } else {
-            mDoctorDataHelper.doConfirmBookAppointReceivedToken(unreadNotificationMessageData.getTime(), unreadNotificationMessageData.getDocId(), unreadNotificationMessageData.getLocationId(), unreadNotificationMessageData.getTokenNumber());
-        }
+        else
+            mDoctorDataHelper.doConfirmBookAppointReceivedToken(unreadNotificationMessageData.getTime(), unreadNotificationMessageData.getDocId(), unreadNotificationMessageData.getLocationId());
     }
 
     @Override

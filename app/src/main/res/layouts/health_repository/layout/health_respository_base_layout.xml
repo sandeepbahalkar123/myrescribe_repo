@@ -25,7 +25,7 @@
                 android:textSize="@dimen/sp18"
                 android:visibility="visible"
                 app:customFont="@string/roboto_bold"
-                tools:text="sfdfsdgffghghg" />
+                tools:text="Title" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
@@ -50,21 +50,23 @@
                 android:scaleType="fitXY" />
 
             <FrameLayout
+                android:id="@+id/bottomFrame"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <ImageView
+                <com.rescribe.ui.customesViews.JCropImageView
+                    android:id="@+id/backgroundImage"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/services_bg" />
-
+                    android:layout_height="wrap_content"
+                    app:cropAlign="top"
+                    app:cropType="fit_width" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/healthRepositoryListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/dp28"
+                    android:layout_marginBottom="@dimen/dp40"
                     android:clipToPadding="false"
                     android:visibility="visible" />
             </FrameLayout>

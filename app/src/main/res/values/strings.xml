@@ -399,6 +399,7 @@
     <string name="mins">mins</string>
     <string name="doctor_will_see_you_in">Doctor will see you in</string>
     <string name="token_taken_message">Token has already been taken with this doctor</string>
+    <string name="dummy_artical">Save the articles from \'Health Education\' section and refer them here at your convenient time</string>
 
     <!--************************-->
 </resources>

@@ -60,30 +60,8 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
         holder.rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /*if (position == vitalsPos) {
-                    boolean isOtherSelected = false;
-                    for (int inx = 0; inx < caseDetailsList.size(); inx++) {
-                        if (inx != vitalsPos) {
-                            if (caseDetailsList.get(inx).isSelected()) {
-                                isOtherSelected = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (isOtherSelected) {
-                        caseDetailsList.get(position).setSelected(false);
-                        CommonMethods.showInfoDialog(mContext.getResources().getString(R.string.case_details_message), mContext, false);
-                    } else
-                        toggle(position);
-                } else if (caseDetailsList.get(vitalsPos).isSelected()) {
-                    caseDetailsList.get(position).setSelected(false);
-                    CommonMethods.showInfoDialog(mContext.getResources().getString(R.string.case_details_message), mContext, false);
-                } else*/
-                    toggle(position);
-
+                toggle(position);
                 itemClickListener.onCaseClick();
-                
                 notifyItemChanged(position);
             }
         });

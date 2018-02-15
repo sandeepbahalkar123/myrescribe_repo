@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.rescribe.ui.activities.saved_articles.SavedArticles.ARTICLE_REQUEST_CODE;
+import static com.rescribe.ui.activities.saved_articles.SavedArticlesActivity.ARTICLE_REQUEST_CODE;
 
 /**
  * Created by jeetal on 8/12/17.

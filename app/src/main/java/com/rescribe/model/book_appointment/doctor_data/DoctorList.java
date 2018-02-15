@@ -473,6 +473,26 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         return tokenNumber;
     }
 
+    public int getDocLocationId() {
+        return docLocationId;
+    }
+
+    public void setDocLocationId(int docLocationId) {
+        this.docLocationId = docLocationId;
+    }
+
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setTokenNumber(String tokenNumber) {
+        this.tokenNumber = tokenNumber;
+    }
+
     public int getLocationId() {
         return locationId;
     }

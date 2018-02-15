@@ -41,7 +41,7 @@ import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
-import com.rescribe.ui.activities.saved_articles.SavedArticles;
+import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
@@ -433,7 +433,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
-            Intent intent = new Intent(mContext, SavedArticles.class);
+            Intent intent = new Intent(mContext, SavedArticlesActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
             intent.putExtras(bundle);

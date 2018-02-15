@@ -54,9 +54,10 @@ import com.rescribe.model.Common;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.ConfirmTokenModel;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
-import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetails;
+import com.rescribe.model.book_appointment.doctor_data.ClinicTokenData;
 import com.rescribe.model.book_appointment.doctor_data.ClinicTokenDetailsBaseModel;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.book_appointment.doctor_data.TokenDetails;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.Reschedule;
 import com.rescribe.model.book_appointment.request_appointment_confirmation.ResponseAppointmentConfirmationModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
@@ -167,8 +168,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     //--------------
     @BindView(R.id.waitingTime)
     CustomTextView mWaitingTime;
-    @BindView(R.id.receivedTokenNumber)
-    CustomTextView mReceivedTokenNumber;
     @BindView(R.id.scheduledAppointmentsTimeStamp)
     CustomTextView mScheduledAppointmentsTimeStamp;
     @BindView(R.id.selectClinicLine)
@@ -204,7 +203,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private String from;
     private String aptId;
     private String isReschedule;
-
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -346,8 +344,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     .load(mClickedDoctorObject.getDoctorImageUrl())
                     .apply(requestOptions).thumbnail(0.5f)
                     .into(mProfileImage);
-
-
         }
 
         //-------
@@ -521,37 +517,41 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;
                 if (clinicTokenDetailsBaseModel != null) {
                     Common common = clinicTokenDetailsBaseModel.getCommon();
-                    ClinicTokenDetails clinicTokenDetails = clinicTokenDetailsBaseModel.getClinicTokenDetails();
+                    ClinicTokenData clinicTokenDetails = clinicTokenDetailsBaseModel.getClinicTokenDetails();
                     if (clinicTokenDetails != null) {
 
                         tokenMessageTextView.setVisibility(View.GONE);
 
                         if (clinicTokenDetails.isTokenTaken() == 0) {
+
+                            TokenDetails tokenDetails = clinicTokenDetails.getTokenDetails();
+
                             mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
                             appointmentTypeIsTokenButton.setVisibility(View.VISIBLE);
 
-                            mWaitingTime.setText("" + clinicTokenDetails.getWaitingTime());
+                            mWaitingTime.setText("" + tokenDetails.getWaitingTime());
 
                             try {
                                 Calendar cal = Calendar.getInstance();
-                                SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
-                                cal.setTime(sdf.parse(clinicTokenDetails.getScheduledTimeStamp()));
-                                cal.add(Calendar.MINUTE, clinicTokenDetails.getWaitingTime());
-                                String timeToShow = sdf.format(cal.getTime()).toLowerCase();
+                                SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.UTC_PATTERN, Locale.US);
+                                SimpleDateFormat expected = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
+                                cal.setTime(sdf.parse(tokenDetails.getApmtTime()));
+                                cal.add(Calendar.MINUTE, tokenDetails.getWaitingTime());
+                                String timeToShow = expected.format(cal.getTime()).toLowerCase();
                                 mScheduledAppointmentsTimeStamp.setText(timeToShow);
+                                mSelectedTimeStampForNewToken = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
-                            mReceivedTokenNumber.setText("" + clinicTokenDetails.getTokenNumber());
                         } else {
                             mConfirmedTokenMainLayout.setVisibility(View.GONE);
                             appointmentTypeIsTokenButton.setVisibility(View.GONE);
                             tokenMessageTextView.setVisibility(View.VISIBLE);
                         }
-                    } else {
+                    } else
                         showTokenStatusMessageBox(-1, common.getStatusMessage(), mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
-                    }
                 }
                 break;
             case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER:
@@ -690,14 +690,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), 0, mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
 
-                if (fcmTokenData != null) {
+                if (fcmTokenData != null)
                     showTokenStatusMessageBox(fcmTokenData.getTokenNumber(), fcmTokenData.getMsg(), null, fcmTokenData.getDocId(), fcmTokenData.getLocationId());
-                }
 
             } else {
                 setDataInViews();
                 changeViewBasedOnAppointmentType();
-
             }
 
         }
@@ -735,11 +733,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
                 break;
             case R.id.appointmentTypeIsTokenButton:
-                String receiveTokenNo = mReceivedTokenNumber.getText().toString().trim();
-                if (receiveTokenNo.length() > 0) {
-                    int receivedTokenNo = Integer.parseInt(receiveTokenNo);
-                    mDoctorDataHelper.doConfirmBookAppointReceivedToken(mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), receivedTokenNo);
-                }
+                mDoctorDataHelper.doConfirmBookAppointReceivedToken(mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
                 break;
             case R.id.appointmentTypeIsBookButton:
                 if (mSelectSlotToBookAppointmentAdapter != null) {
@@ -1055,7 +1049,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 if (tokenNumber != -1)
-                    mDoctorDataHelper.doConfirmBookAppointReceivedToken(mSelectedTimeStampForNewT, mDocId, mLocationId, tokenNumber);
+                    mDoctorDataHelper.doConfirmBookAppointReceivedToken(mSelectedTimeStampForNewT, mDocId, mLocationId);
                 else
                     mDoctorDataHelper.doSetTokenNotificationReminder(mSelectedTimeStampForNewT, mDocId, mLocationId);
                 dialog.cancel();

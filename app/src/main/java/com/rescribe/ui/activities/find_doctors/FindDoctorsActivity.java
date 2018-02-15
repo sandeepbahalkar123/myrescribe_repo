@@ -15,9 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -65,6 +68,14 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     Toolbar toolbar;
     @BindView(R.id.img_group_photo)
     ImageView imgGroupPhoto;
+
+//    @BindView(R.id.backgroundImageLayout)
+//    RelativeLayout backgroundImageLayout;
+    @BindView(R.id.backgroundImage)
+    ImageView backgroundImage;
+    @BindView(R.id.bottomFrame)
+    RelativeLayout bottomFrame;
+
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
     @BindView(R.id.listView)
@@ -166,7 +177,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 requestOptions.skipMemoryCache(true);
 
                 String imageURL = Config.BASE_URL + FOLDER_PATH + density + clickEvent1.getBgImageUrl();
-                
+
                 Glide.with(this)
                         .load(imageURL)
                         .apply(requestOptions)
@@ -206,16 +217,29 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         //-------------
 
         setUpViewPager();
+
+
+        ViewTreeObserver vto = bottomFrame.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                bottomFrame.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int width = bottomFrame.getMeasuredWidth();
+                int height = bottomFrame.getMeasuredHeight();
+                RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(width, height);
+                backgroundImage.setImageResource(R.drawable.bg_overlay);
+                backgroundImage.setLayoutParams(parms);
+            }
+        });
     }
 
     private void setUpViewPager() {
         if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3) {
-
             viewAllFavorite.setVisibility(View.GONE);
         } else {
             viewAllFavorite.setVisibility(View.GONE);
-
         }
+
         if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3) {
             viewAllSponsered.setVisibility(View.GONE);
         } else {
@@ -396,7 +420,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             Bundle bundle = new Bundle();
             // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
             bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
-            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD,"");
+            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (data.getName().equalsIgnoreCase(getString(R.string.doctor_connect))) {

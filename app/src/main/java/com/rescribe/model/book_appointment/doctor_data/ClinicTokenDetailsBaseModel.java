@@ -16,7 +16,7 @@ public class ClinicTokenDetailsBaseModel implements Parcelable, CustomResponse {
     private Common common;
     @SerializedName("data")
     @Expose
-    private ClinicTokenDetails clinicTokenDetails;
+    private ClinicTokenData clinicTokenData;
     public final static Creator<ClinicTokenDetailsBaseModel> CREATOR = new Creator<ClinicTokenDetailsBaseModel>() {
 
         @SuppressWarnings({
@@ -25,7 +25,7 @@ public class ClinicTokenDetailsBaseModel implements Parcelable, CustomResponse {
         public ClinicTokenDetailsBaseModel createFromParcel(Parcel in) {
             ClinicTokenDetailsBaseModel instance = new ClinicTokenDetailsBaseModel();
             instance.common = ((Common) in.readValue((Common.class.getClassLoader())));
-            instance.clinicTokenDetails = ((ClinicTokenDetails) in.readValue((ClinicTokenDetails.class.getClassLoader())));
+            instance.clinicTokenData = ((ClinicTokenData) in.readValue((ClinicTokenData.class.getClassLoader())));
             return instance;
         }
 
@@ -43,66 +43,20 @@ public class ClinicTokenDetailsBaseModel implements Parcelable, CustomResponse {
         this.common = common;
     }
 
-    public ClinicTokenDetails getClinicTokenDetails() {
-        return clinicTokenDetails;
+    public ClinicTokenData getClinicTokenDetails() {
+        return clinicTokenData;
     }
 
-    public void setClinicTokenDetails(ClinicTokenDetails clinicTokenDetails) {
-        this.clinicTokenDetails = clinicTokenDetails;
+    public void setClinicTokenDetails(ClinicTokenData clinicTokenDetails) {
+        this.clinicTokenData = clinicTokenDetails;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(common);
-        dest.writeValue(clinicTokenDetails);
+        dest.writeValue(clinicTokenData);
     }
 
     public int describeContents() {
         return 0;
     }
-
-
-    /*public class ClinicTokenDataModel implements Parcelable {
-
-        @SerializedName("data")
-        @Expose
-        private ClinicTokenDetails clinicTokenDetails;
-
-        public final Creator<ClinicTokenDataModel> CREATOR = new Creator<ClinicTokenDataModel>() {
-
-
-            @SuppressWarnings({
-                    "unchecked"
-            })
-            public ClinicTokenDataModel createFromParcel(Parcel in) {
-                ClinicTokenDataModel instance = new ClinicTokenDataModel();
-                instance.clinicTokenDetails = ((ClinicTokenDetails) in.readValue((ClinicTokenDetails.class.getClassLoader())));
-                return instance;
-            }
-
-            public ClinicTokenDataModel[] newArray(int size) {
-                return (new ClinicTokenDataModel[size]);
-            }
-
-        };
-
-        public ClinicTokenDetails getClinicTokenDetails() {
-            return clinicTokenDetails;
-        }
-
-        public void setClinicTokenDetails(ClinicTokenDetails clinicTokenDetails) {
-            this.clinicTokenDetails = clinicTokenDetails;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeValue(clinicTokenDetails);
-        }
-        }
-    */
-
 }

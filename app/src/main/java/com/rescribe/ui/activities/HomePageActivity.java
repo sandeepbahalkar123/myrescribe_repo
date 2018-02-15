@@ -86,8 +86,8 @@ import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
-import com.rescribe.ui.activities.health_repository.HealthRepository;
-import com.rescribe.ui.activities.saved_articles.SavedArticles;
+import com.rescribe.ui.activities.health_repository.HealthRepositoryActivity;
+import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
@@ -555,7 +555,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_repository))) {
-            intent = new Intent(mContext, HealthRepository.class);
+            intent = new Intent(mContext, HealthRepositoryActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(getString(R.string.clicked_item_data), menu);
             b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
@@ -976,7 +976,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
-            Intent intent = new Intent(mContext, SavedArticles.class);
+            Intent intent = new Intent(mContext, SavedArticlesActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
             intent.putExtras(bundle);

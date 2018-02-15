@@ -261,33 +261,16 @@ public class DoctorDataHelper implements ConnectionListener {
 
     public void getTokenNumberDetails(String docId, int locationID, String selectedTimeStamp) {
 
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.GET_TOKEN_NUMBER_OTHER_DETAILS + "docId=" + docId + "&locationId=" + locationID + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
 
-        if (selectedTimeStamp != null) {
+        if (selectedTimeStamp != null)
             url = url + "&time=" + selectedTimeStamp;
-        }
 
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS);
-
-        /*try {
-            InputStream is = mContext.getAssets().open("get_token_api_result.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e(TAG, "get_token_api_result" + json);
-
-            ClinicTokenDetailsBaseModel slotListBaseModel = new Gson().fromJson(json, ClinicTokenDetailsBaseModel.class);
-            onResponse(ConnectionListener.RESPONSE_OK, slotListBaseModel, RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
     }
 
     public void doSetTokenNotificationReminder(String time, int docId, int locationID) {
@@ -343,7 +326,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
     }
 
-    public void doConfirmBookAppointReceivedToken(String time, int docId, int locationID, int tokenNumber) {
+    public void doConfirmBookAppointReceivedToken(String time, int docId, int locationID) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
@@ -351,7 +334,6 @@ public class DoctorDataHelper implements ConnectionListener {
         requestDoctorListBaseModel.setDocId(docId);
         requestDoctorListBaseModel.setTime(time);
         requestDoctorListBaseModel.setLocationId(locationID);
-        requestDoctorListBaseModel.setTokenNumber(tokenNumber);
         requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
 
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);

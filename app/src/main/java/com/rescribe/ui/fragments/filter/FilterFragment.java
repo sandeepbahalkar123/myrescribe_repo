@@ -103,9 +103,8 @@ public class FilterFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
 
-        if (getArguments() != null) {
+        if (getArguments() != null)
             caseDetailsList = getArguments().getParcelableArrayList(RescribeConstants.CASE_DETAILS);
-        }
 
         //-- Add ScrollView runtime if orientation is LANDSCAPE. : START
         int orientation = this.getResources().getConfiguration().orientation;

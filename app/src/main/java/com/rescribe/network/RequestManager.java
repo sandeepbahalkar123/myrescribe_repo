@@ -716,6 +716,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER: //This is to set alert for book appoint token remainder
                     case RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER://This is for to patient rejected received notifiation for specific time.
                     case RescribeConstants.TASK_DO_SKIP_INVESTIGATION://This is for to skip investigation.
+                    case RescribeConstants.FOLLOW_UP: //This is for fav doc
                         CommonBaseModelContainer responseFavouriteDoctorBaseModel = new Gson().fromJson(data, CommonBaseModelContainer.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, responseFavouriteDoctorBaseModel, mOldDataTag);
                         break;

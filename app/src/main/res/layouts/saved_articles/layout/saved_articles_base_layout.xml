@@ -52,32 +52,34 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/dp25"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone"
-            android:layout_margin="@dimen/dp20"
             tools:visibility="visible">
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/imageView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:adjustViewBounds="true"
-                app:srcCompat="@drawable/savedarticle_coachmark_done" />
+                app:srcCompat="@drawable/help_save_articales" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/messageText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imageView"
-                android:layout_marginTop="@dimen/dp20"
-                android:paddingStart="@dimen/dp16"
-                android:paddingEnd="@dimen/dp16"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp32"
                 android:gravity="center"
-                app:customFont="@string/roboto_regular"
+                android:paddingEnd="@dimen/dp10"
+                android:paddingStart="@dimen/dp10"
+                android:text="@string/help_save_artical_message"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
-                android:text="@string/dummy_artical"/>
+                app:customFont="@string/roboto_regular" />
 
         </RelativeLayout>
 

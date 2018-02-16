@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.PrescriptionListAdapter;
@@ -43,10 +44,9 @@ public class PrescriptionActivity extends AppCompatActivity
     Toolbar mToolbar;
     @BindView(R.id.recyclerViewShowMedicineDoseList)
     RecyclerView mRecyclerView;
-    @BindView(R.id.noDataView)
-    ImageView mNoDataView;
+    @BindView(R.id.emptyListView)
+    RelativeLayout emptyListView;
     private PrescriptionHelper mPrescriptionHelper;
-    private DashboardMenuList mReceivedDashboardMenuListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class PrescriptionActivity extends AppCompatActivity
         getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
+            DashboardMenuList mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
             String value = extras.getString(getString(R.string.clicked_item_data_type_value));
 
             if (mReceivedDashboardMenuListData != null)
@@ -120,11 +120,11 @@ public class PrescriptionActivity extends AppCompatActivity
 
             if (dataReceived.getPrescriptionModels().size() > 0) {
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mNoDataView.setVisibility(View.GONE);
+                emptyListView.setVisibility(View.GONE);
 
             } else {
                 mRecyclerView.setVisibility(View.GONE);
-                mNoDataView.setVisibility(View.VISIBLE);
+                emptyListView.setVisibility(View.VISIBLE);
             }
 
             List<PrescriptionModel> data = dataReceived.getPrescriptionModels();
@@ -154,13 +154,10 @@ public class PrescriptionActivity extends AppCompatActivity
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        mNoDataView.setVisibility(View.VISIBLE);
+        emptyListView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-
-        }
     }
 }

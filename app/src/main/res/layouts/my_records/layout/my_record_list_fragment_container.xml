@@ -1,5 +1,6 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -39,8 +40,8 @@
                     android:id="@+id/doctorSpecialization"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/dp16"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:paddingLeft="@dimen/dp16"
                     android:text="@string/my_records"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp18"
@@ -79,9 +80,9 @@
             android:id="@+id/tabFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:tabGravity="fill"
             app:tabMaxWidth="500dp"
-            android:visibility="gone"
             app:tabMode="scrollable" />
 
     </android.support.design.widget.AppBarLayout>
@@ -91,28 +92,57 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/noRecords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
+        <RelativeLayout
+            android:id="@+id/emptyListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:src="@drawable/no_records_found"/>
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp25"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/help_my_records" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/messageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp32"
+                android:gravity="center"
+                android:paddingEnd="@dimen/dp10"
+                android:paddingStart="@dimen/dp10"
+                android:text="@string/help_my_records_message"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_regular" />
+
+        </RelativeLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/addRecordButton"/>
+            android:layout_above="@+id/addRecordButton" />
 
         <Button
             android:id="@+id/addRecordButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp40"
             android:layout_alignParentBottom="true"
+            android:background="@drawable/button_selector"
             android:text="@string/add_record"
-            android:textColor="@color/white"
-            android:background="@drawable/button_selector"/>
+            android:textColor="@color/white" />
 
     </RelativeLayout>
 

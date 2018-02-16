@@ -47,9 +47,6 @@ public class FCMTokenData implements Parcelable {
     @SerializedName("locationId")
     @Expose
     private Integer locationId;
-    @SerializedName("tokenNumber")
-    @Expose
-    private Integer tokenNumber;
     @SerializedName("favorite")
     @Expose
     private Boolean favorite;
@@ -84,7 +81,6 @@ public class FCMTokenData implements Parcelable {
         this.appointmentTime = ((String) in.readValue((String.class.getClassLoader())));
         this.price = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.tokenNumber = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.favorite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
@@ -195,14 +191,6 @@ public class FCMTokenData implements Parcelable {
         this.locationId = locationId;
     }
 
-    public Integer getTokenNumber() {
-        return tokenNumber;
-    }
-
-    public void setTokenNumber(Integer tokenNumber) {
-        this.tokenNumber = tokenNumber;
-    }
-
     public Boolean getFavorite() {
         return favorite;
     }
@@ -225,7 +213,6 @@ public class FCMTokenData implements Parcelable {
         dest.writeValue(appointmentTime);
         dest.writeValue(price);
         dest.writeValue(locationId);
-        dest.writeValue(tokenNumber);
         dest.writeValue(favorite);
     }
 

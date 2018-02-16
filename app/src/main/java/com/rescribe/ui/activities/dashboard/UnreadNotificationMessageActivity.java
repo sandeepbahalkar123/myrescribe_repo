@@ -1,15 +1,23 @@
 package com.rescribe.ui.activities.dashboard;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
@@ -19,19 +27,23 @@ import com.rescribe.adapters.unread_notification_message_list.UnreadNotification
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.investigation.InvestigationHelper;
+import com.rescribe.helpers.notification.AppointmentHelper;
 import com.rescribe.helpers.notification.RespondToNotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.ConfirmTokenModel;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationBaseModel;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationData;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
+import com.rescribe.model.follow_up.FollowUpRequest;
 import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
+import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.InvestigationActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -89,8 +101,22 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     CustomTextView mAppointmentsFirstMessageTimeStamp;
     @BindView(R.id.investigationFirstMessageTimeStamp)
     CustomTextView mInvestigationFirstMessageTimeStamp;
+
     @BindView(R.id.emptyListMessageView)
     ImageView emptyListMessageView;
+
+    // Follow Up
+
+    @BindView(R.id.followUpViewLayout)
+    LinearLayout followUpViewLayout;
+    @BindView(R.id.followUpTimeStamp)
+    TextView followUpTimeStamp;
+    @BindView(R.id.skipButton)
+    TextView skipButton;
+    @BindView(R.id.bookButton)
+    TextView bookButton;
+
+
     private UnreadNotificationAlertAdapter mAppointmentNotificationAlertAdapter;
     private UnreadNotificationAlertAdapter mInvestigationNotificationAlertAdapter;
     private UnreadBookAppointTokenNotificationAdapter mUnreadBookAppointTokenNotificationAdapter;
@@ -101,9 +127,6 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private UnreadSavedNotificationMessageData mClickedUnreadInvestigationMessageData;
     private boolean isMedicationLoadMoreFooterClickedPreviously;
     public boolean isAllListEmpty = true;
-    Calendar c = Calendar.getInstance();
-    int hour24 = c.get(Calendar.HOUR_OF_DAY);
-    int Min = c.get(Calendar.MINUTE);
 
     private HashMap<String, String> medicNotificationTimeId = new HashMap<>();
     private HashMap<String, ArrayList<Medication>> listDataChild = new HashMap<>();
@@ -113,6 +136,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private boolean medicationToCheck;
 
     public boolean isExpanded;
+    private Dialog followUpDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,9 +196,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
 
         //----------------
-        if (medicationAlertList.isEmpty()) {
+        if (medicationAlertList.isEmpty())
             mOnGoingMedicationListViewLayout.setVisibility(View.GONE);
-        } else {
+        else {
             //sortListByMealTime(medicationAlertList);
             isAllListEmpty = false;
             mMedicationToNotificationHelper = new RespondToNotificationHelper(this, this);
@@ -479,6 +503,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                         if (!list.isEmpty()) {
                             setUnreadBookAppointTokenAlertListAdapter(list);
                             isAllListEmpty = false;
+                            showMessage();
                         } else {
                             unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
                         }
@@ -488,14 +513,16 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 } else {
                     unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
                 }
-            } else {
+            } else
                 unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
-            }
-        } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER) ||
-                mOldDataTag.equals(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION)) {
+
+        } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
-
+            doGetUnreadTokenNotification();
+        } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION)) {
+            ConfirmTokenModel confirmTokenModel = (ConfirmTokenModel) customResponse;
+            CommonMethods.showToast(this, confirmTokenModel.getCommon().getStatusMessage());
             doGetUnreadTokenNotification();
         } else if (RescribeConstants.TASK_DO_SKIP_INVESTIGATION.equals(mOldDataTag)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
@@ -510,6 +537,13 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             }
 
             initializeInvestigationListView();
+        } else if (RescribeConstants.FOLLOW_UP.equals(mOldDataTag)){
+            CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
+            CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
+            followUpDialog.dismiss();
+            Intent intent = new Intent(UnreadNotificationMessageActivity.this, HomePageActivity.class);
+            startActivity(intent);
+            finishAffinity();
         }
 
     }
@@ -532,12 +566,18 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     //-------
-    @OnClick({R.id.bookAppointmentBackButton})
+    @OnClick({R.id.bookAppointmentBackButton, R.id.bookButton, R.id.skipButton})
     public void onViewClick(View v) {
 
         switch (v.getId()) {
             case R.id.bookAppointmentBackButton:
                 finish();
+                break;
+            case R.id.bookButton:
+                // Book appointment
+                break;
+            case R.id.skipButton:
+                showFollowUpDialog(1);
                 break;
         }
     }
@@ -608,5 +648,92 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 onBackPressed();
                 break;
         }
+    }
+
+    public void showFollowUpDialog(int reminderId) {
+
+        followUpDialog = new Dialog(this);
+
+        followUpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        followUpDialog.setContentView(R.layout.follow_up_dialog_popup);
+        followUpDialog.setCancelable(true);
+
+        final RelativeLayout alreadyBooked = (RelativeLayout) followUpDialog.findViewById(R.id.already_booked);
+        final RelativeLayout followUpComplete = (RelativeLayout) followUpDialog.findViewById(R.id.follow_up_complete);
+        final RelativeLayout notInterested = (RelativeLayout) followUpDialog.findViewById(R.id.not_interested);
+
+        final TextView alreadyBookedText = (TextView) followUpDialog.findViewById(R.id.already_booked_text);
+        final TextView followUpCompleteText = (TextView) followUpDialog.findViewById(R.id.follow_up_complete_text);
+        final TextView notInterestedText = (TextView) followUpDialog.findViewById(R.id.not_interested_text);
+
+        final AppointmentHelper appointmentHelper = new AppointmentHelper(UnreadNotificationMessageActivity.this);
+        final FollowUpRequest followUpRequest = new FollowUpRequest();
+        followUpRequest.setReminderId(reminderId);
+
+        alreadyBooked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alreadyBookedText.setTextColor(getResources().getColor(R.color.white));
+                alreadyBooked.setBackgroundColor(getResources().getColor(R.color.tagColor));
+
+                followUpCompleteText.setTextColor(getResources().getColor(R.color.follow_up_button));
+                followUpComplete.setBackgroundColor(getResources().getColor(R.color.white));
+
+                notInterestedText.setTextColor(getResources().getColor(R.color.follow_up_button));
+                notInterested.setBackground(getResources().getDrawable(R.drawable.not_intrested_back_white));
+
+                followUpRequest.setResponse(alreadyBookedText.getText().toString());
+                appointmentHelper.followUpSkip(followUpRequest);
+            }
+        });
+
+        followUpComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alreadyBookedText.setTextColor(getResources().getColor(R.color.follow_up_button));
+                alreadyBooked.setBackgroundColor(getResources().getColor(R.color.white));
+
+                followUpCompleteText.setTextColor(getResources().getColor(R.color.white));
+                followUpComplete.setBackgroundColor(getResources().getColor(R.color.tagColor));
+
+                notInterestedText.setTextColor(getResources().getColor(R.color.follow_up_button));
+                notInterested.setBackground(getResources().getDrawable(R.drawable.not_intrested_back_white));
+
+                followUpRequest.setResponse(followUpCompleteText.getText().toString());
+                appointmentHelper.followUpSkip(followUpRequest);
+            }
+        });
+
+        notInterested.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alreadyBookedText.setTextColor(getResources().getColor(R.color.follow_up_button));
+                alreadyBooked.setBackgroundColor(getResources().getColor(R.color.white));
+
+                followUpCompleteText.setTextColor(getResources().getColor(R.color.follow_up_button));
+                followUpComplete.setBackgroundColor(getResources().getColor(R.color.white));
+
+                notInterestedText.setTextColor(getResources().getColor(R.color.white));
+                notInterested.setBackground(getResources().getDrawable(R.drawable.not_intrested_back_blue));
+
+                followUpRequest.setResponse(notInterestedText.getText().toString());
+                appointmentHelper.followUpSkip(followUpRequest);
+            }
+        });
+
+        followUpDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(followUpDialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+
+        followUpDialog.getWindow().setAttributes(lp);
+        followUpDialog.setCanceledOnTouchOutside(false);
+        followUpDialog.show();
     }
 }

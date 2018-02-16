@@ -26,6 +26,8 @@ public class Config {
     public static final String CONFIRM_APPOINTMENT = "api/patient/bookAppointment ";
     public static final String CANCEL_RESCHDULE_APPOINTMENT = "api/patient/updateAppointmentStatus";
     public static final String CANCEL_TOKEN_NUMBER = "api/doctors/cancelTokenNo";
+    public static final String FOLLOW_UP_RESPONSE = "api/patient/notificationResponse";
+
     public static boolean DEV_BUILD = true;
 
     public static final String BROKER = "tcp://52.66.154.249:1883"; // Dr Rescribe IP

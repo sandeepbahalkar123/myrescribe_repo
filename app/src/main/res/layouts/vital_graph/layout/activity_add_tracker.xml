@@ -9,24 +9,25 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/tagColor"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp18"
-                tools:text="sfdfsdgffghghg"
                 android:visibility="visible"
-                app:customFont="@string/roboto_bold" />
+                app:customFont="@string/roboto_bold"
+                tools:text="Title" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 

@@ -53,73 +53,91 @@ public class DoctorDataHelper implements ConnectionListener {
 
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag.equals(RescribeConstants.TASK_GET_DOCTOR_DATA)) {
-                    BookAppointmentBaseModel receivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
-                    if (receivedBookAppointmentBaseModel != null) {
-                        DoctorServicesModel mReceivedDoctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
-                        if (mReceivedDoctorServicesModel != null) {
-                            receivedDoctorServicesModel = mReceivedDoctorServicesModel;
-                            for (int i = 0; i < receivedDoctorServicesModel.getDoctorList().size(); i++) {
-                                DoctorList doctorList = receivedDoctorServicesModel.getDoctorList().get(i);
-                                if (!doctorList.getDocName().toLowerCase().contains("dr.")) {
-                                    doctorList.setDocName("Dr. " + doctorList.getDocName());
-                                }
-                                if (doctorList.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.sponsered))) {
-                                    doctorList.setCategoryName(mContext.getString(R.string.sponsored_doctor));
+                switch (mOldDataTag) {
+                    case RescribeConstants.TASK_GET_DOCTOR_DATA:
+                        BookAppointmentBaseModel receivedBookAppointmentBaseModel = (BookAppointmentBaseModel) customResponse;
+                        if (receivedBookAppointmentBaseModel != null) {
+                            DoctorServicesModel mReceivedDoctorServicesModel = receivedBookAppointmentBaseModel.getDoctorServicesModel();
+                            if (mReceivedDoctorServicesModel != null) {
+                                receivedDoctorServicesModel = mReceivedDoctorServicesModel;
+                                for (int i = 0; i < receivedDoctorServicesModel.getDoctorList().size(); i++) {
+                                    DoctorList doctorList = receivedDoctorServicesModel.getDoctorList().get(i);
+                                    if (!doctorList.getDocName().toLowerCase().contains("dr.")) {
+                                        doctorList.setDocName("Dr. " + doctorList.getDocName());
+                                    }
+                                    if (doctorList.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.sponsered))) {
+                                        doctorList.setCategoryName(mContext.getString(R.string.sponsored_doctor));
+                                    }
                                 }
                             }
                         }
-                    }
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_GET_COMPLAINTS) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_GET_REVIEW_LIST) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT || mOldDataTag == RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_SET_FAVOURITE_DOCTOR) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_DASHBOARD_API) {
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_GET_COMPLAINTS:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_GET_REVIEW_LIST:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_BOOK_APPOINTMENT_SERVICES:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_GET_DOCTOR_LIST_BY_COMPLAINT:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT:
+                    case RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_DASHBOARD_API:
 
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_CONFIRM_APPOINTMENT) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else if (mOldDataTag == RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                }  else if (mOldDataTag == RescribeConstants.TASK_CANCEL_GET_TOKEN) {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                } else {
-                    mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_CONFIRM_APPOINTMENT:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    case RescribeConstants.TASK_CANCEL_GET_TOKEN:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
+                    default:
+                        mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+                        break;
                 }
                 break;
             case ConnectionListener.PARSE_ERR0R:
                 CommonMethods.Log(TAG, mContext.getString(R.string.parse_error));
-                ((HelperResponse) mContext).onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
+                mHelperResponseManager.onParseError(mOldDataTag, mContext.getString(R.string.parse_error));
                 break;
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, mContext.getString(R.string.server_error));
-                ((HelperResponse) mContext).onServerError(mOldDataTag, mContext.getString(R.string.server_error));
+                mHelperResponseManager.onServerError(mOldDataTag, mContext.getString(R.string.server_error));
 
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
-                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
                 break;
             case ConnectionListener.NO_INTERNET:
                 CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
-                ((HelperResponse) mContext).onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
                 break;
             default:
                 CommonMethods.Log(TAG, mContext.getString(R.string.default_error));

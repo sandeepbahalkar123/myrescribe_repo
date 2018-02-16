@@ -176,7 +176,6 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final View rootView;
         CustomTextView tabNameTextView;
         CustomTextView tabCountTextView;
         TextView divider;
@@ -185,7 +184,6 @@ public class UnreadMedicationNotificationAdapter extends StatelessSection {
 
         ItemViewHolder(View view) {
             super(view);
-            rootView = view;
             tabNameTextView = (CustomTextView) view
                     .findViewById(R.id.tabNameTextView);
             tabCountTextView = (CustomTextView) view

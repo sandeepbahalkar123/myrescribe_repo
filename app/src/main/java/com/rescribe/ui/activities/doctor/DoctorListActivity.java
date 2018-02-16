@@ -245,7 +245,6 @@ public class DoctorListActivity extends AppCompatActivity implements HelperRespo
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (customResponse instanceof FilterDoctorListModel) {
             filterDoctorListModel = (FilterDoctorListModel) customResponse;
-
         } else if (customResponse instanceof FilterDoctorSpecialityListModel) {
             filterDoctorSpecialityListModel = (FilterDoctorSpecialityListModel) customResponse;
         } else if (customResponse instanceof CaseDetailsListModel) {

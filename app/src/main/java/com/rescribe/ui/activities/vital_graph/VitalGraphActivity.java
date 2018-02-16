@@ -46,10 +46,6 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
-    private VitalGraphHelper mVitalGraphHelper;
-    private VitalGraphBaseModel mReceivedVitalGraphBaseModel;
-    private ArrayList<VitalGraphData> mReceivedList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +68,7 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
 
     private void init() {
 
-        mVitalGraphHelper = new VitalGraphHelper(this, this);
+        VitalGraphHelper mVitalGraphHelper = new VitalGraphHelper(this, this);
         mVitalGraphHelper.doGetPatientVitalList();
 
     }
@@ -102,7 +98,7 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
 
         switch (mOldDataTag) {
             case RescribeConstants.TASK_GET_PATIENT_VITAL_LIST:
-                mReceivedVitalGraphBaseModel = (VitalGraphBaseModel) customResponse;
+                VitalGraphBaseModel mReceivedVitalGraphBaseModel = (VitalGraphBaseModel) customResponse;
                 setDoctorListAdapter(mReceivedVitalGraphBaseModel);
                 break;
         }
@@ -148,7 +144,7 @@ public class VitalGraphActivity extends AppCompatActivity implements VitalGraphA
                     isDataListViewVisible(false);
                 } else {
                     isDataListViewVisible(true);
-                    mReceivedList = graphList;
+                    ArrayList<VitalGraphData> mReceivedList = graphList;
                     Collections.sort(mReceivedList, new DateWiseComparator());
 
                     VitalGraphAdapter vitalGraphAdapter = new VitalGraphAdapter(this, mReceivedList);

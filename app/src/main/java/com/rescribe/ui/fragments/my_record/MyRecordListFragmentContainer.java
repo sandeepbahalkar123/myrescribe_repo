@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.rescribe.R;
@@ -62,13 +63,14 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
     TabLayout mTabLayout;
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
-    private CustomSpinnerAdapter mCustomSpinAdapter;
     @BindView(R.id.year)
     Spinner mYearSpinnerView;
     @BindView(R.id.yearSingleItem)
     CustomTextView mYearSpinnerSingleItem;
-    @BindView(R.id.noRecords)
-    ImageView noRecords;
+
+    @BindView(R.id.emptyListView)
+    RelativeLayout emptyListView;
+
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
     private Year mCurrentSelectedTimePeriodTab;
@@ -327,17 +329,17 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
             mTabLayout.setupWithViewPager(mViewpager);
             mYearList = recordMainDataModel.getUniqueYears();
-            mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(), R.color.white));
+            CustomSpinnerAdapter mCustomSpinAdapter = new CustomSpinnerAdapter(mParentActivity, mYearList, ContextCompat.getColor(getActivity(), R.color.white));
             mYearSpinnerView.setAdapter(mCustomSpinAdapter);
         }
 
 
         if (newRecordMainDataModel.getYearsMonthsData().isEmpty()) {
-            noRecords.setVisibility(View.VISIBLE);
+            emptyListView.setVisibility(View.VISIBLE);
             mYearSpinnerView.setVisibility(View.GONE);
             mTabLayout.setVisibility(View.GONE);
         } else {
-            noRecords.setVisibility(View.GONE);
+            emptyListView.setVisibility(View.GONE);
             mYearSpinnerView.setVisibility(View.VISIBLE);
             mTabLayout.setVisibility(View.VISIBLE);
         }

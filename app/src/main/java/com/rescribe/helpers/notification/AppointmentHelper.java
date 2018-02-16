@@ -7,6 +7,7 @@ import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.follow_up.FollowUpRequest;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.preference.RescribePreferencesManager;
@@ -72,6 +73,14 @@ public class AppointmentHelper implements ConnectionListener {
             mConnectionFactory.setUrl(Config.APPOINTMENTS + "?patientId=" + patient_id + "&status=Upcoming&date=" + date + "&time=" + time);
             mConnectionFactory.createConnection(RescribeConstants.APPOINTMENT_NOTIFICATION);
         }
+    }
+
+    public void followUpSkip(FollowUpRequest followUpRequest) {
+            ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.FOLLOW_UP, Request.Method.POST, false);
+            mConnectionFactory.setHeaderParams();
+            mConnectionFactory.setPostParams(followUpRequest);
+            mConnectionFactory.setUrl(Config.FOLLOW_UP_RESPONSE);
+            mConnectionFactory.createConnection(RescribeConstants.FOLLOW_UP);
     }
 
 }

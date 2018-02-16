@@ -33,15 +33,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp4"
                 android:layout_marginStart="@dimen/dp4"
-                android:layout_toLeftOf="@+id/yearLayout"
                 android:layout_toEndOf="@+id/backArrow"
+                android:layout_toLeftOf="@+id/yearLayout"
                 android:layout_toRightOf="@+id/backArrow"
                 android:layout_toStartOf="@+id/yearLayout"
                 android:padding="@dimen/dp8"
+                android:text="@string/doctor_visit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp18"
-                android:textStyle="bold"
-                android:text="@string/doctor_visit" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/yearLayout"
@@ -49,10 +49,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:padding="@dimen/dp4"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dp4">
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/yearSingleItem"
@@ -91,14 +91,42 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/noRecords"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/emptyListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:src="@drawable/no_records_found"
-        android:visibility="gone" />
+        android:layout_margin="@dimen/dp25"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/help_doctor_visit" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/messageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp32"
+            android:gravity="center"
+            android:paddingEnd="@dimen/dp10"
+            android:paddingStart="@dimen/dp10"
+            android:text="@string/help_doctor_visit"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp16"
+            app:customFont="@string/roboto_regular" />
+
+    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

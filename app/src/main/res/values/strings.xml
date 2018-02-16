@@ -65,7 +65,7 @@
     <string name="lunch_medication">Lunch Medication</string>
     <string name="breakfast_medication">Breakfast Medication</string>
     <string name="taken_medicine">Have you taken your medicine?</string>
-    <string name="have_u_taken">Have you taken &#160;</string>
+    <string name="have_u_taken">Have you taken&#160;</string>
     <string name="dosage_completed">Dosage completed?</string>
     <string name="read_more"><u>More</u></string>
     <string name="read_more_text"><u>Read more</u></string>
@@ -399,7 +399,17 @@
     <string name="mins">mins</string>
     <string name="doctor_will_see_you_in">Doctor will see you in</string>
     <string name="token_taken_message">Token has already been taken with this doctor</string>
-    <string name="dummy_artical">Save the articles from \'Health Education\' section and refer them here at your convenient time</string>
+    <string name="help_save_artical_message">Save the articles from \'Health Education\' section and refer them here at your convenient time</string>
+    <string name="appointment_booked_message">Appointment has already been taken with this doctor</string>
+    <string name="no_time_slot_message">No time slots available</string>
+    <string name="help_ongoing_medication">Currently there are no medicines  prescribed by your doctor</string>
+    <string name="help_doctor_visit">Visit a doctor and view your consultation details here</string>
+    <string name="help_my_records_message">Save your important documents here for future reference</string>
+    <string name="help_vital_graph">Vital graph values recorded by your doctor or added by you can be seen here</string>
+    <string name="follow_up">Follow-up</string>
+    <string name="already_booked">Already Booked</string>
+    <string name="not_interested">Not Interested</string>
+    <string name="follow_up_complete">Follow-up Complete</string>
 
     <!--************************-->
 </resources>

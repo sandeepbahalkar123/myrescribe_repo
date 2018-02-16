@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.rescribe.R;
@@ -65,8 +66,10 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     CustomTextView mYearSpinnerSingleItem;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    @BindView(R.id.noRecords)
-    ImageView noRecords;
+
+    @BindView(R.id.emptyListView)
+    RelativeLayout emptyListView;
+
     private ArrayList<String> mYearList = new ArrayList<>();
     private ArrayList<Year> mTimePeriodList = new ArrayList<>();
     private Year mCurrentSelectedTimePeriodTab;
@@ -318,9 +321,9 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                     mYearSpinnerView.setVisibility(View.GONE);
                     mYearSpinnerSingleItem.setVisibility(View.GONE);
                     mTabLayout.setVisibility(View.GONE);
-                    noRecords.setVisibility(View.VISIBLE);
+                    emptyListView.setVisibility(View.VISIBLE);
                 } else {
-                    noRecords.setVisibility(View.GONE);
+                    emptyListView.setVisibility(View.GONE);
                     if(mYearList.size()==1){
                         mYearSpinnerView.setVisibility(View.GONE);
                         mYearSpinnerSingleItem.setVisibility(View.VISIBLE);
@@ -350,7 +353,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        noRecords.setVisibility(View.VISIBLE);
+        emptyListView.setVisibility(View.VISIBLE);
         mYearSpinnerView.setVisibility(View.GONE);
         mTabLayout.setVisibility(View.GONE);
 

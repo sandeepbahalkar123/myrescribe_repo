@@ -2,6 +2,8 @@ package com.rescribe.model.notification;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 public class AppointmentsNotificationData {
 
@@ -25,7 +27,7 @@ public class AppointmentsNotificationData {
     private String aptDate;
     @SerializedName("aptTime")
     @Expose
-    private String aptTime;
+    private String aptTime = "";
     @SerializedName("aptStatus")
     @Expose
     private String aptStatus;
@@ -79,7 +81,7 @@ public class AppointmentsNotificationData {
     }
 
     public String getAptTime() {
-        return aptTime;
+        return aptTime.equals("") ? CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm_ss) : aptTime;
     }
 
     public void setAptTime(String aptTime) {

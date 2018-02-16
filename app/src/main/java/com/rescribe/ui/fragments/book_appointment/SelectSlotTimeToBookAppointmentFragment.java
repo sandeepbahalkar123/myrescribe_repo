@@ -179,6 +179,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     @BindView(R.id.appointmentMessageTextView)
     TextView appointmentMessageTextView;
+    @BindView(R.id.noTimeSlotMessageTextView)
+    TextView noTimeSlotMessageTextView;
     @BindView(R.id.tokenMessageTextView)
     TextView tokenMessageTextView;
 
@@ -449,15 +451,17 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     if (selectSlotList != null) {
                         if (selectSlotList.isAppointmentTaken() == 0 || from != null) {
                             appointmentMessageTextView.setVisibility(View.GONE);
+                            noTimeSlotMessageTextView.setVisibility(View.GONE);
                             if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
+                                noTimeSlotMessageTextView.setVisibility(View.GONE);
                                 selectTimeDateExpandableView.setVisibility(View.VISIBLE);
                                 appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
                                 mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
                                 selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
                             } else {
+                                noTimeSlotMessageTextView.setVisibility(View.VISIBLE);
                                 selectTimeDateExpandableView.setVisibility(View.GONE);
                                 appointmentTypeIsBookButton.setVisibility(View.GONE);
-                                CommonMethods.showToast(getActivity(), "" + slotListBaseModel.getCommon().getStatusMessage());
                             }
                         } else {
                             selectTimeDateExpandableView.setVisibility(View.GONE);
@@ -474,12 +478,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     if (selectSlotList != null) {
                         if (selectSlotList.isAppointmentTaken() == 0 || from != null) {
                             appointmentMessageTextView.setVisibility(View.GONE);
+                            noTimeSlotMessageTextView.setVisibility(View.GONE);
                             mClickedDoctorObject = selectSlotList.getDoctorListData();
                             ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
 
                             setDataInViews();
                             //--------------------
                             if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
+                                noTimeSlotMessageTextView.setVisibility(View.GONE);
                                 selectTimeDateExpandableView.setVisibility(View.VISIBLE);
                                 appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
                                 mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
@@ -487,6 +493,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             } else {
                                 selectTimeDateExpandableView.setVisibility(View.GONE);
                                 appointmentTypeIsBookButton.setVisibility(View.GONE);
+                                noTimeSlotMessageTextView.setVisibility(View.VISIBLE);
                             }
                         } else {
                             selectTimeDateExpandableView.setVisibility(View.GONE);
@@ -674,8 +681,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         super.onResume();
 
         if (mDoctorDataHelper == null) {
-
-
             mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
 
             mClickedDoctorObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
@@ -691,7 +696,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), 0, mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
 
                 if (fcmTokenData != null)
-                    showTokenStatusMessageBox(fcmTokenData.getTokenNumber(), fcmTokenData.getMsg(), null, fcmTokenData.getDocId(), fcmTokenData.getLocationId());
+                    showTokenStatusMessageBox(1, fcmTokenData.getMsg(), null, fcmTokenData.getDocId(), fcmTokenData.getLocationId());
 
             } else {
                 setDataInViews();

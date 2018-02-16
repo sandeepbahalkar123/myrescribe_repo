@@ -66,4 +66,6 @@
     <color name="card_date_color">#0077a7</color>
 
     <!--End Switch Button-->
+
+    <color name="follow_up_button">#5e5e5e</color>
 </resources>

@@ -26,10 +26,10 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ListVi
 
     private ArrayList<ClickOption> mClickOptionList;
     private Context mContext;
-    private OnClickOofSettingItemListener mOnClickOofSettingItemListener;
+    private OnClickOfSettingItemListener mOnClickOofSettingItemListener;
 
 
-    public SettingsAdapter(final Context mContext, ArrayList<ClickOption> mClickOption, OnClickOofSettingItemListener mOnClickOofSettingItemListener) {
+    public SettingsAdapter(final Context mContext, ArrayList<ClickOption> mClickOption, OnClickOfSettingItemListener mOnClickOofSettingItemListener) {
         this.mOnClickOofSettingItemListener = mOnClickOofSettingItemListener;
         this.mContext = mContext;
         this.mClickOptionList = mClickOption;
@@ -88,7 +88,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ListVi
         }
     }
 
-    public interface OnClickOofSettingItemListener {
+    public interface OnClickOfSettingItemListener {
         void onClickOfSettingMenuOption(ClickOption mSettingName);
     }
 

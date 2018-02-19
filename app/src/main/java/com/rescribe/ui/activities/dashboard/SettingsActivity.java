@@ -76,12 +76,11 @@ import static com.rescribe.util.RescribeConstants.TITLE;
  * Created by jeetal on 3/11/17.
  */
 
-public class SettingsActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener, SettingsAdapter.OnClickOofSettingItemListener, HelperResponse {
+public class SettingsActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener, SettingsAdapter.OnClickOfSettingItemListener, HelperResponse {
 
     private static final String TAG = "SettingsActivity";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     @BindView(R.id.settingsMenuList)
     RecyclerView settingsMenuList;
     @BindView(R.id.menuIcon)
@@ -97,6 +96,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     private Context mContext;
     private AppDBHelper appDBHelper;
 
+    ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private DashboardBottomMenuList mCurrentSelectedBottomMenu;
     private String profileImageString;
     private BroadcastReceiver mUpdateAppUnreadNotificationCount;
@@ -149,24 +149,26 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
         //END
 
-        if (dashboardBottomMenuLists != null)
+        if (dashboardBottomMenuLists != null) {
             bottomSheetMenus.clear();
-        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
-            BottomMenu bottomMenu = new BottomMenu();
-            int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
-            if (resourceId > 0)
-                bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
-            else
-                CommonMethods.Log(TAG, "Resource does not exist");
-            bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-            bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(APP_LOGO));
-            bottomMenu.setNotificationCount(notificationCount);
 
-            if (dashboardBottomMenuList.getName().equals(SETTINGS)) {
-                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(SETTINGS));
-                mCurrentSelectedBottomMenu = dashboardBottomMenuList;
+            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+                BottomMenu bottomMenu = new BottomMenu();
+                int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                if (resourceId > 0)
+                    bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
+                else
+                    CommonMethods.Log(TAG, "Resource does not exist");
+                bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(APP_LOGO));
+                bottomMenu.setNotificationCount(notificationCount);
+
+                if (dashboardBottomMenuList.getName().equals(SETTINGS)) {
+                    bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(SETTINGS));
+                    mCurrentSelectedBottomMenu = dashboardBottomMenuList;
+                }
+                addBottomMenu(bottomMenu);
             }
-            addBottomMenu(bottomMenu);
         }
 
         bottomSheetMenus.clear();
@@ -245,7 +247,9 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             finish();
         } else if (menuName.equalsIgnoreCase(CONNECT)) {
             Intent intent = new Intent(this, ConnectSplashActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
+            finish();
         } else if (menuName.equalsIgnoreCase(BOOK)) {
             Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);

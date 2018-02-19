@@ -169,9 +169,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         //------
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         String locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-        if (locationReceived != null) {
-            // locationTextView.setText("" + locationReceived);
-        }
+
         //-----
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
@@ -348,7 +346,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             finish();
         } else if (menuName.equalsIgnoreCase(CONNECT)) {
             Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, ConnectSplashActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
+            finish();
         }
         super.onBottomMenuClick(bottomMenu);
     }

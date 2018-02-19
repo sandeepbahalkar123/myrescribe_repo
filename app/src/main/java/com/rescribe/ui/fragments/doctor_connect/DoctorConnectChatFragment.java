@@ -38,8 +38,10 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class DoctorConnectChatFragment extends Fragment implements HelperResponse {
     @BindView(R.id.listView)
     RecyclerView mRecyclerView;
+
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
+
     Unbinder unbinder;
     DoctorConnectChatAdapter mDoctorConnectChatAdapter;
     private DoctorConnectChatHelper mDoctorConnectChatHelper;

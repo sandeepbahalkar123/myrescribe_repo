@@ -608,6 +608,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             startActivity(intent);
         } else if (menuName.equalsIgnoreCase(CONNECT)) {
             Intent intent = new Intent(HomePageActivity.this, ConnectSplashActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
         }
 

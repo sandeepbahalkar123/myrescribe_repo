@@ -12,24 +12,38 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.helpers.doctor_connect.DoctorConnectSearchHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.chat.MQTTMessage;
+import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.model.doctor_connect_search.SearchDataModel;
+import com.rescribe.model.investigation.Image;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
+import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
+import com.rescribe.ui.activities.dashboard.ProfileActivity;
+import com.rescribe.ui.activities.dashboard.SettingsActivity;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
+import com.rescribe.ui.activities.doctor.DoctorListActivity;
+import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
+import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.ui.fragments.doctor_connect.DoctorConnectChatFragment;
@@ -50,13 +64,21 @@ import butterknife.OnClick;
 import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
 import static com.rescribe.services.MQTTService.NOTIFY;
 import static com.rescribe.services.MQTTService.TOPIC;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.APP_LOGO;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.BOOK;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.CONNECT;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.HOME;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.SETTINGS;
+import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
+import static com.rescribe.util.RescribeConstants.DRAWABLE;
+import static com.rescribe.util.RescribeConstants.SALUTATION;
 
 
 /**
  * Created by jeetal on 5/9/17.
  */
 
-public class DoctorConnectActivity extends AppCompatActivity implements DoctorConnectSearchContainerFragment.OnAddFragmentListener, SearchBySpecializationOfDoctorFragment.OnAddFragmentListener, HelperResponse {
+public class DoctorConnectActivity extends BottomMenuActivity implements DoctorConnectSearchContainerFragment.OnAddFragmentListener, SearchBySpecializationOfDoctorFragment.OnAddFragmentListener, HelperResponse, BottomMenuAdapter.OnBottomMenuClickListener {
 
     private final static String TAG = "DoctorConnect";
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -113,11 +135,18 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     private String mFragmentLoaded;
     private ArrayList<ChatDoctor> mChatDoctors;
 
+    ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
+    private String profileImageString;
+    private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
+    private AppDBHelper appDBHelper;
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_connect);
         ButterKnife.bind(this);
+        mContext = this;
         mFragmentTitleList[0] = getString(R.string.chats);
         mFragmentTitleList[1] = getString(R.string.connect);
         mFragmentTitleList[2] = getString(R.string.search);
@@ -128,6 +157,8 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
     }
 
     private void initialize() {
+        appDBHelper = new AppDBHelper(this);
+        addBottomMenus();
 
         mSearchView.addTextChangedListener(editTextChanged());
         mSearchView.addClearTextButtonListener(new EditTextWithDeleteButton.OnClearButtonClickedInEditTextListener() {
@@ -183,6 +214,72 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
                 }
             }
         });
+    }
+
+    private void addBottomMenus() {
+
+        int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
+
+        dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
+
+        if (dashboardBottomMenuLists != null) {
+
+            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+                BottomMenu bottomMenu = new BottomMenu();
+                int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                if (resourceId > 0)
+                    bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
+                else
+                    CommonMethods.Log(TAG, "Resource does not exist");
+                bottomMenu.setMenuName(dashboardBottomMenuList.getName());
+                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(APP_LOGO));
+                bottomMenu.setNotificationCount(notificationCount);
+
+                if (dashboardBottomMenuList.getName().equals(CONNECT))
+                    bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(CONNECT));
+
+                addBottomMenu(bottomMenu);
+            }
+
+            bottomSheetMenus.clear();
+            for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+                if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
+
+                    for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
+                        if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                            profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                        }
+                        if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                            BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
+                            bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+
+                            int resourceId = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                            if (resourceId > 0)
+                                bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceId));
+                            else
+                                CommonMethods.Log(TAG, "Resource does not exist");
+
+                            bottomSheetMenu.setNotificationCount(notificationCount);
+
+                            //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
+                            addBottomSheetMenu(bottomSheetMenu);
+                        }
+                    }
+                    break;
+                }
+            }
+
+
+            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this);
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, this);
+
+            String salutationText = "";
+
+            if (!salutation.isEmpty())
+                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this), salutationText);
+        }
     }
 
     private EditTextWithDeleteButton.TextChangedListener editTextChanged() {
@@ -309,7 +406,6 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         return mSearchView.getText().toString();
     }
 
-    //TODO: parceable has to be used to getSpecialityOFDoctorList
     //Call Back from DoctorConnectSearchContainer
     public void addSpecializationOfDoctorFragment(Bundle bundleData) {
         // Show speciality of Doctor fragment loaded
@@ -353,12 +449,19 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
         super.onResume();
         registerReceiver(receiver, new IntentFilter(
                 MQTTService.NOTIFY));
+        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
+        int unreadMessageCount = appDBHelper.unreadMessageCount();
+        setConnectBadgeCount(unreadMessageCount);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+        if (mUpdateAppUnreadNotificationCount != null) {
+            unregisterReceiver(mUpdateAppUnreadNotificationCount);
+            mUpdateAppUnreadNotificationCount = null;
+        }
     }
 
     @Override
@@ -368,5 +471,135 @@ public class DoctorConnectActivity extends AppCompatActivity implements DoctorCo
             ChatDoctor chatDoctor = data.getParcelableExtra(RescribeConstants.CHAT_USERS);
             doctorConnectChatFragment.addItem(chatDoctor);
         }
+    }
+
+    // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.
+    private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
+
+            //--- Update count on App_logo
+            for (BottomMenu object :
+                    bottomMenus) {
+                if (object.isAppIcon()) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+            doNotifyDataSetChanged();
+            //--------------- :END
+            //---- Update bottom sheet notification_count : START
+            ArrayList<BottomSheetMenu> bottomSheetMenus = DoctorConnectActivity.this.bottomSheetMenus;
+            for (BottomSheetMenu object :
+                    bottomSheetMenus) {
+                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
+                    object.setNotificationCount(notificationCount);
+                }
+            }
+
+            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+
+            String salutationText = "";
+
+            if (!salutation.isEmpty())
+                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
+        }
+    }
+
+    @Override
+    public void onBottomMenuClick(BottomMenu bottomMenu) {
+
+        String menuName = bottomMenu.getMenuName();
+
+        if (menuName.equalsIgnoreCase(HOME)) {
+            finish();
+        } else if (menuName.equalsIgnoreCase(SETTINGS)) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            startActivity(intent);
+            finish();
+        } else if (menuName.equalsIgnoreCase(BOOK)) {
+            Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
+            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+            Bundle bundle = new Bundle();
+            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
+            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            intent.putExtras(bundle);
+            startActivity(intent);
+            finish();
+        }
+
+        super.onBottomMenuClick(bottomMenu);
+    }
+
+    @Override
+    public void onProfileImageClick() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+
+        super.onProfileImageClick();
+    }
+
+    @Override
+    public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
+        if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.vital_graph))) {
+            Intent intent = new Intent(this, VitalGraphActivity.class);
+            startActivity(intent);
+
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
+            Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
+            startActivity(intent);
+
+            RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, 0, this);
+            setBadgeCount(0);
+
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
+            MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
+            int completeCount = 0;
+            for (Image image : myRecordsData.getImageArrayList()) {
+                if (image.isUploading() == RescribeConstants.COMPLETED)
+                    completeCount++;
+            }
+            Intent intent;
+            if (completeCount == myRecordsData.getImageArrayList().size()) {
+                appDBHelper.deleteMyRecords();
+                intent = new Intent(mContext, MyRecordsActivity.class);
+            } else {
+                intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
+                intent.putExtra(RescribeConstants.UPLOADING_STATUS, true);
+                intent.putExtra(RescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
+                intent.putExtra(RescribeConstants.OPD_ID, myRecordsData.getDocId());
+                intent.putExtra(RescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
+                intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
+            }
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
+            Intent intent = new Intent(mContext, PrescriptionActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.doctor_details))) {
+            Intent intent = new Intent(mContext, DoctorListActivity.class);
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
+            Intent intent = new Intent(mContext, AppointmentActivity.class);
+            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
+            startActivity(intent);
+        } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
+            Intent intent = new Intent(mContext, SavedArticlesActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
+        super.onBottomSheetMenuClick(bottomMenu);
     }
 }

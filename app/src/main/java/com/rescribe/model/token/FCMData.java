@@ -6,17 +6,20 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FCMTokenData implements Parcelable {
+public class FCMData implements Parcelable {
 
+    @SerializedName("identifier")
+    @Expose
+    private String identifier = "";
     @SerializedName("msg")
     @Expose
     private String msg;
     @SerializedName("clinicName")
     @Expose
     private String clinicName;
-    @SerializedName("patientId")
+    @SerializedName("notificationId")
     @Expose
-    private Integer patientId;
+    private Integer notificationId;
     @SerializedName("docId")
     @Expose
     private Integer docId;
@@ -51,26 +54,27 @@ public class FCMTokenData implements Parcelable {
     @Expose
     private Boolean favorite;
 
-    public final static Parcelable.Creator<FCMTokenData> CREATOR = new Creator<FCMTokenData>() {
+    public final static Parcelable.Creator<FCMData> CREATOR = new Creator<FCMData>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public FCMTokenData createFromParcel(Parcel in) {
-            return new FCMTokenData(in);
+        public FCMData createFromParcel(Parcel in) {
+            return new FCMData(in);
         }
 
-        public FCMTokenData[] newArray(int size) {
-            return (new FCMTokenData[size]);
+        public FCMData[] newArray(int size) {
+            return (new FCMData[size]);
         }
 
     };
 
-    protected FCMTokenData(Parcel in) {
+    protected FCMData(Parcel in) {
+        this.identifier = ((String) in.readValue((String.class.getClassLoader())));
         this.msg = ((String) in.readValue((String.class.getClassLoader())));
         this.clinicName = ((String) in.readValue((String.class.getClassLoader())));
-        this.patientId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.notificationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.docId = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.degree = ((String) in.readValue((String.class.getClassLoader())));
         this.rating = ((Integer) in.readValue((Integer.class.getClassLoader())));
@@ -84,7 +88,15 @@ public class FCMTokenData implements Parcelable {
         this.favorite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
-    public FCMTokenData() {
+    public FCMData() {
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getMsg() {
@@ -103,12 +115,12 @@ public class FCMTokenData implements Parcelable {
         this.clinicName = clinicName;
     }
 
-    public Integer getPatientId() {
-        return patientId;
+    public Integer getNotificationId() {
+        return notificationId;
     }
 
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
+    public void setNotificationId(Integer NotificationId) {
+        this.notificationId = NotificationId;
     }
 
     public Integer getDocId() {
@@ -200,9 +212,10 @@ public class FCMTokenData implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(identifier);
         dest.writeValue(msg);
         dest.writeValue(clinicName);
-        dest.writeValue(patientId);
+        dest.writeValue(notificationId);
         dest.writeValue(docId);
         dest.writeValue(degree);
         dest.writeValue(rating);

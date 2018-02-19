@@ -22,9 +22,11 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.unread_notification_message_list.UnreadBookAppointTokenNotificationAdapter;
+import com.rescribe.adapters.unread_notification_message_list.UnreadFollowUpNotificationAdapter;
 import com.rescribe.adapters.unread_notification_message_list.UnreadMedicationNotificationAdapter;
 import com.rescribe.adapters.unread_notification_message_list.UnreadNotificationAlertAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.investigation.InvestigationHelper;
 import com.rescribe.helpers.notification.AppointmentHelper;
@@ -33,6 +35,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.ConfirmTokenModel;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationBaseModel;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationData;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
@@ -40,17 +43,19 @@ import com.rescribe.model.follow_up.FollowUpRequest;
 import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
+import com.rescribe.model.token.FCMData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.InvestigationActivity;
+import com.rescribe.ui.activities.SplashScreenActivity;
+import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +66,9 @@ import butterknife.OnClick;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
+import static com.rescribe.services.fcm.FCMService.FCM_DATA;
+import static com.rescribe.services.fcm.FCMService.FOLLOW_UP_DATA_ACTION;
+import static com.rescribe.services.fcm.FCMService.TOKEN_DATA_ACTION;
 import static com.rescribe.singleton.RescribeApplication.clearNotification;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
@@ -71,7 +79,7 @@ import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
  * Created by jeetal on 27/11/17.
  */
 
-public class UnreadNotificationMessageActivity extends AppCompatActivity implements HelperResponse, UnreadNotificationAlertAdapter.OnNotificationItemClicked, UnreadMedicationNotificationAdapter.OnMedicationNotificationEventClick, UnreadBookAppointTokenNotificationAdapter.OnUnreadTokenNotificationItemClicked {
+public class UnreadNotificationMessageActivity extends AppCompatActivity implements HelperResponse, UnreadFollowUpNotificationAdapter.OnUnreadFollowUpNotificationItemClicked, UnreadNotificationAlertAdapter.OnNotificationItemClicked, UnreadMedicationNotificationAdapter.OnMedicationNotificationEventClick, UnreadBookAppointTokenNotificationAdapter.OnUnreadTokenNotificationItemClicked {
 
     @BindView(R.id.bookAppointmentBackButton)
     ImageView mBackButton;
@@ -81,8 +89,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     RecyclerView mAppointmentAlertList;
     @BindView(R.id.investigationsListView)
     RecyclerView mInvestigationsListView;
+
     @BindView(R.id.unreadTokenNotificationListView)
     RecyclerView mUnreadTokenNotificationListView;
+
     @BindView(R.id.onGoingMedicationListView)
     RecyclerView mOnGoingMedicationListView;
     @BindView(R.id.onGoingMedicationListViewLayout)
@@ -108,18 +118,18 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     // Follow Up
 
     @BindView(R.id.followUpViewLayout)
-    LinearLayout followUpViewLayout;
-    @BindView(R.id.followUpTimeStamp)
-    TextView followUpTimeStamp;
-    @BindView(R.id.skipButton)
-    TextView skipButton;
-    @BindView(R.id.bookButton)
-    TextView bookButton;
-
+    LinearLayout unreadFollowUpViewLayout;
+    @BindView(R.id.unreadFollowUpNotificationListView)
+    RecyclerView mUnreadFollowUpNotificationListView;
+    @BindView(R.id.followUpFirstMessageTimeStamp)
+    CustomTextView mFollowUpFirstMessageTimeStamp;
 
     private UnreadNotificationAlertAdapter mAppointmentNotificationAlertAdapter;
     private UnreadNotificationAlertAdapter mInvestigationNotificationAlertAdapter;
+
+    private UnreadFollowUpNotificationAdapter mUnreadFollowUpNotificationAdapter;
     private UnreadBookAppointTokenNotificationAdapter mUnreadBookAppointTokenNotificationAdapter;
+
     private SectionedRecyclerViewAdapter mUnreadMedicationNotificationAdapter;
     private ArrayList<UnreadSavedNotificationMessageData> mUnreadMedicationNotificationMessageDataList = new ArrayList<>();
     private DoctorDataHelper mDoctorDataHelper;
@@ -137,6 +147,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     public boolean isExpanded;
     private Dialog followUpDialog;
+    private FCMData fcmData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -501,21 +512,40 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                     ArrayList<UnreadBookAppointTokenNotificationData> list = dataModel.getUnreadTokenNotificationDataList();
                     if (list != null) {
                         if (!list.isEmpty()) {
-                            setUnreadBookAppointTokenAlertListAdapter(list);
+                            ArrayList<UnreadBookAppointTokenNotificationData> followUpList = new ArrayList<>();
+                            ArrayList<UnreadBookAppointTokenNotificationData> tokenList = new ArrayList<>();
+                            for (UnreadBookAppointTokenNotificationData unreadBookAppointTokenNotificationData : list) {
+                                if (unreadBookAppointTokenNotificationData.getNotificationType().equalsIgnoreCase("followup"))
+                                    followUpList.add(unreadBookAppointTokenNotificationData);
+                                else tokenList.add(unreadBookAppointTokenNotificationData);
+                            }
+
+                            if (!followUpList.isEmpty())
+                                setUnreadFollowUpAlertListAdapter(followUpList);
+                            else unreadFollowUpViewLayout.setVisibility(View.GONE);
+
+                            if (!tokenList.isEmpty())
+                                setUnreadBookAppointTokenAlertListAdapter(tokenList);
+                            else unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
+
                             isAllListEmpty = false;
                             showMessage();
                         } else {
                             unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
+                            unreadFollowUpViewLayout.setVisibility(View.GONE);
                         }
                     } else {
                         unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
+                        unreadFollowUpViewLayout.setVisibility(View.GONE);
                     }
                 } else {
                     unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
+                    unreadFollowUpViewLayout.setVisibility(View.GONE);
                 }
-            } else
+            } else {
                 unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
-
+                unreadFollowUpViewLayout.setVisibility(View.GONE);
+            }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
@@ -566,18 +596,12 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     //-------
-    @OnClick({R.id.bookAppointmentBackButton, R.id.bookButton, R.id.skipButton})
+    @OnClick({R.id.bookAppointmentBackButton})
     public void onViewClick(View v) {
 
         switch (v.getId()) {
             case R.id.bookAppointmentBackButton:
                 finish();
-                break;
-            case R.id.bookButton:
-                // Book appointment
-                break;
-            case R.id.skipButton:
-                showFollowUpDialog(1);
                 break;
         }
     }
@@ -617,6 +641,32 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mUnreadTokenNotificationListView.setAdapter(mUnreadBookAppointTokenNotificationAdapter);
     }
 
+    private void setUnreadFollowUpAlertListAdapter(ArrayList<UnreadBookAppointTokenNotificationData> appAlertList) {
+
+        UnreadBookAppointTokenNotificationData unreadSavedNotificationMessageData = appAlertList.get(0);
+        String formattedDate = CommonMethods.getFormattedDate(unreadSavedNotificationMessageData.getCreatedDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+        String time = CommonMethods.formatDateTime(unreadSavedNotificationMessageData.getCreatedDate(), RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+
+        if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+            mFollowUpFirstMessageTimeStamp.setText(time);
+        } else {
+            mFollowUpFirstMessageTimeStamp.setText(dayFromDate + " " + time);
+        }
+        mFollowUpFirstMessageTimeStamp.setVisibility(View.VISIBLE);
+        //--------------
+        unreadFollowUpViewLayout.setVisibility(View.VISIBLE);
+        mUnreadFollowUpNotificationAdapter = new UnreadFollowUpNotificationAdapter(this, appAlertList, this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        mUnreadFollowUpNotificationListView.setLayoutManager(mLayoutManager);
+        mUnreadFollowUpNotificationListView.setAdapter(mUnreadFollowUpNotificationAdapter);
+    }
+
 
     @Override
     public void onTokenMoreButtonClicked(UnreadBookAppointTokenNotificationData unreadNotificationMessageData) {
@@ -633,10 +683,6 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             mDoctorDataHelper.doConfirmBookAppointReceivedToken(unreadNotificationMessageData.getTime(), unreadNotificationMessageData.getDocId(), unreadNotificationMessageData.getLocationId());
     }
 
-    @Override
-    public void onNotificationRowClicked(UnreadBookAppointTokenNotificationData unreadNotificationMessageData) {
-
-    }
     //----************ Token notification :END------------
 
     //------
@@ -650,7 +696,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         }
     }
 
-    public void showFollowUpDialog(int reminderId) {
+    public void showFollowUpDialog(int notificationId) {
 
         followUpDialog = new Dialog(this);
 
@@ -668,7 +714,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
         final AppointmentHelper appointmentHelper = new AppointmentHelper(UnreadNotificationMessageActivity.this);
         final FollowUpRequest followUpRequest = new FollowUpRequest();
-        followUpRequest.setReminderId(reminderId);
+        followUpRequest.setNotificationId(notificationId);
 
         alreadyBooked.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -735,5 +781,41 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         followUpDialog.getWindow().setAttributes(lp);
         followUpDialog.setCanceledOnTouchOutside(false);
         followUpDialog.show();
+    }
+
+    @Override
+    public void onFollowUpMoreButtonClicked(UnreadBookAppointTokenNotificationData unreadNotificationMessageData) {
+        mUnreadFollowUpNotificationAdapter.addAllElementToList();
+        mFollowUpFirstMessageTimeStamp.setVisibility(View.INVISIBLE);
+        mUnreadFollowUpNotificationAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFollowUpButtonClicked(String type, UnreadBookAppointTokenNotificationData unreadNotificationMessageData) {
+        if (type.equalsIgnoreCase(getResources().getString(R.string.book))){
+            Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
+
+            FCMData fcmData = new FCMData();
+            fcmData.setDocId(unreadNotificationMessageData.getDocId());
+            fcmData.setLocationId(unreadNotificationMessageData.getLocationId());
+            fcmData.setNotificationId(unreadNotificationMessageData.getNotificationId());
+            fcmData.setIdentifier(FOLLOW_UP_DATA_ACTION);
+
+            intent.putExtra(FCM_DATA, fcmData);
+            intent.setAction(FOLLOW_UP_DATA_ACTION);
+
+            // call book appointment
+            intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+
+            DoctorList doctorListData1 = new DoctorList();
+            doctorListData1.setDocId(unreadNotificationMessageData.getDocId());
+            doctorListData1.setLocationId(unreadNotificationMessageData.getLocationId());
+            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+
+            startActivity(intent);
+        } else {
+            showFollowUpDialog(unreadNotificationMessageData.getNotificationId());
+        }
     }
 }

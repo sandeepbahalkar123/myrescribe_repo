@@ -32,20 +32,23 @@ import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.token.FCMTokenData;
+import com.rescribe.model.token.FCMData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 
 import java.util.HashMap;
 
+import static com.rescribe.util.RescribeConstants.FOLLOW_UP_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.TOKEN_NOTIFICATION_TAG;
 
 public class FCMService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
-    public static final String TOKEN_DATA = "token_data";
+    public static final String FCM_DATA = "fcm_data";
 
     public static final String TOKEN_DATA_ACTION = "token_data_action";
+    public static final String FOLLOW_UP_DATA_ACTION = "followupNotification";
     public static final String FCM_BODY = "body";
 
     @Override
@@ -108,19 +111,40 @@ public class FCMService extends FirebaseMessagingService {
 
         String dataText = data.get(FCM_BODY);
         Gson gson = new Gson();
-        FCMTokenData fcmTokenData = gson.fromJson(dataText, FCMTokenData.class);
+        FCMData fcmTokenData = gson.fromJson(dataText, FCMData.class);
 
-        Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(TOKEN_DATA, fcmTokenData);
-        intent.setAction(TOKEN_DATA_ACTION);
+        int icNotificationIcon;
+        Intent intent;
+        String tag;
 
-        // call book appointment
-        intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-        intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
-        DoctorList doctorListData1 = new DoctorList();
-        doctorListData1.setDocId(fcmTokenData.getDocId());
-        ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+        if (fcmTokenData.getIdentifier().equalsIgnoreCase(FOLLOW_UP_DATA_ACTION)) {
+
+            tag = FOLLOW_UP_NOTIFICATION_TAG;
+
+            intent = new Intent(this, UnreadNotificationMessageActivity.class);
+            intent.putExtra(FCM_DATA, fcmTokenData);
+            intent.setAction(FOLLOW_UP_DATA_ACTION);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            icNotificationIcon = R.drawable.ic_notification_gettoken;
+        } else {
+
+            tag = TOKEN_NOTIFICATION_TAG;
+
+            intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
+            intent.putExtra(FCM_DATA, fcmTokenData);
+            intent.setAction(TOKEN_DATA_ACTION);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            icNotificationIcon = R.drawable.ic_notification_appoinments;
+
+            // call book appointment
+            intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+
+            DoctorList doctorListData1 = new DoctorList();
+            doctorListData1.setDocId(fcmTokenData.getDocId());
+            doctorListData1.setLocationId(fcmTokenData.getLocationId());
+            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+        }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -129,7 +153,7 @@ public class FCMService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
-                                R.drawable.ic_notification_gettoken))
+                                icNotificationIcon))
                         .setSmallIcon(R.drawable.logosmall)
                         .setContentTitle("Rescribe")
                         .setContentText(messageBody)
@@ -141,6 +165,6 @@ public class FCMService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(TOKEN_NOTIFICATION_TAG, fcmTokenData.getDocId(), notificationBuilder.build());
+        notificationManager.notify(tag, fcmTokenData.getDocId(), notificationBuilder.build());
     }
 }

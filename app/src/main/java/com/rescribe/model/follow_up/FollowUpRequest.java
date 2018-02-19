@@ -6,19 +6,19 @@ import com.rescribe.interfaces.CustomResponse;
 
 public class FollowUpRequest implements CustomResponse{
 
-    @SerializedName("reminderId")
+    @SerializedName("notificationId")
     @Expose
-    private int reminderId;
+    private int notificationId;
     @SerializedName("response")
     @Expose
     private String response;
 
-    public int getReminderId() {
-        return reminderId;
+    public int getNotificationId() {
+        return notificationId;
     }
 
-    public void setReminderId(int reminderId) {
-        this.reminderId = reminderId;
+    public void setNotificationId(int reminderId) {
+        this.notificationId = reminderId;
     }
 
     public String getResponse() {

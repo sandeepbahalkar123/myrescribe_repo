@@ -20,15 +20,15 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adapter<UnreadBookAppointTokenNotificationAdapter.FileViewHolder> {
+public class UnreadFollowUpNotificationAdapter extends RecyclerView.Adapter<UnreadFollowUpNotificationAdapter.FileViewHolder> {
 
     private final ArrayList<UnreadBookAppointTokenNotificationData> mOriginalReceivedList;
     private final Context mContext;
-    private final OnUnreadTokenNotificationItemClicked listener;
+    private final OnUnreadFollowUpNotificationItemClicked listener;
     private UnreadNotificationMessageActivity parentActivity;
     private ArrayList<UnreadBookAppointTokenNotificationData> mListToBeUsed;
 
-    public UnreadBookAppointTokenNotificationAdapter(Context context, ArrayList<UnreadBookAppointTokenNotificationData> list, OnUnreadTokenNotificationItemClicked listener) {
+    public UnreadFollowUpNotificationAdapter(Context context, ArrayList<UnreadBookAppointTokenNotificationData> list, OnUnreadFollowUpNotificationItemClicked listener) {
         this.mContext = context;
         this.mOriginalReceivedList = list;
         this.parentActivity = (UnreadNotificationMessageActivity) context;
@@ -41,12 +41,12 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
     @Override
     public FileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.item_get_token_notification_layout, parent, false);
-        return new UnreadBookAppointTokenNotificationAdapter.FileViewHolder(view);
+                .inflate(R.layout.item_follow_up_notification, parent, false);
+        return new UnreadFollowUpNotificationAdapter.FileViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final UnreadBookAppointTokenNotificationAdapter.FileViewHolder holder, final int position) {
+    public void onBindViewHolder(final UnreadFollowUpNotificationAdapter.FileViewHolder holder, final int position) {
         final UnreadBookAppointTokenNotificationData unreadNotificationMessageData = mListToBeUsed.get(position);
         holder.text.setText(unreadNotificationMessageData.getNotificationMsg());
 
@@ -68,7 +68,7 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
         } else {
             holder.loadMoreUnreadTokenMessage.setVisibility(View.INVISIBLE);
             if (showFirstMessageTimeStamp == View.VISIBLE) {
-                holder.tokenMessageTimeStamp.setVisibility(View.GONE);
+                holder.tokenMessageTimeStamp.setVisibility(View.INVISIBLE);
             } else {
                 holder.tokenMessageTimeStamp.setVisibility(View.VISIBLE);
             }
@@ -92,7 +92,7 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
         holder.loadMoreUnreadTokenMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onTokenMoreButtonClicked(unreadNotificationMessageData);
+                listener.onFollowUpMoreButtonClicked(unreadNotificationMessageData);
             }
         });
 
@@ -100,14 +100,14 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
             @Override
             public void onClick(View v) {
                 CustomTextView button = (CustomTextView) v;
-                listener.onButtonClicked(button.getText().toString(), unreadNotificationMessageData);
+                listener.onFollowUpButtonClicked(button.getText().toString(), unreadNotificationMessageData);
             }
         });
         holder.noTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CustomTextView button = (CustomTextView) v;
-                listener.onButtonClicked(button.getText().toString(), unreadNotificationMessageData);
+                listener.onFollowUpButtonClicked(button.getText().toString(), unreadNotificationMessageData);
             }
         });
 
@@ -120,9 +120,9 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
 
     static class FileViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tokenMessage)
+        @BindView(R.id.textMessage)
         CustomTextView text;
-        @BindView(R.id.tokenMessageTimeStamp)
+        @BindView(R.id.textMessageTimeStamp)
         CustomTextView tokenMessageTimeStamp;
         @BindView(R.id.loadMoreUnreadTokenMessage)
         CustomTextView loadMoreUnreadTokenMessage;
@@ -140,9 +140,9 @@ public class UnreadBookAppointTokenNotificationAdapter extends RecyclerView.Adap
         }
     }
 
-    public interface OnUnreadTokenNotificationItemClicked {
-        public void onTokenMoreButtonClicked(UnreadBookAppointTokenNotificationData unreadNotificationMessageData);
-        public void onButtonClicked(String type, UnreadBookAppointTokenNotificationData unreadNotificationMessageData);
+    public interface OnUnreadFollowUpNotificationItemClicked {
+        public void onFollowUpMoreButtonClicked(UnreadBookAppointTokenNotificationData unreadNotificationMessageData);
+        public void onFollowUpButtonClicked(String type, UnreadBookAppointTokenNotificationData unreadNotificationMessageData);
     }
 
     public void addAllElementToList() {

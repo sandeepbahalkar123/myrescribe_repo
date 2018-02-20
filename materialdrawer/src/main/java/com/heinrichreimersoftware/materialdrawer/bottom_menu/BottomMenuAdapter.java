@@ -20,8 +20,8 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
 
     private OnBottomMenuClickListener mBottomMenuListClickListener;
     private ArrayList<BottomMenu> bottomMenus;
-    static int appIconIndex;
-    static int connectIndex;
+    public static int appIconIndex;
+    public static int connectIndex;
     static final String CONNECT = "Connect";
 
     BottomMenuAdapter(Context mContext, ArrayList<BottomMenu> bottomMenus) {

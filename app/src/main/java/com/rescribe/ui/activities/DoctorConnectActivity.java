@@ -56,6 +56,7 @@ import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -447,9 +448,10 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(receiver, new IntentFilter(
-                MQTTService.NOTIFY));
+
+        registerReceiver(receiver, new IntentFilter(MQTTService.NOTIFY));
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
+
         int unreadMessageCount = appDBHelper.unreadMessageCount();
         setConnectBadgeCount(unreadMessageCount);
     }
@@ -458,10 +460,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
-        if (mUpdateAppUnreadNotificationCount != null) {
-            unregisterReceiver(mUpdateAppUnreadNotificationCount);
-            mUpdateAppUnreadNotificationCount = null;
-        }
+        unregisterReceiver(mUpdateAppUnreadNotificationCount);
     }
 
     @Override
@@ -473,41 +472,15 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
         }
     }
 
-    // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.
     private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
-
-            int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
-
-            //--- Update count on App_logo
-            for (BottomMenu object :
-                    bottomMenus) {
-                if (object.isAppIcon()) {
-                    object.setNotificationCount(notificationCount);
-                }
-            }
-            doNotifyDataSetChanged();
-            //--------------- :END
-            //---- Update bottom sheet notification_count : START
-            ArrayList<BottomSheetMenu> bottomSheetMenus = DoctorConnectActivity.this.bottomSheetMenus;
-            for (BottomSheetMenu object :
-                    bottomSheetMenus) {
-                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
-                    object.setNotificationCount(notificationCount);
-                }
-            }
-
-            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
-
-            String salutationText = "";
-
-            if (!salutation.isEmpty())
-                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
-
-            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(getString(R.string.unread_notification_update_received))) {
+                    int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
+                    setBadgeCount(notificationCount);
+                } else CommonMethods.Log(TAG, "Other Broadcast");
+            } else CommonMethods.Log(TAG, "Other Broadcast");
         }
     }
 

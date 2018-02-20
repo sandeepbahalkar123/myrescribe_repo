@@ -99,7 +99,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private DashboardBottomMenuList mCurrentSelectedBottomMenu;
     private String profileImageString;
-    private BroadcastReceiver mUpdateAppUnreadNotificationCount;
+    private BroadcastReceiver mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -152,7 +152,10 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         if (dashboardBottomMenuLists != null) {
             bottomSheetMenus.clear();
 
-            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+            for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+
+                DashboardBottomMenuList dashboardBottomMenuList = dashboardBottomMenuLists.get(i);
+
                 BottomMenu bottomMenu = new BottomMenu();
                 int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
                 if (resourceId > 0)
@@ -168,37 +171,31 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                     mCurrentSelectedBottomMenu = dashboardBottomMenuList;
                 }
                 addBottomMenu(bottomMenu);
-            }
-        }
 
-        bottomSheetMenus.clear();
-        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
-            if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
+                if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
 
-                for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                    if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
-                    }
-                    if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
-                        bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+                    for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
+                        if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                            profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                        }
+                        if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                            BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
+                            bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
 
-                        int resourceId = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
-                        if (resourceId > 0)
-                            bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceId));
-                        else
-                            CommonMethods.Log(TAG, "Resource does not exist");
+                            int resourceIdProfile = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                            if (resourceIdProfile > 0)
+                                bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceIdProfile));
+                            else
+                                CommonMethods.Log(TAG, "Resource does not exist");
 
-                        bottomSheetMenu.setNotificationCount(notificationCount);
+                            bottomSheetMenu.setNotificationCount(notificationCount);
 
-                        //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
-                        addBottomSheetMenu(bottomSheetMenu);
+                            addBottomSheetMenu(bottomSheetMenu);
+                        }
                     }
                 }
-                break;
             }
         }
-
 
         String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
         String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
@@ -211,11 +208,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
 
         initialize();
-
-        mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
-
-        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
-
     }
 
     private void initialize() {
@@ -435,25 +427,14 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 
-
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        if (mUpdateAppUnreadNotificationCount != null) {
-            unregisterReceiver(mUpdateAppUnreadNotificationCount);
-            mUpdateAppUnreadNotificationCount = null;
-        }
-        super.onDestroy();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        registerReceiver(receiver, new IntentFilter(
-                MQTTService.NOTIFY));
+        registerReceiver(receiver, new IntentFilter(MQTTService.NOTIFY));
+        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
         int unreadMessageCount = appDBHelper.unreadMessageCount();
         setConnectBadgeCount(unreadMessageCount);
@@ -463,56 +444,18 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+        unregisterReceiver(mUpdateAppUnreadNotificationCount);
     }
 
-    // TODO : THIS IS EXACLTY COPIED FROM HOMEPAGEACTIVITY.java to update count.
     private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
-            int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-            int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-            int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-            // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
-
-             /* START: Notification count is stored in shared-preferences now,
-                check AppDbHelper.insertUnreadReceivedNotificationMessage();
-                Chat count is not showing now.
-             */
-            int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
-            //END
-
-            //--- Update count on App_logo
-            for (BottomMenu object :
-                    bottomMenus) {
-                if (object.isAppIcon()) {
-                    object.setNotificationCount(notificationCount);
-                }
-            }
-            doNotifyDataSetChanged();
-            //--------------- :END
-            //---- Update bottom sheet notification_count : START
-            ArrayList<BottomSheetMenu> bottomSheetMenus = SettingsActivity.this.bottomSheetMenus;
-            for (BottomSheetMenu object :
-                    bottomSheetMenus) {
-                if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
-                    object.setNotificationCount(notificationCount);
-                }
-            }
-
-
-            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
-
-            String salutationText = "";
-
-            if (!salutation.isEmpty())
-                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
-
-            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
-
-            //--------------------------
-            //---- Update bottom sheet notification_count : END
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(getString(R.string.unread_notification_update_received))) {
+                    int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
+                    setBadgeCount(notificationCount);
+                } else CommonMethods.Log(TAG, "Other Broadcast");
+            } else CommonMethods.Log(TAG, "Other Broadcast");
         }
     }
 }

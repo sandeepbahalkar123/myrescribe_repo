@@ -105,11 +105,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.appIconIndex;
 import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
@@ -175,7 +177,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     Location mCurrentLocation;
     String mLastUpdateTime;
     private String profileImageString;
-    private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount;
+    private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
     String breakFast = "8:00 AM";
     String lunchTime = "2:00 PM";
@@ -258,10 +260,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         if (need_notify)
             notificationForMedicine();
-
-        mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
-
-        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
     }
 
     @SuppressLint("CheckResult")
@@ -393,13 +391,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 mDashboardDataModel = mDashboardBaseModel.getDashboardModel();
                 mDashboardDataBuilder.setReceivedDoctorDataList(mDashboardDataModel.getDoctorList());
                 if (mDashboardDataModel != null) {
-                    //----------
                     setUpViewPager();
-                    //----------
-
-                    if (bottomMenus.isEmpty() || bottomSheetMenus.isEmpty())
-                        doConfigureMenuOptions();
-
                     custom_progress_bar.setVisibility(View.GONE);
                 }
 
@@ -638,15 +630,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
         // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
-        /*
-         -->
-         START: Notification count is stored in shared-preferences now,
-                check AppDbHelper.insertUnreadReceivedNotificationMessage();
-                Chat count is not showing now.
-         <--
-        */
-        //-->END
-
         ArrayList<DashboardMenuList> dashboardMenuList = mDashboardMenuData.getDashboardMenuList();
         //------- Menus received from server, like find_doc,ongoing_medication : START
         MenuOptionsDashBoardAdapter mMenuOptionsDashBoardAdapter = new MenuOptionsDashBoardAdapter(this, this, dashboardMenuList);
@@ -658,7 +641,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         // add bottom menu : like home,setting,support
         dashboardBottomMenuLists = mDashboardMenuData.getDashboardBottomMenuList();
-        for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+            DashboardBottomMenuList dashboardBottomMenuList = dashboardBottomMenuLists.get(i);
+
             BottomMenu bottomMenu = new BottomMenu();
 
             int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
@@ -672,11 +657,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(HOME));
 
             addBottomMenu(bottomMenu);
-        }
 
-        // add bottomSheet menu like notification,my_records etc (on clicked of app_logo)
-        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
             if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
+
+                appIconIndex = i;
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     ClickOption clickOption = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j);
@@ -687,16 +671,15 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(clickOption.getName());
 
-                        int resourceId = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
-                        if (resourceId > 0)
-                            bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceId));
+                        int resourceIdProfile = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                        if (resourceIdProfile > 0)
+                            bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceIdProfile));
                         else
                             CommonMethods.Log(TAG, "Resource does not exist");
 
                         addBottomSheetMenu(bottomSheetMenu);
                     }
                 }
-                break;
             }
         }
 
@@ -790,6 +773,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         registerReceiver(receiver, new IntentFilter(
                 MQTTService.NOTIFY));
+        registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
         checkAndroidVersion();
         if (mDashboardDataModel != null) {
@@ -807,6 +791,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+        unregisterReceiver(mUpdateAppUnreadNotificationCount);
     }
 
     private void doCallDashBoardAPI() {
@@ -988,67 +973,15 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
-
-            if (intent.getAction().equals(getString(R.string.unread_notification_update_received))) {
-
-                int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-                int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-                int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
-                // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
-
-                  /* START: Notification count is stored in shared-preferences now,
-                    check AppDbHelper.insertUnreadReceivedNotificationMessage();
-                     Chat count is not showing now.
-                   */
-                int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
-                //-->END
-
-                //--- Update count on App_logo
-                for (BottomMenu object :
-                        bottomMenus) {
-                    if (object.isAppIcon()) {
-                        object.setNotificationCount(notificationCount);
-                    }
-                }
-                doNotifyDataSetChanged();
-                //--------------- :END
-                //---- Update bottom sheet notification_count : START
-                ArrayList<BottomSheetMenu> bottomSheetMenus = HomePageActivity.this.bottomSheetMenus;
-                for (BottomSheetMenu object :
-                        bottomSheetMenus) {
-                    if (object.getName().equalsIgnoreCase(getString(R.string.notifications))) {
-                        object.setNotificationCount(notificationCount);
-                    }
-                }
-
-
-                String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-                String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
-
-                String salutationText = "";
-
-                if (!salutation.isEmpty())
-                    salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
-
-                setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
-
-                //--------------------------
-                //---- Update bottom sheet notification_count : END
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(getString(R.string.unread_notification_update_received))) {
+                    int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, context);//appCount + invCount + medCount;// + tokCount;
+                    setBadgeCount(notificationCount);
+                } else CommonMethods.Log(TAG, "Other Broadcast");
             } else CommonMethods.Log(TAG, "Other Broadcast");
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mUpdateAppUnreadNotificationCount != null) {
-            unregisterReceiver(mUpdateAppUnreadNotificationCount);
-            mUpdateAppUnreadNotificationCount = null;
-        }
-
-        super.onDestroy();
     }
 
     private void checkAndroidVersion() {

@@ -49,7 +49,6 @@ import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.InvestigationActivity;
-import com.rescribe.ui.activities.SplashScreenActivity;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -68,7 +67,6 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
 
 import static com.rescribe.services.fcm.FCMService.FCM_DATA;
 import static com.rescribe.services.fcm.FCMService.FOLLOW_UP_DATA_ACTION;
-import static com.rescribe.services.fcm.FCMService.TOKEN_DATA_ACTION;
 import static com.rescribe.singleton.RescribeApplication.clearNotification;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
@@ -396,55 +394,57 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     private void doCreateMedicationDataMap(boolean isRequiredAllElements) {
-
         mUnreadMedicationNotificationAdapter.removeAllSections();
 
-        configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
-        Map.Entry<String, ArrayList<Medication>> entry = listDataChild.entrySet().iterator().next();
+        if (!listDataChild.isEmpty()) {
+            configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
+            Map.Entry<String, ArrayList<Medication>> entry = listDataChild.entrySet().iterator().next();
 
-        //------ Show timeStamp of first element in header view------
-        ArrayList<Medication> medications = listDataChild.get(entry.getKey());
-        String date = medicNotificationTimeId.get(entry.getKey().split("\\|")[0]);
+            //------ Show timeStamp of first element in header view------
+            ArrayList<Medication> medications = listDataChild.get(entry.getKey());
+            String date = medicNotificationTimeId.get(entry.getKey().split("\\|")[0]);
 
-        String formattedDate = CommonMethods.getFormattedDate(date, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-        String time = CommonMethods.formatDateTime(date, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
-        String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
-        if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
-            mOnGoingMedicationFirstMessageTimeStamp.setText(time);
-        } else {
-            mOnGoingMedicationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
-        }
-        mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
-        //------------
+            String formattedDate = CommonMethods.getFormattedDate(date, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
+            String time = CommonMethods.formatDateTime(date, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
+            String dayFromDate = CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, formattedDate);
+            if (getString(R.string.today).equalsIgnoreCase(dayFromDate)) {
+                mOnGoingMedicationFirstMessageTimeStamp.setText(time);
+            } else {
+                mOnGoingMedicationFirstMessageTimeStamp.setText(dayFromDate + " " + time);
+            }
+            mOnGoingMedicationFirstMessageTimeStamp.setVisibility(View.VISIBLE);
+            //------------
 
-        for (String key : listDataChild.keySet()) {
-            SectionParameters build = new SectionParameters.Builder(R.layout.tablet_notification_item)
-                    .headerResourceId(R.layout.tablet_notification_item_header)
-                    .build();
-
-            if (!isRequiredAllElements && listDataChild.size() > 1) {
-                build = new SectionParameters.Builder(R.layout.tablet_notification_item)
+            for (String key : listDataChild.keySet()) {
+                SectionParameters build = new SectionParameters.Builder(R.layout.tablet_notification_item)
                         .headerResourceId(R.layout.tablet_notification_item_header)
-                        .footerResourceId(R.layout.more_item_textview)
                         .build();
+
+                if (!isRequiredAllElements && listDataChild.size() > 1) {
+                    build = new SectionParameters.Builder(R.layout.tablet_notification_item)
+                            .headerResourceId(R.layout.tablet_notification_item_header)
+                            .footerResourceId(R.layout.more_item_textview)
+                            .build();
+                }
+
+                mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, listDataChild.get(key), medicNotificationTimeId.get(key), this));
+
+                // check is data there empty
+
+                if (!medications.isEmpty())
+                    isAllListEmpty = false;
+
+                if (!isRequiredAllElements)
+                    break;
             }
+            mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
+        } else mOnGoingMedicationListViewLayout.setVisibility(View.GONE);
 
-            mUnreadMedicationNotificationAdapter.addSection(new UnreadMedicationNotificationAdapter(build, this, key, listDataChild.get(key), medicNotificationTimeId.get(key), this));
-
-            // check is data there empty
-
-            if (!medications.isEmpty())
-                isAllListEmpty = false;
-
-            if (!isRequiredAllElements)
-                break;
-        }
-        mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
     }
 
 

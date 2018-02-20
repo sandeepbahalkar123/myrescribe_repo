@@ -60,7 +60,6 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:padding="@dimen/dp5"
-                android:text="@string/taken_medicine"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp15"

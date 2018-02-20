@@ -527,7 +527,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     //----- Notification Storing : START
 
-    public boolean insertUnreadReceivedNotificationMessage(String id, String type, String message, String jsonDataObject, String timeStamp) {
+    public boolean insertUnreadReceivedNotificationMessage(String id, String type, String message, String jsonDataObject, String timeStamp, boolean isFromNotification) {
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -541,12 +541,13 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         if (isExist(id, type))
             db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{id, type});
-        else
+        else {
             db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
-
-        //---Update notification count
-        int anInt = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext) + 1;
-        RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, anInt, mContext);
+            if (isFromNotification) {
+                int anInt = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext) + 1;
+                RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, anInt, mContext);
+            }
+        }
 
         doReadAllUnreadMessages();
 

@@ -22,7 +22,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
     private ArrayList<BottomMenu> bottomMenus;
     public static int appIconIndex;
     public static int connectIndex;
-    static final String CONNECT = "Connect";
+    private static final String CONNECT = "Connect";
 
     BottomMenuAdapter(Context mContext, ArrayList<BottomMenu> bottomMenus) {
         this.bottomMenus = bottomMenus;

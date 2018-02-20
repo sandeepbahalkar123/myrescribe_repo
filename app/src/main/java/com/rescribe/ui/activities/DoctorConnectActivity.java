@@ -62,6 +62,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.connectIndex;
 import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
 import static com.rescribe.services.MQTTService.NOTIFY;
 import static com.rescribe.services.MQTTService.TOPIC;
@@ -225,7 +226,13 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
 
         if (dashboardBottomMenuLists != null) {
 
-            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
+            bottomSheetMenus.clear();
+            bottomMenus.clear();
+
+            for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+
+                DashboardBottomMenuList dashboardBottomMenuList = dashboardBottomMenuLists.get(i);
+
                 BottomMenu bottomMenu = new BottomMenu();
                 int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
                 if (resourceId > 0)
@@ -240,10 +247,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
                     bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(CONNECT));
 
                 addBottomMenu(bottomMenu);
-            }
 
-            bottomSheetMenus.clear();
-            for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
                 if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
 
                     for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
@@ -254,22 +258,20 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
                             BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                             bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
 
-                            int resourceId = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
-                            if (resourceId > 0)
-                                bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceId));
+                            int resourceIdProfile = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                            if (resourceIdProfile > 0)
+                                bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceIdProfile));
                             else
                                 CommonMethods.Log(TAG, "Resource does not exist");
 
                             bottomSheetMenu.setNotificationCount(notificationCount);
 
-                            //clickEvent.setClickOptions(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions());
                             addBottomSheetMenu(bottomSheetMenu);
                         }
                     }
-                    break;
-                }
+                } else if (dashboardBottomMenuLists.get(i).getName().equalsIgnoreCase(CONNECT))
+                    connectIndex = i;
             }
-
 
             String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this);
             String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, this);

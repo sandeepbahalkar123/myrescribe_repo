@@ -66,11 +66,12 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     private Integer mMedicineId = null;
     public String TAG = getClass().getName();
     private Context mContext;
-    CustomProgressDialog mProgressDialog;
+    private CustomProgressDialog mProgressDialog;
     private boolean isHeaderExpand = true;
     private RespondToNotificationHelper mRespondToNotificationHelper;
     private ArrayList<Medication> mTodayDataList;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
+
     @BindView(R.id.recycler)
     RecyclerView mRecyclerView;
     @BindView(R.id.selectView)
@@ -100,6 +101,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     Toolbar mToolbar;
     @BindView(R.id.headerLayoutParent)
     LinearLayout mHeaderLayoutParent;
+
     private int notificationId;
 
     @Override
@@ -108,26 +110,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         setContentView(R.layout.activity_notification);
         ButterKnife.bind(this);
         initialize();
-
         notificationId = getIntent().getIntExtra(NOTIFICATION_ID, -1);
-
-        dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
-        if (dashboardBottomMenuLists != null) {
-            for (DashboardBottomMenuList dashboardBottomMenuList : dashboardBottomMenuLists) {
-                BottomMenu bottomMenu = new BottomMenu();
-
-                int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
-                if (resourceId > 0)
-                    bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
-                else
-                    CommonMethods.Log(TAG, "Resource does not exist");
-
-                bottomMenu.setMenuName(dashboardBottomMenuList.getName());
-                bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(APP_LOGO));
-                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(getString(R.string.alerts)));
-                addBottomMenu(bottomMenu);
-            }
-        }
     }
 
     private void initialize() {

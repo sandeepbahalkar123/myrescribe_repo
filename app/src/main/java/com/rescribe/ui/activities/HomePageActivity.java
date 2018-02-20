@@ -105,13 +105,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.appIconIndex;
+import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.connectIndex;
+
 import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
@@ -658,7 +659,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
             addBottomMenu(bottomMenu);
 
-            if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
+            if (dashboardBottomMenuLists.get(i).getName().equalsIgnoreCase(APP_LOGO)) {
 
                 appIconIndex = i;
 
@@ -680,7 +681,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         addBottomSheetMenu(bottomSheetMenu);
                     }
                 }
-            }
+            } else if (dashboardBottomMenuLists.get(i).getName().equalsIgnoreCase(CONNECT))
+                connectIndex = i;
         }
 
 

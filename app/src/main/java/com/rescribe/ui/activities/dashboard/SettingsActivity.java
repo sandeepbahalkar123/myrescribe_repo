@@ -58,6 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.connectIndex;
 import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
 import static com.rescribe.services.MQTTService.NOTIFY;
 import static com.rescribe.services.MQTTService.TOPIC;
@@ -150,7 +151,9 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         //END
 
         if (dashboardBottomMenuLists != null) {
+
             bottomSheetMenus.clear();
+            bottomMenus.clear();
 
             for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
 
@@ -193,7 +196,8 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                             addBottomSheetMenu(bottomSheetMenu);
                         }
                     }
-                }
+                } else if (dashboardBottomMenuLists.get(i).getName().equalsIgnoreCase(CONNECT))
+                    connectIndex = i;
             }
         }
 

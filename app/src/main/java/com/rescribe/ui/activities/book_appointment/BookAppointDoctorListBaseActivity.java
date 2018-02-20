@@ -56,6 +56,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.connectIndex;
 import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
 import static com.rescribe.services.MQTTService.NOTIFY;
 import static com.rescribe.services.MQTTService.TOPIC;
@@ -238,60 +239,62 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
         dashboardBottomMenuLists = getIntent().getParcelableArrayListExtra(BOTTOM_MENUS);
 
-        bottomMenus.clear();
-        bottomSheetMenus.clear();
+        if (dashboardBottomMenuLists != null) {
 
-        for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
+            bottomSheetMenus.clear();
+            bottomMenus.clear();
 
-            DashboardBottomMenuList dashboardBottomMenuList = dashboardBottomMenuLists.get(i);
+            for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
 
-            if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
+                DashboardBottomMenuList dashboardBottomMenuList = dashboardBottomMenuLists.get(i);
 
                 BottomMenu bottomMenu = new BottomMenu();
-
                 int resourceId = getResources().getIdentifier(dashboardBottomMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
                 if (resourceId > 0)
                     bottomMenu.setMenuIcon(getResources().getDrawable(resourceId));
                 else
                     CommonMethods.Log(TAG, "Resource does not exist");
-
                 bottomMenu.setMenuName(dashboardBottomMenuList.getName());
                 bottomMenu.setAppIcon(dashboardBottomMenuList.getName().equals(APP_LOGO));
-                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(BOOK));
                 bottomMenu.setNotificationCount(notificationCount);
+                bottomMenu.setSelected(dashboardBottomMenuList.getName().equals(BOOK));
                 addBottomMenu(bottomMenu);
 
-                for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                    if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
-                    }
-                    if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
-                        bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
+                if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
 
-                        int resourceIdProfile = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
-                        if (resourceIdProfile > 0)
-                            bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceIdProfile));
-                        else
-                            CommonMethods.Log(TAG, "Resource does not exist");
+                    for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
+                        if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                            profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
+                        }
+                        if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
+                            BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
+                            bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
 
-                        bottomSheetMenu.setNotificationCount(notificationCount);
-                        addBottomSheetMenu(bottomSheetMenu);
+                            int resourceIdProfile = getResources().getIdentifier(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);
+                            if (resourceIdProfile > 0)
+                                bottomSheetMenu.setIconImageUrl(getResources().getDrawable(resourceIdProfile));
+                            else
+                                CommonMethods.Log(TAG, "Resource does not exist");
+
+                            bottomSheetMenu.setNotificationCount(notificationCount);
+
+                            addBottomSheetMenu(bottomSheetMenu);
+                        }
                     }
-                }
+                } else if (dashboardBottomMenuLists.get(i).getName().equalsIgnoreCase(CONNECT))
+                    connectIndex = i;
             }
+
+            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this);
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, this);
+
+            String salutationText = "";
+
+            if (!salutation.isEmpty())
+                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this), salutationText);
         }
-
-
-        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
-
-        String salutationText = "";
-
-        if (!salutation.isEmpty())
-            salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
-
-        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})

@@ -293,8 +293,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
         String salutationText = "";
 
-        if (!salutation.isEmpty())
-            salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+            salutationText = SALUTATION[Integer.parseInt(salutation)];
 
         setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
     }
@@ -483,8 +482,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
             String salutationText = "";
 
-            if (!salutation.isEmpty())
-                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+                salutationText = SALUTATION[Integer.parseInt(salutation)];
 
             setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
             //--------------------------

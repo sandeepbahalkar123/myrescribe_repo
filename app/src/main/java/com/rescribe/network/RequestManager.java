@@ -168,7 +168,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         Gson gson = new Gson();
         JSONObject jsonObject = null;
         try {
-            CommonMethods.Log(TAG, "customResponse:--" + customResponse.toString());
+            CommonMethods.Log(TAG, "customRequest:--" + customResponse.toString());
             String jsonString = gson.toJson(customResponse);
 
             CommonMethods.Log(TAG, "jsonRequest:--" + jsonString);

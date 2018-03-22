@@ -48,8 +48,7 @@ public class ProfileActivity extends DrawerActivity {
         String userNameWithSalutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
         String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
 
-        if (!salutation.isEmpty())
-            userNameWithSalutation = SALUTATION[Integer.parseInt(salutation) - 1] + " " + userNameWithSalutation;
+            userNameWithSalutation = SALUTATION[Integer.parseInt(salutation)] + " " + userNameWithSalutation;
 
         addProfile(new DrawerProfile()
                 .setId(1)

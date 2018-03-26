@@ -109,10 +109,11 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         mDoctorList.setAptId(mAptListObject.getId());
         mDoctorList.setDocId(mAptListObject.getDoc_id());
         mDoctorList.setNameOfClinicString(mAptListObject.getClinic_name());
-        mDoctorList.setAddressOfDoctorString(mAptListObject.getAddress());
+//        mDoctorList.setAddressOfDoctorString(mAptListObject.getAddress());
         mDoctorList.setDocPhone(mAptListObject.getDocPhone());
         mDoctorList.setRating(mAptListObject.getRating());
         mDoctorList.setTypedashboard(true);
+        mDoctorList.setClinicAddress(mAptListObject.getClinicAddress());
         Intent intent;
         if (mAptListObject.getConfirmationType().equalsIgnoreCase(getString(R.string.token))) {
             intent = new Intent(getActivity(), ConfirmTokenInfoActivity.class);

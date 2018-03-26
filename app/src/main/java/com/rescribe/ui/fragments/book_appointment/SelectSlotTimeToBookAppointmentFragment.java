@@ -616,7 +616,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mClickedDoctorObject.setAptTime(mResponseAppointmentConfirmationModel.getAptList().getAptTime());
                         mClickedDoctorObject.setAptDate(mResponseAppointmentConfirmationModel.getAptList().getAptDate());
                         mClickedDoctorObject.setNameOfClinicString(mResponseAppointmentConfirmationModel.getAptList().getClinic_name());
-                        mClickedDoctorObject.setAddressOfDoctorString(mResponseAppointmentConfirmationModel.getAptList().getAddress());
+//                        mClickedDoctorObject.setAddressOfDoctorString(mResponseAppointmentConfirmationModel.getAptList().getAddress());
+                        mClickedDoctorObject.setClinicAddress(mResponseAppointmentConfirmationModel.getAptList().getClinicAddress());
                         bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
                         bundleData.putString(RescribeConstants.LOCATION_ID, "" + 0);
                         bundleData.putString(RescribeConstants.TOKEN_NO, "" + 0);

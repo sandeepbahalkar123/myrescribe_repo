@@ -166,9 +166,9 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
 
             doctorName.setText(drName);
             aboutDoctor.setText(mDoctorObject.getDegree());
-            if (mDoctorObject.getAddressOfDoctorString() != null) {
-                clinicAddress.setText(mDoctorObject.getAddressOfDoctorString());
-                if (!mDoctorObject.getAddressOfDoctorString().isEmpty()) {
+            if (mDoctorObject.getClinicAddress() != null) {  //sandeep
+                clinicAddress.setText(mDoctorObject.getClinicAddress());//sandeep changed getClinicAddress() instead getAddressOfDoctorString()
+                if (!mDoctorObject.getClinicAddress().isEmpty()) {
 
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions.placeholder(R.drawable.staticmap);
@@ -176,7 +176,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                     requestOptions.centerCrop();
 
                     Glide.with(mContext)
-                            .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x300")
+                            .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getClinicAddress() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getClinicAddress() + "&zoom=12&size=640x300")
                             .into(locationImageView);
                 }
             }
@@ -239,7 +239,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
             case R.id.locationImageView:
                 if (mDoctorObject != null) {
                     Intent intent = new Intent(mContext, MapsActivity.class);
-                    intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getAddressOfDoctorString());
+                    intent.putExtra(mContext.getString(R.string.address), mDoctorObject.getClinicAddress());
                     intent.putExtra(RescribeConstants.RATING, mDoctorObject.getRating());
                     intent.putExtra(RescribeConstants.DOCTOR_NAME, mDoctorObject.getDocName());
                     mContext.startActivity(intent);

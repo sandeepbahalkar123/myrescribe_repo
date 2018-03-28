@@ -186,89 +186,77 @@
                         android:id="@+id/genderContentView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/dp8"
                         android:background="@color/otp_background_layout"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:padding="@dimen/dp8"
-                        android:visibility="visible">
+                        android:visibility="visible"
+                        >
 
                         <LinearLayout
                             android:id="@+id/genderMaleLayout"
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/dp0"
                             android:layout_height="match_parent"
-                            android:gravity="center_horizontal"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <android.support.v7.widget.AppCompatImageView
                                 android:id="@+id/genderMaleIcon"
                                 style="@style/drawer_filter_gender_icon"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:src="@drawable/icon_male_default" />
 
                             <com.rescribe.ui.customesViews.CustomTextView
                                 android:id="@+id/genderMaleText"
                                 style="@style/drawer_filter_gender_text"
-                                android:gravity="center"
+                                android:layout_gravity="center"
                                 android:text="@string/male"
                                 android:textColor="@color/gender_drawer"
                                 app:customFont="@string/roboto_regular" />
-
-                            <com.rescribe.ui.customesViews.CustomTextView
-                                style="@style/drawer_filter_gender_text"
-                                android:layout_height="0dp"
-                                android:gravity="center"
-                                android:text="@string/transgender"
-                                android:textColor="@color/gender_drawer"
-                                app:customFont="@string/roboto_regular" />
-
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/genderFemaleLayout"
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/dp0"
                             android:layout_height="match_parent"
-                            android:gravity="center_horizontal"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <android.support.v7.widget.AppCompatImageView
                                 android:id="@+id/genderFemaleIcon"
                                 style="@style/drawer_filter_gender_icon"
-                                android:src="@drawable/icon_female_default" />
+                                android:src="@drawable/icon_female_default"
+                                android:layout_gravity="center"/>
 
                             <com.rescribe.ui.customesViews.CustomTextView
                                 android:id="@+id/genderFemaleText"
                                 style="@style/drawer_filter_gender_text"
-                                android:gravity="center"
+                                android:layout_gravity="center"
                                 android:text="@string/female"
                                 android:textColor="@color/gender_drawer"
                                 app:customFont="@string/roboto_regular" />
-
-                            <com.rescribe.ui.customesViews.CustomTextView
-                                style="@style/drawer_filter_gender_text"
-                                android:layout_height="0dp"
-                                android:gravity="center"
-                                android:text="@string/transgender"
-                                android:textColor="@color/gender_drawer"
-                                app:customFont="@string/roboto_regular" />
-
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/genderTransgenderLayout"
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/dp0"
                             android:layout_height="match_parent"
-                            android:gravity="center_horizontal"
+                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <android.support.v7.widget.AppCompatImageView
                                 android:id="@+id/genderTransgenderIcon"
                                 style="@style/drawer_filter_gender_icon"
-                                android:src="@drawable/icon_transgender_default" />
+                                android:src="@drawable/icon_transgender_default"
+                                android:layout_gravity="center"/>
 
                             <com.rescribe.ui.customesViews.CustomTextView
                                 android:id="@+id/genderTransgenderText"
                                 style="@style/drawer_filter_gender_text"
-                                android:gravity="center"
+                                android:layout_gravity="center"
                                 android:text="@string/transgender"
                                 android:textColor="@color/gender_drawer"
                                 app:customFont="@string/roboto_regular" />
@@ -289,7 +277,8 @@
                         android:id="@+id/clinicFeesHeaderView"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp40"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <ImageView
                             style="@style/drawer_filter_header_icon_layout"
@@ -316,7 +305,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingBottom="@dimen/dp20"
-                        android:paddingLeft="@dimen/dp20"
+                        android:paddingLeft="@dimen/dp10"
                         android:visibility="visible">
 
                         <com.rescribe.ui.customesViews.CustomTextView
@@ -329,9 +318,7 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/dp14"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content">
 
                             <com.rescribe.ui.customesViews.CustomTextView
                                 android:id="@+id/clinicFeesSeekBarMinValue"

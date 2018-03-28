@@ -297,7 +297,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
         BookAppointTokenNotifyAlertRequestModel requestDoctorListBaseModel = new BookAppointTokenNotifyAlertRequestModel();
         requestDoctorListBaseModel.setDocId(docId);
-        requestDoctorListBaseModel.setOs("android");
+       // requestDoctorListBaseModel.setOs("android");
         requestDoctorListBaseModel.setTime(time);
         requestDoctorListBaseModel.setLocationId(locationID);
         requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));

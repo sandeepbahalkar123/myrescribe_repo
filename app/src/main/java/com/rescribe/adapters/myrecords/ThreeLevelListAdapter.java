@@ -149,7 +149,8 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.circularBulletMainElement.getLayoutParams().width = newHeightWidth;
 
         groupViewHolder.doctorName.setText(doctorName);
-        groupViewHolder.doctorAddress.setText(dataObject.getAddress());
+        // groupViewHolder.doctorAddress.setText(dataObject.getAddress());
+        groupViewHolder.doctorAddress.setText(dataObject.getAreaName() + ", " + dataObject.getCityName());
         groupViewHolder.doctorType.setText(dataObject.getSpecialization());
 
         groupViewHolder.parentDataContainer.setBackgroundColor(dataObject.getRowColor());

@@ -111,7 +111,8 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             doctorName = "Dr. " + dataObject.getDoctorName();
         }
         holder.doctorName.setText(doctorName);
-        holder.doctorAddress.setText(dataObject.getAddress());
+        //holder.doctorAddress.setText(dataObject.getAddress());
+        holder.doctorAddress.setText(dataObject.getAreaName() + ", " + dataObject.getCityName());
         holder.doctorType.setText(dataObject.getSpecialization());
 
         holder.parentDataContainer.setBackgroundColor(dataObject.getRowColor());

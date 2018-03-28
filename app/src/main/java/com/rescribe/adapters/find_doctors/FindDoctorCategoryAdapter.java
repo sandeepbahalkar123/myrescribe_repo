@@ -234,7 +234,13 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
             //----------
             if (doctorObject.getClinicDataList().size() > 0) {
-                if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))
+                        && (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) ||
+                        mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType))) {
+                    bookAppointmentButton.setVisibility(View.GONE);
+                    tokenNo.setVisibility(View.VISIBLE);
+                } else if (appointmentType.equalsIgnoreCase(mContext.getString(R.string.token))) {
                     bookAppointmentButton.setVisibility(View.INVISIBLE);
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
@@ -292,7 +298,9 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
 
             //----------
             if (doctorObject.getClinicDataList().size() > 0) {
-                if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.token))) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (appointmentType.equalsIgnoreCase(mContext.getString(R.string.token))
+                        || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     bookAppointmentButton.setVisibility(View.INVISIBLE);
                     tokenNo.setVisibility(View.VISIBLE);
                 } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {

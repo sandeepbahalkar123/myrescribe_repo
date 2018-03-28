@@ -573,7 +573,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 if (customResponse != null) {
                     ConfirmTokenModel confirmTokenModel = (ConfirmTokenModel) customResponse;
                     CommonMethods.showToast(getActivity(), confirmTokenModel.getCommon().getStatusMessage());
-                    if (confirmTokenModel.getCommon().isSuccess()) {
+
+                    // TODO: exceeded String match is added for now, need to find other way for this
+                    if (confirmTokenModel.getCommon().isSuccess() &&
+                            !confirmTokenModel.getCommon().getStatusMessage().toLowerCase().contains(getString(R.string.exceeded))) {
 
                         bundleData = new Bundle();
                         mClickedDoctorObject.setTypedashboard(false);
@@ -595,6 +598,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         intentObject.putExtras(bundleData);
                         startActivity(intentObject);
                     }
+
 
                     break;
                 }

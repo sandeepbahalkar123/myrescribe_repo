@@ -38,8 +38,8 @@
         android:textColor="@color/Gray"
         android:textSize="@dimen/sp12"
         android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="12 September 2017" />
+        tools:text="12 September 2017"
+        tools:visibility="visible" />
 
 
     <LinearLayout
@@ -71,7 +71,7 @@
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/sp16"
-            android:visibility="visible"
+            android:visibility="gone"
             app:customFont="@string/roboto_medium" />
 
         <ImageView

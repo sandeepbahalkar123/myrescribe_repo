@@ -61,8 +61,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, OnDataListViewVisible m, HelperResponse mHelperResponse) {
         this.mContext = mContext;
 
-        this.mArrayList = dataList;
-        this.mDataList.addAll(mArrayList);
+        filterListToRemoveMyAppointments(dataList);
 
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mOnDataListViewVisibleListener = m;
@@ -73,6 +72,18 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             String[] split = cityNameString.split(",");
             cityname = split[1].trim();
         }
+    }
+
+    private void filterListToRemoveMyAppointments(ArrayList<DoctorList> dataList) {
+        ArrayList<DoctorList> tempDataList = new ArrayList<>();
+        for (DoctorList obj :
+                dataList) {
+            if (!mContext.getString(R.string.my_appointments).equalsIgnoreCase(obj.getCategoryName())) {
+                tempDataList.add(obj);
+            }
+        }
+        this.mArrayList = tempDataList;
+        this.mDataList.addAll(mArrayList);
     }
 
     @Override
@@ -100,10 +111,10 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             holder.doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
         }
 
-        if(!doctorObject.getCategorySpeciality().equalsIgnoreCase("")){
+        if (!doctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
             holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
             holder.doctorCategoryType.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.doctorCategoryType.setVisibility(View.INVISIBLE);
         }
         holder.aboutDoctor.setText(doctorObject.getDegree());

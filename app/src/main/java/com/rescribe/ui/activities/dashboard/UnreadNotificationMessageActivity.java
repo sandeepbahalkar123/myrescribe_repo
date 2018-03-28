@@ -389,6 +389,15 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         mUnreadMedicationNotificationAdapter.removeAllSections();
 
         configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
+
+        CommonMethods.Log("doCreateMedicationDataMap", "listDataChild:" + listDataChild.toString());
+
+        // return in case of listDataChild==0 i.e. all list item has isTaken=1.
+        if (listDataChild.isEmpty()) {
+            mOnGoingMedicationListViewLayout.setVisibility(View.GONE);
+            return;
+        }
+
         Map.Entry<String, ArrayList<Medication>> entry = listDataChild.entrySet().iterator().next();
 
         //------ Show timeStamp of first element in header view------
@@ -428,6 +437,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             if (!isRequiredAllElements)
                 break;
         }
+
         mOnGoingMedicationListView.setLayoutManager(new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
@@ -537,7 +547,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             }
 
             initializeInvestigationListView();
-        } else if (RescribeConstants.FOLLOW_UP.equals(mOldDataTag)){
+        } else if (RescribeConstants.FOLLOW_UP.equals(mOldDataTag)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
             followUpDialog.dismiss();

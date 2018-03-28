@@ -137,7 +137,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mParentHeader = parent;
-                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasedinner), mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true, selectView.isChecked());
+                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasedinner),
+                                        mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(),
+                                                RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE),
+                                        1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition,
+                                        true, selectView.isChecked());
                             }
                         });
                         //expand and collapse for each slot in one row
@@ -209,7 +213,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mParentHeader = parent;
-                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcaselunch), mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true, selectView.isChecked());
+                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcaselunch), mParentHeader,
+                                        mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(),
+                                                RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY,
+                                                RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition,
+                                        true, selectView.isChecked());
 
                             }
                         });
@@ -280,7 +288,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mParentHeader = parent;
-                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasebreakfast), mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true, selectView.isChecked());
+                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasebreakfast),
+                                        mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(),
+                                                RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY,
+                                                RescribeConstants.DATE), 1,
+                                        RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition,
+                                        true, selectView.isChecked());
 
                             }
                         });
@@ -353,7 +366,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 mHeaderPosition = position;
                                 mSlotTypeForHeader = slotType;
                                 mParentHeader = parent;
-                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasesnacks), mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, true, selectView.isChecked());
+                                mOnNotificationClickListener.clickCheckBox(mViewForHeader, mHeaderPosition, mContext.getString(R.string.smallcasesnacks),
+                                        mParentHeader, mMedicineID, CommonMethods.formatDateTime(mDataSet.get(position).getPrescriptionDate(),
+                                                RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE),
+                                        1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition,
+                                        true, selectView.isChecked());
 
                             }
                         });
@@ -628,7 +645,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface OnNotificationClickListener {
         void onHeaderCollapse();
+
         void clickCheckBox(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick, boolean checked);
+
         void onSwiped(String slotType);
     }
 

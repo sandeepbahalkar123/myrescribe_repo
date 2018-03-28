@@ -264,7 +264,9 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         } else {
             for (DoctorList listObject :
                     mReceivedDoctorDataList) {
-                if (selectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality())) {
+                //Added condition for my_appointment, Not required to add getCategoryName = my_appointment
+                if (selectedSpeciality.equalsIgnoreCase(listObject.getDocSpeciality()) &&
+                        !(mContext.getString(R.string.my_appointments).equalsIgnoreCase(listObject.getCategoryName()))) {
 
                     if (dataList.size() > 0) {
                         boolean isAddItemToList = true;

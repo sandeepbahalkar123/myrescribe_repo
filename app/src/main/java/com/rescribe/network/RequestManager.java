@@ -320,7 +320,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 //            VolleyError error1 = new VolleyError(new String(error.networkResponse.data));
 //            error = error1;
 //            CommonMethods.Log("Error Message", error.getMessage() + "\n error Localize message" + error.getLocalizedMessage());
-            CommonMethods.Log(TAG, "Goes into error response condition");
+            CommonMethods.Log(TAG, "Goes into error response condition:" + error.getMessage());
 
             if (error instanceof TimeoutError) {
 

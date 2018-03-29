@@ -85,7 +85,7 @@
                         <ImageView
                             style="@style/drawer_filter_header_icon_layout"
                             android:layout_gravity="center"
-                            android:src="@drawable/sorting_icon"/>
+                            app:srcCompat="@drawable/sorting_icon"/>
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             style="@style/drawer_filter_header_layout"
@@ -94,7 +94,7 @@
 
                         <ImageView
                             style="@style/drawer_filter_header_direction_icon_layout"
-                            android:src="@drawable/down_arrow"
+                            app:srcCompat="@drawable/down_arrow"
                             android:visibility="gone" />
 
                     </LinearLayout>
@@ -159,7 +159,7 @@
                         <ImageView
                             style="@style/drawer_filter_header_icon_layout"
                             android:layout_gravity="center"
-                            android:src="@drawable/gender" />
+                            app:srcCompat="@drawable/gender" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             style="@style/drawer_filter_header_layout"
@@ -169,7 +169,7 @@
                         <ImageView
                             android:id="@+id/arrowIcon1"
                             style="@style/drawer_filter_header_direction_icon_layout"
-                            android:src="@drawable/down_arrow"
+                            app:srcCompat="@drawable/down_arrow"
                             android:visibility="gone" />
 
                     </LinearLayout>
@@ -206,7 +206,7 @@
                                 style="@style/drawer_filter_gender_icon"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:src="@drawable/icon_male_default" />
+                                app:srcCompat="@drawable/icon_male_default" />
 
                             <com.rescribe.ui.customesViews.CustomTextView
                                 android:id="@+id/genderMaleText"
@@ -228,7 +228,7 @@
                             <android.support.v7.widget.AppCompatImageView
                                 android:id="@+id/genderFemaleIcon"
                                 style="@style/drawer_filter_gender_icon"
-                                android:src="@drawable/icon_female_default"
+                                app:srcCompat="@drawable/icon_female_default"
                                 android:layout_gravity="center"/>
 
                             <com.rescribe.ui.customesViews.CustomTextView
@@ -250,7 +250,7 @@
                             <android.support.v7.widget.AppCompatImageView
                                 android:id="@+id/genderTransgenderIcon"
                                 style="@style/drawer_filter_gender_icon"
-                                android:src="@drawable/icon_transgender_default"
+                                app:srcCompat="@drawable/icon_transgender_default"
                                 android:layout_gravity="center"/>
 
                             <com.rescribe.ui.customesViews.CustomTextView
@@ -283,7 +283,7 @@
                         <ImageView
                             style="@style/drawer_filter_header_icon_layout"
                             android:layout_gravity="center"
-                            android:src="@drawable/clinic_fees" />
+                            app:srcCompat="@drawable/clinic_fees" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             style="@style/drawer_filter_header_layout"
@@ -292,7 +292,7 @@
 
                         <ImageView
                             style="@style/drawer_filter_header_direction_icon_layout"
-                            android:src="@drawable/down_arrow"
+                            app:srcCompat="@drawable/down_arrow"
                             android:visibility="gone" />
 
                     </LinearLayout>
@@ -368,7 +368,7 @@
                         <ImageView
                             style="@style/drawer_filter_header_icon_layout"
                             android:layout_gravity="center"
-                            android:src="@drawable/distance" />
+                            app:srcCompat="@drawable/distance" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             style="@style/drawer_filter_header_layout"
@@ -377,7 +377,7 @@
 
                         <ImageView
                             style="@style/drawer_filter_header_direction_icon_layout"
-                            android:src="@drawable/down_arrow"
+                            app:srcCompat="@drawable/down_arrow"
                             android:visibility="gone" />
 
                     </LinearLayout>
@@ -483,7 +483,7 @@
                         <ImageView
                             style="@style/drawer_filter_header_icon_layout"
                             android:layout_gravity="center"
-                            android:src="@drawable/availability" />
+                            app:srcCompat="@drawable/availability" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             style="@style/drawer_filter_header_layout"
@@ -492,7 +492,7 @@
 
                         <ImageView
                             style="@style/drawer_filter_header_direction_icon_layout"
-                            android:src="@drawable/down_arrow"
+                            app:srcCompat="@drawable/down_arrow"
                             android:visibility="gone" />
 
                     </LinearLayout>
@@ -618,7 +618,7 @@
 
                         <ImageView
                             style="@style/drawer_filter_header_icon_layout"
-                            android:src="@drawable/location_with_blue_bg" />
+                            app:srcCompat="@drawable/location_with_blue_bg" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             style="@style/drawer_filter_header_layout"
@@ -627,7 +627,7 @@
 
                         <ImageView
                             style="@style/drawer_filter_header_direction_icon_layout"
-                            android:src="@drawable/down_arrow"
+                            app:srcCompat="@drawable/down_arrow"
                             android:visibility="gone" />
 
                     </LinearLayout>
@@ -713,7 +713,7 @@
             <ImageView
                 style="@style/drawer_filter_header_icon_layout"
                 android:layout_gravity="center"
-                android:src="@drawable/sorting_icon" />
+                app:srcCompat="@drawable/sorting_icon" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 style="@style/drawer_filter_header_layout"
@@ -722,7 +722,7 @@
 
             <ImageView
                 style="@style/drawer_filter_header_direction_icon_layout"
-                android:src="@drawable/down_arrow"
+                app:srcCompat="@drawable/down_arrow"
                 android:visibility="gone" />
 
         </LinearLayout>

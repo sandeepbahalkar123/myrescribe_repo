@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/notificationLayout"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
@@ -17,7 +19,7 @@
         android:layout_marginStart="@dimen/dp6"
         android:adjustViewBounds="true"
         android:padding="@dimen/dp2"
-        android:src="@drawable/notification_icon" />
+        app:srcCompat="@drawable/notification_icon" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,7 +88,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:scaleType="center"
-                android:src="@drawable/unchked" />
+                app:srcCompat="@drawable/unchked" />
 
         </RelativeLayout>
     </LinearLayout>

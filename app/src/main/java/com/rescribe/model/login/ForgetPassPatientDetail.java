@@ -28,7 +28,7 @@ public class ForgetPassPatientDetail {
     private String patientGender;
     @SerializedName("salutation")
     @Expose
-    private String salutation;
+    private int salutation;
 
     public int getPatientId() {
         return patientId;
@@ -86,11 +86,11 @@ public class ForgetPassPatientDetail {
         this.patientGender = patientGender;
     }
 
-    public String getSalutation() {
+    public int getSalutation() {
         return salutation;
     }
 
-    public void setSalutation(String salutation) {
+    public void setSalutation(int salutation) {
         this.salutation = salutation;
     }
 

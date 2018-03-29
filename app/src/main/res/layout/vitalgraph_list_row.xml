@@ -30,7 +30,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/dp4"
-                android:src="@drawable/ellipse_3" />
+                app:srcCompat="@drawable/ellipse_3" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/name"
@@ -113,7 +113,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/dp4"
-            android:src="@drawable/ellipse_3" />
+            app:srcCompat="@drawable/ellipse_3" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:layout_width="wrap_content"
@@ -137,7 +137,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/expand_button" />
+            app:srcCompat="@drawable/expand_button" />
 
     </RelativeLayout>
 

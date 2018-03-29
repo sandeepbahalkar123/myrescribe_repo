@@ -41,10 +41,10 @@ public class AptList implements CustomResponse, Serializable {
     @SerializedName("address")
     @Expose
     private String address;
-    @SerializedName("city_name")
+    @SerializedName("cityName")
     @Expose
     private String city_name;
-    @SerializedName("area_name")
+    @SerializedName("areaName")
     @Expose
     private String area_name;
     @SerializedName("imageUrl")

@@ -37,6 +37,12 @@ public class ClinicData implements Parcelable {
     @SerializedName("appointmentType")
     @Expose
     private String appointmentType = "";
+    @SerializedName("areaName")
+    @Expose
+    private String areaName = "";
+    @SerializedName("cityName")
+    @Expose
+    private String cityName = "";
 
 
     public final static Creator<ClinicData> CREATOR = new Creator<ClinicData>() {
@@ -64,8 +70,26 @@ public class ClinicData implements Parcelable {
         this.apptScheduleLmtDays = ((int) in.readValue((int.class.getClassLoader())));
         this.amount = ((int) in.readValue((int.class.getClassLoader())));
         this.appointmentType = ((String) in.readValue((String.class.getClassLoader())));
+
         in.readList(instance.docServices, (String.class.getClassLoader()));
+        this.areaName = ((String) in.readValue((String.class.getClassLoader())));
+        this.cityName = ((String) in.readValue((String.class.getClassLoader())));
     }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(clinicName);
+        dest.writeValue(clinicAddress);
+        dest.writeValue(locationId);
+        dest.writeValue(amt);
+        dest.writeValue(apptScheduleLmtDays);
+        dest.writeValue(amount);
+        dest.writeValue(appointmentType);
+        dest.writeList(docServices);
+        dest.writeValue(areaName);
+        dest.writeValue(cityName);
+
+    }
+
 
     public ClinicData() {
     }
@@ -109,6 +133,7 @@ public class ClinicData implements Parcelable {
     public void setApptScheduleLmtDays(int apptScheduleLmtDays) {
         this.apptScheduleLmtDays = apptScheduleLmtDays;
     }
+
     public ArrayList<String> getDocServices() {
         return docServices;
     }
@@ -133,16 +158,22 @@ public class ClinicData implements Parcelable {
         this.appointmentType = appointmentType;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(clinicName);
-        dest.writeValue(clinicAddress);
-        dest.writeValue(locationId);
-        dest.writeValue(amt);
-        dest.writeValue(apptScheduleLmtDays);
-        dest.writeValue(amount);
-        dest.writeValue(appointmentType);
-        dest.writeList(docServices);
+    public String getAreaName() {
+        return areaName;
     }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
 
     public int describeContents() {
         return 0;

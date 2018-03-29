@@ -22,7 +22,7 @@
         <ImageView
             android:id="@+id/tabTypeView"
             android:paddingEnd="@dimen/dp8"
-            android:src="@drawable/tablet"
+            app:srcCompat="@drawable/tablet"
             android:paddingStart="@dimen/dp8"
             android:paddingLeft="@dimen/dp8"
             android:layout_width="wrap_content"

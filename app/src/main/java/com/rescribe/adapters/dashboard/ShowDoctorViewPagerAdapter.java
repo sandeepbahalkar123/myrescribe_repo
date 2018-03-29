@@ -184,7 +184,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 if (clinicDataList.size() == 1) {
                     clinicName.setVisibility(View.VISIBLE);
                     clinicName.setText(clinicDataList.get(0).getClinicName());
-                    doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                    // doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                    doctorAddress.setText(clinicDataList.get(0).getAreaName() + ", " + clinicDataList.get(0).getCityName());
                     doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
 
                 } else {
@@ -249,7 +250,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
 
                 if (clinicDataList.size() > 0) {
                     doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
-                    doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                    //  doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                    doctorAddress.setText(clinicDataList.get(0).getAreaName() + ", " + clinicDataList.get(0).getCityName());
                     clinicName.setText(clinicDataList.get(0).getClinicName());
                 }
                 designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
@@ -260,7 +262,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
-                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                //doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                doctorAddress.setText(clinicDataList.get(0).getAreaName() + ", " + clinicDataList.get(0).getCityName());
+
                 doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
 
             } else {
@@ -315,7 +319,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
-                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                // doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                doctorAddress.setText(clinicDataList.get(0).getAreaName() + ", " + clinicDataList.get(0).getCityName());
+
                 doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
 
             } else {
@@ -367,7 +373,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
-                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                //  doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+                doctorAddress.setText(clinicDataList.get(0).getAreaName() + ", " + clinicDataList.get(0).getCityName());
+
                 doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
 
             } else {

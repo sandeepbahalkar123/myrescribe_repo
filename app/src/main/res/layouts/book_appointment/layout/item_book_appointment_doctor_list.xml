@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:src="@drawable/result_blue_line" />
+                app:srcCompat="@drawable/result_blue_line" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/doctorCategoryType"
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/dashboard_big_black_ruppee"
+                    app:srcCompat="@drawable/dashboard_big_black_ruppee"
                     android:visibility="invisible" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
@@ -232,7 +232,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:paddingTop="@dimen/dp6"
-                        android:src="@drawable/location_green"
+                        app:srcCompat="@drawable/location_green"
                         android:visibility="invisible" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
@@ -286,7 +286,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp10"
-                android:src="@drawable/get_token_btn"
+                app:srcCompat="@drawable/get_token_btn"
                 android:visibility="invisible"
                 tools:visibility="visible"/>
 
@@ -298,7 +298,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp10"
-                android:src="@drawable/result_book_appointment"
+                app:srcCompat="@drawable/result_book_appointment"
                 android:visibility="invisible" />
 
             <com.rescribe.ui.customesViews.CustomTextView

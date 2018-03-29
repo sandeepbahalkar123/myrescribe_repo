@@ -33,7 +33,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/dp4"
-                android:src="@drawable/ellipse_3" />
+                app:srcCompat="@drawable/ellipse_3" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/weight"

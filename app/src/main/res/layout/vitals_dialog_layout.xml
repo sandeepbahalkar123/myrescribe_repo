@@ -59,7 +59,7 @@
                 android:background="@drawable/circular_shape_vital_bg"
                 android:clickable="true"
                 android:padding="@dimen/dp20"
-                android:src="@drawable/weight"
+                app:srcCompat="@drawable/weight"
                 android:focusable="true" />
 
         </RelativeLayout>

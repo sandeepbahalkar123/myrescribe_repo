@@ -92,7 +92,7 @@
                 android:layout_marginBottom="@dimen/dp4"
                 android:layout_marginLeft="@dimen/dp16"
                 android:layout_marginTop="@dimen/dp4"
-                android:src="@drawable/more_info" />
+                app:srcCompat="@drawable/more_info" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
                     android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginRight="@dimen/dp16"
                     android:layout_marginTop="@dimen/dp4"
-                    android:src="@drawable/directions" />
+                    app:srcCompat="@drawable/directions" />
             </RelativeLayout>
 
         </LinearLayout>

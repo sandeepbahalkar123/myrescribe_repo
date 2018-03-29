@@ -44,7 +44,7 @@
                     android:padding="@dimen/dp6"
                     android:scaleX="-1"
                     android:visibility="invisible"
-                    android:src="@drawable/right_arrow_book_appointment" />
+                    app:srcCompat="@drawable/right_arrow_book_appointment" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/selectDateTime"
@@ -72,7 +72,7 @@
                     android:layout_marginRight="@dimen/dp10"
                     android:layout_marginTop="@dimen/dp4"
                     android:padding="@dimen/dp6"
-                    android:src="@drawable/right_arrow_book_appointment" />
+                    app:srcCompat="@drawable/right_arrow_book_appointment" />
 
             </RelativeLayout>
 
@@ -121,7 +121,7 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/icon_clock" />
+                                app:srcCompat="@drawable/icon_clock" />
                         </LinearLayout>
 
                         <com.rescribe.ui.customesViews.CustomTextView
@@ -163,7 +163,7 @@
                         android:layout_height="@dimen/dp20"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right"
-                        android:src="@drawable/icon_edit_pencil_blue" />
+                        app:srcCompat="@drawable/icon_edit_pencil_blue" />
 
                 </RelativeLayout>
 
@@ -190,7 +190,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:src="@drawable/token_icon" />
+                            app:srcCompat="@drawable/token_icon" />
                     </LinearLayout>
 
                     <com.rescribe.ui.customesViews.CustomTextView
@@ -228,7 +228,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:src="@drawable/waiting_time_icon" />
+                            app:srcCompat="@drawable/waiting_time_icon" />
                     </LinearLayout>
 
                     <com.rescribe.ui.customesViews.CustomTextView

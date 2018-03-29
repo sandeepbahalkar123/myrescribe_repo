@@ -16,14 +16,15 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp12"
                 android:text="@string/book_appointment"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp18"
-                android:paddingLeft="@dimen/dp12"
                 android:visibility="visible"
                 app:customFont="@string/roboto_bold" />
 
@@ -36,6 +37,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         tools:context="com.rescribe.MapsActivity" />
 
     <FrameLayout

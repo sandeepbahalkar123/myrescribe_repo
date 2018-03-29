@@ -72,7 +72,7 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="@dimen/dp11"
                 android:paddingRight="@dimen/dp11"
-                android:src="@drawable/right_arrow_circle" />
+                app:srcCompat="@drawable/right_arrow_circle" />
         </LinearLayout>
 
         <LinearLayout
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp6"
-                android:src="@drawable/blue_line_find_doctor" />
+                app:srcCompat="@drawable/blue_line_find_doctor" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/viewAllFavorite"
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp6"
-                android:src="@drawable/blue_line_find_doctor" />
+                app:srcCompat="@drawable/blue_line_find_doctor" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/viewAllSponsered"
@@ -193,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp6"
-                android:src="@drawable/blue_line_find_doctor" />
+                app:srcCompat="@drawable/blue_line_find_doctor" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/viewAllRecentVisited"

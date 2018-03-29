@@ -87,7 +87,7 @@
             android:layout_marginStart="@dimen/dp10"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/scroller"
+            app:srcCompat="@drawable/scroller"
             android:clickable="false"
             android:layout_alignParentRight="true" />
     </RelativeLayout>

@@ -73,7 +73,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/bookmark" />
+                app:srcCompat="@drawable/bookmark" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/articleDate"
@@ -95,7 +95,7 @@
         android:layout_marginTop="@dimen/dp6"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_1" />
+        app:srcCompat="@drawable/image_1" />
 
     <com.rescribe.ui.customesViews.CustomTextView
         android:id="@+id/articleText"

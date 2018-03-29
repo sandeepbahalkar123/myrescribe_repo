@@ -142,7 +142,7 @@
                         android:paddingLeft="@dimen/dp4"
                         android:paddingRight="@dimen/dp4"
                         android:paddingStart="@dimen/dp4"
-                        android:src="@drawable/favourite_icon"
+                        app:srcCompat="@drawable/favourite_icon"
                         android:visibility="visible" />
                     <!-- Title Of Song-->
                 </LinearLayout>
@@ -221,7 +221,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:src="@drawable/book"
+                    app:srcCompat="@drawable/book"
                     android:visibility="gone"
                     tools:visibility="visible"/>
 
@@ -241,7 +241,7 @@
                     android:id="@+id/tokenNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/get_token_btn"
+                    app:srcCompat="@drawable/get_token_btn"
                     android:visibility="gone"
                     tools:src="@drawable/get_token_btn" />
             </LinearLayout>

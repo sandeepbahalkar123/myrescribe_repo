@@ -86,7 +86,7 @@
                             android:layout_marginStart="@dimen/dp8"
                             android:adjustViewBounds="true"
                             android:padding="@dimen/dp8"
-                            android:src="@drawable/selectdoctor" />
+                            app:srcCompat="@drawable/selectdoctor" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/drNameTextView"
@@ -114,7 +114,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="@dimen/dp30"
                             android:layout_marginRight="@dimen/dp30"
-                            android:src="@drawable/expand_button" />
+                            app:srcCompat="@drawable/expand_button" />
 
                     </RelativeLayout>
 
@@ -137,7 +137,7 @@
                             android:layout_marginStart="@dimen/dp8"
                             android:adjustViewBounds="true"
                             android:padding="@dimen/dp8"
-                            android:src="@drawable/doctorspeciality" />
+                            app:srcCompat="@drawable/doctorspeciality" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/drSpecialityTextView"
@@ -165,7 +165,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="@dimen/dp30"
                             android:layout_marginRight="@dimen/dp30"
-                            android:src="@drawable/expand_button" />
+                            app:srcCompat="@drawable/expand_button" />
 
                     </RelativeLayout>
 
@@ -188,7 +188,7 @@
                             android:layout_marginStart="@dimen/dp8"
                             android:adjustViewBounds="true"
                             android:padding="@dimen/dp8"
-                            android:src="@drawable/datemonth" />
+                            app:srcCompat="@drawable/datemonth" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
                             android:id="@+id/drCalenderTextView"
@@ -216,7 +216,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="@dimen/dp30"
                             android:layout_marginRight="@dimen/dp30"
-                            android:src="@drawable/expand_button" />
+                            app:srcCompat="@drawable/expand_button" />
 
                     </RelativeLayout>
 

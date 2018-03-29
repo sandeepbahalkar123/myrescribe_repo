@@ -18,7 +18,7 @@
             android:paddingTop="@dimen/dp10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/support_bg" />
+            app:srcCompat="@drawable/support_bg" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:src="@drawable/scrog_product" />
+            app:srcCompat="@drawable/scrog_product" />
 
     </RelativeLayout>
 </LinearLayout>

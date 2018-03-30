@@ -274,10 +274,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private void messageStatus(String messageStatus) {
         StatusInfo statusInfo = new StatusInfo();
 
-        String generatedId = patId + "_" + mqttMessage.size() + System.nanoTime();
-        statusInfo.setMsgId(generatedId);
+        statusInfo.setMsgId("all");
         statusInfo.setDocId(chatList.getId());
         statusInfo.setPatId(Integer.parseInt(patId));
+        statusInfo.setSender(DOCTOR);
 
         statusInfo.setMessageStatus(messageStatus);
         if (mqttService != null)

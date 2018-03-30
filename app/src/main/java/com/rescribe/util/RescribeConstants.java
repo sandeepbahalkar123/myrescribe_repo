@@ -345,7 +345,9 @@ public class RescribeConstants {
         public static final String INV_ID = "invId";
     }
 
-    public static final String[] SALUTATION = {"Mr.", "Mrs.", "Miss", "Other"};
+    public static final String[] SALUTATION_SOCIALMEDIA = {"Mr.", "Mrs.", "Miss", "Other"};
+    public static final String[] SALUTATION = {"","Mr.", "Mrs.", "Miss", "Other"};
+
     public static final String[] GENDER = {"MALE", "FEMALE", "TRANSGENDER"};
 
     public interface BOTTOM_MENU {

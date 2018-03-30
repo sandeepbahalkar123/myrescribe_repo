@@ -23,9 +23,7 @@ public class AptList implements CustomResponse, Serializable {
     @SerializedName("locationId")
     @Expose
     private String locationId;
-
     @SerializedName("doctorDegree")
-
     @Expose
     private String doctorDegree;
     @SerializedName("docPhone")
@@ -40,11 +38,60 @@ public class AptList implements CustomResponse, Serializable {
     @SerializedName("specialization")
     @Expose
     private String specialization;
-
     @SerializedName("address")
     @Expose
     private String address;
+    @SerializedName("cityName")
+    @Expose
+    private String city_name;
+    @SerializedName("areaName")
+    @Expose
+    private String area_name;
+    @SerializedName("imageUrl")
+    @Expose
+    private String imageUrl;
+    @SerializedName("aptDate")
+    @Expose
+    private String aptDate;
+    @SerializedName("aptStatus")
+    @Expose
+    private String aptStatus; //upcoming n all
+    @SerializedName("aptTime")
+    @Expose
+    private String aptTime;
+    @SerializedName("clinic_name")
+    @Expose
+    private String clinic_name;
+    @SerializedName("rating")
+    @Expose
+    private double rating;
+    @SerializedName("type")
+    @Expose
+    private String confirmationType; // token/appointment to show confirmation screen.
+    @SerializedName("tokenNumber")
+    @Expose
+    private String tokenNumber;
+    @SerializedName("waitingPatientCount")
+    @Expose
+    private String waitingPatientCount;
+    @SerializedName("waitingPatientTime")
+    @Expose
+    private String waitingPatientTime;
+    @SerializedName("clinicAddress")
+    @Expose
+    private String clinicAddress;
 
+
+    //--------------------------
+
+
+    public String getClinicAddress() {
+        return clinicAddress;
+    }
+
+    public void setClinicAddress(String clinicAddress) {
+        this.clinicAddress = clinicAddress;
+    }
 
     public String getCity_name() {
         return city_name;
@@ -61,53 +108,6 @@ public class AptList implements CustomResponse, Serializable {
     public void setArea_name(String area_name) {
         this.area_name = area_name;
     }
-
-    @SerializedName("city_name")
-    @Expose
-
-    private String city_name;
-
-    @SerializedName("area_name")
-    @Expose
-    private String area_name;
-
-    @SerializedName("imageUrl")
-    @Expose
-    private String imageUrl;
-    @SerializedName("aptDate")
-    @Expose
-    private String aptDate;
-    @SerializedName("aptStatus")
-    @Expose
-    private String aptStatus; //upcoming n all
-    @SerializedName("aptTime")
-    @Expose
-    private String aptTime;
-    @SerializedName("clinic_name")
-    @Expose
-    private String clinic_name;
-
-    @SerializedName("rating")
-    @Expose
-    private double rating;
-
-    //--------------------------
-    @SerializedName("type")
-    @Expose
-    private String confirmationType; // token/appointment to show confirmation screen.
-    @SerializedName("tokenNumber")
-    @Expose
-    private String tokenNumber;
-
-    @SerializedName("waitingPatientCount")
-    @Expose
-    private String waitingPatientCount;
-
-    @SerializedName("waitingPatientTime")
-    @Expose
-    private String waitingPatientTime;
-
-    //--------------------------
 
     public String getClinic_name() {
         return clinic_name;
@@ -163,16 +163,6 @@ public class AptList implements CustomResponse, Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    //the time which is coming in aptTime is time of appointment
-    public String getAptDate() {
-        if (aptDate.contains("T")) {
-            String date[] = aptDate.split("T");
-            String dateBeforeTime = date[0];
-            aptDate = CommonMethods.formatDateTime(dateBeforeTime + "T" + aptTime + ".000Z", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
-        }
-        return aptDate;
     }
 
     public void setAptDate(String aptDate) {
@@ -265,5 +255,15 @@ public class AptList implements CustomResponse, Serializable {
 
     public void setWaitingPatientTime(String waitingPatientTime) {
         this.waitingPatientTime = waitingPatientTime;
+    }
+
+    //the time which is coming in aptTime is time of appointment
+    public String getAptDate() {
+        if (aptDate.contains("T")) {
+            String date[] = aptDate.split("T");
+            String dateBeforeTime = date[0];
+            aptDate = CommonMethods.formatDateTime(dateBeforeTime + "T" + aptTime + ".000Z", RescribeConstants.DATE_PATTERN.YYYY_MM_DD_hh_mm_a, RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE);
+        }
+        return aptDate;
     }
 }

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/notificationLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dp4"
-    android:background="@color/transparent">
+    android:background="@color/transparent"
+
+    android:padding="@dimen/dp4">
 
     <ImageView
         android:id="@+id/bigIcon"
@@ -13,19 +15,19 @@
         android:layout_height="@dimen/dp40"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:adjustViewBounds="true"
-        android:layout_marginStart="@dimen/dp6"
         android:layout_marginLeft="@dimen/dp6"
-        android:src="@drawable/notification_icon" />
+        android:layout_marginStart="@dimen/dp6"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/notification_icon" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp8"
         android:layout_toEndOf="@id/bigIcon"
         android:layout_toRightOf="@+id/bigIcon"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/dp8"
-        android:layout_marginBottom="@dimen/dp8"
         android:paddingLeft="@dimen/dp8"
         android:paddingStart="@dimen/dp8">
 
@@ -68,10 +70,10 @@
                 android:id="@+id/questionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/instruction_color"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/buttonYes"
                 android:layout_toStartOf="@+id/buttonYes"
+                android:textColor="@color/instruction_color"
                 android:textSize="@dimen/sp12"
                 tools:text="@string/dummy_normal" />
 
@@ -83,7 +85,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:scaleType="center"
-                android:src="@drawable/unchked" />
+                app:srcCompat="@drawable/unchked" />
 
         </RelativeLayout>
     </LinearLayout>

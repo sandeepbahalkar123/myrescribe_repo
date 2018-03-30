@@ -127,7 +127,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                 if (NetworkUtil.isInternetAvailable(mContext)) {
                     AptList appointment1 = appointmentsList.get(Integer.parseInt("" + v.getTag()));
                     Intent intent = new Intent(mContext, MapsActivity.class);
-                    intent.putExtra(mContext.getString(R.string.address), appointment1.getAddress());
+                    intent.putExtra(mContext.getString(R.string.address), appointment1.getClinicAddress());
                     intent.putExtra(RescribeConstants.DOCTOR_NAME, appointment1.getDoctorName());
                     intent.putExtra(RescribeConstants.RATING, appointment1.getRating());
                     mContext.startActivity(intent);

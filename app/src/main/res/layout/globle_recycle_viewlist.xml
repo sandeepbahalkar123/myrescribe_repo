@@ -45,7 +45,7 @@
         android:layout_alignParentRight="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/filter"
+        app:srcCompat="@drawable/filter"
         android:visibility="gone"
         app:backgroundTint="@color/Red" />
 
@@ -57,7 +57,7 @@
         android:layout_alignParentLeft="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/location_based_filter"
+        app:srcCompat="@drawable/location_based_filter"
         android:visibility="gone"
         app:backgroundTint="#00af52" />
 

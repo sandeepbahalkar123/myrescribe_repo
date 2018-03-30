@@ -409,6 +409,7 @@
     <string name="already_booked">Already Booked</string>
     <string name="not_interested">Not Interested</string>
     <string name="follow_up_complete">Follow-up Complete</string>
+    <string name="exceeded">exceeded</string>
 
     <!--************************-->
 </resources>

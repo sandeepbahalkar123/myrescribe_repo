@@ -112,7 +112,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
         mMobileNumber.setText("+91 - " + patientMobileNo);
 
-        mPatientName.setText(salutationText + " " + patientName);
+        mPatientName.setText(salutationText + " " + toCamelCase(patientName));
 
         if (!patientName.isEmpty()) {
             int color2 = mColorGenerator.getColor(patientName);
@@ -318,5 +318,27 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
     public void doNotifyDataSetChanged() {
         bottomMenuAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * To convert string to camel case, copied from CommonMethod.java
+     *
+     * @param input The context to use as reference for the boolean
+     * @return Converted camel case value.
+     */
+    private static String toCamelCase(String input) {
+
+        StringBuilder result = new StringBuilder();
+        char firstChar = input.charAt(0);
+        result.append(Character.toUpperCase(firstChar));
+        for (int i = 1; i < input.length(); i++) {
+            char currentChar = input.charAt(i);
+            char previousChar = input.charAt(i - 1);
+            if (previousChar == ' ')
+                result.append(Character.toUpperCase(currentChar));
+            else
+                result.append(Character.toLowerCase(currentChar));
+        }
+        return result.toString();
     }
 }

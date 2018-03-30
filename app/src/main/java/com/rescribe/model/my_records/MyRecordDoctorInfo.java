@@ -35,6 +35,12 @@ public class MyRecordDoctorInfo implements CustomResponse, Serializable {
     @SerializedName("doctorImageUrl")
     @Expose
     private String docImgURL;
+    @SerializedName("areaName")
+    @Expose
+    private String areaName;
+    @SerializedName("cityName")
+    @Expose
+    private String cityName;
 
     private int color;
 
@@ -158,5 +164,21 @@ public class MyRecordDoctorInfo implements CustomResponse, Serializable {
                 ", sideBarViewColor=" + sideBarViewColor +
                 ", isExpanded=" + isExpanded +
                 '}';
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }

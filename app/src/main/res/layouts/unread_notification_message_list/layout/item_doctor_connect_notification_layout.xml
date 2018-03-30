@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp12"
                 android:layout_marginRight="@dimen/dp12"
-                android:src="@drawable/doctor_connect" />
+                app:srcCompat="@drawable/doctor_connect" />
         </LinearLayout>
 
         <LinearLayout

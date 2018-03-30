@@ -24,7 +24,7 @@
             android:layout_gravity="left"
             android:layout_marginBottom="@dimen/dp6"
             android:layout_weight="0.2"
-            android:src="@drawable/breakfast_normal_copy" />
+            app:srcCompat="@drawable/breakfast_normal_copy" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/morningDose"
@@ -68,7 +68,7 @@
             android:layout_gravity="left"
             android:layout_marginBottom="@dimen/dp6"
             android:layout_weight="0.2"
-            android:src="@drawable/lunch_highlighted_copy" />
+            app:srcCompat="@drawable/lunch_highlighted_copy" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/afternoonDose"
@@ -115,7 +115,7 @@
             android:layout_gravity="left"
             android:layout_marginBottom="@dimen/dp6"
             android:layout_weight="0.2"
-            android:src="@drawable/evening_11_copy_2" />
+            app:srcCompat="@drawable/evening_11_copy_2" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/eveningDose"
@@ -162,7 +162,7 @@
             android:layout_gravity="left"
             android:layout_marginBottom="@dimen/dp6"
             android:layout_weight="0.2"
-            android:src="@drawable/night_dinner_copy_5" />
+            app:srcCompat="@drawable/night_dinner_copy_5" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/nightDose"

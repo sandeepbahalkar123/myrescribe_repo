@@ -691,8 +691,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         String salutationText = "";
 
-        if (!salutation.isEmpty())
-            salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+        salutationText = SALUTATION[Integer.parseInt(salutation)];
 
         setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
 

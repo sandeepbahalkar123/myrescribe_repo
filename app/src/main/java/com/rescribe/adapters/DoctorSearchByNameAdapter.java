@@ -114,6 +114,12 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         //-----------
         holder.onlineStatusTextView.setText(chatDoctor.getOnlineStatus());
         holder.paidStatusTextView.setText(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID ? String.valueOf(chatDoctor.getAmount()) + "/-" : "FREE");
+        if(chatDoctor.getPaidStatus() == DoctorConnectActivity.PAID){
+            holder.paidStatusTextView.setVisibility(View.VISIBLE);
+        }else{
+            holder.paidStatusTextView.setVisibility(View.GONE);
+        }
+
         //------------------
         String doctorName = chatDoctor.getDoctorName();
         if (doctorName.contains("Dr. ")) {

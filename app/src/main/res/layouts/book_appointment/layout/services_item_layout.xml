@@ -42,7 +42,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/ellipse_1_copy"
             android:scaleType="centerInside"
-            android:src="@drawable/pharmacy_icon" />
+            app:srcCompat="@drawable/pharmacy_icon" />
 
     </FrameLayout>
 

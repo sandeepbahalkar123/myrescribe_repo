@@ -567,7 +567,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             }
 
             initializeInvestigationListView();
-        } else if (RescribeConstants.FOLLOW_UP.equals(mOldDataTag)){
+        } else if (RescribeConstants.FOLLOW_UP.equals(mOldDataTag)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
             followUpDialog.dismiss();

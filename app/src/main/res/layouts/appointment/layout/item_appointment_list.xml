@@ -34,7 +34,7 @@
                 android:layout_height="@dimen/dp50"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dp16"
-                android:src="@drawable/layer_12" />
+                app:srcCompat="@drawable/layer_12" />
 
         </LinearLayout>
 
@@ -108,7 +108,7 @@
                 android:layout_width="@dimen/dp35"
                 android:layout_height="@dimen/dp35"
                 android:paddingTop="@dimen/dp6"
-                android:src="@drawable/location" />
+                app:srcCompat="@drawable/location" />
         </LinearLayout>
     </RelativeLayout>
 

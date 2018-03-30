@@ -17,6 +17,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -34,6 +35,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -722,7 +724,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         ChatActivityPermissionsDispatcher.getAudioPermissionWithCheck(ChatActivity.this);
 
-        audioSlider.getTextView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mic_red_24dp, 0, 0, 0);
+        Drawable leftDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_mic_red_24dp);
+        audioSlider.getTextView().setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, null, null);
+
         audioSlider.getTextView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.dp5));
         audioSlider.setOnSlideCompleteListener(new SlideView.OnSlideCompleteListener() {
             @Override

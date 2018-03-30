@@ -104,7 +104,7 @@ public class SocialSignUpInputFragment extends Fragment implements HelperRespons
                 }
             });
 
-            ArrayAdapter salutationSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_social_spinner_item, SALUTATION);
+            ArrayAdapter salutationSpinnerAdapter = new ArrayAdapter(getContext(), R.layout.signup_social_spinner_item, RescribeConstants.SALUTATION_SOCIALMEDIA);
             salutationSpinnerAdapter.setDropDownViewResource(R.layout.signup_social_spinner_item_view);
             salutationSpinner.setAdapter(salutationSpinnerAdapter);
 

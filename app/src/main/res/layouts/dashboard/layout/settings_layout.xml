@@ -101,7 +101,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/dp16"
                         android:layout_marginRight="@dimen/dp16"
-                        android:src="@drawable/logout_settings_icon" />
+                        app:srcCompat="@drawable/logout_settings_icon" />
 
                 </RelativeLayout>
 
@@ -123,7 +123,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/scrog_product" />
+                app:srcCompat="@drawable/scrog_product" />
 
         </RelativeLayout>
     </LinearLayout>

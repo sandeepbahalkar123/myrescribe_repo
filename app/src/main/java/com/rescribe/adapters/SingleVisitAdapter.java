@@ -554,9 +554,18 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                     groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
                 } else {
                     String text = mVisitDetailList.get(0).getName();
-                    if (text.length() > TEXT_LIMIT)
+                    //----------
+                    // comes only in case of Allergies
+                    String remarks = mVisitDetailList.get(0).getRemarks();
+                    String combineString = remarks.isEmpty() ? text : text + " - " + remarks;
+
+                    /*if (text.length() > TEXT_LIMIT)
                         groupViewHolder.mDetailFirstPoint.setText(text.substring(0, TEXT_LIMIT - 1) + "...");
-                    else groupViewHolder.mDetailFirstPoint.setText(text);
+                    else groupViewHolder.mDetailFirstPoint.setText(text);*/
+                    //-------------
+                    if (combineString.length() > TEXT_LIMIT)
+                        groupViewHolder.mDetailFirstPoint.setText(combineString.substring(0, TEXT_LIMIT - 1) + "...");
+                    else groupViewHolder.mDetailFirstPoint.setText(combineString);
                 }
             }
         }

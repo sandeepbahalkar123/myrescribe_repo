@@ -6,73 +6,76 @@
     android:layout_marginTop="?attr/actionBarSize"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp20"
-        android:adjustViewBounds="true"
-        android:src="@drawable/support_bg" />
-
-    <com.rescribe.ui.customesViews.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingTop="@dimen/dp36"
-        android:text="@string/need_some_help"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp20"
-        app:customFont="@string/roboto_medium" />
-
-    <com.rescribe.ui.customesViews.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingTop="@dimen/dp14"
-        android:text="@string/feel_free"
-        android:textColor="@color/grey_shade"
-        android:textSize="@dimen/sp14"
-        app:customFont="@string/roboto_medium" />
-
-    <com.rescribe.ui.customesViews.CustomTextView
-        android:id="@+id/callTextView"
-        android:layout_width="222dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp24"
-        android:background="@drawable/call_bg"
         android:gravity="center"
-        android:text="@string/call"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp19"
-        app:customFont="@string/roboto_bold" />
+        android:orientation="vertical">
 
-    <com.rescribe.ui.customesViews.CustomTextView
-        android:id="@+id/emailtextView"
-        android:layout_width="222dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp20"
-        android:layout_marginBottom="@dimen/dp10"
-        android:background="@drawable/type_here_bg"
-        android:gravity="center"
-        android:text="@string/email"
-        android:textColor="@color/tagColor"
-        android:textSize="@dimen/sp19"
-        app:customFont="@string/roboto_bold" />
+        <ImageView
+            android:adjustViewBounds="true"
+            android:paddingTop="@dimen/dp10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/support_bg" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dp12"
+            android:text="@string/need_some_help"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp20"
+            app:customFont="@string/roboto_medium" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dp8"
+            android:text="@string/feel_free"
+            android:textColor="@color/grey_shade"
+            android:textSize="@dimen/sp14"
+            app:customFont="@string/roboto_medium" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/callTextView"
+            android:layout_width="222dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/dp8"
+            android:background="@drawable/call_bg"
+            android:gravity="center"
+            android:text="@string/call"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp19"
+            app:customFont="@string/roboto_bold" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/emailtextView"
+            android:layout_width="222dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/dp10"
+            android:background="@drawable/type_here_bg"
+            android:gravity="center"
+            android:text="@string/email"
+            android:textColor="@color/tagColor"
+            android:textSize="@dimen/sp19"
+            app:customFont="@string/roboto_bold" />
+
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/dp25">
+        android:layout_marginBottom="@dimen/dp9">
 
         <ImageView
-            android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:src="@drawable/scrog_product" />
-    </RelativeLayout>
+            app:srcCompat="@drawable/scrog_product" />
 
+    </RelativeLayout>
 </LinearLayout>

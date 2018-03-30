@@ -40,7 +40,7 @@
                 android:layout_gravity="center_vertical"
                 android:padding="@dimen/dp8"
                 android:scaleX="-1"
-                android:src="@drawable/right_arrow"
+                app:srcCompat="@drawable/right_arrow"
                 android:visibility="gone" />
 
             <android.support.v7.widget.RecyclerView
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:padding="@dimen/dp8"
-                android:src="@drawable/right_arrow"
+                app:srcCompat="@drawable/right_arrow"
                 android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>

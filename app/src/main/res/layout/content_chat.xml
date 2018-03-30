@@ -38,8 +38,8 @@
         android:textColor="@color/Gray"
         android:textSize="@dimen/sp12"
         android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="12 September 2017" />
+        tools:text="12 September 2017"
+        tools:visibility="visible" />
 
 
     <LinearLayout
@@ -71,14 +71,14 @@
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/sp16"
-            android:visibility="visible"
+            android:visibility="gone"
             app:customFont="@string/roboto_medium" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/dp6"
-            android:src="@drawable/arrow_copy" />
+            app:srcCompat="@drawable/arrow_copy" />
 
     </LinearLayout>
 
@@ -145,7 +145,7 @@
                     android:paddingRight="@dimen/dp18"
                     android:paddingStart="@dimen/dp9"
                     android:paddingTop="@dimen/dp14"
-                    android:src="@drawable/attach" />
+                    app:srcCompat="@drawable/attach" />
 
                 <ImageButton
                     android:id="@+id/cameraButton"
@@ -158,7 +158,7 @@
                     android:paddingRight="@dimen/dp18"
                     android:paddingStart="@dimen/dp9"
                     android:paddingTop="@dimen/dp14"
-                    android:src="@drawable/photo_camera" />
+                    app:srcCompat="@drawable/photo_camera" />
 
             </LinearLayout>
 
@@ -174,7 +174,7 @@
             android:layout_marginEnd="@dimen/dp2"
             android:layout_marginRight="@dimen/dp2"
             android:padding="@dimen/dp6"
-            android:src="@drawable/send"
+            app:srcCompat="@drawable/send"
             android:visibility="invisible" />
 
     </RelativeLayout>

@@ -575,7 +575,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 if (customResponse != null) {
                     ConfirmTokenModel confirmTokenModel = (ConfirmTokenModel) customResponse;
                     CommonMethods.showToast(getActivity(), confirmTokenModel.getCommon().getStatusMessage());
-                    if (confirmTokenModel.getCommon().isSuccess()) {
+
+                    // TODO: exceeded String match is added for now, need to find other way for this
+                    if (confirmTokenModel.getCommon().isSuccess() &&
+                            !confirmTokenModel.getCommon().getStatusMessage().toLowerCase().contains(getString(R.string.exceeded))) {
 
                         bundleData = new Bundle();
                         mClickedDoctorObject.setTypedashboard(false);
@@ -598,6 +601,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         startActivity(intentObject);
                     }
 
+
                     break;
                 }
             case RescribeConstants.TASK_CONFIRM_APPOINTMENT:
@@ -618,7 +622,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mClickedDoctorObject.setAptTime(mResponseAppointmentConfirmationModel.getAptList().getAptTime());
                         mClickedDoctorObject.setAptDate(mResponseAppointmentConfirmationModel.getAptList().getAptDate());
                         mClickedDoctorObject.setNameOfClinicString(mResponseAppointmentConfirmationModel.getAptList().getClinic_name());
-                        mClickedDoctorObject.setAddressOfDoctorString(mResponseAppointmentConfirmationModel.getAptList().getAddress());
+//                        mClickedDoctorObject.setAddressOfDoctorString(mResponseAppointmentConfirmationModel.getAptList().getAddress());
+                        mClickedDoctorObject.setClinicAddress(mResponseAppointmentConfirmationModel.getAptList().getClinicAddress());
                         bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
                         bundleData.putString(RescribeConstants.LOCATION_ID, "" + 0);
                         bundleData.putString(RescribeConstants.TOKEN_NO, "" + 0);

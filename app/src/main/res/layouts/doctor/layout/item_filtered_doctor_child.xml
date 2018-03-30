@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clickOnDoctorVisitLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     android:orientation="horizontal">
 
     <TextView
@@ -59,11 +61,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/dp2"
-                    tools:text="Rihanna Love the way lie"
                     android:textColor="@color/recentblue"
                     android:textSize="@dimen/sp16"
                     android:textStyle="bold"
-                    android:typeface="sans" />
+                    android:typeface="sans"
+                    tools:text="Rihanna Love the way lie" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,18 +78,18 @@
                         android:layout_height="@dimen/dp6"
                         android:layout_gravity="center"
                         android:layout_marginRight="@dimen/dp5"
-                        android:src="@drawable/blue_dot"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        app:srcCompat="@drawable/blue_dot" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/childContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/dp2"
-                        tools:text="Excessive Sweating"
                         android:textColor="@color/dose_completed"
                         android:textSize="@dimen/sp14"
-                        android:typeface="sans" />
+                        android:typeface="sans"
+                        tools:text="Excessive Sweating" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

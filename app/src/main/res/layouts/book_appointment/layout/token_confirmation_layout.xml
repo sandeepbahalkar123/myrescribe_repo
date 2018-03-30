@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="@dimen/dp4"
-                        android:src="@drawable/doctor_icon" />
+                        app:srcCompat="@drawable/doctor_icon" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -240,7 +240,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="@dimen/dp4"
-                        android:src="@drawable/mobile_icon" />
+                        app:srcCompat="@drawable/mobile_icon" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/mobileNumber"
@@ -270,7 +270,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dp4"
-                        android:src="@drawable/location_with_bottom_blue_circle_" />
+                        app:srcCompat="@drawable/location_with_bottom_blue_circle_" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/clinicAddress"
@@ -356,7 +356,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/partition_color"
-            android:src="@drawable/partition_line" />
+            app:srcCompat="@drawable/partition_line" />
 
         <com.rescribe.ui.customesViews.CustomTextView
             android:id="@+id/rescheduleButton"

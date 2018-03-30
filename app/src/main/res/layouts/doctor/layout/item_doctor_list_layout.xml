@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp28"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/blue_dot"
+                    app:srcCompat="@drawable/blue_dot"
                     android:visibility="visible" />
 
                 <ImageView
@@ -68,7 +68,7 @@
                     android:layout_width="@dimen/dp16"
                     android:layout_height="@dimen/dp16"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/small_blue_dot"
+                    app:srcCompat="@drawable/small_blue_dot"
                     android:visibility="visible" />
 
                 <TextView

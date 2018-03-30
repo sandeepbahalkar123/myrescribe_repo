@@ -52,6 +52,12 @@ public class DoctorDetail implements CustomResponse {
     @SerializedName("docImg")
     @Expose
     private String docImg;
+    @SerializedName("cityName")
+    @Expose
+    private String cityName;
+    @SerializedName("areaName")
+    @Expose
+    private String areaName;
     private int color;
 
     private boolean isDoctorSelected = false;
@@ -149,14 +155,33 @@ public class DoctorDetail implements CustomResponse {
     public boolean isDoctorSelected() {
         return isDoctorSelected;
     }
+
     public void setDoctorSelected(boolean doctorSelected) {
         isDoctorSelected = doctorSelected;
     }
+
     public boolean isDoctorSpecialitySelected() {
         return isDoctorSpecialitySelected;
     }
+
     public void setDoctorSpecialitySelected(boolean doctorSpecialitySelected) {
         isDoctorSpecialitySelected = doctorSpecialitySelected;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 
     @Override

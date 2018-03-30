@@ -65,7 +65,7 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp16"
         android:layout_marginRight="@dimen/dp16"
-        android:src="@drawable/dashboard_arrow" />
+        app:srcCompat="@drawable/dashboard_arrow" />
 
     <View
         android:layout_width="match_parent"

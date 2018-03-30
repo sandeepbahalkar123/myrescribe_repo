@@ -45,7 +45,7 @@
                     android:layout_marginBottom="@dimen/dp4"
                     android:layout_marginRight="@dimen/dp16"
                     android:layout_marginTop="@dimen/dp4"
-                    android:src="@drawable/directions" />
+                    app:srcCompat="@drawable/directions" />
             </RelativeLayout>
 
         </LinearLayout>

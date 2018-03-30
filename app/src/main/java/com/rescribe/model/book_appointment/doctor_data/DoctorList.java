@@ -38,7 +38,6 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("categorySpeciality")
     @Expose
     private String categorySpeciality = "";
-
     @SerializedName("doctorImageUrl")
     @Expose
     private String doctorImageUrl = "";
@@ -48,22 +47,18 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("experience")
     @Expose
     private int experience;
-
     @SerializedName("clinicList")
     @Expose
     private ArrayList<ClinicData> clinicDataList = new ArrayList<>();
-
     @SerializedName("favorite")
     @Expose
     private boolean favourite;
     @SerializedName("degree")
     @Expose
     private String degree = "";
-
     @SerializedName("rating")
     @Expose
     private double rating = 0.0d;
-
     @SerializedName("waitingTime")
     @Expose
     private String waitingTime = "";
@@ -79,93 +74,39 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("aptTime")
     @Expose
     private String aptTime = "";
-
     @SerializedName("paidStatus")
     @Expose
     private int paidStatus;
-
     @SerializedName("type")
     @Expose
     private String type; // token/appointment etc
     @SerializedName("tokenNumber")
     @Expose
     private String tokenNumber;
-
     @SerializedName("waitingPatientCount")
     @Expose
     private String waitingPatientCount;
-
     @SerializedName("waitingPatientTime")
     @Expose
     private String waitingPatientTime;
-
+    @SerializedName("clinicAddress")
+    @Expose
+    private String clinicAddress;
     //------
     private int sizeOfList = 0;
     private double latitude = 0.0;
     private double longitude = 0.0;
-
     //this parameters are used to sort list by clinicName and doctorName as per functionality
     private String nameOfClinicString = "";
     private String addressOfDoctorString = "";
-
     private String spannable;
     private boolean doctorSearch;
     private boolean isTypedashboard;
     private boolean isAppointmentTypeMixed;
 
-
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/
-
-    public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public DoctorList createFromParcel(Parcel in) {
-            DoctorList instance = new DoctorList();
-            instance.docId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.docLocationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.aptId = ((String) in.readValue((String.class.getClassLoader())));
-            instance.docName = ((String) in.readValue((String.class.getClassLoader())));
-            instance.categoryName = ((String) in.readValue((String.class.getClassLoader())));
-            instance.categorySpeciality = ((String) in.readValue((String.class.getClassLoader())));
-            instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
-            instance.docSpeciality = ((String) in.readValue((String.class.getClassLoader())));
-            instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.clinicDataList, (ClinicData.class.getClassLoader()));
-            instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.degree = ((String) in.readValue((String.class.getClassLoader())));
-            instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
-            instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
-            instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
-            instance.docPhone = ((String) in.readValue((String.class.getClassLoader())));
-            in.readList(instance.docServices, (String.class.getClassLoader()));
-            instance.aptDate = ((String) in.readValue((String.class.getClassLoader())));
-            instance.aptTime = ((String) in.readValue((String.class.getClassLoader())));
-            instance.sizeOfList = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.addressOfDoctorString = ((String) in.readValue((String.class.getClassLoader())));
-            instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
-            instance.spannable = ((String) in.readValue((String.class.getClassLoader())));
-            instance.doctorSearch = ((boolean) in.readValue((String.class.getClassLoader())));
-            instance.isTypedashboard = ((boolean) in.readValue((String.class.getClassLoader())));
-            instance.paidStatus = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.isAppointmentTypeMixed = ((boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.type = ((String) in.readValue((String.class.getClassLoader())));
-            instance.tokenNumber = ((String) in.readValue((String.class.getClassLoader())));
-            instance.waitingPatientTime = ((String) in.readValue((String.class.getClassLoader())));
-            instance.waitingPatientCount = ((String) in.readValue((String.class.getClassLoader())));
-            //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
-            return instance;
-        }
-
-        public DoctorList[] newArray(int size) {
-            return (new DoctorList[size]);
-        }
-
-    };
 
     public String getNameOfClinicString() {
         return nameOfClinicString;
@@ -181,6 +122,14 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
 
     public void setAddressOfDoctorString(String addressOfDoctorString) {
         this.addressOfDoctorString = addressOfDoctorString;
+    }
+
+    public String getClinicAddress() {
+        return clinicAddress;
+    }
+
+    public void setClinicAddress(String clinicAddress) {
+        this.clinicAddress = clinicAddress;
     }
 
     public int getSizeOfList() {
@@ -394,60 +343,6 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         this.waitingPatientTime = waitingPatientTime;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(docId);
-        dest.writeValue(docLocationId);
-        dest.writeValue(locationId);
-        dest.writeValue(aptId);
-        dest.writeValue(docName);
-        dest.writeValue(categoryName);
-        dest.writeValue(categorySpeciality);
-        dest.writeValue(doctorImageUrl);
-        dest.writeValue(docSpeciality);
-        dest.writeValue(experience);
-        dest.writeList(clinicDataList);
-        dest.writeValue(favourite);
-        dest.writeValue(degree);
-        dest.writeValue(rating);
-        dest.writeValue(waitingTime);
-        dest.writeValue(aboutDoctor);
-        dest.writeValue(docPhone);
-        dest.writeList(docServices);
-        dest.writeValue(aptDate);
-        dest.writeValue(aptTime);
-        dest.writeValue(sizeOfList);
-        dest.writeValue(addressOfDoctorString);
-        dest.writeValue(nameOfClinicString);
-        dest.writeValue(spannable);
-        dest.writeValue(doctorSearch);
-        dest.writeValue(isTypedashboard);
-        dest.writeValue(paidStatus);
-        dest.writeValue(isAppointmentTypeMixed);
-        dest.writeValue(type);
-        dest.writeValue(tokenNumber);
-        dest.writeValue(waitingPatientTime);
-        dest.writeValue(waitingPatientCount);
-    }
-
-
-    public int describeContents() {
-        return 0;
-    }
-
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    @Override
-    public int compareTo(@NonNull DoctorList doctorList) {
-        if (this.docId == doctorList.getDocId()) {
-            return 0;
-        } else if (this.docId < doctorList.getDocId()) {
-            return -1;
-        }
-        return 1;
-    }
-
     public String getDocPhone() {
         return docPhone;
     }
@@ -497,5 +392,113 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         return locationId;
     }
     //------- THIS IS DONE FOR APPOINTMENT, TO SHOW CONFIRMATION DIALOG BASED ON type="token/appointment" :END
+
+
+    public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
+
+        @SuppressWarnings({
+                "unchecked"
+        })
+        public DoctorList createFromParcel(Parcel in) {
+            DoctorList instance = new DoctorList();
+            instance.docId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.docLocationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.locationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.aptId = ((String) in.readValue((String.class.getClassLoader())));
+            instance.docName = ((String) in.readValue((String.class.getClassLoader())));
+            instance.categoryName = ((String) in.readValue((String.class.getClassLoader())));
+            instance.categorySpeciality = ((String) in.readValue((String.class.getClassLoader())));
+            instance.doctorImageUrl = ((String) in.readValue((String.class.getClassLoader())));
+            instance.docSpeciality = ((String) in.readValue((String.class.getClassLoader())));
+            instance.experience = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            in.readList(instance.clinicDataList, (ClinicData.class.getClassLoader()));
+            instance.favourite = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+            instance.degree = ((String) in.readValue((String.class.getClassLoader())));
+            instance.rating = ((Double) in.readValue((Double.class.getClassLoader())));
+            instance.waitingTime = ((String) in.readValue((String.class.getClassLoader())));
+            instance.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
+            instance.docPhone = ((String) in.readValue((String.class.getClassLoader())));
+            in.readList(instance.docServices, (String.class.getClassLoader()));
+            instance.aptDate = ((String) in.readValue((String.class.getClassLoader())));
+            instance.aptTime = ((String) in.readValue((String.class.getClassLoader())));
+            instance.sizeOfList = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.addressOfDoctorString = ((String) in.readValue((String.class.getClassLoader())));
+            instance.clinicAddress = ((String) in.readValue((String.class.getClassLoader())));
+            instance.nameOfClinicString = ((String) in.readValue((String.class.getClassLoader())));
+            instance.spannable = ((String) in.readValue((String.class.getClassLoader())));
+            instance.doctorSearch = ((boolean) in.readValue((String.class.getClassLoader())));
+            instance.isTypedashboard = ((boolean) in.readValue((String.class.getClassLoader())));
+            instance.paidStatus = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.isAppointmentTypeMixed = ((boolean) in.readValue((Boolean.class.getClassLoader())));
+            instance.type = ((String) in.readValue((String.class.getClassLoader())));
+            instance.tokenNumber = ((String) in.readValue((String.class.getClassLoader())));
+            instance.waitingPatientTime = ((String) in.readValue((String.class.getClassLoader())));
+            instance.waitingPatientCount = ((String) in.readValue((String.class.getClassLoader())));
+            //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
+            return instance;
+        }
+
+        public DoctorList[] newArray(int size) {
+            return (new DoctorList[size]);
+        }
+
+    };
+
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(docId);
+        dest.writeValue(docLocationId);
+        dest.writeValue(locationId);
+        dest.writeValue(aptId);
+        dest.writeValue(docName);
+        dest.writeValue(categoryName);
+        dest.writeValue(categorySpeciality);
+        dest.writeValue(doctorImageUrl);
+        dest.writeValue(docSpeciality);
+        dest.writeValue(experience);
+        dest.writeList(clinicDataList);
+        dest.writeValue(favourite);
+        dest.writeValue(degree);
+        dest.writeValue(rating);
+        dest.writeValue(waitingTime);
+        dest.writeValue(aboutDoctor);
+        dest.writeValue(docPhone);
+        dest.writeList(docServices);
+        dest.writeValue(aptDate);
+        dest.writeValue(aptTime);
+        dest.writeValue(sizeOfList);
+        dest.writeValue(addressOfDoctorString);
+        dest.writeValue(clinicAddress);
+        dest.writeValue(nameOfClinicString);
+        dest.writeValue(spannable);
+        dest.writeValue(doctorSearch);
+        dest.writeValue(isTypedashboard);
+        dest.writeValue(paidStatus);
+        dest.writeValue(isAppointmentTypeMixed);
+        dest.writeValue(type);
+        dest.writeValue(tokenNumber);
+        dest.writeValue(waitingPatientTime);
+        dest.writeValue(waitingPatientCount);
+    }
+
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public int compareTo(@NonNull DoctorList doctorList) {
+        if (this.docId == doctorList.getDocId()) {
+            return 0;
+        } else if (this.docId < doctorList.getDocId()) {
+            return -1;
+        }
+        return 1;
+    }
+
 
 }

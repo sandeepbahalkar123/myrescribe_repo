@@ -123,6 +123,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE;
+import static com.rescribe.services.MQTTService.DOCTOR;
 import static com.rescribe.services.MQTTService.MESSAGE_STATUS_TOPIC;
 import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
 import static com.rescribe.services.MQTTService.NOTIFY;
@@ -262,6 +263,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         statusInfo.setDocId(chatList.getId());
         statusInfo.setPatId(Integer.parseInt(patId));
         statusInfo.setTypeStatus(isTyping);
+        statusInfo.setSender(DOCTOR);
         if (mqttService != null)
             mqttService.typingStatus(statusInfo);
     }

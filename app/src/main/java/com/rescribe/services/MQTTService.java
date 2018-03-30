@@ -81,7 +81,7 @@ public class MQTTService extends Service {
     public static final String[] TOPIC = {"chat/connect/message", "chat/connect/userStatus", "chat/connect/messageStatus", "chat/connect/internet", "chat/connect/userTypingStatus"};
     public static final String DELIVERED = "delivered";
 
-    //    public static final String DOCTOR = "user1";
+    public static final String DOCTOR = "user1";
     public static final String PATIENT = "user2";
 
     private MqttAsyncClient mqttClient;
@@ -223,6 +223,7 @@ public class MQTTService extends Service {
                                             statusInfo.setMsgId(messageL.getMsgId());
                                             statusInfo.setDocId(messageL.getDocId());
                                             statusInfo.setPatId(messageL.getPatId());
+                                            statusInfo.setSender(messageL.getSender());
 
                                             if (currentChatUser != messageL.getDocId()) {
 
@@ -320,7 +321,7 @@ public class MQTTService extends Service {
     // change
     private void broadcastStatus(String payloadString, String topic) {
         StatusInfo statusInfo = gson.fromJson(payloadString, StatusInfo.class);
-        if (!statusInfo.getSender().equals(MQTTService.PATIENT)) {
+        if (statusInfo.getSender().equals(MQTTService.PATIENT)) {
             Intent intent = new Intent(NOTIFY);
             intent.putExtra(MESSAGE, statusInfo);
             intent.putExtra(TOPIC_KEY, topic);

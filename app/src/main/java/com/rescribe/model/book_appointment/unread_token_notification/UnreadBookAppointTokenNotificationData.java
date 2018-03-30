@@ -12,9 +12,9 @@ import com.rescribe.util.RescribeConstants;
 
 public class UnreadBookAppointTokenNotificationData implements CustomResponse {
 
-    @SerializedName("reminderId")
+    @SerializedName("notificationId")
     @Expose
-    private Integer reminderId;
+    private Integer notificationId;
     @SerializedName("patientId")
     @Expose
     private Integer patientId;
@@ -42,13 +42,16 @@ public class UnreadBookAppointTokenNotificationData implements CustomResponse {
     @SerializedName("token_number")
     @Expose
     private Integer tokenNumber;
+    @SerializedName("notificationType")
+    @Expose
+    private String notificationType;
 
-    public Integer getReminderId() {
-        return reminderId;
+    public Integer getNotificationId() {
+        return notificationId;
     }
 
-    public void setReminderId(Integer reminderId) {
-        this.reminderId = reminderId;
+    public void setNotificationId(Integer reminderId) {
+        this.notificationId = reminderId;
     }
 
     public Integer getPatientId() {
@@ -128,4 +131,11 @@ public class UnreadBookAppointTokenNotificationData implements CustomResponse {
         this.tokenNumber = tokenNumber;
     }
 
+    public String getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(String notificationType) {
+        this.notificationType = notificationType;
+    }
 }

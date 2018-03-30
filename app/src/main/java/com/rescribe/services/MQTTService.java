@@ -235,7 +235,7 @@ public class MQTTService extends Service {
                                                         messagesTemp.add(messages.get(index));
                                                 } else messagesTemp.addAll(messages);
 
-                                                MessageNotification.notify(MQTTService.this, messagesTemp, messageL.getName(), getProfilePhotoBitmap(messageL), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
+                                                MessageNotification.notify(MQTTService.this, messagesTemp, messageL.getSenderName(), getProfilePhotoBitmap(messageL), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
 
                                                 // change
                                                 statusInfo.setMessageStatus(REACHED);
@@ -321,7 +321,7 @@ public class MQTTService extends Service {
     // change
     private void broadcastStatus(String payloadString, String topic) {
         StatusInfo statusInfo = gson.fromJson(payloadString, StatusInfo.class);
-        if (!statusInfo.getSender().equals(MQTTService.DOCTOR)) {
+        if (statusInfo.getSender().equals(MQTTService.PATIENT)) {
             Intent intent = new Intent(NOTIFY);
             intent.putExtra(MESSAGE, statusInfo);
             intent.putExtra(TOPIC_KEY, topic);
@@ -472,8 +472,8 @@ public class MQTTService extends Service {
     private Bitmap getProfilePhotoBitmap(final MQTTMessage messageL) {
 
         TextDrawable mReceiverDrawable = null;
-        String doctorName = messageL.getName();
-        String doctorPhoto = messageL.getImageUrl();
+        String doctorName = messageL.getSenderName();
+        String doctorPhoto = messageL.getSenderImgUrl();
 
         if (!doctorName.isEmpty()) {
             doctorName = doctorName.replace("Dr. ", "");

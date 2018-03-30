@@ -88,13 +88,18 @@ public class NotificationHelper implements ConnectionListener {
         ArrayList<Medication> notificationListForNotification = new ArrayList<>();
         NotificationData notificationDataForNotification = new NotificationData();
 
+        int selectedCount = 0;
+
         if (notificationData.getMedication() != null) {
             for (Medication medication : notificationData.getMedication()) {
-                if (medication.getMedicinSlot().contains(slotLower))
+                if (medication.getMedicinSlot().contains(slotLower)) {
                     notificationListForNotification.add(medication);
+                    selectedCount += 1;
+                }
             }
 
-            notificationDataForNotification.setMedication(notificationListForNotification);
+            if (notificationListForNotification.size() != selectedCount)
+                notificationDataForNotification.setMedication(notificationListForNotification);
             notificationDataForNotification.setPrescriptionDate(notificationData.getPrescriptionDate());
         }
 

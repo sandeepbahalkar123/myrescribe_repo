@@ -1,5 +1,6 @@
 package com.rescribe.adapters.myrecords;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -52,6 +53,7 @@ public class SelectedRecordsAdapter extends RecyclerView.Adapter<SelectedRecords
         return new SelectedRecordsAdapter.FileViewHolder(view);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(final SelectedRecordsAdapter.FileViewHolder holder, final int position) {
         final Image image = paths.get(position);

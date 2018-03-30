@@ -39,10 +39,10 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class DoctorConnectChatFragment extends Fragment implements HelperResponse {
     @BindView(R.id.listView)
     RecyclerView mRecyclerView;
+
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
-    @BindView(R.id.emptyMessageView)
-    LinearLayout emptyMessageView;
+
     Unbinder unbinder;
     DoctorConnectChatAdapter mDoctorConnectChatAdapter;
     private DoctorConnectChatHelper mDoctorConnectChatHelper;
@@ -95,12 +95,10 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
             RecentChatDoctorModel mDoctorConnectChatBaseModel = (RecentChatDoctorModel) customResponse;
             if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel() == null) {
                 emptyListView.setVisibility(View.VISIBLE);
-                emptyMessageView.setBackgroundResource(R.drawable.no_chat_conversation_yet);
                 mRecyclerView.setVisibility(View.GONE);
             } else {
                 if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel().getChatDoctor().isEmpty()) {
                     emptyListView.setVisibility(View.VISIBLE);
-                    emptyMessageView.setBackgroundResource(R.drawable.no_chat_conversation_yet);
 
                     mRecyclerView.setVisibility(View.GONE);
                 } else {
@@ -176,8 +174,8 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
             if (!isThere) {
                 ChatDoctor chatDoctor = new ChatDoctor();
                 chatDoctor.setId(message.getDocId());
-                chatDoctor.setDoctorName(message.getName());
-                chatDoctor.setImageUrl(message.getImageUrl());
+                chatDoctor.setDoctorName(message.getSenderName());
+                chatDoctor.setImageUrl(message.getSenderImgUrl());
                 chatDoctor.setUnreadMessages(1);
                 chatDoctor.setPaidStatus(message.getPaidStatus());
                 chatDoctor.setSpecialization(message.getSpecialization());

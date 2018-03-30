@@ -69,18 +69,21 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/dp25"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <LinearLayout
-            android:id="@+id/emptyMessageView"
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/no_records_found"
-            android:gravity="center"
-            android:orientation="vertical" />
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/help_connect" />
+
     </RelativeLayout>
 
 </RelativeLayout>

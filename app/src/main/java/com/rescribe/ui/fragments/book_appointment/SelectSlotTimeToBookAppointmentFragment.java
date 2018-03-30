@@ -63,7 +63,7 @@ import com.rescribe.model.book_appointment.request_appointment_confirmation.Resp
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListDataModel;
 import com.rescribe.model.doctor_connect.ChatDoctor;
-import com.rescribe.model.token.FCMTokenData;
+import com.rescribe.model.token.FCMData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.ChatActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
@@ -90,7 +90,8 @@ import butterknife.Unbinder;
 import static com.rescribe.adapters.book_appointment.ShowTimingsBookAppointmentDoctor.mAptslotId;
 import static com.rescribe.adapters.book_appointment.ShowTimingsBookAppointmentDoctor.mSelectedTimeSlot;
 import static com.rescribe.adapters.book_appointment.ShowTimingsBookAppointmentDoctor.mSelectedToTimeSlot;
-import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
+import static com.rescribe.services.fcm.FCMService.FCM_DATA;
+import static com.rescribe.services.fcm.FCMService.FOLLOW_UP_DATA_ACTION;
 import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_ID;
 import static com.rescribe.util.RescribeConstants.FROM;
@@ -104,6 +105,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener, BottomSheetTimePickerDialog.OnTimeSetListener {
 
     public static final int CONFIRM_REQUESTCODE = 212;
+    private static final String TAG = "TimeSlotFragment";
     private final String TASKID_TIME_SLOT_WITH_DOC_DATA = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT_WITH_DOCTOR_DETAILS;
     private final String TASKID_TIME_SLOT = RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT;
     //-------------
@@ -200,7 +202,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private DatePickerDialog mDatePickerDialog;
     private String mSelectedTimeStampForNewToken;
     private ColorGenerator mColorGenerator;
-    private FCMTokenData fcmTokenData;
+    private FCMData fcmTokenData;
 
     private String from;
     private String aptId;
@@ -284,7 +286,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             aptId = arguments.getString(APPOINTMENT_ID);
             from = arguments.getString(FROM);
             isReschedule = arguments.getString(RESHEDULE_TYPE);
-            fcmTokenData = arguments.getParcelable(TOKEN_DATA);
+            fcmTokenData = arguments.getParcelable(FCM_DATA);
             activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
             mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
         }
@@ -701,8 +703,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mTimeSlotListViewLayout.setVisibility(View.VISIBLE);
                 mDoctorDataHelper.getTimeSlotToBookAppointmentWithDoctor("" + mClickedDoctorObject.getDocId(), 0, mSelectedTimeSlotDate, true, TASKID_TIME_SLOT_WITH_DOC_DATA);
 
-                if (fcmTokenData != null)
-                    showTokenStatusMessageBox(1, fcmTokenData.getMsg(), null, fcmTokenData.getDocId(), fcmTokenData.getLocationId());
+                if (fcmTokenData != null) {
+                    if (fcmTokenData.getIdentifier().equalsIgnoreCase(FOLLOW_UP_DATA_ACTION))
+                        CommonMethods.Log(TAG, fcmTokenData.getDocId() + " " + fcmTokenData.getLocationId());
+                    else
+                        showTokenStatusMessageBox(1, fcmTokenData.getMsg(), null, fcmTokenData.getDocId(), fcmTokenData.getLocationId());
+                }
 
             } else {
                 setDataInViews();

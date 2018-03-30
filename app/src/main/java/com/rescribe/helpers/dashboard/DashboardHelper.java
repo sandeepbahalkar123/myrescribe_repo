@@ -36,10 +36,9 @@ import java.util.ArrayList;
 
 public class DashboardHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
-    HelperResponse mHelperResponseManager;
-    private DashboardDataModel mDashboardDataModel = null;
+    private String TAG = this.getClass().getName();
+    private Context mContext;
+    private HelperResponse mHelperResponseManager;
 
     public DashboardHelper(Context context, HelperResponse loginActivity) {
         this.mContext = context;
@@ -57,9 +56,8 @@ public class DashboardHelper implements ConnectionListener {
                     if (dashBoardBaseModel != null) {
                         DashboardDataModel dashboardDataModel = dashBoardBaseModel.getDashboardModel();
                         if (dashboardDataModel != null) {
-                            mDashboardDataModel = dashboardDataModel;
-                            for (int i = 0; i < mDashboardDataModel.getDoctorList().size(); i++) {
-                                DoctorList doctorList = mDashboardDataModel.getDoctorList().get(i);
+                            for (int i = 0; i < dashboardDataModel.getDoctorList().size(); i++) {
+                                DoctorList doctorList = dashboardDataModel.getDoctorList().get(i);
                                 if (!doctorList.getDocName().toLowerCase().contains("dr.")) {
                                     doctorList.setDocName("Dr. " + doctorList.getDocName());
                                 }

@@ -193,7 +193,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         }
 
         if (bottomMenuAdapter != null) {
-            if (bottomMenuAdapter.getItemCount() > 0) {
+            if (bottomMenuAdapter.getItemCount() > appIconIndex) {
                 bottomMenus.get(appIconIndex).setNotificationCount(count);
                 bottomMenuAdapter.notifyDataSetChanged();
             }
@@ -202,7 +202,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
     public void setConnectBadgeCount(int count) {
         if (bottomMenuAdapter != null) {
-            if (bottomMenuAdapter.getItemCount() > 0) {
+            if (bottomMenuAdapter.getItemCount() > connectIndex) {
                 bottomMenus.get(connectIndex).setNotificationCount(count);
                 bottomMenuAdapter.notifyDataSetChanged();
             }

@@ -5,8 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -95,10 +93,10 @@ public class NotificationService extends Service implements HelperResponse {
         AppDBHelper appDBHelper = new AppDBHelper(getApplicationContext());
         int id = (int) System.currentTimeMillis(); // medication.getMedicineId();
 
-        String medicationDataDetails = getText(R.string.have_u_taken).toString() + medicineSlot + "?";
-        String medicineData = getText(R.string.have_u_taken).toString() + medicineSlot.toLowerCase();
+        String medicationDataDetails = getText(R.string.have_u_taken) + medicineSlot + "?";
+        String medicineData = getText(R.string.have_u_taken) + medicineSlot.toLowerCase() + "?";
 
-        appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(notification_id), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, new Gson().toJson(notificationData), timeStamp);
+        appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(notification_id), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, new Gson().toJson(notificationData), timeStamp, true);
 
         Intent mNotifyYesIntent = new Intent(this.getApplicationContext(), ClickOnCheckBoxOfNotificationReceiver.class);
         mNotifyYesIntent.putExtra(RescribeConstants.MEDICINE_SLOT, medicineSlot);
@@ -125,7 +123,7 @@ public class NotificationService extends Service implements HelperResponse {
         mRemoteViewCollapse.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
         mRemoteViewCollapse.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
         mRemoteViewCollapse.setTextViewText(R.id.showMedicineName, medicineSlot);
-        mRemoteViewCollapse.setTextViewText(R.id.questionText, medicineData + "?");
+        mRemoteViewCollapse.setTextViewText(R.id.questionText, medicineData);
         mRemoteViewCollapse.setTextViewText(R.id.timeText, notificationTime);
 
         // **********************************************************************************
@@ -137,7 +135,7 @@ public class NotificationService extends Service implements HelperResponse {
         mRemoteViewExpanded.setOnClickPendingIntent(R.id.notificationLayout, mNoPendingIntent);
         mRemoteViewExpanded.setOnClickPendingIntent(R.id.buttonYes, mYesPendingIntent);
         mRemoteViewExpanded.setTextViewText(R.id.showMedicineName, medicineSlot);
-        mRemoteViewExpanded.setTextViewText(R.id.questionText, medicineData + "?");
+        mRemoteViewExpanded.setTextViewText(R.id.questionText, medicineData);
         mRemoteViewExpanded.setTextViewText(R.id.timeText, notificationTime);
 
         // **********************************************************************************

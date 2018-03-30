@@ -15,14 +15,16 @@ import com.rescribe.R;
 import com.rescribe.broadcast_receivers.SnoozeAlarmNotificationReceiver;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
-import com.rescribe.model.token.FCMTokenData;
+import com.rescribe.model.token.FCMData;
 import com.rescribe.notification.MQTTServiceAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.fcm.FCMService;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.util.RescribeConstants;
 
-import static com.rescribe.services.fcm.FCMService.TOKEN_DATA;
+import static com.rescribe.services.fcm.FCMService.FCM_DATA;
+import static com.rescribe.services.fcm.FCMService.FOLLOW_UP_DATA_ACTION;
 import static com.rescribe.services.fcm.FCMService.TOKEN_DATA_ACTION;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -56,24 +58,30 @@ public class SplashScreenActivity extends AppCompatActivity {
                         String dataText = getIntent().getExtras().getString(FCMService.FCM_BODY);
                         if (dataText != null) {
 
-                            Intent intent = new Intent(SplashScreenActivity.this, SelectSlotToBookAppointmentBaseActivity.class);
-
                             Gson gson = new Gson();
-                            FCMTokenData fcmTokenData = gson.fromJson(dataText, FCMTokenData.class);
-                            intent.putExtra(TOKEN_DATA, fcmTokenData);
-                            intent.setAction(TOKEN_DATA_ACTION);
+                            FCMData fcmTokenData = gson.fromJson(dataText, FCMData.class);
 
-                            // call book appointment
-                            intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-                            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
-                            DoctorList doctorListData1 = new DoctorList();
-                            doctorListData1.setDocId(fcmTokenData.getDocId());
-                            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+                            if (fcmTokenData.getIdentifier().equalsIgnoreCase(FOLLOW_UP_DATA_ACTION)) {
+                                Intent intent = new Intent(SplashScreenActivity.this, UnreadNotificationMessageActivity.class);
+                                intent.putExtra(FCM_DATA, fcmTokenData);
+                                intent.setAction(FOLLOW_UP_DATA_ACTION);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(SplashScreenActivity.this, SelectSlotToBookAppointmentBaseActivity.class);
+                                intent.putExtra(FCM_DATA, fcmTokenData);
+                                intent.setAction(TOKEN_DATA_ACTION);
 
-                            startActivity(intent);
+                                // call book appointment
+                                intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
 
-                            int preCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, mContext);
-                            RescribePreferencesManager.putInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, preCount + 1, mContext);
+                                DoctorList doctorListData1 = new DoctorList();
+                                doctorListData1.setDocId(fcmTokenData.getDocId());
+                                doctorListData1.setLocationId(fcmTokenData.getLocationId());
+                                ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
+
+                                startActivity(intent);
+                            }
 
                         } else callDashBoard();
                     } else

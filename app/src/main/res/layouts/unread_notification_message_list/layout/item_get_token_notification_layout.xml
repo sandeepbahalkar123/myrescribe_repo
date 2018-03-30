@@ -38,9 +38,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingStart="@dimen/dp8"
+                android:orientation="vertical"
                 android:paddingEnd="@dimen/dp8"
-                android:orientation="vertical">
+                android:paddingStart="@dimen/dp8">
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/tokenMessageTimeStamp"
@@ -53,6 +53,7 @@
                     android:textColor="@color/grey_shade"
                     android:textSize="@dimen/sp11"
                     android:visibility="invisible"
+                    tools:visibility="visible"
                     app:customFont="@string/roboto_medium"
                     tools:text="2:00 am" />
 
@@ -62,23 +63,22 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
-                    tools:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp13"
-                    app:customFont="@string/roboto_medium" />
+                    app:customFont="@string/roboto_medium"
+                    tools:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/dp10"
-                    android:paddingBottom="@dimen/dp13"
-                    android:paddingLeft="@dimen/dp5"
-                    android:paddingRight="@dimen/dp5">
+                    android:paddingBottom="@dimen/dp8"
+                    android:paddingTop="@dimen/dp5">
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/yesTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/dp5"
                         android:text="@string/yes"
                         android:textAllCaps="true"
                         android:textColor="@color/dark_blue"
@@ -89,8 +89,10 @@
                         android:id="@+id/noTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp34"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginStart="@dimen/dp10"
                         android:layout_toRightOf="@id/yesTextView"
+                        android:padding="@dimen/dp5"
                         android:text="@string/no"
                         android:textAllCaps="true"
                         android:textColor="@color/no_color"
@@ -104,6 +106,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right"
                         android:gravity="right"
+                        android:padding="@dimen/dp5"
                         android:text="@string/more"
                         android:textColor="@color/statusbar"
                         android:textSize="@dimen/sp12"

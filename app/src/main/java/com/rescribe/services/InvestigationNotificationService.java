@@ -102,7 +102,7 @@ public class InvestigationNotificationService extends Service implements HelperR
 
         //---- Save notification in db---
         AppDBHelper appDBHelper = AppDBHelper.getInstance(getApplicationContext());
-        appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(value.get(0).getDrId()), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message, new Gson().toJson(data), time);
+        appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(value.get(0).getDrId()), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message, new Gson().toJson(data), time, true);
 
         //---------
         Intent mNotifyYesIntent = new Intent(this, ClickOnCheckBoxOfNotificationReceiver.class);

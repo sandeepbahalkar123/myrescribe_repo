@@ -44,8 +44,6 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     RecyclerView mRecyclerView;
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
-    @BindView(R.id.emptyMessageView)
-    LinearLayout emptyMessageView;
     Unbinder unbinder;
     private DoctorConnectHelper mDoctorConnectHelper;
     private DoctorConnectDataModel mDoctorConnectDataModel = new DoctorConnectDataModel();
@@ -118,7 +116,6 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
 
         if (chatDoctors.isEmpty()) {
             emptyListView.setVisibility(View.VISIBLE);
-            emptyMessageView.setBackgroundResource(R.drawable.no_chat_conversation_yet);
 
             mRecyclerView.setVisibility(View.GONE);
         } else {

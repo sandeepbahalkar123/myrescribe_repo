@@ -48,7 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -231,7 +232,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -241,13 +243,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/follow_up"
+                            android:layout_centerVertical="true"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp15"
-                            android:layout_centerVertical="true"
                             app:customFont="@string/roboto_medium" />
 
                         <com.rescribe.ui.customesViews.CustomTextView
-                            android:id="@+id/followUpTimeStamp"
+                            android:id="@+id/followUpFirstMessageTimeStamp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -259,7 +261,18 @@
                             tools:text="2m ago" />
                     </RelativeLayout>
 
-                    <include layout="@layout/follow_up_notification_layout"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/unreadFollowUpNotificationListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"
+                        android:visibility="visible"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp1"
+                        android:background="@color/divider" />
 
                 </LinearLayout>
 

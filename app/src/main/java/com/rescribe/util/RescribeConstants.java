@@ -225,6 +225,7 @@ public class RescribeConstants {
     public static final String APPOINTMENT_NOTIFICATION_TAG = "appointment_notification_tag";
     public static final String INVESTIGATION_NOTIFICATION_TAG = "investigation_notification_tag";
     public static final String TOKEN_NOTIFICATION_TAG = "token_notification_tag";
+    public static final String FOLLOW_UP_NOTIFICATION_TAG = "follow_up_notification_tag";
     public static final String MEDICATIONS_NOTIFICATION_TAG = "medications_notification_tag";
 
     public static final String TYPE_OF_DOCTOR_SEARCH = "type_of_doctor_search";

@@ -617,7 +617,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     @Override
     public void onProfileImageClick() {
         Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
+        //   startActivity(intent);
 
         super.onProfileImageClick();
     }
@@ -1037,7 +1037,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 String salutationText = "";
 
 
-                    salutationText = SALUTATION[Integer.parseInt(salutation)];
+                salutationText = SALUTATION[Integer.parseInt(salutation)];
 
                 setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
 

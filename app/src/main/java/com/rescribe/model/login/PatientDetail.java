@@ -22,7 +22,7 @@ public class PatientDetail {
     private String patientEmail;
     @SerializedName("patientSalutation")
     @Expose
-    private String patientSalutation;
+    private int patientSalutation;
     @SerializedName("patientAge")
     @Expose
     private String patientAge;
@@ -70,11 +70,11 @@ public class PatientDetail {
         this.patientEmail = patientEmail;
     }
 
-    public String getPatientSalutation() {
+    public int getPatientSalutation() {
         return patientSalutation;
     }
 
-    public void setPatientSalutation(String patientSalutation) {
+    public void setPatientSalutation(int patientSalutation) {
         this.patientSalutation = patientSalutation;
     }
 

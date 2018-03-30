@@ -471,6 +471,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     if (!doctorObject.getClinicDataList().isEmpty()) {
                         doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
                         doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                        doctorObject.setClinicAddress(doctorObject.getClinicDataList().get(0).getClinicAddress());
                     }
                     //typeDashboard is set for cancel and reshedule flow.
                     doctorObject.setTypedashboard(true);
@@ -484,6 +485,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     if (!doctorObject.getClinicDataList().isEmpty()) {
                         doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
                         doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
+                        doctorObject.setClinicAddress(doctorObject.getClinicDataList().get(0).getClinicAddress());
+
                     }
                     doctorObject.setTypedashboard(true);
                     b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());

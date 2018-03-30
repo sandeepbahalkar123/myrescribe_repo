@@ -18,7 +18,7 @@
         android:layout_marginStart="@dimen/dp6"
         android:adjustViewBounds="true"
         android:padding="@dimen/dp2"
-        app:srcCompat="@drawable/ic_notification_appoinments" />
+        android:src="@drawable/ic_notification_appoinments" />
 
     <LinearLayout
         android:layout_width="match_parent"

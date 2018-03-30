@@ -20,7 +20,7 @@
         android:layout_marginStart="@dimen/dp6"
         android:adjustViewBounds="true"
         android:padding="@dimen/dp2"
-        app:srcCompat="@drawable/ic_notification_investigations" />
+        android:src="@drawable/ic_notification_investigations" />
 
     <LinearLayout
         android:layout_width="match_parent"

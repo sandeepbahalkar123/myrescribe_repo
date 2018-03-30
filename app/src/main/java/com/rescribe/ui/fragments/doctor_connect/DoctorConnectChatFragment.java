@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
@@ -40,6 +41,8 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     RecyclerView mRecyclerView;
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
+    @BindView(R.id.emptyMessageView)
+    LinearLayout emptyMessageView;
     Unbinder unbinder;
     DoctorConnectChatAdapter mDoctorConnectChatAdapter;
     private DoctorConnectChatHelper mDoctorConnectChatHelper;
@@ -92,10 +95,13 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
             RecentChatDoctorModel mDoctorConnectChatBaseModel = (RecentChatDoctorModel) customResponse;
             if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel() == null) {
                 emptyListView.setVisibility(View.VISIBLE);
+                emptyMessageView.setBackgroundResource(R.drawable.no_chat_conversation_yet);
                 mRecyclerView.setVisibility(View.GONE);
             } else {
                 if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel().getChatDoctor().isEmpty()) {
                     emptyListView.setVisibility(View.VISIBLE);
+                    emptyMessageView.setBackgroundResource(R.drawable.no_chat_conversation_yet);
+
                     mRecyclerView.setVisibility(View.GONE);
                 } else {
                     emptyListView.setVisibility(View.GONE);
@@ -133,13 +139,13 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
             String doctorName = chatDoctors.get(i).getDoctorName();
             //TODO : Temporary Fix as data from Server is not in Proper format
             if (doctorName.startsWith("DR. ")) {
-              String drName =  doctorName.replace("DR. ", "Dr. ");
+                String drName = doctorName.replace("DR. ", "Dr. ");
                 chatDoctors.get(i).setDoctorName(drName);
             } else if (doctorName.startsWith("DR.")) {
-                String drName =   doctorName.replace("DR.", "Dr. ");
+                String drName = doctorName.replace("DR.", "Dr. ");
                 chatDoctors.get(i).setDoctorName(drName);
-            }  else if (doctorName.startsWith("Dr. ")) {
-                String drName =   doctorName.replace("Dr. ", "Dr. ");
+            } else if (doctorName.startsWith("Dr. ")) {
+                String drName = doctorName.replace("Dr. ", "Dr. ");
                 chatDoctors.get(i).setDoctorName(drName);
             } else {
                 chatDoctors.get(i).setDoctorName("Dr. " + doctorName);
@@ -179,7 +185,7 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
                 chatDoctors.add(0, chatDoctor);
                 mDoctorConnectChatAdapter.notifyDataSetChanged();
 
-                if (!chatDoctors.isEmpty()){
+                if (!chatDoctors.isEmpty()) {
                     emptyListView.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }

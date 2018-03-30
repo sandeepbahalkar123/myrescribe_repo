@@ -543,7 +543,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                                 SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.UTC_PATTERN, Locale.US);
                                 SimpleDateFormat expected = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
                                 cal.setTime(sdf.parse(tokenDetails.getApmtTime()));
-                                cal.add(Calendar.MINUTE, tokenDetails.getWaitingTime());
+                                //this is commented as aptTime from server, already added waiting time
+                                //cal.add(Calendar.MINUTE, tokenDetails.getWaitingTime());
                                 String timeToShow = expected.format(cal.getTime()).toLowerCase();
                                 mScheduledAppointmentsTimeStamp.setText(timeToShow);
                                 mSelectedTimeStampForNewToken = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);

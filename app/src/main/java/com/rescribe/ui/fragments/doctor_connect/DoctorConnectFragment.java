@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
@@ -43,6 +44,8 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     RecyclerView mRecyclerView;
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
+    @BindView(R.id.emptyMessageView)
+    LinearLayout emptyMessageView;
     Unbinder unbinder;
     private DoctorConnectHelper mDoctorConnectHelper;
     private DoctorConnectDataModel mDoctorConnectDataModel = new DoctorConnectDataModel();
@@ -77,7 +80,7 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
         if (mDoctorConnectDataModel.getChatDoctor().isEmpty()) {
             String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, getContext());
             mDoctorConnectHelper.doDoctorConnecList(patientId);
-        }else {
+        } else {
             setAdapter();
         }
     }
@@ -97,13 +100,13 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
             String doctorName = mDoctorConnectDataModel.getChatDoctor().get(i).getDoctorName();
             //TODO : Temporary Fix as data from Server is not in Proper format
             if (doctorName.startsWith("DR. ")) {
-                String drName =  doctorName.replace("DR. ", "Dr. ");
+                String drName = doctorName.replace("DR. ", "Dr. ");
                 mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName(drName);
             } else if (doctorName.startsWith("DR.")) {
-                String drName =   doctorName.replace("DR.", "Dr. ");
+                String drName = doctorName.replace("DR.", "Dr. ");
                 mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName(drName);
-            }  else if (doctorName.startsWith("Dr. ")) {
-                String drName =   doctorName.replace("Dr. ", "Dr. ");
+            } else if (doctorName.startsWith("Dr. ")) {
+                String drName = doctorName.replace("Dr. ", "Dr. ");
                 mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName(drName);
             } else {
                 mDoctorConnectDataModel.getChatDoctor().get(i).setDoctorName("Dr. " + doctorName);
@@ -115,6 +118,8 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
 
         if (chatDoctors.isEmpty()) {
             emptyListView.setVisibility(View.VISIBLE);
+            emptyMessageView.setBackgroundResource(R.drawable.no_chat_conversation_yet);
+
             mRecyclerView.setVisibility(View.GONE);
         } else {
             emptyListView.setVisibility(View.GONE);
@@ -146,18 +151,18 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-        CommonMethods.showToast(getActivity(),errorMessage);
+        CommonMethods.showToast(getActivity(), errorMessage);
 
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        CommonMethods.showToast(getActivity(),serverErrorMessage);
+        CommonMethods.showToast(getActivity(), serverErrorMessage);
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        CommonMethods.showToast(getActivity(),serverErrorMessage);
+        CommonMethods.showToast(getActivity(), serverErrorMessage);
         emptyListView.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
     }

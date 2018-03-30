@@ -388,7 +388,7 @@
     <string name="enter_age">Age</string>
     <string name="salutation">Salutation</string>
     <string name="enter_new_password">New password</string>
-    <string name="enter_new_password_again">New password again</string>
+    <string name="enter_new_password_again">Re-enter password</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="password_not_matched">Password not matched</string>
     <string name="your_token">Your Token Number</string>

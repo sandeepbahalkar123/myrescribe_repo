@@ -172,8 +172,8 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
             if (!isThere) {
                 ChatDoctor chatDoctor = new ChatDoctor();
                 chatDoctor.setId(message.getDocId());
-                chatDoctor.setDoctorName(message.getName());
-                chatDoctor.setImageUrl(message.getImageUrl());
+                chatDoctor.setDoctorName(message.getSenderName());
+                chatDoctor.setImageUrl(message.getSenderImgUrl());
                 chatDoctor.setUnreadMessages(1);
                 chatDoctor.setPaidStatus(message.getPaidStatus());
                 chatDoctor.setSpecialization(message.getSpecialization());

@@ -128,7 +128,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
             holder.receiverLayout.setVisibility(View.GONE);
             holder.senderLayout.setVisibility(View.VISIBLE);
 
-            if (!message.getImageUrl().equals("")) {
+            if (!message.getSenderImgUrl().equals("")) {
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
                 requestOptions.override(100, 100);
@@ -137,7 +137,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.transform(new CircleCrop(holder.senderProfilePhoto.getContext()));
                 requestOptions.placeholder(mSelfTextDrawable);
                 Glide.with(holder.senderProfilePhoto.getContext())
-                        .load(message.getImageUrl())
+                        .load(message.getSenderImgUrl())
                         .apply(requestOptions).thumbnail(0.5f)
                         .into(holder.senderProfilePhoto);
             } else {
@@ -390,7 +390,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
             holder.receiverLayout.setVisibility(View.VISIBLE);
             holder.senderLayout.setVisibility(View.GONE);
 
-            if (!message.getImageUrl().equals("")) {
+            if (!message.getSenderImgUrl().equals("")) {
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
@@ -399,7 +399,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.transform(new CircleCrop(holder.receiverProfilePhoto.getContext()));
                 requestOptions.placeholder(mReceiverTextDrawable);
                 Glide.with(holder.receiverProfilePhoto.getContext())
-                        .load(message.getImageUrl())
+                        .load(message.getSenderImgUrl())
                         .apply(requestOptions).thumbnail(0.5f)
                         .into(holder.receiverProfilePhoto);
             } else {

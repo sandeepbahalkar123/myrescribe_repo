@@ -12,21 +12,14 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.rescribe.R;
@@ -53,7 +46,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import rx.Observable;
 import rx.Subscription;
@@ -242,7 +234,7 @@ public class MQTTService extends Service {
                                                         messagesTemp.add(messages.get(index));
                                                 } else messagesTemp.addAll(messages);
 
-                                                MessageNotification.notify(MQTTService.this, messagesTemp, messageL.getName(), getProfilePhotoBitmap(messageL), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
+                                                MessageNotification.notify(MQTTService.this, messagesTemp, messageL.getSenderName(), getProfilePhotoBitmap(messageL), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
 
                                                 // change
                                                 statusInfo.setMessageStatus(REACHED);
@@ -479,8 +471,8 @@ public class MQTTService extends Service {
     private Bitmap getProfilePhotoBitmap(final MQTTMessage messageL) {
 
         TextDrawable mReceiverDrawable = null;
-        String doctorName = messageL.getName();
-        String doctorPhoto = messageL.getImageUrl();
+        String doctorName = messageL.getSenderName();
+        String doctorPhoto = messageL.getSenderImgUrl();
 
         if (!doctorName.isEmpty()) {
             doctorName = doctorName.replace("Dr. ", "");

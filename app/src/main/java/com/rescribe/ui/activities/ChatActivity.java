@@ -409,6 +409,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
     private AppDBHelper appDBHelper;
     private int isFirstTime = 0;
+    private String salutation;
     private String patientName;
     private String imageUrl = "";
     private String fileUrl = "";
@@ -456,6 +457,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         mInputMethodManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
         softKeyboard = new SoftKeyboard(contentCordinatelayout, mInputMethodManager);
         patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
+
+        salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, this);
         patientName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this);
         imageUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, this);
         swipeLayout.setRefreshing(true);
@@ -481,10 +484,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         if (getIntent().getAction() != null) {
             chatList = new ChatDoctor();
             MQTTMessage mqttMessage = getIntent().getParcelableExtra(ReplayBroadcastReceiver.MESSAGE_LIST);
-            chatList.setDoctorName(mqttMessage.getName());
+            chatList.setDoctorName(mqttMessage.getSenderName());
             chatList.setSpecialization(mqttMessage.getSpecialization());
             chatList.setPaidStatus(mqttMessage.getPaidStatus());
-            chatList.setImageUrl(mqttMessage.getImageUrl());
+            chatList.setImageUrl(mqttMessage.getSenderImgUrl());
             chatList.setId(mqttMessage.getDocId());
             chatList.setOnlineStatus(ONLINE);
             chatList.setUnreadMessages(0);
@@ -724,7 +727,9 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             public void onSlideComplete(SlideView slideView) {
                 messageTypeSubLayout.setVisibility(View.VISIBLE);
                 Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vibrator.vibrate(100);
+                if (vibrator != null) {
+                    vibrator.vibrate(100);
+                }
                 cntr_aCounter.cancel();
                 stopRecording(false);
                 File file = new File(mFileName);
@@ -1009,9 +1014,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     messageL.setDocId(chatList.getId());
                     messageL.setPatId(Integer.parseInt(patId));
 
-                    messageL.setName(patientName);
+                    messageL.setSenderName(patientName);
                     messageL.setOnlineStatus(ONLINE);
-                    messageL.setImageUrl(imageUrl);
+                    messageL.setSenderImgUrl(imageUrl);
+
+                    messageL.setSalutation(Integer.valueOf(salutation));
+                    messageL.setReceiverName(chatList.getDoctorName());
+                    messageL.setReceiverImgUrl(chatList.getImageUrl());
 
                     messageL.setFileUrl("");
                     messageL.setFileType("");
@@ -1020,6 +1029,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     messageL.setMsgStatus(SENT);
 
                     messageL.setSender(PATIENT);
+
+
 
                     // 2017-10-13 13:08:07
                     String msgTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN);
@@ -1159,9 +1170,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         messageL.setDocId(chatList.getId());
         messageL.setPatId(Integer.parseInt(patId));
 
-        messageL.setName(patientName);
+        messageL.setSenderName(patientName);
         messageL.setOnlineStatus(ONLINE);
-        messageL.setImageUrl(imageUrl);
+        messageL.setSenderImgUrl(imageUrl);
+
+        messageL.setSalutation(Integer.valueOf(salutation));
+        messageL.setReceiverName(chatList.getDoctorName());
+        messageL.setReceiverImgUrl(chatList.getImageUrl());
 
         messageL.setFileType(LOC);
         messageL.setSpecialization("");
@@ -1207,9 +1222,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setDocId(chatList.getId());
             messageL.setPatId(Integer.parseInt(patId));
 
-            messageL.setName(patientName);
+            messageL.setSenderName(patientName);
             messageL.setOnlineStatus(ONLINE);
-            messageL.setImageUrl(imageUrl);
+            messageL.setSenderImgUrl(imageUrl);
+
+            messageL.setSalutation(Integer.valueOf(salutation));
+            messageL.setReceiverName(chatList.getDoctorName());
+            messageL.setReceiverImgUrl(chatList.getImageUrl());
 
             messageL.setFileUrl(fileForUpload);
             messageL.setFileType(fileType);
@@ -1254,9 +1273,13 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             messageL.setDocId(chatList.getId());
             messageL.setPatId(Integer.parseInt(patId));
 
-            messageL.setName(patientName);
+            messageL.setSenderName(patientName);
             messageL.setOnlineStatus(ONLINE);
-            messageL.setImageUrl(imageUrl);
+            messageL.setSenderImgUrl(imageUrl);
+
+            messageL.setSalutation(Integer.valueOf(salutation));
+            messageL.setReceiverName(chatList.getDoctorName());
+            messageL.setReceiverImgUrl(chatList.getImageUrl());
 
             messageL.setFileUrl(fileForUpload);
             messageL.setFileType(IMG);
@@ -1427,10 +1450,14 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     messageL.setPatId(chatH.getUser2Id());
                     messageL.setSender(chatH.getSender());
 
-                    messageL.setName(chatH.getName());
+                    messageL.setSalutation(Integer.valueOf(salutation));
+                    messageL.setReceiverName(chatH.getName());
+                    messageL.setReceiverImgUrl(chatH.getImageUrl());
+
+                    messageL.setSenderName(chatH.getName());
                     messageL.setSpecialization(chatH.getSpecialization());
                     messageL.setOnlineStatus(chatH.getOnlineStatus());
-                    messageL.setImageUrl(chatH.getImageUrl());
+                    messageL.setSenderImgUrl(chatH.getImageUrl());
                     messageL.setPaidStatus(chatH.getPaidStatus());
                     messageL.setFileType(chatH.getFileType());
                     messageL.setFileUrl(chatH.getFileUrl());

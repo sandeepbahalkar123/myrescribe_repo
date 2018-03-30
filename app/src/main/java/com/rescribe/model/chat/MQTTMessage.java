@@ -40,9 +40,15 @@ public class MQTTMessage implements Parcelable {
     @SerializedName("user1id")
     @Expose
     private int docId;
+    @SerializedName("salutation")
+    @Expose
+    private Integer salutation = 0;
     @SerializedName("senderName")
     @Expose
-    private String name;
+    private String senderName;
+    @SerializedName("receiverName")
+    @Expose
+    private String receiverName;
     @SerializedName("speciality")
     @Expose
     private String specialization;
@@ -59,14 +65,16 @@ public class MQTTMessage implements Parcelable {
     private int paidStatus;
     @SerializedName("senderImgUrl")
     @Expose
-    private String imageUrl = "";
+    private String senderImgUrl = "";
+    @SerializedName("receiverImgUrl")
+    @Expose
+    private String receiverImgUrl = "";
     @SerializedName("fileUrl")
     @Expose
     private String fileUrl = "";
     @SerializedName("fileType")
     @Expose
     private String fileType = "";
-
     @SerializedName("uploadStatus")
     @Expose
     private int uploadStatus = UPLOADING;
@@ -93,14 +101,17 @@ public class MQTTMessage implements Parcelable {
             instance.sender = ((String) in.readValue((String.class.getClassLoader())));
             instance.patId = ((int) in.readValue((int.class.getClassLoader())));
             instance.docId = ((int) in.readValue((int.class.getClassLoader())));
-            instance.name = ((String) in.readValue((String.class.getClassLoader())));
+            instance.salutation = ((int) in.readValue((int.class.getClassLoader())));
+            instance.senderName = ((String) in.readValue((String.class.getClassLoader())));
+            instance.receiverName = ((String) in.readValue((String.class.getClassLoader())));
             instance.specialization = ((String) in.readValue((String.class.getClassLoader())));
             instance.onlineStatus = ((String) in.readValue((String.class.getClassLoader())));
 
             instance.msgStatus = ((String) in.readValue((String.class.getClassLoader())));
 
             instance.paidStatus = ((int) in.readValue((int.class.getClassLoader())));
-            instance.imageUrl = ((String) in.readValue((String.class.getClassLoader())));
+            instance.senderImgUrl = ((String) in.readValue((String.class.getClassLoader())));
+            instance.receiverImgUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.fileUrl = ((String) in.readValue((String.class.getClassLoader())));
             instance.fileType = ((String) in.readValue((String.class.getClassLoader())));
 
@@ -205,20 +216,20 @@ public class MQTTMessage implements Parcelable {
         this.paidStatus = paidStatus;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getSenderImgUrl() {
+        return senderImgUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setSenderImgUrl(String senderImgUrl) {
+        this.senderImgUrl = senderImgUrl;
     }
 
-    public String getName() {
-        return name;
+    public String getSenderName() {
+        return senderName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSenderName(String name) {
+        this.senderName = name;
     }
 
     public void setPaidStatus(int paidStatus) {
@@ -265,6 +276,30 @@ public class MQTTMessage implements Parcelable {
         isDateVisible = dateVisible;
     }
 
+    public Integer getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(Integer salutation) {
+        this.salutation = salutation;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public String getReceiverImgUrl() {
+        return receiverImgUrl;
+    }
+
+    public void setReceiverImgUrl(String receiverImgUrl) {
+        this.receiverImgUrl = receiverImgUrl;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(msgId);
         dest.writeValue(topic);
@@ -273,12 +308,15 @@ public class MQTTMessage implements Parcelable {
         dest.writeValue(sender);
         dest.writeValue(patId);
         dest.writeValue(docId);
-        dest.writeValue(name);
+        dest.writeValue(salutation);
+        dest.writeValue(senderName);
+        dest.writeValue(receiverName);
         dest.writeValue(specialization);
         dest.writeValue(onlineStatus);
         dest.writeValue(msgStatus);
         dest.writeValue(paidStatus);
-        dest.writeValue(imageUrl);
+        dest.writeValue(senderImgUrl);
+        dest.writeValue(receiverImgUrl);
         dest.writeValue(fileUrl);
         dest.writeValue(fileType);
 

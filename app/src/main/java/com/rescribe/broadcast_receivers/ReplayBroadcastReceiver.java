@@ -51,7 +51,9 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
 
             MQTTMessage messageL = new MQTTMessage();
             messageL.setTopic(MQTTService.TOPIC[MESSAGE_TOPIC]);
-            messageL.setMsg(message.toString());
+            if (message != null) {
+                messageL.setMsg(message.toString());
+            }
 
             String generatedId = recievedMessage.getPatId() + "_" + 0 + System.nanoTime();
             messageL.setMsgId(generatedId);
@@ -59,12 +61,17 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             messageL.setDocId(recievedMessage.getDocId());
             messageL.setPatId(recievedMessage.getPatId());
 
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, context);
             String patientName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, context);
             String imageUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, context);
 
-            messageL.setName(patientName);
-            messageL.setImageUrl(imageUrl);
+            messageL.setSenderName(patientName);
+            messageL.setSenderImgUrl(imageUrl);
             messageL.setOnlineStatus(RescribeConstants.USER_STATUS.ONLINE);
+
+            messageL.setSalutation(Integer.valueOf(salutation));
+            messageL.setReceiverName(recievedMessage.getReceiverName());
+            messageL.setReceiverImgUrl(recievedMessage.getReceiverImgUrl());
 
             messageL.setFileUrl("");
             messageL.setSpecialization("");

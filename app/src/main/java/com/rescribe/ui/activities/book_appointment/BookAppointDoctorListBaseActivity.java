@@ -355,8 +355,8 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     //on click of logo bottomsheet  dialog opens and on click of profileImage ProfileAcivity is opened
     @Override
     public void onProfileImageClick() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ProfileActivity.class);
+//        startActivity(intent);
 
         super.onProfileImageClick();
     }

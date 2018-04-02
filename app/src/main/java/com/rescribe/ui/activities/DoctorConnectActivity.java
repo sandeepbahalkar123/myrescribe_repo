@@ -278,8 +278,8 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
 
             String salutationText = "";
 
-            if (!salutation.isEmpty())
-                salutationText = SALUTATION[Integer.parseInt(salutation) - 1];
+
+            salutationText = SALUTATION[Integer.parseInt(salutation)];
 
             setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this), salutationText);
         }
@@ -514,8 +514,8 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
 
     @Override
     public void onProfileImageClick() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ProfileActivity.class);
+//        startActivity(intent);
 
         super.onProfileImageClick();
     }

@@ -112,7 +112,10 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
         mMobileNumber.setText("+91 - " + patientMobileNo);
 
+        if(!salutationText.isEmpty())
         mPatientName.setText(salutationText + " " + toCamelCase(patientName));
+        else
+            mPatientName.setText(toCamelCase(patientName));
 
         if (!patientName.isEmpty()) {
             int color2 = mColorGenerator.getColor(patientName);

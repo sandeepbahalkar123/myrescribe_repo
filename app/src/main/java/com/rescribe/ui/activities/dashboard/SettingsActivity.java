@@ -261,8 +261,8 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     @Override
     public void onProfileImageClick() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ProfileActivity.class);
+//        startActivity(intent);
 
         super.onProfileImageClick();
     }

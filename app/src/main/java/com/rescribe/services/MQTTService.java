@@ -492,6 +492,7 @@ public class MQTTService extends Service {
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.circleCrop();
                 requestOptions.skipMemoryCache(true);
                 requestOptions.placeholder(mReceiverDrawable);
                 requestOptions.error(mReceiverDrawable);

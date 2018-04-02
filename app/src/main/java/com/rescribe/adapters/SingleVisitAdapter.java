@@ -49,7 +49,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     private List<PatientHistory> mListDataHeader = new ArrayList<>(); // header titles
     List<VisitCommonData> mVisitDetailList = new ArrayList<>();
     List<VisitCommonData> mCommonDataVisitList = new ArrayList<>();
-    public static final int TEXT_LIMIT = 36;
+    public static final int TEXT_LIMIT = 33;
 
     public SingleVisitAdapter(Context context, List<PatientHistory> listDataHeader) {
         this.mContext = context;
@@ -551,18 +551,15 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
                         }
                 } else if (mVisitDetailList.size() > 1) {
-                    groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
+                    int length = mVisitDetailList.get(0).getName().length();
+                    String text = mVisitDetailList.get(0).getName().substring(0, length < TEXT_LIMIT ? length - 1 : TEXT_LIMIT - 1) + "...";
+                    groupViewHolder.mDetailFirstPoint.setText(text);
                 } else {
                     String text = mVisitDetailList.get(0).getName();
-                    //----------
-                    // comes only in case of Allergies
+
                     String remarks = mVisitDetailList.get(0).getRemarks();
                     String combineString = remarks.isEmpty() ? text : text + " - " + remarks;
 
-                    /*if (text.length() > TEXT_LIMIT)
-                        groupViewHolder.mDetailFirstPoint.setText(text.substring(0, TEXT_LIMIT - 1) + "...");
-                    else groupViewHolder.mDetailFirstPoint.setText(text);*/
-                    //-------------
                     if (combineString.length() > TEXT_LIMIT)
                         groupViewHolder.mDetailFirstPoint.setText(combineString.substring(0, TEXT_LIMIT - 1) + "...");
                     else groupViewHolder.mDetailFirstPoint.setText(combineString);

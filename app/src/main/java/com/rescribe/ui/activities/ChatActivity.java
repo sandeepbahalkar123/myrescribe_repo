@@ -947,7 +947,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             case R.id.bookAppointmentButton:
                 // call book appointment
                 Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
                 DoctorList doctorListData = new DoctorList();
                 doctorListData.setDocId(chatList.getId());
                 ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData);

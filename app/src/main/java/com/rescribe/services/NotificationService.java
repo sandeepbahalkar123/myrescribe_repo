@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -36,6 +37,7 @@ import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.LUNCH_NOTIFICATION_ID;
 import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.SAMSUNG;
 
 
 /**
@@ -126,6 +128,12 @@ public class NotificationService extends Service implements HelperResponse {
         mRemoteViewCollapse.setTextViewText(R.id.questionText, medicineData);
         mRemoteViewCollapse.setTextViewText(R.id.timeText, notificationTime);
 
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && Build.MANUFACTURER.contains(SAMSUNG)){
+            mRemoteViewCollapse.setTextColor(R.id.showMedicineName, Color.WHITE);
+            mRemoteViewCollapse.setTextColor(R.id.questionText, Color.WHITE);
+            mRemoteViewCollapse.setTextColor(R.id.timeText, Color.WHITE);
+        }
+
         // **********************************************************************************
 
         // Expanded
@@ -137,6 +145,12 @@ public class NotificationService extends Service implements HelperResponse {
         mRemoteViewExpanded.setTextViewText(R.id.showMedicineName, medicineSlot);
         mRemoteViewExpanded.setTextViewText(R.id.questionText, medicineData);
         mRemoteViewExpanded.setTextViewText(R.id.timeText, notificationTime);
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && android.os.Build.MANUFACTURER.contains(SAMSUNG)){
+            mRemoteViewExpanded.setTextColor(R.id.showMedicineName, Color.WHITE);
+            mRemoteViewExpanded.setTextColor(R.id.questionText, Color.WHITE);
+            mRemoteViewExpanded.setTextColor(R.id.timeText, Color.WHITE);
+        }
 
         // **********************************************************************************
 

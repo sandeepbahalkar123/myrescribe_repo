@@ -41,10 +41,10 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     private int mPosition = 0;
     private Context mContext;
 
-    private static final String CHILD_TYPE_VITALS = "vitals";
-    private static final String CHILD_TYPE_ATTACHMENTS = "attachments";
-    private static final String CHILD_TYPE_ALLERGIES = "allergies";
-    private static final String CHILD_TYPE_PRESCRIPTIONS = "prescriptions";
+    private static final String CHILD_TYPE_VITALS = "vital";
+    private static final String CHILD_TYPE_ATTACHMENTS = "attachment";
+    private static final String CHILD_TYPE_ALLERGIES = "allergie";
+    private static final String CHILD_TYPE_PRESCRIPTIONS = "prescription";
 
     private List<PatientHistory> mListDataHeader = new ArrayList<>(); // header titles
     List<VisitCommonData> mVisitDetailList = new ArrayList<>();
@@ -101,80 +101,94 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
         }
 
         // Onclick of vitals UI is different from those of other case details
-        String headerName = mListDataHeader.get(groupPosition).getCaseDetailName();
-        switch (headerName) {
-            case CHILD_TYPE_VITALS:
-                //set data and UI for vitals
+        String headerName = mListDataHeader.get(groupPosition).getCaseDetailName().toLowerCase();
+        if (headerName.contains(CHILD_TYPE_VITALS)) {
+            //set data and UI for vitals
 
-                childViewHolder.tableLayout.removeAllViews();
+            childViewHolder.tableLayout.removeAllViews();
 
-                childViewHolder.tableLayout.setVisibility(View.VISIBLE);
-                childViewHolder.itemsLayout.setVisibility(View.GONE);
+            childViewHolder.tableLayout.setVisibility(View.VISIBLE);
+            childViewHolder.itemsLayout.setVisibility(View.GONE);
 
-                mPosition = 0;
-                List<Vital> vital = new ArrayList<>();
-                int size = mListDataHeader.get(groupPosition).getVitals().size();
-                int count = 1;
-                int tempSize = size - (size % 3);
-                for (int i = 0; i < size; i++) {
-                    vital.add(mListDataHeader.get(groupPosition).getVitals().get(i));
-                    if (tempSize > i) {
-                        if (count == 3) {
-                            childViewHolder.tableLayout.addView(addVitalsTableRow(vital, groupPosition));
-                            vital.clear();
-                            count = 1;
-                        } else
-                            count++;
-                    } else if (count == size % 3) {
+            mPosition = 0;
+            List<Vital> vital = new ArrayList<>();
+            int size = mListDataHeader.get(groupPosition).getVitals().size();
+            int count = 1;
+            int tempSize = size - (size % 3);
+            for (int i = 0; i < size; i++) {
+                vital.add(mListDataHeader.get(groupPosition).getVitals().get(i));
+                if (tempSize > i) {
+                    if (count == 3) {
                         childViewHolder.tableLayout.addView(addVitalsTableRow(vital, groupPosition));
                         vital.clear();
                         count = 1;
-                    } else count++;
+                    } else
+                        count++;
+                } else if (count == size % 3) {
+                    childViewHolder.tableLayout.addView(addVitalsTableRow(vital, groupPosition));
+                    vital.clear();
+                    count = 1;
+                } else count++;
+            }
+
+        } else if (headerName.contains(CHILD_TYPE_ATTACHMENTS)) {
+
+            childViewHolder.tableLayout.setVisibility(View.VISIBLE);
+            childViewHolder.itemsLayout.setVisibility(View.GONE);
+
+            childViewHolder.tableLayout.removeAllViews();
+
+            List<VisitCommonData> attachments = new ArrayList<>();
+            int size1 = mListDataHeader.get(groupPosition).getCommonData().size();
+
+            for (int i = 0; i < size1; i++) {
+                attachments.add(mListDataHeader.get(groupPosition).getCommonData().get(i));
+                int check = i + 1;
+                if (check % 3 == 0 || check == size1) {
+                    childViewHolder.tableLayout.addView(addAttachmentsTableRow(attachments));
+                    attachments.clear();
                 }
+            }
 
-                break;
+        } else if (headerName.contains(CHILD_TYPE_PRESCRIPTIONS)) {
+            final List<VisitCommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
 
-            case CHILD_TYPE_ATTACHMENTS:
+            String textToShow = "";
 
-                childViewHolder.tableLayout.setVisibility(View.VISIBLE);
-                childViewHolder.itemsLayout.setVisibility(View.GONE);
+            String medicineTypeName = childObject.get(childPosition).getMedicineTypeName();
+            String name = childObject.get(childPosition).getName();
+            String dosage = childObject.get(childPosition).getDosage();
 
-                childViewHolder.tableLayout.removeAllViews();
+            if (!medicineTypeName.isEmpty())
+                textToShow += medicineTypeName.charAt(0) + ". ";
+            if (!name.isEmpty())
+                textToShow += name + " ";
+            if (!dosage.isEmpty())
+                textToShow += dosage;
 
-                List<VisitCommonData> attachments = new ArrayList<>();
-                int size1 = mListDataHeader.get(groupPosition).getCommonData().size();
+            if (mListDataHeader.get(groupPosition).getCommonData().size() > 1)
+                textToShow += "...";
 
-                for (int i = 0; i < size1; i++) {
-                    attachments.add(mListDataHeader.get(groupPosition).getCommonData().get(i));
-                    int check = i + 1;
-                    if (check % 3 == 0 || check == size1) {
-                        childViewHolder.tableLayout.addView(addAttachmentsTableRow(attachments));
-                        attachments.clear();
-                    }
-                }
+            childViewHolder.textView_name.setText(textToShow);
+        } else {
+            // set data and UI for other case study
 
-                break;
+            final List<VisitCommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
 
-            default:
-                // set data and UI for other case study
+            childViewHolder.tableLayout.setVisibility(View.GONE);
+            childViewHolder.itemsLayout.setVisibility(View.VISIBLE);
 
-                final List<VisitCommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
+            String textToShow = "";
+            if (headerName.contains(CHILD_TYPE_ALLERGIES)) {
+                textToShow = childObject.get(childPosition).getName();
+                if (!childObject.get(childPosition).getMedicinename().isEmpty())
+                    textToShow += "-" + childObject.get(childPosition).getMedicinename();
+                if (!childObject.get(childPosition).getRemarks().isEmpty())
+                    textToShow += "-" + childObject.get(childPosition).getRemarks();
+            } else textToShow = childObject.get(childPosition).getName();
 
-                childViewHolder.tableLayout.setVisibility(View.GONE);
-                childViewHolder.itemsLayout.setVisibility(View.VISIBLE);
+            childViewHolder.textView_name.setText(textToShow);
 
-                String textToShow = "";
-                if (headerName.equalsIgnoreCase(CHILD_TYPE_ALLERGIES)) {
-                    textToShow = childObject.get(childPosition).getName();
-                    if (!childObject.get(childPosition).getMedicinename().isEmpty())
-                        textToShow += "-" + childObject.get(childPosition).getMedicinename();
-                    if (!childObject.get(childPosition).getRemarks().isEmpty())
-                        textToShow += "-" + childObject.get(childPosition).getRemarks();
-                } else textToShow = childObject.get(childPosition).getName();
-
-                childViewHolder.textView_name.setText(textToShow);
-
-                break;
         }
 
         if (isLastChild)
@@ -445,7 +459,8 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this.mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase(CHILD_TYPE_ATTACHMENTS) || this.mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase(CHILD_TYPE_VITALS))
+        String caseName = this.mListDataHeader.get(groupPosition).getCaseDetailName().toLowerCase();
+        if (caseName.contains(CHILD_TYPE_ATTACHMENTS) || caseName.contains(CHILD_TYPE_VITALS))
             return 1;
         else
             return (this.mListDataHeader.get(groupPosition).getCommonData())
@@ -500,7 +515,9 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             if (mListDataHeader.get(groupPosition).getCommonData() != null) {
                 mVisitDetailList = mListDataHeader.get(groupPosition).getCommonData();
 
-                if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase(CHILD_TYPE_PRESCRIPTIONS)) {
+                String caseDetailName = mListDataHeader.get(groupPosition).getCaseDetailName().toLowerCase();
+
+                if (caseDetailName.contains(CHILD_TYPE_PRESCRIPTIONS)) {
 
                     if (!mListDataHeader.get(groupPosition).getCommonData().isEmpty()) {
 
@@ -523,7 +540,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
                     }
 
-                } else if (mListDataHeader.get(groupPosition).getCaseDetailName().equalsIgnoreCase(CHILD_TYPE_VITALS)) {
+                } else if (caseDetailName.contains(CHILD_TYPE_VITALS)) {
                     if (!mListDataHeader.get(groupPosition).getVitals().isEmpty())
                         if (mVisitDetailList.get(0).getName().equalsIgnoreCase("bp")) {
                             String bpValue = mVisitDetailList.get(0).getVitalValue();

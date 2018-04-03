@@ -64,7 +64,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/healthRepositoryListView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/dp28"
                     android:layout_marginBottom="@dimen/dp40"
                     android:clipToPadding="false"

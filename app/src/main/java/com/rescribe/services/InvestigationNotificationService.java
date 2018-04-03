@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -31,6 +32,7 @@ import java.util.Map;
 
 import static com.rescribe.notification.InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID;
 import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
+import static com.rescribe.util.RescribeConstants.SAMSUNG;
 
 
 /**
@@ -140,7 +142,13 @@ public class InvestigationNotificationService extends Service implements HelperR
         mRemoteViewCollapse.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
         mRemoteViewCollapse.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
         mRemoteViewCollapse.setTextViewText(R.id.timeText, notificationTime);
-        
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && Build.MANUFACTURER.contains(SAMSUNG)){
+            mRemoteViewCollapse.setTextColor(R.id.showMedicineName, Color.WHITE);
+            mRemoteViewCollapse.setTextColor(R.id.questionText, Color.WHITE);
+            mRemoteViewCollapse.setTextColor(R.id.timeText, Color.WHITE);
+        }
+
         // **************************************************************************************************************
 
         // Expanded
@@ -153,7 +161,13 @@ public class InvestigationNotificationService extends Service implements HelperR
         mRemoteViewExpanded.setTextViewText(R.id.showMedicineName, getResources().getString(R.string.investigation));
         mRemoteViewExpanded.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
         mRemoteViewExpanded.setTextViewText(R.id.timeText, notificationTime);
-        
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && android.os.Build.MANUFACTURER.contains(SAMSUNG)){
+            mRemoteViewExpanded.setTextColor(R.id.showMedicineName, Color.WHITE);
+            mRemoteViewExpanded.setTextColor(R.id.questionText, Color.WHITE);
+            mRemoteViewExpanded.setTextColor(R.id.timeText, Color.WHITE);
+        }
+
         // *************************************************************************************************************
         
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

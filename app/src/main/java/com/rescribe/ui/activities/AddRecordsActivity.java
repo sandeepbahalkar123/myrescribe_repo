@@ -149,10 +149,9 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
             }
         });
         setColumnNumber(mContext, 2);
+
         myRecordsHelper = new MyRecordsHelper(mContext, this);
         myRecordsHelper.getDoctorList(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
-        // HardCoded
-//        myRecordsHelper.getDoctorList("4092");
 
         Calendar now = Calendar.getInstance();
 // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.

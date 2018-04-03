@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -376,6 +377,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
     };
 
     private void navigate() {
+
         // Navigate
         MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
         int completeCount = 0;
@@ -384,10 +386,18 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
                 completeCount++;
         }
         if (completeCount == myRecordsData.getImageArrayList().size()) {
-            Intent intent = new Intent(SelectedRecordsGroupActivity.this, MyRecordsActivity.class);
-            intent.putExtra(RescribeConstants.ALERT, false);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    Intent intent = new Intent(SelectedRecordsGroupActivity.this, MyRecordsActivity.class);
+                    intent.putExtra(RescribeConstants.ALERT, false);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            }, 2000);
         }
         // End Navigate
     }

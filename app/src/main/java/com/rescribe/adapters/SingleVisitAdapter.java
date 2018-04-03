@@ -548,7 +548,6 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
                         } else {
                             groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
-
                         }
                 } else if (mVisitDetailList.size() > 1) {
                     int length = mVisitDetailList.get(0).getName().length();

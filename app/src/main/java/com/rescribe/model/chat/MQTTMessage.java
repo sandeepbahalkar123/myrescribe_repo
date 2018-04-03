@@ -145,7 +145,7 @@ public class MQTTMessage implements Parcelable {
     }
 
     public String getMsg() {
-        return msg;
+        return msg == null ? "" : msg;
     }
 
     public void setMsg(String msg) {
@@ -185,7 +185,7 @@ public class MQTTMessage implements Parcelable {
     }
 
     public String getSpecialization() {
-        return specialization;
+        return specialization == null ? "" : specialization;
     }
 
     public void setSpecialization(String specialization) {
@@ -217,7 +217,7 @@ public class MQTTMessage implements Parcelable {
     }
 
     public String getSenderImgUrl() {
-        return senderImgUrl;
+        return senderImgUrl == null ? "" : senderImgUrl;
     }
 
     public void setSenderImgUrl(String senderImgUrl) {
@@ -237,7 +237,7 @@ public class MQTTMessage implements Parcelable {
     }
 
     public String getFileUrl() {
-        return fileUrl;
+        return fileUrl == null ? "" : fileUrl;
     }
 
     public void setFileUrl(String fileUrl) {
@@ -245,7 +245,7 @@ public class MQTTMessage implements Parcelable {
     }
 
     public String getFileType() {
-        return fileType;
+        return fileType == null ? "" : fileType;
     }
 
     public void setFileType(String fileType) {
@@ -293,7 +293,7 @@ public class MQTTMessage implements Parcelable {
     }
 
     public String getReceiverImgUrl() {
-        return receiverImgUrl;
+        return receiverImgUrl == null ? "" : receiverImgUrl;
     }
 
     public void setReceiverImgUrl(String receiverImgUrl) {

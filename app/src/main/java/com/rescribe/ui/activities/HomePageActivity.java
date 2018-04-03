@@ -20,6 +20,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -152,6 +153,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
 
+    @BindView(R.id.swipeToRefresh)
+    SwipeRefreshLayout swipeToRefresh;
+
     @BindView(R.id.preloadView)
     ImageView preloadView;
 
@@ -261,6 +265,13 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         if (need_notify)
             notificationForMedicine();
+
+        swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                checkAndroidVersion();
+            }
+        });
     }
 
     @SuppressLint("CheckResult")
@@ -400,6 +411,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     mIsAppOpenFromLogin = false;
                     doGetMedicationNotificationOnNewLogin();
                 }
+
+                swipeToRefresh.setRefreshing(false);
                 break;
 
             case ACTIVE_STATUS:
@@ -502,12 +515,16 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     public void onParseError(String mOldDataTag, String errorMessage) {
         if (mOldDataTag.equals(TASK_DASHBOARD_API))
             custom_progress_bar.setVisibility(View.GONE);
+
+        swipeToRefresh.setRefreshing(false);
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
         if (mOldDataTag.equals(TASK_DASHBOARD_API))
             custom_progress_bar.setVisibility(View.GONE);
+
+        swipeToRefresh.setRefreshing(false);
     }
 
     @Override
@@ -810,7 +827,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             previousLocationReceived = "";
         }
 
-        if (locationReceived.equalsIgnoreCase(previousLocationReceived)) {
+        if (locationReceived.equalsIgnoreCase(previousLocationReceived) && !swipeToRefresh.isRefreshing()) {
             Log.d(TAG, "DASHBOARD API NOT CALLED");
         } else {
             Log.d(TAG, "DASHBOARD API  CALLED");
@@ -989,13 +1006,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     private void checkAndroidVersion() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkPermission();
-
-        } else {
+        else
             doCallDashBoardAPI();
-            // write your logic here
-        }
     }
 
     @SuppressLint("NewApi")

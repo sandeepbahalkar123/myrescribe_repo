@@ -212,7 +212,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void setFavouriteDoctor(Boolean isFavourite, int docId) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SET_FAVOURITE_DOCTOR, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SET_FAVOURITE_DOCTOR, Request.Method.POST, false);
         RequestFavouriteDoctorModel requestFavouriteDoctorModel = new RequestFavouriteDoctorModel();
         requestFavouriteDoctorModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
         requestFavouriteDoctorModel.setFavouriteflag(isFavourite);
@@ -292,7 +292,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doSetTokenNotificationReminder(String time, int docId, int locationID) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
 
         BookAppointTokenNotifyAlertRequestModel requestDoctorListBaseModel = new BookAppointTokenNotifyAlertRequestModel();
@@ -318,7 +318,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
     public void doGetTokenUnreadNotification() {
 
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
@@ -329,7 +329,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doRejectBookAppointReceivedToken(String time, int docId, int locationID) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
 
         BookAppointTokenNotifyAlertRequestModel requestDoctorListBaseModel = new BookAppointTokenNotifyAlertRequestModel();
@@ -345,7 +345,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doConfirmBookAppointReceivedToken(String time, int docId, int locationID) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
 
         BookAppointTokenNotifyAlertRequestModel requestDoctorListBaseModel = new BookAppointTokenNotifyAlertRequestModel();
@@ -360,7 +360,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
     }
     public void doConfirmAppointmentRequest(int docId, int locationID, String date, String fromTime, String toTime, int slotId, Reschedule reschedule) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CONFIRM_APPOINTMENT, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CONFIRM_APPOINTMENT, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
 
         RequestAppointmentConfirmationModel mRequestAppointmentConfirmationModel = new RequestAppointmentConfirmationModel();
@@ -380,7 +380,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doCancelAppointmentRequest(String aptId, String type) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_RESCHEDULE_APPOINTMENT, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
 
         RequestCancelAppointment mRequestCancelAppointment= new RequestCancelAppointment();
@@ -396,7 +396,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doCancelTokenNumber(int docID, int locationId, int tokenNo) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_GET_TOKEN, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_CANCEL_GET_TOKEN, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
 
         RequestCancelGetToken mRequestCancelAppointment= new RequestCancelGetToken();

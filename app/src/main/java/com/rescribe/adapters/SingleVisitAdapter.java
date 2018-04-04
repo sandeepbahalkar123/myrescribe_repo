@@ -166,9 +166,6 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             if (!dosage.isEmpty())
                 textToShow += dosage;
 
-            if (mListDataHeader.get(groupPosition).getCommonData().size() > 1)
-                textToShow += "...";
-
             childViewHolder.textView_name.setText(textToShow);
         } else {
             // set data and UI for other case study

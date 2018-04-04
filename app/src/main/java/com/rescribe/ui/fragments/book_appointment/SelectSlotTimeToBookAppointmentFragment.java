@@ -96,6 +96,7 @@ import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.APPOINTMENT_ID;
 import static com.rescribe.util.RescribeConstants.FROM;
 import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
+import static com.rescribe.util.RescribeConstants.SUCCESS;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
@@ -566,8 +567,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 break;
             case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER:
                 CommonBaseModelContainer temp1 = (CommonBaseModelContainer) customResponse;
+
+                if (temp1.getCommonRespose().getStatusCode().equals(SUCCESS))
+                    getActivity().finish();
+
                 CommonMethods.showToast(getActivity(), temp1.getCommonRespose().getStatusMessage());
-                getActivity().finish();
+
                 break;
             case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION:
 

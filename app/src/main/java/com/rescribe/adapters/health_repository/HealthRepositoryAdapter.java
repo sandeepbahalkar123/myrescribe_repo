@@ -55,7 +55,6 @@ public class HealthRepositoryAdapter extends RecyclerView.Adapter<HealthReposito
     @Override
     public void onBindViewHolder(HealthRepositoryAdapter.ListViewHolder holder, int position) {
 
-
         final ClickOption clickOption = mClickOptionList.get(position);
         holder.serviceNameTextView.setText(clickOption.getName());
         holder.recyclerViewClick.setOnClickListener(new View.OnClickListener() {

@@ -27,7 +27,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.rescribe.R;
 import com.rescribe.model.chat.MQTTMessage;
-import com.rescribe.ui.activities.ZoomImageViewActivity;
+import com.rescribe.ui.activities.zoom_images.ZoomImageViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;

@@ -1,19 +1,16 @@
-package com.rescribe.ui.activities;
+package com.rescribe.ui.activities.zoom_images;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.zoomview.ZoomageView;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.File;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,8 +31,6 @@ public class ZoomImageViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
         requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);
 

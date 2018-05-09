@@ -15,6 +15,7 @@ public class RescribeConstants {
     public static final String MT_OINTMENT = "OINTMENT";
     public static final String DD_MM_YYYY = "dd-MM-yyyy";
     public static final String YES = "yes";
+    public static final String ATTACHMENTS_LIST = "ATTACHMENTS_LIST";
     public static final String DOCUMENTS = "documents";
     public static final String ALERT = "alert";
     public static final String APP_OPENING_FROM_LOGIN = "APP_OPENING_FROM_LOGIN";

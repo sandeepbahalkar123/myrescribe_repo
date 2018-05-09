@@ -18,7 +18,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
@@ -27,13 +26,11 @@ import com.rescribe.model.case_details.Range;
 import com.rescribe.model.case_details.VisitCommonData;
 import com.rescribe.model.case_details.Vital;
 import com.rescribe.ui.activities.WebViewActivity;
-import com.rescribe.ui.activities.ZoomImageViewActivity;
+import com.rescribe.ui.activities.zoom_images.MultipleImageWithSwipeAndZoomActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -41,8 +38,8 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     private int mPosition = 0;
     private Context mContext;
 
-    private static final String CHILD_TYPE_VITALS = "vital";
-    private static final String CHILD_TYPE_ATTACHMENTS = "attachment";
+    public static final String CHILD_TYPE_VITALS = "vital";
+    public static final String CHILD_TYPE_ATTACHMENTS = "attachment";
     private static final String CHILD_TYPE_ALLERGIES = "allergie";
     private static final String CHILD_TYPE_PRESCRIPTIONS = "prescription";
 
@@ -50,6 +47,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
     List<VisitCommonData> mVisitDetailList = new ArrayList<>();
     List<VisitCommonData> mCommonDataVisitList = new ArrayList<>();
     public static final int TEXT_LIMIT = 33;
+    private List<VisitCommonData> mListDataHeaderAllAttachmentCommonDataList;
 
     public SingleVisitAdapter(Context context, List<PatientHistory> listDataHeader) {
         this.mContext = context;
@@ -140,6 +138,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             List<VisitCommonData> attachments = new ArrayList<>();
             int size1 = mListDataHeader.get(groupPosition).getCommonData().size();
+            mListDataHeaderAllAttachmentCommonDataList = mListDataHeader.get(groupPosition).getCommonData();
 
             for (int i = 0; i < size1; i++) {
                 attachments.add(mListDataHeader.get(groupPosition).getCommonData().get(i));
@@ -338,9 +337,10 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                         mContext.startActivity(intent);
                     } else {
                         // do stuff here
-                        Intent intent = new Intent(mContext, ZoomImageViewActivity.class);
+                        Intent intent = new Intent(mContext, MultipleImageWithSwipeAndZoomActivity.class);
                         intent.putExtra(RescribeConstants.DOCUMENTS, tag);
                         intent.putExtra(RescribeConstants.IS_URL, true);
+                        intent.putParcelableArrayListExtra(RescribeConstants.ATTACHMENTS_LIST, new ArrayList<VisitCommonData>(mListDataHeaderAllAttachmentCommonDataList));
                         mContext.startActivity(intent);
                     }
                 }

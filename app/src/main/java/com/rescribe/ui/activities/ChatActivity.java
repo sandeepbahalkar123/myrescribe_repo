@@ -89,9 +89,9 @@ import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
+import com.rescribe.util.KeyboardEvent;
 import com.rescribe.util.NetworkUtil;
 import com.rescribe.util.RescribeConstants;
-import com.rescribe.util.SoftKeyboard;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
@@ -180,7 +180,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String filesUploadFolder;
     private String photosUploadFolder;
     private String audioUploadFolder;
-    SoftKeyboard softKeyboard;
     @BindView(R.id.backButton)
     ImageView backButton;
     @BindView(R.id.profilePhoto)
@@ -459,7 +458,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         appDBHelper = new AppDBHelper(this);
         mInputMethodManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
-        softKeyboard = new SoftKeyboard(contentCordinatelayout, mInputMethodManager);
         patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
 
         salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, this);
@@ -469,22 +467,18 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         downloadInit();
 
-        softKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged() {
-
+        new KeyboardEvent(contentLayout, new KeyboardEvent.KeyboardListener() {
             @Override
-            public void onSoftKeyboardHide() {
-                showBookAppointmentButton();
-                //  bookAppointmentButton.setVisibility(View.VISIBLE);
-                // Code here
+            public void onKeyboardOpen() {
+                doNotShowBookAppointmentButton();
             }
 
             @Override
-            public void onSoftKeyboardShow() {
-                doNotShowBookAppointmentButton();
-                //  bookAppointmentButton.setVisibility(View.GONE);
-                // Code here
+            public void onKeyboardClose() {
+                showBookAppointmentButton();
             }
         });
+
         if (getIntent().getAction() != null) {
             chatList = new ChatDoctor();
             MQTTMessage mqttMessage = getIntent().getParcelableExtra(ReplayBroadcastReceiver.MESSAGE_LIST);
@@ -1035,7 +1029,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     messageL.setMsgStatus(SENT);
 
                     messageL.setSender(PATIENT);
-
 
 
                     // 2017-10-13 13:08:07
@@ -1807,11 +1800,4 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         }
         return outputPath + inputFile;
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        softKeyboard.unRegisterSoftKeyboardCallback();
-    }
-
 }

@@ -16,12 +16,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.investigation.Image;
-import com.rescribe.ui.activities.ZoomImageViewActivity;
+import com.rescribe.ui.activities.zoom_images.ZoomImageViewActivity;
 import com.rescribe.util.RescribeConstants;
-
 import java.io.File;
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

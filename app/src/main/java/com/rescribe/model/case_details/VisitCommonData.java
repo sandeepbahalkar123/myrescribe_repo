@@ -1,18 +1,21 @@
 
 package com.rescribe.model.case_details;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rescribe.interfaces.CustomResponse;
 
-public class VisitCommonData implements CustomResponse{
+public class VisitCommonData implements CustomResponse, Parcelable {
 
     @SerializedName("id")
     @Expose
     private Integer id;
     @SerializedName("name")
     @Expose
-    private String name = "";
+    private String name;
     @SerializedName("url")
     @Expose
     private String url = "";
@@ -22,40 +25,38 @@ public class VisitCommonData implements CustomResponse{
     @SerializedName("remarks")
     @Expose
     private String remarks = "";
-
     @SerializedName("dosage")
     @Expose
     private String dosage = "";
-
     @SerializedName("medicineTypeName")
     @Expose
     private String medicineTypeName = "";
-
-    public String getVitalValue() {
-        return vitalValue;
-    }
-
-    public void setVitalValue(String vitalValue) {
-        this.vitalValue = vitalValue;
-    }
-
     private String vitalValue;
 
-    public Integer getId() {
-        return id;
-    }
+    public final static Creator<VisitCommonData> CREATOR = new Creator<VisitCommonData>() {
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+        @SuppressWarnings({
+                "unchecked"
+        })
+        public VisitCommonData createFromParcel(Parcel in) {
+            VisitCommonData instance = new VisitCommonData();
+            instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.name = ((String) in.readValue((String.class.getClassLoader())));
+            instance.url = ((String) in.readValue((String.class.getClassLoader())));
+            instance.medicinename = ((String) in.readValue((String.class.getClassLoader())));
+            instance.remarks = ((String) in.readValue((String.class.getClassLoader())));
+            instance.dosage = ((String) in.readValue((String.class.getClassLoader())));
+            instance.medicineTypeName = ((String) in.readValue((String.class.getClassLoader())));
+            instance.vitalValue = ((String) in.readValue((String.class.getClassLoader())));
+            return instance;
+        }
 
-    public String getName() {
-        return name;
-    }
+        public VisitCommonData[] newArray(int size) {
+            return (new VisitCommonData[size]);
+        }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    };
+
 
     public String getUrl() {
         return url;
@@ -96,4 +97,45 @@ public class VisitCommonData implements CustomResponse{
     public void setMedicineTypeName(String medicineTypeName) {
         this.medicineTypeName = medicineTypeName;
     }
+
+    public String getVitalValue() {
+        return vitalValue;
+    }
+
+    public void setVitalValue(String vitalValue) {
+        this.vitalValue = vitalValue;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(name);
+        dest.writeValue(url);
+        dest.writeValue(medicinename);
+        dest.writeValue(remarks);
+        dest.writeValue(dosage);
+        dest.writeValue(medicineTypeName);
+        dest.writeValue(vitalValue);
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
 }

@@ -16,10 +16,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.ui.activities.WebViewActivity;
-import com.rescribe.ui.activities.ZoomImageViewActivity;
+import com.rescribe.ui.activities.zoom_images.ZoomImageViewActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

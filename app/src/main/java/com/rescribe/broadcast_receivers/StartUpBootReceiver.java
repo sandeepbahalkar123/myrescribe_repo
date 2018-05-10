@@ -31,10 +31,10 @@ public class StartUpBootReceiver extends BroadcastReceiver {
 
             CommonMethods.Log(TAG, "StartUpBootReceiver");
 
-            new MQTTServiceAlarmTask(context).run();
-
-            if(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES))
+            if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES)) {
+                new MQTTServiceAlarmTask(context).run();
                 notificationForMedicine(context);
+            }
         }
     }
 
@@ -57,7 +57,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
         }
         cursor.close();
 
-        String times[] = {breakFast, lunchTime, dinnerTime,snacksTime};
+        String times[] = {breakFast, lunchTime, dinnerTime, snacksTime};
 
         new DeleteUnreadNotificationAlarmTask(context).run();
         new DosesAlarmTask(context, times).run();

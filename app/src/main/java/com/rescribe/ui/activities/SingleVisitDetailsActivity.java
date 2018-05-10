@@ -187,15 +187,11 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
             }
         });
 
-        mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
-
-        {
+        mHistoryExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
                                         int childPosition, long id) {
-
                 mHistoryExpandableListView.collapseGroup(groupPosition);
-
                 return false;
             }
         });
@@ -205,21 +201,20 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         VisitData visitData = (VisitData) customResponse;
-        if (visitData != null) {
-            mHistoryExpandableListView.setVisibility(View.VISIBLE);
-            mNoRecordAvailable.setVisibility(View.GONE);
-        } else {
-            mHistoryExpandableListView.setVisibility(View.GONE);
-            mNoRecordAvailable.setVisibility(View.VISIBLE);
-        }
         List<PatientHistory> patientHistoryList = visitData.getPatientHistory();
         List<Vital> vitalSortedList = new ArrayList<>();
+
+        boolean isEmpty = true;
+
         // Bpmin and Bpmax is clubed together as Bp in vitals
         for (int i = 0; i < patientHistoryList.size(); i++) {
             if (patientHistoryList.get(i).getVitals() != null) {
                 String pos = null;
 
                 List<Vital> vitalList = patientHistoryList.get(i).getVitals();
+                if (!vitalList.isEmpty())
+                    isEmpty = false;
+
                 for (int j = 0; j < vitalList.size(); j++) {
 
                     Vital dataObject = vitalList.get(j);
@@ -291,14 +286,20 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                     }
                 }
                 patientHistoryList.get(i).setVitals(vitalSortedList);
-            }
+            } else if (!patientHistoryList.get(i).getCommonData().isEmpty())
+                isEmpty = false;
         }
 
+        if (isEmpty) {
+            mHistoryExpandableListView.setVisibility(View.GONE);
+            mNoRecordAvailable.setVisibility(View.VISIBLE);
+        } else {
+            mHistoryExpandableListView.setVisibility(View.VISIBLE);
+            mNoRecordAvailable.setVisibility(View.GONE);
+        }
 
         mSingleVisitAdapter = new SingleVisitAdapter(this, patientHistoryList);
         mHistoryExpandableListView.setAdapter(mSingleVisitAdapter);
-
-
     }
 
     @Override

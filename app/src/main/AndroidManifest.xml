@@ -38,27 +38,27 @@
         </provider>
 
         <activity
-            android:name=".ui.activities.SingleVisitDetailsActivity"
+            android:name="com.rescribe.ui.activities.SingleVisitDetailsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.PrescriptionActivity"
+            android:name="com.rescribe.ui.activities.PrescriptionActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.zoom_images.MultipleImageWithSwipeAndZoomActivity"
+            android:name="com.rescribe.ui.activities.zoom_images.MultipleImageWithSwipeAndZoomActivity"
             android:label="@string/title_activity_zoomview"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SaveArticleHealthEducationActivity"
+            android:name="com.rescribe.ui.activities.SaveArticleHealthEducationActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SplashScreenActivity"
+            android:name="com.rescribe.ui.activities.SplashScreenActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -70,194 +70,194 @@
         </activity>
 
         <activity
-            android:name=".ui.activities.ResetPasswordActivity"
+            android:name="com.rescribe.ui.activities.ResetPasswordActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_reset_password"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".ui.activities.ConnectSplashActivity"
+            android:name="com.rescribe.ui.activities.ConnectSplashActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity"
+            android:name="com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.confirmation_type_activities.ConfirmTokenInfoActivity"
+            android:name="com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmTokenInfoActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.HomePageActivity"
+            android:name="com.rescribe.ui.activities.HomePageActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.HealthEducation"
+            android:name="com.rescribe.ui.activities.HealthEducation"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.find_doctors.ShowCategoryWiseDoctor"
+            android:name="com.rescribe.ui.activities.find_doctors.ShowCategoryWiseDoctor"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.dashboard.ProfileActivity"
+            android:name="com.rescribe.ui.activities.dashboard.ProfileActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.dashboard.SettingsActivity"
+            android:name="com.rescribe.ui.activities.dashboard.SettingsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.dashboard.SupportActivity"
+            android:name="com.rescribe.ui.activities.dashboard.SupportActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.DoctorDescriptionBaseActivity"
+            android:name="com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.find_doctors.FindDoctorsActivity"
+            android:name="com.rescribe.ui.activities.find_doctors.FindDoctorsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.PhoneNoActivity"
+            android:name="com.rescribe.ui.activities.PhoneNoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/phone_no_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.LoginSignUpActivity"
+            android:name="com.rescribe.ui.activities.LoginSignUpActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/log_in"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.MapActivityShowDoctorLocation"
+            android:name="com.rescribe.ui.activities.book_appointment.MapActivityShowDoctorLocation"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/log_in"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.health_repository.HealthRepositoryActivity"
+            android:name="com.rescribe.ui.activities.health_repository.HealthRepositoryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/log_in"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.saved_articles.SavedArticlesActivity"
+            android:name="com.rescribe.ui.activities.saved_articles.SavedArticlesActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/saved_articles"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.BookAppointDoctorListBaseActivity"
+            android:name="com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/doctor_connect"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.activities.book_appointment.BookAppointListOnLocationSelection"
+            android:name="com.rescribe.ui.activities.book_appointment.BookAppointListOnLocationSelection"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/doctor_connect"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.activities.PreferencesActivity"
+            android:name="com.rescribe.ui.activities.PreferencesActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity"
+            android:name="com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.AppointmentActivity"
+            android:name="com.rescribe.ui.activities.AppointmentActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/appointments"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.dashboard.HealthOffersActivity"
+            android:name="com.rescribe.ui.activities.dashboard.HealthOffersActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/appointments"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.doctor.DoctorListActivity"
+            android:name="com.rescribe.ui.activities.doctor.DoctorListActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.BookAppointmentServices"
+            android:name="com.rescribe.ui.activities.book_appointment.BookAppointmentServices"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.DoctorConnectActivity"
+            android:name="com.rescribe.ui.activities.DoctorConnectActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".ui.activities.book_appointment.BookAppointFindLocation"
+            android:name="com.rescribe.ui.activities.book_appointment.BookAppointFindLocation"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".services.InvestigationNotificationService" />
-        <service android:name=".services.AppointmentNotificationService" />
-        <service android:name=".services.NotificationService" />
-        <service android:name=".services.DeleteUnreadNotificationService" />
+        <service android:name="com.rescribe.services.InvestigationNotificationService" />
+        <service android:name="com.rescribe.services.AppointmentNotificationService" />
+        <service android:name="com.rescribe.services.NotificationService" />
+        <service android:name="com.rescribe.services.DeleteUnreadNotificationService" />
 
         <!-- Common Broadcast Receiver -->
-        <receiver android:name=".broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver" />
-        <receiver android:name=".broadcast_receivers.ClickOnNotificationReceiver" />
+        <receiver android:name="com.rescribe.broadcast_receivers.ClickOnCheckBoxOfNotificationReceiver" />
+        <receiver android:name="com.rescribe.broadcast_receivers.ClickOnNotificationReceiver" />
         <!-- End -->
 
-        <receiver android:name=".broadcast_receivers.StartUpBootReceiver">
+        <receiver android:name="com.rescribe.broadcast_receivers.StartUpBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <activity
-            android:name=".ui.activities.ChatActivity"
+            android:name="com.rescribe.ui.activities.ChatActivity"
             android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".services.MQTTService" />
+        <service android:name="com.rescribe.services.MQTTService" />
 
         <receiver
-            android:name=".broadcast_receivers.ReplayBroadcastReceiver"
+            android:name="com.rescribe.broadcast_receivers.ReplayBroadcastReceiver"
             android:enabled="true"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.NotificationActivity"
+            android:name="com.rescribe.ui.activities.NotificationActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.NotificationSettingActivity"
+            android:name="com.rescribe.ui.activities.NotificationSettingActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SettingActivity"
+            android:name="com.rescribe.ui.activities.SettingActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.ServicesFilteredDoctorListActivity"
+            android:name="com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -281,87 +281,87 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.InvestigationActivity"
+            android:name="com.rescribe.ui.activities.InvestigationActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_investigation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SelectedDocsActivity"
+            android:name="com.rescribe.ui.activities.SelectedDocsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_selected_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.ShowReviewListActivity"
+            android:name="com.rescribe.ui.activities.book_appointment.ShowReviewListActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_selected_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.book_appointment.MapActivityPlotNearByDoctor"
+            android:name="com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_selected_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.UploadedDocsActivity"
+            android:name="com.rescribe.ui.activities.UploadedDocsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_uploaded_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.ZoomImageViewActivity"
+            android:name="com.rescribe.ui.activities.zoom_images.ZoomImageViewActivity"
             android:label="@string/title_activity_zoomview"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.AppGlobalContainerActivity"
+            android:name="com.rescribe.ui.activities.AppGlobalContainerActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_details" />
         <activity
-            android:name=".ui.activities.MapsActivity"
+            android:name="com.rescribe.ui.activities.MapsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.MyRecordsActivity"
+            android:name="com.rescribe.ui.activities.MyRecordsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/my_records"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.AddRecordsActivity"
+            android:name="com.rescribe.ui.activities.AddRecordsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/add_record"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.WebViewActivity"
+            android:name="com.rescribe.ui.activities.WebViewActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/select_report"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.saved_articles.SaveArticleWebViewActivity"
+            android:name="com.rescribe.ui.activities.saved_articles.SaveArticleWebViewActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/health_education"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SelectedRecordsActivity"
+            android:name="com.rescribe.ui.activities.SelectedRecordsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_selected_docs"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SelectedRecordsGroupActivity"
+            android:name="com.rescribe.ui.activities.SelectedRecordsGroupActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_report_selection"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.ShowRecordsActivity"
+            android:name="com.rescribe.ui.activities.ShowRecordsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_reports"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver
-            android:name=".broadcast_receivers.FileUploadReceiver"
+            android:name="com.rescribe.broadcast_receivers.FileUploadReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="net.gotev.uploadservice.broadcast.status" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".broadcast_receivers.OtpReader"
+            android:name="com.rescribe.broadcast_receivers.OtpReader"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
@@ -373,37 +373,37 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.activities.vital_graph.VitalGraphActivity"
+            android:name="com.rescribe.ui.activities.vital_graph.VitalGraphActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/vital_graph"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.dashboard.UnreadNotificationMessageActivity"
+            android:name="com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/vital_graph"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.vital_graph.VitalGraphDetailsActivity"
+            android:name="com.rescribe.ui.activities.vital_graph.VitalGraphDetailsActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_vital_graph_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.vital_graph.AddTrackerActivity"
+            android:name="com.rescribe.ui.activities.vital_graph.AddTrackerActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_add_tracker"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.SnoozeAlarmNotifyActivity"
+            android:name="com.rescribe.ui.activities.SnoozeAlarmNotifyActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="user"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
         <service
-            android:name=".services.SnoozeAlarmPrescriptionService"
+            android:name="com.rescribe.services.SnoozeAlarmPrescriptionService"
             android:exported="false" />
 
-        <receiver android:name=".broadcast_receivers.SnoozeAlarmNotificationReceiver" />
+        <receiver android:name="com.rescribe.broadcast_receivers.SnoozeAlarmNotificationReceiver" />
 
         <!-- [START fcm_default_icon] -->
         <!--
@@ -429,21 +429,21 @@
 
 
         <!-- [START firebase_service] -->
-        <service android:name=".services.fcm.FCMService">
+        <service android:name="com.rescribe.services.fcm.FCMService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <!-- [END firebase_service] -->
         <!-- [START firebase_iid_service] -->
-        <service android:name=".services.fcm.MyFirebaseInstanceIDService">
+        <service android:name="com.rescribe.services.fcm.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <!-- [END firebase_iid_service] -->
         <service
-            android:name=".services.fcm.MyJobService"
+            android:name="com.rescribe.services.fcm.MyJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />

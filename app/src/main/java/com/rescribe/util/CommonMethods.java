@@ -63,6 +63,28 @@ public class CommonMethods {
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatePickerDialogListener mDatePickerDialogListener;
 
+    public static int getVersionCode(Context mContext) {
+        int versionCode = -1;
+        try {
+            PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+            versionCode = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
+
+    public static String getVersionName(Context mContext) {
+        String versionName = "";
+        try {
+            PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+            versionName = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
     public static void showToast(Context context, String error) {
         Toast.makeText(context, error, Toast.LENGTH_LONG).show();
     }

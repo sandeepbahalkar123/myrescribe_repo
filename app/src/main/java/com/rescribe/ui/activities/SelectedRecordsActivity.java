@@ -287,16 +287,15 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                 RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK, RescribeConstants.YES, mContext);
                 break;
             case R.id.uploadButton:
-                if (imagePaths.size() > 0 && imagePaths != null) {
+                if (imagePaths.size() > 0) {
                     Intent intent = new Intent(mContext, SelectedRecordsGroupActivity.class);
                     intent.putExtra(RescribeConstants.DOCTORS_ID, getIntent().getIntExtra(RescribeConstants.DOCTORS_ID, 0));
                     intent.putExtra(RescribeConstants.VISIT_DATE, getIntent().getStringExtra(RescribeConstants.VISIT_DATE));
                     intent.putExtra(RescribeConstants.OPD_ID, getIntent().getIntExtra(RescribeConstants.OPD_ID, 0));
                     intent.putExtra(RescribeConstants.DOCUMENTS, imagePaths);
                     startActivity(intent);
-                } else {
+                } else
                     CommonMethods.showToast(mContext, "Please select at least one document");
-                }
                 break;
         }
     }

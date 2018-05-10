@@ -47,6 +47,7 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -94,6 +95,9 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     RelativeLayout selectMenuLayout;
     @BindView(R.id.title)
     CustomTextView title;
+    @BindView(R.id.versionText)
+    CustomTextView versionText;
+
     private Context mContext;
     private AppDBHelper appDBHelper;
 
@@ -215,6 +219,10 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     private void initialize() {
         mContext = SettingsActivity.this;
+
+        String versionString = "v" + CommonMethods.getVersionName(mContext) + "(" + CommonMethods.getVersionCode(mContext) + ")";
+        versionText.setText(versionString);
+
         appDBHelper = new AppDBHelper(mContext);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");

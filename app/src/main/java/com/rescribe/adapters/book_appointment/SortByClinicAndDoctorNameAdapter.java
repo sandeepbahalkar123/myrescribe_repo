@@ -170,7 +170,11 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         }
         //------------
 
-        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorName);
+        String doctorForIcon = doctorObject.getDocName();
+        if (doctorForIcon.contains("Dr. ")) {
+            doctorForIcon = doctorForIcon.replace("Dr. ", "");
+        }
+        TextDrawable textDrawable = CommonMethods.getTextDrawable(mContext, doctorForIcon);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);

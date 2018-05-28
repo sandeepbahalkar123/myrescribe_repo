@@ -687,7 +687,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 if (getString(R.string.token).equalsIgnoreCase(appointmentType) || getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     bookAppointmentButton.setVisibility(View.GONE);
                     mBookAppointmentGetTokenButton.setVisibility(View.VISIBLE);
-                } else if (appointmentType.equalsIgnoreCase(getString(R.string.book))) {
+                } else if (getString(R.string.book).equalsIgnoreCase(appointmentType)) {
                     bookAppointmentButton.setVisibility(View.VISIBLE);
                     mBookAppointmentGetTokenButton.setVisibility(View.GONE);
                 }

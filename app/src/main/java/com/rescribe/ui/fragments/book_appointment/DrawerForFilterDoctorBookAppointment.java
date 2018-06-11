@@ -237,6 +237,10 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     private void configureDrawerFieldsData() {
 
         mSelectedGender = "";
+        mGenderTransgenderIcon.setImageResource(R.drawable.icon_transgender_default);
+        mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
+        mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);
+
         chooseOptionForSort.setText(getString(R.string.choose_one_option));
 
         //---------

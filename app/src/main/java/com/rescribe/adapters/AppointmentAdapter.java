@@ -1,9 +1,9 @@
 package com.rescribe.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -43,7 +45,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private Context mContext;
     private ArrayList<AptList> appointmentsList;
     private int imageSize;
-    private Bundle bundleData;
     private OnClickOfAppointmentClickListener mOnClickOfAppointmentClickListener;
 
 
@@ -72,6 +73,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         return new ListViewHolder(itemView);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
         final AptList appointment = appointmentsList.get(position);
@@ -140,10 +142,20 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         });
 
         //-------Load image-------
+
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                .endConfig()
+                .buildRound(("" + appointment.getDoctorName().charAt(0)).toUpperCase(), ColorGenerator.MATERIAL.getColor(appointment.getDoctorName()));
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
+        requestOptions.placeholder(drawable);
+        requestOptions.error(drawable);
         requestOptions.override(imageSize, imageSize);
 
         Glide.with(mContext)

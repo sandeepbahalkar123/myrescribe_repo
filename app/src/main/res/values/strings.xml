@@ -149,7 +149,7 @@
     <!--//*** Google Map key-->
     <string name="times">times</string>
     <string name="days">days</string>
-    <string name="enter_otp_for_login">Otp For Login</string>
+    <string name="enter_otp_for_login">OTP For Login</string>
     <string name="using_otp">Using OTP</string>
     <!-- <string name="google_maps_key">AIzaSyDxO-cLqGemArsUCSrn_uIUn5FzTkds4u0</string>-->
     <string name="no_investigation">Investigation not available</string>
@@ -172,7 +172,7 @@
     <!--Key for Debug-->
     <!-- <string name="google_maps_key">AIzaSyBtI5h1jCRJZFXQowkuglxMtNYPURtHX5M</string>-->
     <string name="profile_exists">User\'s profile is already exist!!</string>
-    <string name="enter_otp_no">Enter otp received on your mobile no.</string>
+    <string name="enter_otp_no">Enter OTP received on your mobile no.</string>
     <string name="address_not_found">Address not Found</string>
     <string name="login_with_gmail">Login with gmail</string>
     <string name="login_with_facebook">Login with facebook</string>

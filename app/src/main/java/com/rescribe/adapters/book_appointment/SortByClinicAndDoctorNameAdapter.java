@@ -33,8 +33,6 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -140,7 +138,13 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
                 holder.doctorFee.setText("" + doctorObject.getClinicDataList().get(0).getAmount());
             }
-            holder.doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+
+            String areaCity = "";
+            if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+            else
+                areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+            holder.doctorAddress.setText(areaCity);
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
 
         } else {
@@ -156,8 +160,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                 holder.doctorAddress.setText(locationString);
                 holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-
             }
+
             if (doctorObject.getClinicDataList().get(0).getAmount() == 0) {
                 holder.doctorFee.setVisibility(View.INVISIBLE);
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
@@ -421,17 +425,15 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
         if (list.size() > 1) {
             int count = 0;
-            String[] clinicAddress = list.get(0).getClinicAddress().split(",");
+            String clinicCity = list.get(0).getCityName();
             for (ClinicData innerDataObject :
                     list) {
-                String innerClinicAddress = innerDataObject.getClinicAddress();
-                if (innerClinicAddress.endsWith(clinicAddress[clinicAddress.length - 1])) {
+                String innerClinicCity = innerDataObject.getCityName();
+                if (innerClinicCity.equalsIgnoreCase(clinicCity)) {
                     count = count + 1;
                 }
             }
-            if (count == list.size()) {
-                return true;
-            }
+            return count == list.size();
         }
         return false;
     }

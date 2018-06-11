@@ -224,7 +224,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doFilteringOnSelectedConfig(BookAppointFilterRequestModel requestModel, HashMap<String, String> mReceivedComplaintHashMap) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER, Request.Method.POST, false);
 
         //---------
         String s = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));

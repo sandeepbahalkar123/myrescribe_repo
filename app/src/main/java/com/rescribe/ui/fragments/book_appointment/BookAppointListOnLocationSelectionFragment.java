@@ -58,15 +58,11 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     EditTextWithDeleteButton mSearchView;
     Unbinder unbinder;
     private View mRootView;
-    private ArrayList<DoctorList> mReceivedList = new ArrayList<>();
     private DoctorDataHelper mDoctorDataHelper;
-    private String mClickedItemDataTypeValue;
+
     private String mReceivedTitle;
-    private String mClickedItemDataValue;
-    private boolean mIsFavoriteList;
     private String mUserSelectedLocation;
     private ServicesCardViewImpl mServicesCardViewImpl;
-    private HashMap<String, String> mComplaintHashMap;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
 
     public BookAppointListOnLocationSelectionFragment() {
@@ -97,23 +93,20 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     private void init(Bundle args) {
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
-            mClickedItemDataTypeValue = args.getString(getString(R.string.clicked_item_data_type_value));
             mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
             title.setText("" + mReceivedTitle);
-            mClickedItemDataValue = args.getString(getString(R.string.clicked_item_data));
-            mIsFavoriteList = args.getBoolean(getString(R.string.favorite));
-
-            mComplaintHashMap = (HashMap<String, String>) args.getSerializable(getString(R.string.complaints));
         }
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
         mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity());
 
         mSearchView.addTextChangedListener(new EditTextWithDeleteButton.TextChangedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -145,12 +138,20 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     private void setDoctorListAdapter() {
 
-        if (mReceivedList.size() == 0) {
-            doConfigureDataListViewVisibility(true, true);
-        } else {
-            doConfigureDataListViewVisibility(true, false);
+        ArrayList<DoctorList> receivedDoctorDataList = ServicesCardViewImpl.getDoctorListByUniqueDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
+        if (receivedDoctorDataList.isEmpty()) {
 
-            ArrayList<DoctorList> receivedDoctorDataList = ServicesCardViewImpl.getDoctorListByUniqueDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
+            mLocationFab.setVisibility(View.VISIBLE);
+            mFilterFab.setVisibility(View.VISIBLE);
+            mDoctorListView.setVisibility(View.GONE);
+            mEmptyListView.setVisibility(View.VISIBLE);
+
+        } else {
+
+            mLocationFab.setVisibility(View.VISIBLE);
+            mFilterFab.setVisibility(View.VISIBLE);
+            mDoctorListView.setVisibility(View.VISIBLE);
+            mEmptyListView.setVisibility(View.GONE);
 
             mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), receivedDoctorDataList, mServicesCardViewImpl, this, this);
             LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -164,6 +165,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
             mDoctorListView.setAdapter(mSortByClinicAndDoctorNameAdapter);
         }
+
     }
 
     public boolean doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
@@ -217,8 +219,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
                 DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
                 if (receivedDoctorServicesModel != null) {
-                    mReceivedList = receivedDoctorServicesModel.getDoctorList();
-                    new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity()).setReceivedDoctorDataList(mReceivedList);
+                    new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity()).setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
                     setDoctorListAdapter();
                 }
                 break;
@@ -282,7 +283,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     public void onApplyClicked(Bundle data) {
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
 
-        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel,null);
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel, null);
     }
 
     public void onResetClicked() {

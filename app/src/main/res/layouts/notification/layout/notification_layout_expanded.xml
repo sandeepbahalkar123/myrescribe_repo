@@ -85,7 +85,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:scaleType="center"
-                app:srcCompat="@drawable/unchked" />
+                android:src="@drawable/unchked" />
 
         </RelativeLayout>
     </LinearLayout>

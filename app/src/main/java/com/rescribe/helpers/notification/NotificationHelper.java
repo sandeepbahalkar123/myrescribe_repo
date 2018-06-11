@@ -55,12 +55,12 @@ public class NotificationHelper implements ConnectionListener {
                 mHelperResponseManager.onServerError(mOldDataTag, mContext.getString(R.string.server_error));
                 break;
             case ConnectionListener.NO_INTERNET:
-                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
-                mHelperResponseManager.onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
+                CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
-                CommonMethods.Log(TAG,mContext.getString(R.string.no_connection_error));
-                mHelperResponseManager.onNoConnectionError(mOldDataTag,mContext.getString(R.string.no_connection_error));
+                CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
+                mHelperResponseManager.onNoConnectionError(mOldDataTag, mContext.getString(R.string.no_connection_error));
                 break;
             default:
                 CommonMethods.Log(TAG, mContext.getString(R.string.default_error));
@@ -72,7 +72,8 @@ public class NotificationHelper implements ConnectionListener {
     public void onTimeout(ConnectRequest request) {
 
     }
-   //get notification list of dose of medicines
+
+    //get notification list of dose of medicines
     public void doGetNotificationList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_NOTIFICATION, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
@@ -94,7 +95,8 @@ public class NotificationHelper implements ConnectionListener {
             for (Medication medication : notificationData.getMedication()) {
                 if (medication.getMedicinSlot().contains(slotLower)) {
                     notificationListForNotification.add(medication);
-                    selectedCount += 1;
+                    if (medication.isTabSelected() == 1)
+                        selectedCount += 1;
                 }
             }
 

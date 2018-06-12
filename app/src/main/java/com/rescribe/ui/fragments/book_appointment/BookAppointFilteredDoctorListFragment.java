@@ -97,16 +97,12 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
             mComplaintHashMap = (HashMap<String, String>) args.getSerializable(getString(R.string.complaints));
         }
-/// OnBackPressed of this page original list of doctor should be shown , thats why that list is set here and accessed in ServicesFilteredDoctorListActivity which is base of this fragment.
+        // OnBackPressed of this page original list of doctor should be shown , thats why that list is set here and accessed in ServicesFilteredDoctorListActivity which is base of this fragment.
         setReceivedPreviousDoctorList(ServicesCardViewImpl.getReceivedDoctorDataList());
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
         mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity());
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
+        ////////////////////// onResume
 
         doGetReceivedListBasedOnClickedItemData();
         setDoctorListAdapter();

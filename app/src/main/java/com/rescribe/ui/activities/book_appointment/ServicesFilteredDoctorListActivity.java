@@ -52,7 +52,6 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     private BookAppointFilteredDoctorListFragment mBookAppointFilteredDoctorListFragment;
     private Fragment mDrawerLoadedFragment;
     private int PLACE_PICKER_REQUEST = 1;
-    private Context mContext;
     private boolean isLocationChangeViewClicked = false;
 
     @Override
@@ -61,11 +60,9 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
         setContentView(R.layout.activity_book_appoint_doc_base_list);
         ButterKnife.bind(this);
         initialize();
-
     }
 
     private void initialize() {
-        mContext = ServicesFilteredDoctorListActivity.this;
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
         userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
@@ -78,40 +75,11 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
         mBookAppointFilteredDoctorListFragment = BookAppointFilteredDoctorListFragment.newInstance(extras);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mBookAppointFilteredDoctorListFragment).commit();
 
-        //------------
-        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                //Called when a drawer's position changes.
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                //Called when a drawer has settled in a completely open state.
-                //The drawer is interactive at this point.
-                // If you have 2 drawers (left and right) you can distinguish
-                // them by using id of the drawerView. int id = drawerView.getId();
-                // id will be your layout's id: for example R.id.left_drawer
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Called when a drawer has settled in a completely closed state.
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
-            }
-        });
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         }, 100);
 
@@ -125,7 +93,6 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
                 break;
             case R.id.locationTextView:
                 isLocationChangeViewClicked = true;
-                //    BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
                 Intent start = new Intent(this, BookAppointFindLocation.class);
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;

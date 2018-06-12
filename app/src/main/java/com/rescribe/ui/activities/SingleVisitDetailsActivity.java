@@ -36,6 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.amulyakhare.textdrawable.util.ColorGenerator.MATERIAL;
 import static com.rescribe.adapters.DoctorListAdapter.DOCTOR_ID;
 import static com.rescribe.adapters.SingleVisitAdapter.CHILD_TYPE_ATTACHMENTS;
 import static com.rescribe.adapters.SingleVisitAdapter.CHILD_TYPE_VITALS;
@@ -72,6 +73,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
     private boolean isBpMin = false;
     private boolean isBpMax = false;
     private String mDocId;
+    private Context mContext;
 
 
     @Override
@@ -85,8 +87,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
 
     private void initialize() {
 
-        Context mContext = SingleVisitDetailsActivity.this;
-        ColorGenerator mColorGenerator = ColorGenerator.MATERIAL;
+        mContext = SingleVisitDetailsActivity.this;
         mIntent = getIntent();
         if (getIntent().getExtras() != null) {
             String mDocName = mIntent.getStringExtra(getString(R.string.name));
@@ -102,25 +103,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
             mDoctorName.setText(doctorName);
             mDoctorSpecialization.setText(mIntent.getStringExtra(getString(R.string.specialization)));
             mDoctor_address.setText(mIntent.getStringExtra(getString(R.string.address)));
-            int color2 = mColorGenerator.getColor(mIntent.getStringExtra(getString(R.string.name)));
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
-                    .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
-                    .endConfig()
-                    .buildRound("" + mDocName.charAt(0), color2);
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.dontAnimate();
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-            requestOptions.placeholder(drawable);
-            requestOptions.error(drawable);
-
-            Glide.with(this)
-                    .load(mIntent.getStringExtra(getString(R.string.doctor_image)))
-                    .apply(requestOptions).thumbnail(0.5f)
-                    .into(mDoctorImg);
-
+            setDoctorImage(mDocName, mIntent.getStringExtra(getString(R.string.doctor_image)));
 
             String stringExtra = mIntent.getStringExtra(getString(R.string.one_day_visit_date));
 
@@ -130,19 +113,6 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                 mDateTextView.setText(Html.fromHtml(stringExtra));
             }
         }
-
-        //---
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
-        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
-        requestOptions.error(droidninja.filepicker.R.drawable.image_placeholder);
-
-        Glide.with(this)
-                .load(mIntent.getStringExtra(getString(R.string.doctor_image)))
-                .apply(requestOptions)
-                .into(mDoctorImg);
 
         SingleVisitDetailHelper mSingleVisitDetailHelper = new SingleVisitDetailHelper(this, this);
         mSingleVisitDetailHelper.doGetOneDayVisit(mIntent.getStringExtra(getString(R.string.opd_id)), mDocId);
@@ -196,6 +166,28 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
             }
         });
 
+    }
+
+    private void setDoctorImage(String docName, String docImage) {
+
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // width in px
+                .height(Math.round(mContext.getResources().getDimension(R.dimen.dp40))) // height in px
+                .endConfig()
+                .buildRound("" + docName.charAt(0), MATERIAL.getColor(docName));
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.placeholder(drawable);
+        requestOptions.error(drawable);
+
+        Glide.with(this)
+                .load(docImage)
+                .apply(requestOptions)
+                .into(mDoctorImg);
     }
 
     @Override

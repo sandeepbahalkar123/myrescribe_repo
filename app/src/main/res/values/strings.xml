@@ -411,6 +411,7 @@
     <string name="follow_up_complete">Follow-up Complete</string>
     <string name="exceeded">exceeded</string>
     <string name="company_name">SCORG TECHNOLOGIES Pvt.Ltd.</string>
+    <string name="record_not_found">Record not found.</string>
 
     <!--************************-->
 </resources>

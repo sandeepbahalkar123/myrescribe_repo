@@ -69,8 +69,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     @BindView(R.id.img_group_photo)
     ImageView imgGroupPhoto;
 
-//    @BindView(R.id.backgroundImageLayout)
-//    RelativeLayout backgroundImageLayout;
     @BindView(R.id.backgroundImage)
     ImageView backgroundImage;
     @BindView(R.id.bottomFrame)
@@ -312,20 +310,12 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
 
-    @OnClick({R.id.viewAllFavorite, R.id.viewAllRecentVisited, R.id.viewAllSponsered, R.id.complaintsImageView, R.id.favouriteDoctors, R.id.recentlyvisitedTextView, R.id.sponsoredDoctors})
+    @OnClick({R.id.complaintsImageView, R.id.favouriteDoctors, R.id.recentlyvisitedTextView, R.id.sponsoredDoctors})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.viewAllFavorite:
-
-                break;
-            case R.id.viewAllRecentVisited:
-
-                break;
-            case R.id.viewAllSponsered:
-
-                break;
             case R.id.complaintsImageView:
-                if (complaintsTextView.getText().toString().trim().length() != 0) {
+                String completeText = complaintsTextView.getText().toString().trim();
+                if (!completeText.isEmpty()) {
                     Intent intentComplaint = new Intent(FindDoctorsActivity.this, ServicesFilteredDoctorListActivity.class);
                     Bundle bundleData = new Bundle();
                     bundleData.putString(mContext.getString(R.string.toolbarTitle), complaintsTextView.getText().toString());
@@ -334,7 +324,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                     h.put(getString(R.string.complaint1), complaintsTextView.getText().toString());
                     bundleData.putSerializable(getString(R.string.complaints), h);
                     intentComplaint.putExtras(bundleData);
-              /*  intentComplaint.putExtra(getString(R.string.))*/
                     startActivity(intentComplaint);
                 }
 

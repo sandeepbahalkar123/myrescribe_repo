@@ -187,17 +187,9 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         return fragment;
     }
 
-    @OnClick({R.id.viewpager,/* R.id.doubtMessage,*/ R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
+    @OnClick({R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.viewpager:
-                break;
-
-         /*   case R.id.doubtMessage:
-                BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
-                activity.loadFragment(ComplaintsFragment.newInstance(new Bundle()), false);
-                break;*/
-
             case R.id.rightFab:
                 BookAppointDoctorListBaseActivity activity = (BookAppointDoctorListBaseActivity) getActivity();
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);

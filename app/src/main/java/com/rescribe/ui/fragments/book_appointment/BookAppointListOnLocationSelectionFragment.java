@@ -57,7 +57,6 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     @BindView(R.id.searchView)
     EditTextWithDeleteButton mSearchView;
     Unbinder unbinder;
-    private View mRootView;
     private DoctorDataHelper mDoctorDataHelper;
 
     private String mReceivedTitle;
@@ -73,9 +72,8 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mRootView = inflater.inflate(R.layout.book_appoint_list_on_location_selection, container, false);
+        View mRootView = inflater.inflate(R.layout.book_appoint_list_on_location_selection, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
-
         init(getArguments());
         return mRootView;
     }
@@ -141,7 +139,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
         ArrayList<DoctorList> receivedDoctorDataList = ServicesCardViewImpl.getDoctorListByUniqueDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
         if (receivedDoctorDataList.isEmpty()) {
 
-            mLocationFab.setVisibility(View.VISIBLE);
+            mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.VISIBLE);
             mDoctorListView.setVisibility(View.GONE);
             mEmptyListView.setVisibility(View.VISIBLE);
@@ -254,23 +252,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 onBackPressed();
                 break;
             case R.id.leftFab:
-                //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
-                /*ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
-                for (int i = 0; i < mReceivedList.size(); i++) {
-                    if (mReceivedList.get(i).getClinicDataList().size() > 0) {
-                        DoctorList doctorList = mReceivedList.get(i);
-                        for (int j = 0; j < mReceivedList.get(i).getClinicDataList().size(); j++) {
-                            DoctorList doctorListByClinic = new DoctorList();
-                            doctorListByClinic = doctorList;
-                            doctorListByClinic.setNameOfClinicString(mReceivedList.get(i).getClinicDataList().get(j).getClinicName());
-                            doctorListByClinic.setAddressOfDoctorString(mReceivedList.get(i).getClinicDataList().get(j).getClinicAddress());
-                            doctorListByClinics.add(doctorListByClinic);
-                        }
-                    }
-                }*/
-
                 ArrayList<DoctorList> doctorListByClinics = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
-
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
                 intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.filter));

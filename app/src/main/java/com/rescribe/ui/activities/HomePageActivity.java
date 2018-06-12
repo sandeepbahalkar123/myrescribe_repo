@@ -443,7 +443,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 break;
             case RescribeConstants.TASK_NOTIFICATION:
                 doProcessReceivedMedicationNotificationData((NotificationModel) customResponse);
-
                 break;
         }
     }

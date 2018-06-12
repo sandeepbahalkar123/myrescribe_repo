@@ -95,8 +95,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     RelativeLayout selectMenuLayout;
     @BindView(R.id.title)
     CustomTextView title;
-    @BindView(R.id.versionText)
-    CustomTextView versionText;
 
     private Context mContext;
     private AppDBHelper appDBHelper;
@@ -219,10 +217,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     private void initialize() {
         mContext = SettingsActivity.this;
-
-        String versionString = "v" + CommonMethods.getVersionName(mContext) + "(" + CommonMethods.getVersionCode(mContext) + ")";
-        versionText.setText(versionString);
-
         appDBHelper = new AppDBHelper(mContext);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");

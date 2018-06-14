@@ -22,7 +22,6 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
-import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.adapters.NotificationAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -53,9 +52,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.APP_LOGO;
-import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
-import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.NOTIFICATION_ID;
 
 public class NotificationActivity extends BottomMenuActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener, BottomMenuAdapter.OnBottomMenuClickListener {
@@ -295,7 +291,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
 
                 CheckBox checkBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
-                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked()? 1:0);
+                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked() ? 1 : 0);
                 mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                 if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size()) {

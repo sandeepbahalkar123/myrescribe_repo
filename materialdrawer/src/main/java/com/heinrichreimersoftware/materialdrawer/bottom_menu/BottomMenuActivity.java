@@ -21,6 +21,9 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.heinrichreimersoftware.materialdrawer.R;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 
@@ -112,22 +115,31 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
         mMobileNumber.setText("+91 - " + patientMobileNo);
 
-        if(!salutationText.isEmpty())
-        mPatientName.setText(salutationText + " " + toCamelCase(patientName));
+        if (!salutationText.isEmpty())
+            mPatientName.setText(salutationText + " " + toCamelCase(patientName));
         else
             mPatientName.setText(toCamelCase(patientName));
 
-        if (!patientName.isEmpty()) {
-            int color2 = mColorGenerator.getColor(patientName);
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    .width(Math.round(getResources().getDimension(R.dimen.dp40))) // width in px
-                    .height(Math.round(getResources().getDimension(R.dimen.dp40)))
-                    .useFont(Typeface.defaultFromStyle(Typeface.BOLD))// height in px
-                    .endConfig()
-                    .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
-            imageUrl.setImageDrawable(drawable);
-        }
+        int color2 = mColorGenerator.getColor(patientName);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(getResources().getDimension(R.dimen.dp40))) // width in px
+                .height(Math.round(getResources().getDimension(R.dimen.dp40)))
+                .useFont(Typeface.defaultFromStyle(Typeface.BOLD))// height in px
+                .endConfig()
+                .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+        requestOptions.skipMemoryCache(true);
+        requestOptions.placeholder(drawable);
+        requestOptions.error(drawable);
+
+        Glide.with(this)
+                .load(patientImageUrl)
+                .apply(requestOptions)
+                .into(imageUrl);
 
         linearTableLayout.removeAllViews();
 

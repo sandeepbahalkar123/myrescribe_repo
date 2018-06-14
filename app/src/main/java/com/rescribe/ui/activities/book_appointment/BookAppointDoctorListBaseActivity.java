@@ -99,7 +99,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private Context mContext;
     private AppDBHelper appDBHelper;
-    private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
     private String callType = "";
 
@@ -263,9 +262,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
 
                     for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                        if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                            profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
-                        }
                         if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                             BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                             bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
@@ -292,7 +288,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
             salutationText = SALUTATION[Integer.parseInt(salutation)];
 
-            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this), salutationText);
+            setUpAdapterForBottomSheet(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, mContext), userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this), salutationText);
         }
     }
 

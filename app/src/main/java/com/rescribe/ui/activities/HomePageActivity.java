@@ -83,7 +83,6 @@ import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActi
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.dashboard.HealthOffersActivity;
-import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
@@ -114,7 +113,6 @@ import butterknife.OnClick;
 
 import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.appIconIndex;
 import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.connectIndex;
-
 import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
@@ -182,7 +180,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     GoogleApiClient mGoogleApiClient;
     Location mCurrentLocation;
     String mLastUpdateTime;
-    private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
     String breakFast = "8:00 AM";
@@ -226,6 +223,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     };
 
     private String patientId;
+
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
@@ -694,9 +692,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
                 for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
                     ClickOption clickOption = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j);
-                    if (clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
-                        profileImageString = clickOption.getIconImageUrl();
-                    }
+
                     if (!clickOption.getName().equalsIgnoreCase(getString(R.string.profile))) {
                         BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                         bottomSheetMenu.setName(clickOption.getName());
@@ -714,17 +710,14 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 connectIndex = i;
         }
 
-
         String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
         String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
 
         String salutationText = "";
 
-
         salutationText = SALUTATION[Integer.parseInt(salutation)];
 
-        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
-
+        setUpAdapterForBottomSheet(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, mContext), userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
     }
 
 
@@ -1201,16 +1194,16 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 int notification_id = 0;
                 String medicineSlot = null;
 
-                if (slot.equals(getString(R.string.break_fast))) {
+                if (slot.equalsIgnoreCase(getString(R.string.break_fast))) {
                     medicineSlot = getString(R.string.breakfast_medication);
                     notification_id = BREAKFAST_NOTIFICATION_ID;
-                } else if (slot.equals(getString(R.string.mlunch))) {
+                } else if (slot.equalsIgnoreCase(getString(R.string.mlunch))) {
                     medicineSlot = getString(R.string.lunch_medication);
                     notification_id = LUNCH_NOTIFICATION_ID;
-                } else if (slot.equals(getString(R.string.msnacks))) {
+                } else if (slot.equalsIgnoreCase(getString(R.string.msnacks))) {
                     medicineSlot = getString(R.string.snacks_medication);
                     notification_id = EVENING_NOTIFICATION_ID;
-                } else if (slot.equals(getString(R.string.mdinner))) {
+                } else if (slot.equalsIgnoreCase(getString(R.string.mdinner))) {
                     medicineSlot = getString(R.string.dinner_medication);
                     notification_id = DINNER_NOTIFICATION_ID;
                 }

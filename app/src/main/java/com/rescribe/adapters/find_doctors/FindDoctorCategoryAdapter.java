@@ -43,8 +43,6 @@ import java.util.Map;
 
 public class FindDoctorCategoryAdapter extends PagerAdapter {
     private HelperResponse mHelperResponse;
-    private boolean mIsFavAvail = false;
-    private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
@@ -258,7 +256,14 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             if (doctorObject.getClinicDataList().size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-                doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+
+                String areaCity;
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                doctorAddress.setText(areaCity);
+
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
 
@@ -319,7 +324,14 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
-                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+
+                String areaCity;
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                doctorAddress.setText(areaCity);
+
             } else {
                 if (clinicDataList.size() > 0) {
                     boolean b = checkAllClinicAddressInSameCity(clinicDataList);
@@ -452,9 +464,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                     count = count + 1;
                 }
             }
-            if (count == list.size()) {
-                return true;
-            }
+            return count == list.size();
         }
         return false;
     }

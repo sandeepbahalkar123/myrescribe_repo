@@ -107,15 +107,11 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity i
             super.onBackPressed();
     }
 
-    @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView, R.id.showlocation})
+    @OnClick({R.id.bookAppointmentBackButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
-                break;
-            case R.id.locationTextView:
-                break;
-            case R.id.showlocation:
                 break;
         }
     }

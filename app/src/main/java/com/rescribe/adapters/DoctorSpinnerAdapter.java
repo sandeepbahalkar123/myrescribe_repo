@@ -2,14 +2,11 @@ package com.rescribe.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -20,14 +17,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.my_records.SpinnerDoctor;
 import com.rescribe.ui.customesViews.CircularImageView;
-import com.rescribe.util.CommonMethods;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
 
-    Context mContext;
+    private Context mContext;
     private List<SpinnerDoctor> items;
     private ArrayList<SpinnerDoctor> tempItems;
     private ArrayList<SpinnerDoctor> suggestions;
@@ -66,11 +62,11 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
             TextView doctorSpecialist = (TextView) view.findViewById(R.id.doctorSpecialist);
             TextView doctorAddress = (TextView) view.findViewById(R.id.doctorAddress);
 
-            if(doctor_details.getDoctorName().contains("Dr. ")){
+            if (doctor_details.getDoctorName().contains("Dr. "))
                 doctorName = doctor_details.getDoctorName();
-            }else{
+            else
                 doctorName = "Dr. " + doctor_details.getDoctorName();
-            }
+
             if (lblName != null)
                 lblName.setText(doctorName);
             doctorSpecialist.setText(doctor_details.getSpecialization());

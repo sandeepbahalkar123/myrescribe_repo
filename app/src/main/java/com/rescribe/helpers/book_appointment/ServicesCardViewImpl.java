@@ -30,7 +30,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     /**
      * THIS IS DONE AS NOW REQ THIS TITLE FOR ALL SCENARIO EXPECT FOR COMPLAINT & SPECIALITY CASE.
      */
-    private final String mHardCodedTitle;
+    private final String mTitle;
     private Context mContext;
     private AppCompatActivity mParentActivity;
     private static ArrayList<DoctorList> mReceivedDoctorDataList;
@@ -39,8 +39,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     public ServicesCardViewImpl(Context context, AppCompatActivity parentActivity) {
         this.mContext = context;
         this.mParentActivity = parentActivity;
-
-        mHardCodedTitle = mContext.getString(R.string.doctor);
+        mTitle = mContext.getString(R.string.doctor);
     }
 
     //onClick of whole card view // searchType Doctor then myappointment doctors will be shown to book appointment
@@ -60,8 +59,8 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                         mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
                     intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
                 } else {
-                    intent.putExtra(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
-                    bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+                    intent.putExtra(mContext.getString(R.string.toolbarTitle), mTitle);
+                    bundleData.putString(mContext.getString(R.string.toolbarTitle), mTitle);
                 }
                 intent.putExtras(bundleData);
                 mParentActivity.startActivity(intent);
@@ -90,8 +89,8 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                     mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
                 intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
             } else {
-                intent.putExtra(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
-                bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+                intent.putExtra(mContext.getString(R.string.toolbarTitle), mTitle);
+                bundleData.putString(mContext.getString(R.string.toolbarTitle), mTitle);
             }
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
@@ -145,7 +144,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
             intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
         } else {
-            bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+            bundleData.putString(mContext.getString(R.string.toolbarTitle), mTitle);
         }
 
 
@@ -167,7 +166,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
             intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
         } else {
-            bundleData.putString(mContext.getString(R.string.toolbarTitle), mHardCodedTitle);
+            bundleData.putString(mContext.getString(R.string.toolbarTitle), mTitle);
         }
 
         intent.putExtras(bundleData);
@@ -212,41 +211,13 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return temp;
     }
 
-    public void replaceDoctorListById(String docId, DoctorList docObjectToReplace, String objectUpdateType) {
-        ArrayList<DoctorList> newListToUpdateTempDoctorList = new ArrayList<>(mReceivedDoctorDataList);
-        boolean isUpdated = false;
-        for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
-            DoctorList tempObject = mReceivedDoctorDataList.get(i);
-
-            if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
-                isUpdated = true;
-                newListToUpdateTempDoctorList.set(i, docObjectToReplace);
-            }
-        }
-
-        if (isUpdated) {
-            mReceivedDoctorDataList.clear();
-            mReceivedDoctorDataList.addAll(newListToUpdateTempDoctorList);
-        }
-    }
-
-    public DoctorList findDoctorListById(String docId) {
-        for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
-            DoctorList tempObject = mReceivedDoctorDataList.get(i);
-            if (docId.equalsIgnoreCase("" + tempObject.getDocId())) {
-                return tempObject;
-            }
-        }
-        return null;
-    }
-
     public static boolean updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
         boolean status = false;
         if (updatedObject != null) {
             for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
                 DoctorList tempObject = mReceivedDoctorDataList.get(i);
                 if (updatedObject.getDocId() == tempObject.getDocId()) {
-                    tempObject.setFavourite(tempObject.getFavourite() ? false : true);
+                    tempObject.setFavourite(!tempObject.getFavourite());
                     mReceivedDoctorDataList.set(i, tempObject);
                     status = true;
                 }

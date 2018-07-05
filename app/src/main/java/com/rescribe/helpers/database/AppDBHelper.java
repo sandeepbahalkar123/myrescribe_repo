@@ -8,8 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.rescribe.R;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
+import com.rescribe.model.dashboard_api.card_data.CategoryList;
+import com.rescribe.model.dashboard_api.card_data.DocDetail;
+import com.rescribe.model.dashboard_api.doctors.ClinicList;
+import com.rescribe.model.dashboard_api.doctors.DoctorList;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
@@ -25,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
@@ -75,11 +81,58 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String DINNER_TIME = "dinnerTime";
     public static final String SNACKS_TIME = "snacksTime";
 
-    //---
     public static final String NOTIFICATION_MSG_TYPE = "notification_msg_type";
     public static final String TIME_STAMP = "time_stamp";
 
-    //---
+    public interface DOC_DATA {
+
+        public static final String CARDVIEW_DATA_TABLE = "CardViewTable";
+        public static final String DOCTORLIST_DATA_TABLE = "Doctor";
+        public static final String CLINIC_DATA_TABLE = "Clinic";
+        public static final String DOCOTORVSCLINIC_DATA_TABLE = "DoctorVsClinic";
+        public static final String APPOINTMENT_DATA_TABLE = "Appointment";
+
+        public static final String CARD_TYPE = "cardType";
+
+        public static final String DOC_ID = "doctorId";
+        public static final String DOC_NAME = "doctorName";
+        public static final String PHONE_NUMBER = "phoneNumber";
+        public static final String ICON_URL = "iconURL";
+        public static final String ABOUT_DOCTOR = "aboutDoctor";
+        public static final String SPECIALITY_ID = "specialityId";
+        public static final String SPECIALITY = "speciality";
+        public static final String RATING = "rating";
+        public static final String ISPREMIUM = "isPremium";
+        public static final String DOC_DEGREE = "docDegree";
+        public static final String EXPERIANCE = "experience";
+        public static final String ISPAID_STATUS = "isPaidStatus";
+        public static final String CATEGORY = "category";
+        public static final String DOCTOR_GENDER = "doctorGender";
+
+        public static final String CLINIC_ID = "clinicId";
+        public static final String CLINIC_NAME = "clinicName";
+        public static final String CLINIC_LATITUDE = "clinicLatitude";
+        public static final String CLINIC_LONGITUDE = "clinicLongitude";
+        public static final String CLINIC_ADDRESS = "clinicAddress";
+        public static final String CLINIC_AREA_NAME = "clinicAreaName";
+        public static final String CLINIC_CITY_NAME = "clinicCityName";
+        public static final String MODIFIED_NDATE = "modifiedDate";
+        public static final String CREATED_DATE = "createdDate";
+
+        public static final String CLINIC_FEES = "clinicFees";
+        public static final String APPOINTMENT_SHEDULE_LIMIT_DAYS = "appointmentScheduleLimitDays";
+        public static final String CLINIC_APPOINTMENT_TYPE = "clinicAppointmentType";
+        public static final String CLINIC_SERVICE = "clinicServices";
+
+        public static final String APPOINTMENT_ID = "appointmentId";
+        public static final String APPOINTMENT_DATETIME = "appointmentDateTime";
+        public static final String APPOINTME_TIME = "appointmentTime";
+        public static final String APPOINTMENT_TYPE = "appointmentType";
+        public static final String APPOINTMENT_STATUS = "appointmentStatus";
+        public static final String TOKEN_NUMBER = "tokenNumber";
+        public static final String WAITING_PATIENT_TIME = "waitingPatientTime";
+        public static final String WAITING_PATIENT_COUNT = "waitingPatientCount";
+    }
 
     static AppDBHelper instance = null;
     private Context mContext;
@@ -584,14 +637,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 unreadNotificationMessageData.setNotificationData(cursor.getString(cursor.getColumnIndex(COLUMN_DATA)));
                 unreadNotificationMessageData.setNotificationTimeStamp(cursor.getString(cursor.getColumnIndex(TIME_STAMP)));
 
-//                String dateText = CommonMethods.getFormattedDate(unreadNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-//                String today = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-
-//                if (dateText.equals(today))
                 chatDoctors.add(unreadNotificationMessageData);
-//                else
-//                    deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
-
                 cursor.moveToNext();
             }
         }
@@ -640,33 +686,106 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         return true;
     }
+    //----- Notification storing : END
 
-    /*public ArrayList<UnreadSavedNotificationMessageData> unreadChatMessagesList() {
-        SQLiteDatabase db = getReadableDatabase();
-        String countQuery = "select * from " + MESSAGE_TABLE;
-        Cursor cursor = db.rawQuery(countQuery, null);
-        ArrayList<UnreadSavedNotificationMessageData> chatDoctors = new ArrayList<>();
-        Gson gson = new Gson();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                String messageJson = cursor.getString(cursor.getColumnIndex(MESSAGE));
-                UnreadSavedNotificationMessageData unreadNotificationMessageData = new UnreadSavedNotificationMessageData();
+    public void addDoctors(List<DoctorList> doctorList) {
 
-                MQTTMessage messageObject = gson.fromJson(messageJson, MQTTMessage.class);
+        SQLiteDatabase db = getWritableDatabase();
 
-                unreadNotificationMessageData.setId(String.valueOf(messageObject.getDocId()));
-                unreadNotificationMessageData.setNotificationMessageType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
-                unreadNotificationMessageData.setNotificationMessage(mContext.getString(R.string.message_from) + " " + messageObject.getName());
-                unreadNotificationMessageData.setNotificationData(messageObject.getMsg());
-                unreadNotificationMessageData.setNotificationTimeStamp(messageObject.getMsgTime());
-                chatDoctors.add(unreadNotificationMessageData);
-                cursor.moveToNext();
+        db.beginTransaction();
+        ContentValues contentValuesDoc = new ContentValues();
+        ContentValues contentValuesClinic = new ContentValues();
+        ContentValues contentValuesClinicVSDoc = new ContentValues();
+
+        for (DoctorList doctor : doctorList) {
+
+            // insert doc data
+            contentValuesDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
+            contentValuesDoc.put(DOC_DATA.DOC_NAME, doctor.getDocName());
+            contentValuesDoc.put(DOC_DATA.PHONE_NUMBER, doctor.getDocPhone());
+            contentValuesDoc.put(DOC_DATA.ICON_URL, doctor.getDoctorImageUrl());
+            contentValuesDoc.put(DOC_DATA.ABOUT_DOCTOR, doctor.getAboutDoctor());
+            contentValuesDoc.put(DOC_DATA.SPECIALITY_ID, doctor.getSpecialityId());
+            contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality());
+            contentValuesDoc.put(DOC_DATA.RATING, doctor.getRating());
+            contentValuesDoc.put(DOC_DATA.ISPREMIUM, doctor.getCategorySpeciality());
+            contentValuesDoc.put(DOC_DATA.DOC_DEGREE, doctor.getDegree());
+            contentValuesDoc.put(DOC_DATA.EXPERIANCE, doctor.getExperience());
+            contentValuesDoc.put(DOC_DATA.ISPAID_STATUS, doctor.getPaidStatus());
+            contentValuesDoc.put(DOC_DATA.CATEGORY, doctor.getCategoryName());
+            contentValuesDoc.put(DOC_DATA.DOCTOR_GENDER, doctor.getGender());
+            contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+            contentValuesDoc.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+
+            db.insertWithOnConflict(DOC_DATA.DOCTORLIST_DATA_TABLE, null, contentValuesDoc, SQLiteDatabase.CONFLICT_IGNORE);
+
+            for (ClinicList clinic : doctor.getClinicList()) {
+
+                // insert clinic data
+                contentValuesClinic.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
+                contentValuesClinic.put(DOC_DATA.CLINIC_NAME, clinic.getClinicName());
+                contentValuesClinic.put(DOC_DATA.CLINIC_LATITUDE, clinic.getLocationLat());
+                contentValuesClinic.put(DOC_DATA.CLINIC_LONGITUDE, clinic.getLocationLong());
+                contentValuesClinic.put(DOC_DATA.CLINIC_ADDRESS, clinic.getClinicAddress());
+                contentValuesClinic.put(DOC_DATA.CLINIC_AREA_NAME, clinic.getAreaName());
+                contentValuesClinic.put(DOC_DATA.CLINIC_CITY_NAME, clinic.getCityName());
+                contentValuesClinic.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+                contentValuesClinic.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+
+                db.insertWithOnConflict(DOC_DATA.CLINIC_DATA_TABLE, null, contentValuesClinic, SQLiteDatabase.CONFLICT_IGNORE);
+
+                // insert clinic vs doctors
+                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
+                contentValuesClinicVSDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
+                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_FEES, clinic.getAmount());
+                contentValuesClinicVSDoc.put(DOC_DATA.APPOINTMENT_SHEDULE_LIMIT_DAYS, clinic.getApptScheduleLmtDays());
+                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_APPOINTMENT_TYPE, clinic.getAppointmentType());
+                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_SERVICE, CommonMethods.listToString(clinic.getServices(), ","));
+
+                db.insert(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null, contentValuesClinicVSDoc);
+            }
+
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+//        db.close();
+    }
+
+    public void addCardDoctors(List<CategoryList> categoryList) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        ContentValues contentValuesCard = new ContentValues();
+        ContentValues contentValuesAppoint = new ContentValues();
+
+        for (CategoryList category: categoryList) {
+            for (DocDetail docDetail: category.getDocDetails()) {
+                // insert card data
+                contentValuesCard.put(DOC_DATA.DOC_ID, docDetail.getDocId());
+                contentValuesCard.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
+                db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
+
+                // insert appointment data
+                if (category.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_ID, docDetail.getBookId());
+                    contentValuesAppoint.put(DOC_DATA.DOC_ID, docDetail.getDocId());
+                    contentValuesAppoint.put(DOC_DATA.CLINIC_ID, docDetail.getLocationId());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_DATETIME, docDetail.getAptTime());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_TYPE, docDetail.getBookType());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_STATUS, docDetail.getPaidStatus());
+                    contentValuesAppoint.put(DOC_DATA.TOKEN_NUMBER, docDetail.getTokenNumber());
+                    contentValuesAppoint.put(DOC_DATA.WAITING_PATIENT_TIME, docDetail.getWaitingPatientTime());
+                    contentValuesAppoint.put(DOC_DATA.WAITING_PATIENT_COUNT, docDetail.getWaitingPatientCount());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTME_TIME, docDetail.getAptTime());
+
+                    db.insert(DOC_DATA.APPOINTMENT_DATA_TABLE, null, contentValuesAppoint);
+                }
             }
         }
-        cursor.close();
-        db.close();
 
-        return chatDoctors;
-    }*/
-    //----- Notification storing : END
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
 }

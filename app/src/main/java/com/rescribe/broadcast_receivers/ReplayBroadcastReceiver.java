@@ -61,9 +61,9 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             messageL.setDocId(recievedMessage.getDocId());
             messageL.setPatId(recievedMessage.getPatId());
 
-            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, context);
-            String patientName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, context);
-            String imageUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, context);
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, context);
+            String patientName = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, context);
+            String imageUrl = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, context);
 
             messageL.setSenderName(patientName);
             messageL.setSenderImgUrl(imageUrl);

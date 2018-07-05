@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
@@ -33,7 +32,6 @@ import butterknife.Unbinder;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.rescribe.ui.activities.DoctorConnectActivity.FREE;
-import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 
 /**
  * Created by jeetal on 5/9/17.
@@ -76,7 +74,7 @@ public class DoctorConnectFragment extends Fragment implements HelperResponse {
     public void onResume() {
         super.onResume();
         if (mDoctorConnectDataModel.getChatDoctor().isEmpty()) {
-            String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, getContext());
+            String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, getContext());
             mDoctorConnectHelper.doDoctorConnecList(patientId);
         } else {
             setAdapter();

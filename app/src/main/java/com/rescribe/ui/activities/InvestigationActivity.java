@@ -99,7 +99,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         mContext = InvestigationActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-        String patientIdString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String patientIdString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
 
         patientId = Integer.parseInt(patientIdString.equals("") ? "0" : patientIdString);
 

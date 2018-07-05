@@ -100,7 +100,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
 
         docId = getIntent().getIntExtra(RescribeConstants.DOCTORS_ID, 0);
 
-        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, SelectedRecordsGroupActivity.this);
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, SelectedRecordsGroupActivity.this);
 
         boolean isUploading = getIntent().getBooleanExtra(RescribeConstants.UPLOADING_STATUS, false);
         if (isUploading)
@@ -149,7 +149,7 @@ public class SelectedRecordsGroupActivity extends AppCompatActivity implements R
         Url = Config.BASE_URL + Config.MY_RECORDS_UPLOAD;
 //        Url = "http://192.168.0.115:8000/" + Config.MY_RECORDS_UPLOAD;
 
-        authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, SelectedRecordsGroupActivity.this);
+        authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, SelectedRecordsGroupActivity.this);
 
         uploadNotificationConfig = new UploadNotificationConfig();
         uploadNotificationConfig.setTitleForAllStatuses("Document Uploading");

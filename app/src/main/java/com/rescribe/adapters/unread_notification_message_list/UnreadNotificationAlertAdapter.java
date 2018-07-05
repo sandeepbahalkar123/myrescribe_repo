@@ -38,7 +38,7 @@ public class UnreadNotificationAlertAdapter extends RecyclerView.Adapter<UnreadN
         addSingleElementToList();
         this.listener = listener;
 
-        userName = "Dear " + CommonMethods.toCamelCase(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext)) + ", ";
+        userName = "Dear " + CommonMethods.toCamelCase(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, mContext)) + ", ";
     }
 
     @Override

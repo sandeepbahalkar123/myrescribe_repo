@@ -92,7 +92,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         customProgressDialog = new CustomProgressDialog(mContext);
         customProgressDialog.setCancelable(false);
 
-        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
 
         investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
 
@@ -219,7 +219,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                 for (Image image : photoPaths) {
                     try {
                         Device device = Device.getInstance(mContext);
-                        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+                        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, mContext);
 
                         String uploadId = new MultipartUploadRequest(SelectedDocsActivity.this, Config.BASE_URL + Config.INVESTIGATION_UPLOAD)
                                 .setMaxRetries(RescribeConstants.MAX_RETRIES)

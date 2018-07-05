@@ -45,8 +45,8 @@ public class ProfileActivity extends DrawerActivity {
         );
 
 
-        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, mContext);
+        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, mContext);
 
            String salutationText="";
            String userNameWithSalutation="";
@@ -61,8 +61,8 @@ public class ProfileActivity extends DrawerActivity {
                 .setRoundedAvatar((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.profile_big))
                 .setBackground(ContextCompat.getDrawable(this, R.drawable.group_2))
                 .setName(userNameWithSalutation)
-                .setDescription("+91 - " + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext))
-                .setExtraText("Age: " + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AGE, mContext) + " years")
+                .setDescription("+91 - " + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, mContext))
+                .setExtraText("Age: " + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AGE, mContext) + " years")
         );
 
         addProfile(new DrawerProfile()

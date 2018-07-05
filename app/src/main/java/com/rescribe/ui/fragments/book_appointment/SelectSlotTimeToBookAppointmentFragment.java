@@ -242,7 +242,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         yearsExperienceLine.setVisibility(View.GONE);
         selectClinicLine.setVisibility(View.GONE);
         mColorGenerator = ColorGenerator.MATERIAL;
-        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
+        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
         if (!coachMarkStatus.equals(RescribeConstants.YES)) {
             FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();

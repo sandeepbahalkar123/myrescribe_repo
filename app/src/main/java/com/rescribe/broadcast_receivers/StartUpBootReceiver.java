@@ -31,7 +31,7 @@ public class StartUpBootReceiver extends BroadcastReceiver {
 
             CommonMethods.Log(TAG, "StartUpBootReceiver");
 
-            if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES)) {
+            if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, context).equals(RescribeConstants.YES)) {
                 new MQTTServiceAlarmTask(context).run();
                 notificationForMedicine(context);
             }

@@ -71,7 +71,7 @@ public class InvestigationHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progressBar, RescribeConstants.INVESTIGATION_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         // HardCoded
-        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext));
 //        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=4092");
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_LIST);
     }
@@ -90,7 +90,7 @@ public class InvestigationHelper implements ConnectionListener {
         Device device = Device.getInstance(mContext);
 
         Map<String, String> headerParams = new HashMap<>();
-        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, mContext);
+        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, mContext);
         headerParams.put(RescribeConstants.CONTENT_TYPE, RescribeConstants.APPLICATION_URL_ENCODED);
         headerParams.put(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
         headerParams.put(RescribeConstants.DEVICEID, device.getDeviceId());
@@ -107,7 +107,7 @@ public class InvestigationHelper implements ConnectionListener {
     public void doSkipInvestigation(int invID, boolean progress) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progress, RescribeConstants.TASK_DO_SKIP_INVESTIGATION, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         InvestigationUploadByGmailRequest obj = new InvestigationUploadByGmailRequest();
         ArrayList<Integer> integers = new ArrayList<>();
         integers.add(invID);

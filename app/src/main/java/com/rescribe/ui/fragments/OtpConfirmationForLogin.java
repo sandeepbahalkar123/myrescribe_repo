@@ -22,11 +22,9 @@ import com.rescribe.model.login.ForgetPasswordModel;
 import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.PatientDetail;
-import com.rescribe.model.login.ResetPasswordRequestModel;
 import com.rescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.HomePageActivity;
-import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.activities.ResetPasswordActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -130,7 +128,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
         if (mOtpEditText.getText().toString().trim().length() == 4) {
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
             SignUpVerifyOTPRequestModel model = new SignUpVerifyOTPRequestModel();
-            model.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, getActivity()));
+            model.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, getActivity()));
             model.setOtp(mOtpEditText.getText().toString().trim());
 
             if (from == null)
@@ -148,7 +146,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
             CommonMethods.showToast(getActivity(), getString(R.string.err_maximum_otp_retries));
         } else {
             LoginHelper loginHelper = new LoginHelper(getActivity(), this);
-            loginHelper.doLoginByOTP(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, getActivity()));
+            loginHelper.doLoginByOTP(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, getActivity()));
         }
 
     }
@@ -173,18 +171,18 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
             if (loginModel.getCommon().isSuccess()) {
                 PatientDetail patientDetail = loginModel.getLoginData().getPatientDetail();
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), getActivity());
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), getActivity());
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, "" + patientDetail.getPatientSalutation(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, "" + patientDetail.getPatientSalutation(), getActivity());
 
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

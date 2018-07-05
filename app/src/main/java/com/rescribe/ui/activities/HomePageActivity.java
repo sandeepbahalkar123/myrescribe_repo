@@ -62,11 +62,12 @@ import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.ClickOption;
-import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.model.dashboard_api.DashboardMenuData;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
+import com.rescribe.model.dashboard_api.card_data.DashboardModel;
+import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.model.notification.Medication;
@@ -129,7 +130,9 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.HOME;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.SETTINGS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.SALUTATION;
+import static com.rescribe.util.RescribeConstants.SUCCESS;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
+import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 
 /**
  * Created by jeetal on 28/6/17.
@@ -228,8 +231,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         // TODO: Use the current user's information
         // You can call any combination of these three methods
         Crashlytics.setUserIdentifier(patientId);
-        Crashlytics.setUserEmail(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL, mContext));
-        Crashlytics.setUserName(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext));
+        Crashlytics.setUserEmail(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_EMAIL, mContext));
+        Crashlytics.setUserName(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, mContext));
     }
 
 
@@ -241,7 +244,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mContext = HomePageActivity.this;
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
 
-        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         logUser();
 
         mIsAppOpenFromLogin = getIntent().getBooleanExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, false);
@@ -272,7 +275,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         loginHelper.doActiveStatus(activeRequest);
         //------
 
-        boolean need_notify = RescribePreferencesManager.getBoolean(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NEED_NOTIFY, mContext);
+        boolean need_notify = RescribePreferencesManager.getBoolean(RescribePreferencesManager.PREFERENCES_KEY.NEED_NOTIFY, mContext);
 
         if (need_notify)
             notificationForMedicine();
@@ -394,7 +397,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         new InvestigationAlarmTask(mContext, RescribeConstants.INVESTIGATION_NOTIFICATION_TIME, getResources().getString(R.string.investigation_msg)).run();
         new AppointmentAlarmTask(mContext, RescribeConstants.APPOINTMENT_NOTIFICATION_TIME, getResources().getString(R.string.appointment_msg)).run();
 
-        RescribePreferencesManager.putBoolean(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NEED_NOTIFY, false, mContext);
+        RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.NEED_NOTIFY, false, mContext);
     }
 
     @Override
@@ -410,7 +413,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         switch (mOldDataTag) {
             case TASK_DASHBOARD_API:
-                DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
+                /*DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
                 mDashboardDataModel = mDashboardBaseModel.getDashboardModel();
                 mDashboardDataBuilder.setReceivedDoctorDataList(mDashboardDataModel.getDoctorList());
                 if (mDashboardDataModel != null) {
@@ -423,7 +426,30 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     doGetMedicationNotificationOnNewLogin();
                 }
 
-                swipeToRefresh.setRefreshing(false);
+                swipeToRefresh.setRefreshing(false);*/
+
+                DashboardModel dashboardModel = (DashboardModel) customResponse;
+                if (dashboardModel.getCommon().getStatusCode().equals(SUCCESS)) {
+
+                    // inset card doctors details in database
+                    appDBHelper.addCardDoctors(dashboardModel.getData().getCategoryList());
+
+                    if (dashboardModel.getData().isIsDocUpdated()) {
+                        mDashboardHelper.getDoctorList();
+                    } else {
+                        // Show doctor data from Database
+                    }
+                }
+
+                break;
+
+            case TASK_DOCTORLIST_API:
+                DoctorListModel doctorListModel = (DoctorListModel) customResponse;
+                // insert doctor data in database and show
+
+                appDBHelper.addDoctors(doctorListModel.getData().getDoctorList());
+
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN), mContext);
                 break;
 
             case ACTIVE_STATUS:
@@ -710,14 +736,14 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 connectIndex = i;
         }
 
-        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, mContext);
+        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, mContext);
 
         String salutationText = "";
 
         salutationText = SALUTATION[Integer.parseInt(salutation)];
 
-        setUpAdapterForBottomSheet(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, mContext), userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
+        setUpAdapterForBottomSheet(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, mContext), userName, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
     }
 
 

@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 public class CommonMethods {
@@ -1080,6 +1081,15 @@ public class CommonMethods {
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
+    }
+
+    public static String listToString(List<String> listOfString, String separator) {
+        StringBuilder csvBuilder = new StringBuilder();
+        for(String service : listOfString){
+            csvBuilder.append(service);
+            csvBuilder.append(separator);
+        }
+        return csvBuilder.toString();
     }
 }
 

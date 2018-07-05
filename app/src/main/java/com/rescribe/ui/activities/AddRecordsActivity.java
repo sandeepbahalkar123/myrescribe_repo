@@ -40,7 +40,6 @@ import com.rescribe.adapters.DoctorSpinnerAdapter;
 import com.rescribe.helpers.myrecords.MyRecordsHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
-import com.rescribe.model.doctors.appointments.AptList;
 import com.rescribe.model.my_records.AddDoctorModel;
 import com.rescribe.model.my_records.MyRecordsDoctorListModel;
 import com.rescribe.model.my_records.RequestAddDoctorModel;
@@ -151,7 +150,7 @@ public class AddRecordsActivity extends AppCompatActivity implements DoctorSpinn
         setColumnNumber(mContext, 2);
 
         myRecordsHelper = new MyRecordsHelper(mContext, this);
-        myRecordsHelper.getDoctorList(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        myRecordsHelper.getDoctorList(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext));
 
         Calendar now = Calendar.getInstance();
 // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.

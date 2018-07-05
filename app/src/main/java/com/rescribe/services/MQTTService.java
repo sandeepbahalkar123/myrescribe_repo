@@ -208,8 +208,8 @@ public class MQTTService extends Service {
 
                     try {
                         if (!msg.isDuplicate()) {
-                            String myid = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, MQTTService.this);
-                            String userLogin = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, MQTTService.this);
+                            String myid = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, MQTTService.this);
+                            String userLogin = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, MQTTService.this);
 
                             if (userLogin.equals(RescribeConstants.YES)) {
                                 if (topic.equals(TOPIC[MESSAGE_TOPIC])) {
@@ -332,7 +332,7 @@ public class MQTTService extends Service {
     private void passInternetConnect() {
         try {
 
-            String myid = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, MQTTService.this);
+            String myid = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, MQTTService.this);
 
             InternetConnect internetConnect = new InternetConnect();
             internetConnect.setUserId(Integer.parseInt(myid));

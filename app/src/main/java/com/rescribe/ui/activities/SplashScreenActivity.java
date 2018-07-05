@@ -53,7 +53,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
+                if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
                     if (getIntent().getExtras() != null) {
                         String dataText = getIntent().getExtras().getString(FCMService.FCM_BODY);
                         if (dataText != null) {

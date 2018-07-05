@@ -96,9 +96,9 @@ public class ResetPasswordActivity extends AppCompatActivity implements HelperRe
             if (password.length() > 7 && passwordAgain.length() > 7) {
                 LoginHelper loginHelper = new LoginHelper(this, this);
                 ResetPasswordRequestModel resetPasswordRequestModel = new ResetPasswordRequestModel();
-                resetPasswordRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this));
+                resetPasswordRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, this));
                 resetPasswordRequestModel.setPassword(password);
-                resetPasswordRequestModel.setPatientId(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this));
+                resetPasswordRequestModel.setPatientId(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, this));
                 loginHelper.resetPassword(resetPasswordRequestModel);
             } else
                 CommonMethods.showToast(this, getResources().getString(R.string.error_too_small_password));

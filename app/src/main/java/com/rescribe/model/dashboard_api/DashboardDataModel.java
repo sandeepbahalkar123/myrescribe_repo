@@ -62,5 +62,4 @@ public class DashboardDataModel implements Parcelable {
         return 0;
     }
 
-
 }

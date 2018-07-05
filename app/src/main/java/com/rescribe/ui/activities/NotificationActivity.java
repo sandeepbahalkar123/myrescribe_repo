@@ -199,7 +199,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 mSelectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + 0);
+                        mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + 0);
                     }
                 });
 
@@ -258,7 +258,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 @Override
                 public void onClick(View v) {
                     mView = view;
-                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI, selectViewTab.isChecked() ? 1 : 0);
+                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI, selectViewTab.isChecked() ? 1 : 0);
                 }
             });
 
@@ -497,9 +497,9 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     @Override
     public void clickCheckBox(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick, boolean checked) {
         if (isHeaderCheckboxClick)
-            mRespondToNotificationHelper.doRespondToNotificationForHeaderOfNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName, checked ? 1 : 0);
+            mRespondToNotificationHelper.doRespondToNotificationForHeaderOfNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName, checked ? 1 : 0);
         else
-            mRespondToNotificationHelper.doRespondToNotificationForNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName, checked ? 1 : 0);
+            mRespondToNotificationHelper.doRespondToNotificationForNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName, checked ? 1 : 0);
     }
 
     @Override

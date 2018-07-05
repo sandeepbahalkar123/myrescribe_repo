@@ -388,7 +388,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         //-------------
         mMedicationToNotificationHelper.doRespondToNotificationForNotificationAdapter(
                 Integer.valueOf(RescribePreferencesManager.getString(
-                        RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this)),
+                        RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, this)),
                 medication.getMedicinSlot(), medication.getMedicineId(), presDate, 0, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, checked ? 1 : 0);
 
     }

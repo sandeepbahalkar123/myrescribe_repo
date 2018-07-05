@@ -41,7 +41,7 @@ public class CoachFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().popBackStack();
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, RescribeConstants.YES, getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.COACHMARK_GET_TOKEN, RescribeConstants.YES, getActivity());
             }
         });
         return rootView;

@@ -180,31 +180,31 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
                 if (mSignUpRequestModel.getAuthSocialType() != null) {
                     if (mSignUpRequestModel.getAuthSocialType().equalsIgnoreCase(GMAIL)) {
                         RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, getString(R.string.login_with_gmail), getActivity());
-                        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mSignUpRequestModel.getMobileNumber(), getActivity());
-                        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mSignUpRequestModel.getPassword(), getActivity());
+                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mSignUpRequestModel.getMobileNumber(), getActivity());
+                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, mSignUpRequestModel.getPassword(), getActivity());
                     } else if (mSignUpRequestModel.getAuthSocialType().equalsIgnoreCase(FACEBOOK)) {
                         RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, getString(R.string.login_with_facebook), getActivity());
-                        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mSignUpRequestModel.getMobileNumber(), getActivity());
-                        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mSignUpRequestModel.getPassword(), getActivity());
+                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mSignUpRequestModel.getMobileNumber(), getActivity());
+                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, mSignUpRequestModel.getPassword(), getActivity());
                     }
                 }
 
                 PatientDetail patientDetail = loginModel.getLoginData().getPatientDetail();
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), getActivity());
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), getActivity());
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION,""+ patientDetail.getPatientSalutation(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION,""+ patientDetail.getPatientSalutation(), getActivity());
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD, mSignUpRequestModel.getPassword().toString(), getActivity());
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

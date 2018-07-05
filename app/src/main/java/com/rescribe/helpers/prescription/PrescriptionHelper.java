@@ -70,7 +70,7 @@ public class PrescriptionHelper implements ConnectionListener {
     public void doGetPrescriptionList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_PRESCRIPTION_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.PRESCRIPTION_URL + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.setUrl(Config.PRESCRIPTION_URL + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext));
         mConnectionFactory.createConnection(RescribeConstants.TASK_PRESCRIPTION_LIST);
     }
 

@@ -240,7 +240,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return null;
     }
 
-    public static boolean updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
+  /*  public static boolean updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
         boolean status = false;
         if (updatedObject != null) {
             for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
@@ -253,7 +253,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
             }
         }
         return status;
-    }
+    }*/
 
     // function to sort out doctors from pick speciality from bookAppointment page
     public ArrayList<DoctorList> filterDocListBySpeciality(String selectedSpeciality) {

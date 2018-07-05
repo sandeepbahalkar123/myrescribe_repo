@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
@@ -38,6 +37,7 @@ import java.util.Map;
  */
 
 public class ShowDoctorViewPagerAdapter extends PagerAdapter {
+    private final CardClickListener cardClickListener;
     private HelperResponse mHelperResponse;
     private boolean mIsFavAvail = false;
     private Map<String, Integer> mListSizeWithTypeMap;
@@ -46,11 +46,13 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private Context mContext;
     private ServicesCardViewImpl mServicesCardViewClickListener;
     private String cityname;
+    private CustomTextView favoriteCount;
 
-    public ShowDoctorViewPagerAdapter(Context context, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
+    public ShowDoctorViewPagerAdapter(Context context,  CardClickListener cardClickListener, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
         this.mContext = context;
         this.mDataList = doctorLists;
         this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
+        this.cardClickListener = cardClickListener;
         mInflater = LayoutInflater.from(context);
         this.mListSizeWithTypeMap = dataMap;
         if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
@@ -62,6 +64,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             String[] split = cityNameString.split(",");
             cityname = split[1].trim();
         }
+
+
     }
 
     @Override
@@ -434,11 +438,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean status = !doctorObject.getFavourite();
-                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
+//                boolean status = !doctorObject.getFavourite();
+//                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
+
+                cardClickListener.onFavoriteClick(doctorObject, favorite, favoriteCount);
             }
         });
 
+        favoriteCount = sizeOfList;
         sizeOfList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -558,6 +565,10 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
         }
         return false;
+    }
+
+    public interface CardClickListener{
+        void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList);
     }
 
 }

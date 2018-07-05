@@ -17,7 +17,6 @@ import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,11 +25,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.adapters.find_doctors.FindDoctorCategoryAdapter;
 import com.rescribe.adapters.find_doctors.FindDoctorsMenuListAdapter;
 import com.rescribe.adapters.find_doctors.ShowDoctorComplaints;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
@@ -59,7 +60,7 @@ import butterknife.OnClick;
  * Created by jeetal on 13/10/17.
  */
 
-public class FindDoctorsActivity extends AppCompatActivity implements HelperResponse, IOnMenuClickListener {
+public class FindDoctorsActivity extends AppCompatActivity implements HelperResponse, IOnMenuClickListener,ShowDoctorViewPagerAdapter.CardClickListener {
 
     private static final String FOLDER_PATH = "images/dashboard/menu/finddoctors/android/";
     private String density;
@@ -119,6 +120,9 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     private FindDoctorCategoryAdapter mRecentlyVisitedDoctors;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private DashboardMenuList mReceivedDashboardMenuListData;
+    private ImageView favoriteIcon;
+    private DoctorList favoriteDoctor;
+    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +134,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
         mContext = FindDoctorsActivity.this;
         density = CommonMethods.getDeviceResolution(mContext) + "/";
-
+        appDBHelper = new AppDBHelper(mContext);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
@@ -379,9 +383,16 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
             if (temp.getCommonRespose().isSuccess()) {
                 //--------
-                ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+               // ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                 //--------
-                setUpViewPager();
+                //setUpViewPager();
+                favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                if (favoriteDoctor.getFavourite())
+                    favoriteIcon.setImageResource(R.drawable.favourite_icon);
+                else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
+
+                // update in database
+                appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
             }
 
         }
@@ -416,5 +427,14 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             Intent intent = new Intent(mContext, ConnectSplashActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
+
+        boolean status = !doctorList.getFavourite();
+        new DoctorDataHelper(mContext, this).setFavouriteDoctor(status, doctorList.getDocId());
+        favoriteIcon = favorite;
+        favoriteDoctor = doctorList;
     }
 }

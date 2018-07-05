@@ -11,12 +11,15 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocListAdapter;
+import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -27,6 +30,7 @@ import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppoin
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -38,7 +42,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse {
+public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse,ShowDoctorViewPagerAdapter.CardClickListener {
 
 
     @BindView(R.id.listView)
@@ -61,6 +65,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private ServicesCardViewImpl mServicesCardViewImpl;
     private HashMap<String, String> mComplaintHashMap;
     private ArrayList<DoctorList> mReceivedPreviousDoctorList;
+    private AppDBHelper appDBHelper;
+    private ImageView favoriteIcon;
+    private DoctorList favoriteDoctor;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -207,9 +214,16 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                   /* ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
+                    mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();*/
+                    favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                    if (favoriteDoctor.getFavourite())
+                        favoriteIcon.setImageResource(R.drawable.favourite_icon);
+                    else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
+
+                    // update in database
+                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
                 }
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
@@ -325,6 +339,14 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
+        boolean status = !doctorList.getFavourite();
+        new DoctorDataHelper(getContext(), this).setFavouriteDoctor(status, doctorList.getDocId());
+        favoriteIcon = favorite;
+        favoriteDoctor = doctorList;
     }
 
 

@@ -7,16 +7,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocListAdapter;
+import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 27/11/17.
  */
 
-public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperResponse {
+public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperResponse,ShowDoctorViewPagerAdapter.CardClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,6 +48,9 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     private DoctorDataHelper doctorDataHelper;
     private String mReceivedTitle;
     private String mClickedItemDataTypeValue;
+    private ImageView favoriteIcon;
+    private DoctorList favoriteDoctor;
+    private AppDBHelper appDBHelper;
 
 
     @Override
@@ -54,7 +61,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         mDoctorCategoryList = getIntent().getExtras().getParcelableArrayList(getString(R.string.clicked_item_data));
         setSupportActionBar(toolbar);
         mContext = ShowCategoryWiseDoctor.this;
-
+        appDBHelper = new AppDBHelper(mContext);
         mReceivedTitle = getIntent().getExtras().getString(getString(R.string.toolbarTitle));
         mClickedItemDataTypeValue = getIntent().getExtras().getString(getString(R.string.clicked_item_data_type_value));
 
@@ -132,10 +139,16 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
                 //  CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                    //ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
+                    //mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
+                    favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                    if (favoriteDoctor.getFavourite())
+                        favoriteIcon.setImageResource(R.drawable.favourite_icon);
+                    else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
 
+                    // update in database
+                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
                 }
                 break;
         }
@@ -170,4 +183,11 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     }
 
 
+    @Override
+    public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
+        boolean status = !doctorList.getFavourite();
+        new DoctorDataHelper(this, this).setFavouriteDoctor(status, doctorList.getDocId());
+        favoriteIcon = favorite;
+        favoriteDoctor = doctorList;
+    }
 }

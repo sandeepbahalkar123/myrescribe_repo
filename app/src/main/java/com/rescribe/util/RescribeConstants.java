@@ -172,6 +172,7 @@ public class RescribeConstants {
     public static final String TASK_LOGIN_WITH_SOCIAL = RescribeConstants.BLANK + 64;
 
     public static final String FOLLOW_UP = RescribeConstants.BLANK + 65;
+    public static final String TASK_DOCTORLIST_API = RescribeConstants.BLANK + 66;
 
     //-----------------
 

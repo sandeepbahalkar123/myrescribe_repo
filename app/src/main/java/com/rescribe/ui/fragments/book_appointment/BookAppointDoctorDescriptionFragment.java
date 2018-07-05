@@ -32,8 +32,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -56,12 +58,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
-public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse {
+public class BookAppointDoctorDescriptionFragment extends Fragment implements ShowDoctorViewPagerAdapter.CardClickListener,HelperResponse {
 
     //-------------
     @BindView(R.id.doChat)
@@ -136,6 +139,9 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private ClinicData clinicData;
     private BottomSheetDialog mBottomSheetDialog;
     private ColorGenerator mColorGenerator;
+    private ImageView favoriteIcon;
+    private DoctorList favoriteDoctor;
+    private AppDBHelper appDBHelper;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -148,6 +154,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         View mRootView = inflater.inflate(R.layout.book_appoint_doc_description_new, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
+        appDBHelper = new AppDBHelper(getApplicationContext());
         return mRootView;
     }
 
@@ -371,8 +378,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
-                    setFavorite(mClickedDoctorObject.getFavourite());
+                   /* ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                    setFavorite(mClickedDoctorObject.getFavourite());*/
+
+                    favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                    if (favoriteDoctor.getFavourite())
+                        favoriteIcon.setImageResource(R.drawable.favourite_icon);
+                    else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
+
+                    // update in database
+                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
                 }
                 //    CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
@@ -497,6 +512,14 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         mBottomSheetDialog.contentView(v)
                 .show();
 
+    }
+
+    @Override
+    public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
+        boolean status = !doctorList.getFavourite();
+        new DoctorDataHelper(getContext(), this).setFavouriteDoctor(status, doctorList.getDocId());
+        favoriteIcon = favorite;
+        favoriteDoctor = doctorList;
     }
 
     class DialogServicesListAdapter extends BaseAdapter {

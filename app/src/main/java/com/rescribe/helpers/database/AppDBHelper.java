@@ -75,11 +75,71 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String DINNER_TIME = "dinnerTime";
     public static final String SNACKS_TIME = "snacksTime";
 
+    public static final String CARDID = "cardDocId";
+    public static final String CARDTYPE = "cardType";
+
+    public static final String DOCID = "doctorId";
+    public static final String DOCNAME= "doctorName";
+    public static final String PHONENUMBER = "phoneNumber";
+    public static final String ICONURL= "iconURL";
+    public static final String ABOUTDOCTOR = "aboutDoctor";
+    public static final String SPECIALITYID= "specialityId";
+    public static final String SPECIALITY = "speciality";
+    public static final String RATING= "rating";
+    public static final String ISPREMIUM = "isPremium";
+    public static final String DOCDEGREE= "docDegree";
+    public static final String EXPERIANCE = "experience";
+    public static final String ISPAIDSTATUS= "isPaidStatus";
+    public static final String CATEGORY = "category";
+    public static final String DOCTORGENDER= "doctorGender";
+    public static final String MODIFICATIONDATE = "modificationDate";
+
+    public static final String CLINICID = "clinicId";
+    public static final String CLINICDOCTORID = "clinicDoctorId";
+    public static final String CLINICNAME = "clinicName";
+    public static final String CLINICLATITUDE = "clinicLatitude";
+    public static final String CLINICLONGITUDE = "clinicLongitude";
+    public static final String CLINICADDRESS = "clinicAddress";
+    public static final String CLINICAREANAME = "clinicAreaName";
+    public static final String CLINICCITYNAME = "clinicCityName";
+
+
+    public static final String COMMONDOCID ="commonDocId";
+    public static final String COMMONCLINICID = "commonClinicId";
+    public static final String CLINICFEES = "clinicFees";
+    public static final String APPOINTMENTSHEDULELIMITDAYS = "appointmentScheduleLimitDays";
+    public static final String CLINICAPPOINTMENTTYPE = "clinicAppointmentType";
+    public static final String CLINICSERVICE = "clinicServices";
+
+    public static final String APPOINTMENTID = "appointmentId";
+    public static final String APPOINTMENTDOCOTRID = "appointmentDoctorId";
+    public static final String APPOINTMENTCLINICID = "appointmentClinicId";
+    public static final String APPOINTMENTDATETIME = "appointmentDateTime";
+    public static final String APPOINTMETIME = "appointmentTime";
+    public static final String APPOINTMENTTYPE = "appointmentType";
+    public static final String APPOINTMENTSTATUS = "appointmentStatus";
+    public static final String TOKENNUMBER = "tokenNumber";
+    public static final String WAITINGPATIENTTIME = "waitingPatientTime";
+    public static final String WAITINGPATIENTCOUT = "waitingPatientCount";
+
+
     //---
     public static final String NOTIFICATION_MSG_TYPE = "notification_msg_type";
     public static final String TIME_STAMP = "time_stamp";
 
     //---
+    public static final String CARDVIEW_DATA_TABLE = "CardViewTable";
+    //---
+    public static final String DOCTORLIST_DATA_TABLE = "Doctor";
+    //---
+    public static final String CLINI_DATA_TABLE = "Clinic";
+    //---
+    public static final String DOCOTORVSCLINIC_DATA_TABLE = "DoctorVsClinic";
+    //---
+    public static final String APPOINTMENT_DATA_TABLE = "Appointment";
+
+
+
 
     static AppDBHelper instance = null;
     private Context mContext;
@@ -129,6 +189,268 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+
+
+
+
+    public boolean insertCardViewData(int carddocId, String cardType) {
+        if (cardTableNumberOfRows(carddocId,cardType) == 0) {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(CARDID, carddocId);
+            contentValues.put(CARDTYPE, cardType);
+
+            db.insert(CARDVIEW_DATA_TABLE, null, contentValues);
+        }
+        return true;
+    }
+
+
+
+    public int cardTableNumberOfRows(int carddocId, String cardType) {
+        SQLiteDatabase db = getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, CARDVIEW_DATA_TABLE, "carddocId = ? AND cardType=? ", new String[]{String.valueOf(carddocId),cardType} );
+    }
+
+    public boolean insertDocotorListData(int doctorId, String doctorName,String phoneNumber,String iconURL,String aboutDoctor,
+                                         int specialityId,String speciality,String rating,String isPremium,String docDegree,
+                                         int experience,int isPaidStatus,String category,String doctorGender,String modificationDate) {
+
+        if (doctorlistTableNumberOfRows(doctorId,doctorName,phoneNumber,iconURL,aboutDoctor,
+                specialityId,speciality,rating,isPremium,docDegree,experience,isPaidStatus,category,doctorGender,modificationDate) == 0) {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(DOCID, doctorId);
+            contentValues.put(DOCNAME, doctorName);
+            contentValues.put(PHONENUMBER, phoneNumber);
+            contentValues.put(ICONURL, iconURL);
+            contentValues.put(ABOUTDOCTOR, aboutDoctor);
+            contentValues.put(SPECIALITYID, specialityId);
+            contentValues.put(SPECIALITY, speciality);
+            contentValues.put(RATING, rating);
+            contentValues.put(ISPREMIUM, isPremium);
+            contentValues.put(DOCDEGREE, docDegree);
+            contentValues.put(EXPERIANCE, experience);
+            contentValues.put(ISPAIDSTATUS, isPaidStatus);
+            contentValues.put(CATEGORY, category);
+            contentValues.put(DOCTORGENDER, doctorGender);
+            contentValues.put(MODIFICATIONDATE, modificationDate);
+
+            db.insert(DOCTORLIST_DATA_TABLE, null, contentValues);
+        } else {
+            updateDoctorListData(doctorId, doctorName,phoneNumber,iconURL,aboutDoctor,specialityId,speciality,
+                    rating, isPremium,docDegree,experience,isPaidStatus,category,doctorGender,modificationDate);
+        }
+        return true;
+    }
+
+    public int doctorlistTableNumberOfRows(int doctorId, String doctorName,String phoneNumber,String iconURL,String aboutDoctor,
+                                           int specialityId,String speciality,String rating,String isPremium,String docDegree,
+                                           int experience,int isPaidStatus,String category,String doctorGender,String modificationDate) {
+        SQLiteDatabase db = getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, DOCTORLIST_DATA_TABLE, "doctorId = ? ", new String[]{String.valueOf(doctorId)} );
+    }
+
+    private boolean updateDoctorListData(int doctorId, String doctorName,String phoneNumber,String iconURL,String aboutDoctor,
+                                         int specialityId,String speciality,String rating,String isPremium,String docDegree,
+                                         int experience,int isPaidStatus,String category,String doctorGender,String modificationDate){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(DOCID, doctorId);
+        contentValues.put(DOCNAME, doctorName);
+        contentValues.put(PHONENUMBER, phoneNumber);
+        contentValues.put(ICONURL, iconURL);
+        contentValues.put(ABOUTDOCTOR, aboutDoctor);
+        contentValues.put(SPECIALITYID, specialityId);
+        contentValues.put(SPECIALITY, speciality);
+        contentValues.put(RATING, rating);
+        contentValues.put(ISPREMIUM, isPremium);
+        contentValues.put(DOCDEGREE, docDegree);
+        contentValues.put(EXPERIANCE, experience);
+        contentValues.put(ISPAIDSTATUS, isPaidStatus);
+        contentValues.put(CATEGORY, category);
+        contentValues.put(DOCTORGENDER, doctorGender);
+        contentValues.put(MODIFICATIONDATE, modificationDate);
+
+
+
+        db.update(DOCTORLIST_DATA_TABLE, contentValues, "doctorId = ?",new String[]{String.valueOf(doctorId)});
+        return true;
+    }
+
+
+
+    public boolean insertClinicData(int clinicId, int clinicDoctorId,String clinicName,String clinicLatitude,String clinicLongitude,
+                                    String clinicAddress,String clinicAreaName,String cliniccityname) {
+
+        if (clinicNumberOfRows(clinicId,clinicDoctorId,clinicName,clinicLatitude,clinicLongitude,
+                clinicAddress,clinicAreaName, cliniccityname) == 0) {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(CLINICID, clinicId);
+            contentValues.put(CLINICDOCTORID, clinicDoctorId);
+            contentValues.put(CLINICNAME, clinicName);
+            contentValues.put(CLINICLATITUDE, clinicLatitude);
+            contentValues.put(CLINICLONGITUDE, clinicLongitude);
+            contentValues.put(CLINICADDRESS, clinicAddress);
+            contentValues.put(CLINICAREANAME, clinicAreaName);
+            contentValues.put(CLINICCITYNAME, cliniccityname);
+
+            db.insert(CLINI_DATA_TABLE, null, contentValues);
+        }else {
+            updateClinic(clinicId,clinicDoctorId,clinicName,clinicLatitude,clinicLongitude,
+                    clinicAddress,clinicAreaName, cliniccityname);
+        }
+        return true;
+    }
+
+    public int clinicNumberOfRows(int clinicId, int clinicDoctorId,String clinicName,String clinicLatitude,String clinicLongitude,
+                                  String clinicAddress,String clinicAreaName,String cliniccityname ) {
+        SQLiteDatabase db = getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, CLINI_DATA_TABLE, "clinicId = ? AND clinicName=?", new String[]{String.valueOf(clinicId),clinicName});
+    }
+
+    private boolean updateClinic(int clinicId, int clinicDoctorId,String clinicName,String clinicLatitude,String clinicLongitude,
+                                 String clinicAddress,String clinicAreaName,String cliniccityname){
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(CLINICID, clinicId);
+        contentValues.put(CLINICDOCTORID, clinicDoctorId);
+        contentValues.put(CLINICNAME, clinicName);
+        contentValues.put(CLINICLATITUDE, clinicLatitude);
+        contentValues.put(CLINICLONGITUDE, clinicLongitude);
+        contentValues.put(CLINICADDRESS, clinicAddress);
+        contentValues.put(CLINICAREANAME, clinicAreaName);
+        contentValues.put(CLINICCITYNAME, cliniccityname);
+
+
+        db.update(CLINI_DATA_TABLE, contentValues, "clinicId = ?  AND clinicName=?", new String[]{String.valueOf(clinicId),clinicName});
+        return true;
+    }
+
+    public boolean insertDoctorvsClinicData(int commonDocId, int commonClinicId,int clinicFees,int appointmentScheduleLimitDays,
+                                            String clinicAppointmentType,String clinicServices) {
+
+        if (doctorvsclinicNumberOfRows(commonDocId,commonClinicId,clinicFees,appointmentScheduleLimitDays,clinicAppointmentType,clinicServices) == 0) {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(COMMONDOCID, commonDocId);
+            contentValues.put(COMMONCLINICID, commonClinicId);
+            contentValues.put(CLINICFEES, clinicFees);
+            contentValues.put(APPOINTMENTSHEDULELIMITDAYS, appointmentScheduleLimitDays);
+            contentValues.put(CLINICAPPOINTMENTTYPE, clinicAppointmentType);
+            contentValues.put(CLINICSERVICE, clinicServices);
+
+
+            db.insert(DOCOTORVSCLINIC_DATA_TABLE, null, contentValues);
+        }else {
+            updateDoctorvsClinic(commonDocId,commonClinicId,clinicFees,appointmentScheduleLimitDays,clinicAppointmentType,clinicServices);
+        }
+        return true;
+    }
+
+    public int doctorvsclinicNumberOfRows(int commonDocId, int commonClinicId,int clinicFees,int appointmentScheduleLimitDays,
+                                          String clinicAppointmentType,String clinicServices) {
+
+        SQLiteDatabase db = getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, DOCOTORVSCLINIC_DATA_TABLE, "commonDocId = ? AND commonClinicId=? ", new String[]{String.valueOf(commonDocId),String.valueOf(commonClinicId)});
+    }
+
+    private boolean updateDoctorvsClinic(int commonDocId, int commonClinicId,int clinicFees,int appointmentScheduleLimitDays,
+                                         String clinicAppointmentType,String clinicServices){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COMMONDOCID, commonDocId);
+        contentValues.put(COMMONCLINICID, commonClinicId);
+        contentValues.put(CLINICFEES, clinicFees);
+        contentValues.put(APPOINTMENTSHEDULELIMITDAYS, appointmentScheduleLimitDays);
+        contentValues.put(CLINICAPPOINTMENTTYPE, clinicAppointmentType);
+        contentValues.put(CLINICSERVICE, clinicServices);
+
+        db.update(DOCOTORVSCLINIC_DATA_TABLE, contentValues, "commonDocId = ? AND commonClinicId=? ", new String[]{String.valueOf(commonDocId),String.valueOf(commonClinicId)});
+
+        return true;
+    }
+
+    public boolean insertAppointmentData(String appointmentId, int appointmentDoctorId,int appointmentClinicId,String appointmentDateTime,
+                                            String appointmentType,String appointmentStatus,String tokenNumber,String waitingPatientTime,String waitingPatientCount,String appointmentTime) {
+
+        if (appointmentNumberOfRows(appointmentId) ==0) {
+
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(APPOINTMENTID, appointmentId);
+            contentValues.put(APPOINTMENTDOCOTRID, appointmentDoctorId);
+            contentValues.put(APPOINTMENTCLINICID, appointmentClinicId);
+            contentValues.put(APPOINTMENTDATETIME, appointmentDateTime);
+            contentValues.put(APPOINTMENTTYPE, appointmentType);
+            contentValues.put(APPOINTMENTSTATUS, appointmentStatus);
+            contentValues.put(TOKENNUMBER, tokenNumber);
+            contentValues.put(APPOINTMENTTYPE, appointmentType);
+            contentValues.put(WAITINGPATIENTTIME, waitingPatientTime);
+            contentValues.put(WAITINGPATIENTCOUT, waitingPatientCount);
+            contentValues.put(APPOINTMETIME, appointmentTime);
+
+
+            db.insert(APPOINTMENT_DATA_TABLE, null, contentValues);
+        }else {
+            updateappointment(appointmentId,appointmentDoctorId,appointmentClinicId,appointmentDateTime,appointmentType,appointmentStatus,tokenNumber,waitingPatientTime,waitingPatientCount,appointmentTime);
+        }
+        return true;
+    }
+    public int appointmentNumberOfRows(String appointmentId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, APPOINTMENT_DATA_TABLE, "appointmentId = ?", new String[]{appointmentId});
+    }
+
+    private boolean updateappointment(String appointmentId, int appointmentDoctorId,int appointmentClinicId,String appointmentDateTime,
+                                      String appointmentType,String appointmentStatus,String tokenNumber,String waitingPatientTime,String waitingPatientCount,String appointmentTime){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(APPOINTMENTID, appointmentId);
+        contentValues.put(APPOINTMENTDOCOTRID, appointmentDoctorId);
+        contentValues.put(APPOINTMENTCLINICID, appointmentClinicId);
+        contentValues.put(APPOINTMENTDATETIME, appointmentDateTime);
+        contentValues.put(APPOINTMENTTYPE, appointmentType);
+        contentValues.put(APPOINTMENTSTATUS, appointmentStatus);
+        contentValues.put(TOKENNUMBER, tokenNumber);
+        contentValues.put(APPOINTMENTTYPE, appointmentType);
+        contentValues.put(WAITINGPATIENTTIME, waitingPatientTime);
+        contentValues.put(WAITINGPATIENTCOUT, waitingPatientCount);
+        contentValues.put(APPOINTMETIME, appointmentTime);
+
+        db.update(APPOINTMENT_DATA_TABLE, contentValues, "appointmentId = ? ", new String[]{appointmentId});
+
+        return true;
+    }
+
+    public Cursor getCardviewData() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + CARDVIEW_DATA_TABLE , null);
+    }
+
+    public Cursor getDoctorData(){
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOCTORLIST_DATA_TABLE , null);
+    }
+
+    public Cursor getDoctorData(String doctorId) {
+        SQLiteDatabase db = getReadableDatabase();
+        //return db.rawQuery("select d.*"+"c.*"+"dc.*"+"a.*"+"from"+CLINI_DATA_TABLE+"c" +" LEFT JOIN "+DOCOTORVSCLINIC_DATA_TABLE+"dc"+"ON"+"dc.commonClinicId="+"c.clinicId"+"LEFT JOIN"+DOCTORLIST_DATA_TABLE+"d"+"ON"+"d.doctorId="+"dc.commonDocId"+"LEFT JOIN"+APPOINTMENT_DATA_TABLE+"a"+"ON"+"a.appointmentDoctorId="+"d.doctorId"+"WHERE"+"d.doctorId"+"IN"+"(select cardDocId from CardViewTable cd WHERE cd.cardType = 'my appointments' and a.appointmentStatus = 'upcoming')",null);
+        //return db.rawQuery("select * from " + DOCTORLIST_DATA_TABLE + " where doctorId=" + doctorId , null);
+       return db.rawQuery("select * from '" + DOCTORLIST_DATA_TABLE + "' INNER JOIN '" + CLINI_DATA_TABLE + "' INNER JOIN '" + DOCOTORVSCLINIC_DATA_TABLE + "' INNER JOIN '" +APPOINTMENT_DATA_TABLE +"' WHERE commonDocId='" + doctorId + "'", null);
+    }
+
     public Cursor getData(String dataId) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + APP_DATA_TABLE + " where dataId=" + dataId + "", null);
@@ -148,12 +470,64 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean insertfavoriteData(String doctorId, boolean isfavorite) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        if(isfavorite){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("cardDocId", doctorId);
+            contentValues.put("cardType", "Favorite Doctors");
+            db.insert(CARDVIEW_DATA_TABLE, null, contentValues);
+        }else{
+            deleteFavoriteData(doctorId);
+        }
+        return true;
+    }
+
+    public Integer deleteFavoriteData(String cardDocId) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(CARDVIEW_DATA_TABLE,
+                "cardDocId = ? AND cardType=? ",
+                new String[]{String.valueOf(cardDocId), "Favorite Doctors"});
+    }
+    public Integer deleteCardViewData() {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(CARDVIEW_DATA_TABLE,
+                null, null);
+    }
+
+    public Integer deleteDoctorData(String doctorId) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(DOCTORLIST_DATA_TABLE,
+                "doctorId = ? ",
+                new String[]{String.valueOf(doctorId)});
+    }
+    public Integer deleteDoctor() {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(DOCTORLIST_DATA_TABLE,
+                null,null);
+    }
+    public Integer deleteClinic() {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(CLINI_DATA_TABLE,
+                null,null);
+    }
+    public Integer deleteClinicData(String clinicId) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(CLINI_DATA_TABLE,
+                "clinicId = ? ",
+                new String[]{String.valueOf(clinicId)});
+    }
+
+
     public Integer deleteData(Integer dataId) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(APP_DATA_TABLE,
                 "dataId = ? ",
                 new String[]{Integer.toString(dataId)});
     }
+
 
     private void copyDataBase() {
         CommonMethods.Log(TAG,

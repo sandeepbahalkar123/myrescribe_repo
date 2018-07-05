@@ -46,8 +46,10 @@ import com.philliphsu.bottomsheetpickers.time.BottomSheetTimePickerDialog;
 import com.philliphsu.bottomsheetpickers.time.grid.GridTimePickerDialog;
 import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
+import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.Common;
@@ -103,7 +105,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
  * Created by jeetal on 31/10/17.
  */
 
-public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener, BottomSheetTimePickerDialog.OnTimeSetListener {
+public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements HelperResponse, DatePickerDialog.OnDateSetListener,ShowDoctorViewPagerAdapter.CardClickListener, BottomSheetTimePickerDialog.OnTimeSetListener {
 
     public static final int CONFIRM_REQUESTCODE = 212;
     private static final String TAG = "TimeSlotFragment";
@@ -208,6 +210,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private String from;
     private String aptId;
     private String isReschedule;
+    private AppDBHelper appDBHelper;
+    private ImageView favoriteIcon;
+    private DoctorList favoriteDoctor;
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -220,6 +225,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         View mRootView = inflater.inflate(R.layout.book_appoint_doc_desc_select_time_slot, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
         init();
+        appDBHelper = new AppDBHelper(mContext);
         return mRootView;
     }
 
@@ -509,7 +515,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                 /*   boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
                     //----THIS IS DONE FOR, WHEN PAGE OPENED FROM CHAT_ACTIVITY---
                     if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom) && isUpdated) {
                         mClickedDoctorObject.setFavourite(!mClickedDoctorObject.getFavourite());
@@ -519,7 +525,15 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mFavorite.setImageResource(R.drawable.fav_icon);
                     } else {
                         mFavorite.setImageResource(R.drawable.result_line_heart_fav);
-                    }
+                    }*/
+                    favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                    if (favoriteDoctor.getFavourite())
+                        favoriteIcon.setImageResource(R.drawable.favourite_icon);
+                    else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
+
+                    // update in database
+                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
+
                 }
                 //   CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
@@ -1100,4 +1114,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     }
 
+    @Override
+    public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
+        boolean status = !doctorList.getFavourite();
+        new DoctorDataHelper(getContext(), this).setFavouriteDoctor(status, doctorList.getDocId());
+        favoriteIcon = favorite;
+        favoriteDoctor = doctorList;
+    }
 }

@@ -45,7 +45,8 @@ import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookA
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
-import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.dashboard_api.cardviewdatamodel.CardViewDataModel;
+import com.rescribe.model.dashboard_api.DoctorlistModel.Doctorlistmodel;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.RecentChatDoctorModel;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
@@ -668,9 +669,15 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         break;
 
                     case RescribeConstants.TASK_DASHBOARD_API: //This is for get archived list
-                        DashBoardBaseModel dashboardBaseModel = new Gson().fromJson(data, DashBoardBaseModel.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardBaseModel, mOldDataTag);
+                        CardViewDataModel cardViewDataModel = new Gson().fromJson(data, CardViewDataModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, cardViewDataModel, mOldDataTag);
                         break;
+
+                    case RescribeConstants.TASK_DOCTORLIST_API: //This is for get archived list
+                        Doctorlistmodel Doctorlistmodel = new Gson().fromJson(data, Doctorlistmodel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, Doctorlistmodel, mOldDataTag);
+                        break;
+
 
                     case RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA: //This is for get archived list
                         RecentVisitedBaseModel mRecentVisitedBaseModel = new Gson().fromJson(data, RecentVisitedBaseModel.class);

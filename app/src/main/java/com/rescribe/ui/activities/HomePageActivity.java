@@ -50,6 +50,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
 import com.rescribe.adapters.dashboard.ShowBackgroundViewPagerAdapter;
 import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
+import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -59,14 +60,17 @@ import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.ClickOption;
-import com.rescribe.model.dashboard_api.DashBoardBaseModel;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
-import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.model.dashboard_api.DashboardMenuData;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
+import com.rescribe.model.dashboard_api.DoctorlistModel.Doctorlistmodel;
+import com.rescribe.model.dashboard_api.cardviewdatamodel.CardViewDataModel;
+import com.rescribe.model.dashboard_api.cardviewdatamodel.CategoryList;
+import com.rescribe.model.dashboard_api.cardviewdatamodel.Data;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.model.notification.Medication;
@@ -83,7 +87,6 @@ import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActi
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.dashboard.HealthOffersActivity;
-import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
@@ -91,6 +94,7 @@ import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepositoryActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
+import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.GoogleSettingsApi;
@@ -114,7 +118,6 @@ import butterknife.OnClick;
 
 import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.appIconIndex;
 import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.connectIndex;
-
 import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
@@ -132,16 +135,18 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.SETTINGS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.SALUTATION;
 import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
+import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 
 /**
  * Created by jeetal on 28/6/17.
  */
 
-public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener,
+public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener, ShowDoctorViewPagerAdapter.CardClickListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "HomePage";
+
     @BindView(R.id.custom_progress_bar)
     RelativeLayout custom_progress_bar;
     @BindView(R.id.viewpager)
@@ -165,7 +170,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     String previousLocationReceived = "";
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
-    DashboardDataModel mDashboardDataModel;
+    //DashboardDataModel mDashboardDataModel;
+    CardViewDataModel cardViewDataModel;
     DashboardMenuData mDashboardMenuData;
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
@@ -226,6 +232,12 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     };
 
     private String patientId;
+
+    private ImageView favoriteIcon;
+    private DoctorList favoriteDoctor;
+    private Map<String, Integer> dataMap;
+    private CustomTextView favoriteCount;
+
     private void logUser() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
@@ -249,6 +261,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mIsAppOpenFromLogin = getIntent().getBooleanExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, false);
 
         activityCreatedTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
+
+
 
         // Pre load
 
@@ -276,8 +290,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         boolean need_notify = RescribePreferencesManager.getBoolean(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.NEED_NOTIFY, mContext);
 
+
         if (need_notify)
             notificationForMedicine();
+
+        setUpViewPager();
 
         swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -285,6 +302,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 checkAndroidVersion();
             }
         });
+
     }
 
     @SuppressLint("CheckResult")
@@ -412,7 +430,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         switch (mOldDataTag) {
             case TASK_DASHBOARD_API:
-                DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
+             /* DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
                 mDashboardDataModel = mDashboardBaseModel.getDashboardModel();
                 mDashboardDataBuilder.setReceivedDoctorDataList(mDashboardDataModel.getDoctorList());
                 if (mDashboardDataModel != null) {
@@ -425,7 +443,58 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     doGetMedicationNotificationOnNewLogin();
                 }
 
+                swipeToRefresh.setRefreshing(false);*/
+
+
+                cardViewDataModel = (CardViewDataModel) customResponse;
+                if (cardViewDataModel != null) {
+
+                    Data data = cardViewDataModel.getData();
+                    if (data != null) {
+                        for (int i = 0; i < data.getCategoryList().size(); i++) {
+                            CategoryList categoryList = data.getCategoryList().get(i);
+                            for (int j = 0; j < categoryList.getDocDetails().size(); j++) {
+                                appDBHelper.insertCardViewData(categoryList.getDocDetails().get(j).getDocId(), categoryList.getCategoryName().toLowerCase());
+
+                                if(categoryList.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))){
+
+                                    appDBHelper.insertAppointmentData(categoryList.getDocDetails().get(j).getAptId(),categoryList.getDocDetails().get(j).getDocId(),categoryList.getDocDetails().get(j).getLocationId(),
+                                            categoryList.getDocDetails().get(j).getAptDate(),categoryList.getDocDetails().get(j).getType(),"upcoming",
+                                            categoryList.getDocDetails().get(j).getTokenNumber(),categoryList.getDocDetails().get(j).getWaitingPatientTime(),categoryList.getDocDetails().get(j).getWaitingPatientCount(),categoryList.getDocDetails().get(j).getAptTime());
+                                }
+
+                            }
+                        }
+                    }
+                    if (data.isIsDocUpdated()) {
+                        String lastCapturedLocation = RescribePreferencesManager.getString(getString(R.string.location), mContext);
+                        if (!lastCapturedLocation.isEmpty()) {
+                            try {
+                                Double lat = Double.valueOf(RescribePreferencesManager.getString(getString(R.string.latitude), mContext));
+                                Double lng = Double.valueOf(RescribePreferencesManager.getString(getString(R.string.longitude), mContext));
+                                LatLng location = new LatLng(lat, lng);
+                                RescribeApplication.setUserSelectedLocationInfo(mContext, location, lastCapturedLocation);
+                                String[] split = lastCapturedLocation.split(",");
+                                mDashboardHelper.GetDoctorlist(split[1]);
+                            } catch (NumberFormatException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    } else {
+                        setUpViewPager();
+                    }
+
+                }
                 swipeToRefresh.setRefreshing(false);
+                break;
+
+            case TASK_DOCTORLIST_API:
+                Doctorlistmodel doctorlistmodel = (Doctorlistmodel) customResponse;
+                if (doctorlistmodel != null) {
+                    setUpViewPager();
+                }
+
                 break;
 
             case ACTIVE_STATUS:
@@ -435,9 +504,29 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
-                        setUpViewPager();
+                        // mDashboardDataBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+//                        setUpViewPager();
+
+                        favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+
+                        if (favoriteDoctor.getFavourite()) {
+                            favoriteIcon.setImageResource(R.drawable.favourite_icon);
+                            // add favorite doctor in map
+                            dataMap.put(mContext.getString(R.string.favorite), dataMap.get(mContext.getString(R.string.favorite)) + 1);
+                        } else {
+                            favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
+                            // add favorite doctor in map
+                            dataMap.put(mContext.getString(R.string.favorite), dataMap.get(mContext.getString(R.string.favorite)) - 1);
+                        }
+
+                        if (favoriteCount != null) {
+                            favoriteCount.setText(String.valueOf(dataMap.get(mContext.getString(R.string.favorite))));
+                        }
+
+                        // update in database
+                        appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()), favoriteDoctor.getFavourite());
                     }
+
                     //     CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
                 break;
@@ -448,7 +537,147 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     private void setUpViewPager() {
-        //----------
+
+        dataMap = new LinkedHashMap<>();
+        myAppoint = new ArrayList<>();
+        sponsered = new ArrayList<>();
+        recently_visit_doctor = new ArrayList<>();
+        favoriteList = new ArrayList<>();
+
+
+        ArrayList<DoctorList> mergeList = new ArrayList<>();
+        ArrayList<String> cardBgImage = new ArrayList<>();
+
+
+        Cursor cursor = appDBHelper.getCardviewData();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+
+
+                String carddocId = cursor.getString(cursor.getColumnIndex(AppDBHelper.CARDID));
+                String cardtype = cursor.getString(cursor.getColumnIndex(AppDBHelper.CARDTYPE));
+
+                Cursor doccursor = appDBHelper.getDoctorData(carddocId);
+
+
+                if (doccursor.moveToFirst()) {
+                    // com.rescribe.model.dashboard_api.DoctorlistModel.DoctorList doctorList = new com.rescribe.model.dashboard_api.DoctorlistModel.DoctorList();
+                    DoctorList doctorList = new DoctorList();
+                    doctorList.setDocId(doccursor.getInt(doccursor.getColumnIndex(AppDBHelper.DOCID)));
+                    doctorList.setDocName(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.DOCNAME)));
+                    doctorList.setDoctorImageUrl(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.ICONURL)));
+                    doctorList.setAboutDoctor(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.ABOUTDOCTOR)));
+                    doctorList.setRating(doccursor.getDouble(doccursor.getColumnIndex(AppDBHelper.RATING)));
+                    doctorList.setCategorySpeciality(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.ISPREMIUM)));
+                    doctorList.setDegree(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.DOCDEGREE)));
+                    doctorList.setExperience(doccursor.getInt(doccursor.getColumnIndex(AppDBHelper.EXPERIANCE)));
+                    doctorList.setPaidStatus(doccursor.getInt(doccursor.getColumnIndex(AppDBHelper.ISPAIDSTATUS)));
+                    doctorList.setFavourite(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.CATEGORY)).equalsIgnoreCase(getString(R.string.favorite)));
+                    doctorList.setCategoryName(CommonMethods.toCamelCase(cardtype));
+
+                    ArrayList<ClinicData> clinicDataList = new ArrayList<>();
+                    ClinicData clinicData=new ClinicData();
+                    clinicData.setAmount(doccursor.getInt(doccursor.getColumnIndex(AppDBHelper.CLINICFEES)));
+                    doctorList.setClinicAddress(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.CLINICADDRESS)));
+
+                    clinicData.setAreaName(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.CLINICAREANAME)));
+                    clinicData.setCityName(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.CLINICCITYNAME)));
+
+
+                    clinicData.setAppointmentType(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.APPOINTMENTTYPE)));
+                    clinicDataList.add(clinicData);
+                    doctorList.setClinicDataList(clinicDataList);
+                    doctorList.setAptDate(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.APPOINTMENTDATETIME)));
+                    doctorList.setAptTime(doccursor.getString(doccursor.getColumnIndex(AppDBHelper.APPOINTMETIME)));
+
+
+
+                    if (cardtype.equalsIgnoreCase(getString(R.string.my_appointments))) {
+
+                        myAppoint.add(doctorList);
+                        String cardimg = imageBaseURL + "myappointments.jpg";
+                        if (!cardBgImage.contains(cardimg)) {
+                            mergeList.add(myAppoint.get(0));
+                            cardBgImage.add(cardimg);
+                        }
+
+                    } else if (cardtype.equalsIgnoreCase(getString(R.string.sponsored_doctor))) {
+                        sponsered.add(doctorList);
+                        String cardimg = imageBaseURL + "sponsored.jpg";
+                        if (!cardBgImage.contains(cardimg)) {
+                            mergeList.add(sponsered.get(0));
+                            cardBgImage.add(imageBaseURL + "sponsored.jpg");
+
+                        }
+                    } else if (cardtype.equalsIgnoreCase(getString(R.string.recently_visited_doctor))) {
+                        recently_visit_doctor.add(doctorList);
+                        String cardimg = imageBaseURL + "recentlyvisited.jpg";
+                        if (!cardBgImage.contains(cardimg)) {
+                            mergeList.add(recently_visit_doctor.get(0));
+                            cardBgImage.add(cardimg);
+                        }
+
+                    } else if (cardtype.equalsIgnoreCase(getString(R.string.favorite))) {
+                        favoriteList.add(doctorList);
+                        String cardimg = imageBaseURL + "favorite.jpg";
+                        if (!cardBgImage.contains(cardimg)) {
+                            mergeList.add(favoriteList.get(0));
+                            cardBgImage.add(cardimg);
+                        }
+                    }
+
+                }
+
+                cursor.moveToNext();
+
+
+            }
+
+            cursor.close();
+
+            dataMap.put(getString(R.string.my_appointments), myAppoint.size());
+            dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
+            dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
+            dataMap.put(getString(R.string.favorite), favoriteList.size());
+
+            mDashboardDoctorListsToShowDashboardDoctor.addAll(mergeList);
+            ShowDoctorViewPagerAdapter mShowDoctorViewPagerAdapter = new ShowDoctorViewPagerAdapter(this, this, mergeList, mDashboardDataBuilder, dataMap, this);
+            viewPagerDoctorItem.setAdapter(mShowDoctorViewPagerAdapter);
+            //-----------
+            // Disable clip to padding
+            viewPagerDoctorItem.setClipToPadding(false);
+
+            int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
+            viewPagerDoctorItem.setPadding(pager_padding, 0, pager_padding, 0);
+            int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
+            viewPagerDoctorItem.setPageMargin(pager_margin);
+
+            ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, cardBgImage, activityCreatedTimeStamp);
+            viewpager.setOffscreenPageLimit(4);
+            viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
+
+            final int scrollPixels = widthPixels * mShowDoctorViewPagerAdapter.getCount();
+            final int exactScroll = scrollPixels - widthPixels;
+            int itemWidth = (widthPixels - (pager_padding * 2)) + pager_margin;
+            final int scrollWidth = itemWidth * (mShowDoctorViewPagerAdapter.getCount() - 1);
+
+            viewPagerDoctorItem.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    float ans = (float) (exactScroll * viewPagerDoctorItem.getScrollX()) / scrollWidth;
+                    viewpager.setScrollX((int) ans);
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
+
+      /*  //----------
         //   mCustomProgressDialog.cancel();
         Map<String, Integer> dataMap = new LinkedHashMap<>();
         myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);
@@ -520,7 +749,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             public void onPageScrollStateChanged(int state) {
             }
         });
-
+*/
+        }
     }
 
     @Override
@@ -807,7 +1037,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
         checkAndroidVersion();
-        if (mDashboardDataModel != null) {
+        if (cardViewDataModel != null) {
             setUpViewPager();
         }
 
@@ -842,6 +1072,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         if (locationReceived.equalsIgnoreCase(previousLocationReceived) && !swipeToRefresh.isRefreshing()) {
             Log.d(TAG, "DASHBOARD API NOT CALLED");
         } else {
+
             Log.d(TAG, "DASHBOARD API  CALLED");
             if (locationReceived.equals("")) {
                 // mCustomProgressDialog.show();
@@ -858,7 +1089,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             }
         }
 
-        if (mDashboardDataModel != null) {
+        if (cardViewDataModel != null) {
             setUpViewPager();
         }
     }
@@ -1001,6 +1232,15 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         }
 
         super.onBottomSheetMenuClick(bottomMenu);
+    }
+
+    @Override
+    public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
+        boolean status = !doctorList.getFavourite();
+        new DoctorDataHelper(mContext, this).setFavouriteDoctor(status, doctorList.getDocId());
+        favoriteIcon = favorite;
+        favoriteDoctor = doctorList;
+        favoriteCount = sizeOfList;
     }
 
     private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {

@@ -143,8 +143,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "HomePage";
-    @BindView(R.id.custom_progress_bar)
-    RelativeLayout custom_progress_bar;
+//    @BindView(R.id.custom_progress_bar)
+//    RelativeLayout custom_progress_bar;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -166,7 +166,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     String previousLocationReceived = "";
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
-    DashboardDataModel mDashboardDataModel;
+//    DashboardDataModel mDashboardDataModel;
     DashboardMenuData mDashboardMenuData;
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
@@ -194,7 +194,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private final static String FOLDER_PATH = "images/dashboard/cardBgImage/android/";
     private String imageBaseURL;
     private NotificationHelper mNotificationPrescriptionHelper;
-    private boolean mIsAppOpenFromLogin;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -226,6 +225,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     };
 
     private String patientId;
+    private boolean mIsAppOpenFromLogin;
 
     private void logUser() {
         // TODO: Use the current user's information
@@ -261,8 +261,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mDashboardHelper = new DashboardHelper(this, this);
 
         doConfigureMenuOptions();
-
-        custom_progress_bar.setVisibility(View.VISIBLE);
+//        custom_progress_bar.setVisibility(View.VISIBLE);
 
         createLocationRequest();
         widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -413,20 +412,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         switch (mOldDataTag) {
             case TASK_DASHBOARD_API:
-                /*DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
+              /*  DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
                 mDashboardDataModel = mDashboardBaseModel.getDashboardModel();
-                mDashboardDataBuilder.setReceivedDoctorDataList(mDashboardDataModel.getDoctorList());
-                if (mDashboardDataModel != null) {
-                    setUpViewPager();
-                    custom_progress_bar.setVisibility(View.GONE);
-                }
-
-                if (mIsAppOpenFromLogin) {
-                    mIsAppOpenFromLogin = false;
-                    doGetMedicationNotificationOnNewLogin();
-                }
-
-                swipeToRefresh.setRefreshing(false);*/
+                setDoctors();*/
 
                 DashboardModel dashboardModel = (DashboardModel) customResponse;
                 if (dashboardModel.getCommon().getStatusCode().equals(SUCCESS)) {
@@ -438,6 +426,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         mDashboardHelper.getDoctorList();
                     } else {
                         // Show doctor data from Database
+                        setUpViewPager();
                     }
                 }
 
@@ -446,8 +435,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             case TASK_DOCTORLIST_API:
                 DoctorListModel doctorListModel = (DoctorListModel) customResponse;
                 // insert doctor data in database and show
-
                 appDBHelper.addDoctors(doctorListModel.getData().getDoctorList());
+                setUpViewPager();
 
                 RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN), mContext);
                 break;
@@ -472,8 +461,13 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     private void setUpViewPager() {
-        //----------
-        //   mCustomProgressDialog.cancel();
+
+        // set All doctors
+        Cursor cursor = appDBHelper.getAllDoctors();
+
+        // set doc
+        mDashboardDataBuilder.setReceivedDoctorDataList();
+
         Map<String, Integer> dataMap = new LinkedHashMap<>();
         myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);
         sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1);
@@ -549,24 +543,24 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-        if (mOldDataTag.equals(TASK_DASHBOARD_API))
-            custom_progress_bar.setVisibility(View.GONE);
+//        if (mOldDataTag.equals(TASK_DASHBOARD_API))
+//            custom_progress_bar.setVisibility(View.GONE);
 
         swipeToRefresh.setRefreshing(false);
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        if (mOldDataTag.equals(TASK_DASHBOARD_API))
-            custom_progress_bar.setVisibility(View.GONE);
+//        if (mOldDataTag.equals(TASK_DASHBOARD_API))
+//            custom_progress_bar.setVisibility(View.GONE);
 
         swipeToRefresh.setRefreshing(false);
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        if (mOldDataTag.equals(TASK_DASHBOARD_API))
-            custom_progress_bar.setVisibility(View.GONE);
+//        if (mOldDataTag.equals(TASK_DASHBOARD_API))
+//            custom_progress_bar.setVisibility(View.GONE);
     }
 
 
@@ -826,9 +820,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
         checkAndroidVersion();
-        if (mDashboardDataModel != null) {
+       /* if (mDashboardDataModel != null) {
             setUpViewPager();
-        }
+        }*/
 
         int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
         setBadgeCount(notificationCount);
@@ -877,9 +871,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             }
         }
 
-        if (mDashboardDataModel != null) {
+       /* if (mDashboardDataModel != null) {
             setUpViewPager();
-        }
+        }*/
     }
 
     private void updateUI() {

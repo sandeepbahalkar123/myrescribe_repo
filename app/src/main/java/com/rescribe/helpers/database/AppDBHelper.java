@@ -760,8 +760,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
         ContentValues contentValuesCard = new ContentValues();
         ContentValues contentValuesAppoint = new ContentValues();
 
-        for (CategoryList category: categoryList) {
-            for (DocDetail docDetail: category.getDocDetails()) {
+        for (CategoryList category : categoryList) {
+            for (DocDetail docDetail : category.getDocDetails()) {
                 // insert card data
                 contentValuesCard.put(DOC_DATA.DOC_ID, docDetail.getDocId());
                 contentValuesCard.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
@@ -787,5 +787,15 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         db.setTransactionSuccessful();
         db.endTransaction();
+    }
+
+    public Cursor getAllDoctors() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCTORLIST_DATA_TABLE, null);
+    }
+
+    public Cursor getAllClinicsByDoctor(int doctorId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select c.*  from " + DOC_DATA.CLINIC_DATA_TABLE + " c left join " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " dc on dc.clinicId = c.clinicId where dc.doctorId = " + doctorId, null);
     }
 }

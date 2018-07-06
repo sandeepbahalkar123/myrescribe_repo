@@ -26,7 +26,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -59,11 +58,11 @@ import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
-import com.rescribe.model.dashboard_api.DashboardDataModel;
 import com.rescribe.model.dashboard_api.DashboardMenuData;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.dashboard_api.card_data.DashboardModel;
@@ -143,7 +142,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "HomePage";
-//    @BindView(R.id.custom_progress_bar)
+    //    @BindView(R.id.custom_progress_bar)
 //    RelativeLayout custom_progress_bar;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
@@ -166,7 +165,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     String previousLocationReceived = "";
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
-//    DashboardDataModel mDashboardDataModel;
+    //    DashboardDataModel mDashboardDataModel;
     DashboardMenuData mDashboardMenuData;
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
@@ -463,10 +462,81 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private void setUpViewPager() {
 
         // set All doctors
-        Cursor cursor = appDBHelper.getAllDoctors();
+        Cursor cardCursor = appDBHelper.getAllCardData();
+        ArrayList<DoctorList> doctorLists = new ArrayList<>();
+        if (cardCursor.moveToFirst()) {
+            do {
+
+                // get Card Data
+                Cursor docCursor = appDBHelper.getDoctor(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+                if (docCursor.moveToFirst()) {
+
+                    DoctorList doctorList = new DoctorList();
+                    doctorList.setDocId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+                    doctorList.setDocName(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_NAME)));
+                    doctorList.setDocPhone(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PHONE_NUMBER)));
+                    doctorList.setDoctorImageUrl(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ICON_URL)));
+                    doctorList.setAboutDoctor(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ABOUT_DOCTOR)));
+
+                    doctorList.setDocSpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
+                    doctorList.setSpecialityId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY_ID)));
+
+                    doctorList.setRating(docCursor.getDouble(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.RATING)));
+                    doctorList.setCategorySpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_PREMIUM)));
+                    doctorList.setDegree(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_DEGREE)));
+                    doctorList.setExperience(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
+                    doctorList.setPaidStatus(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
+                    doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
+                    doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
+
+                    ArrayList<ClinicData> clinicDataList = new ArrayList<>();
+
+                    // loop start
+
+                    Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+
+                    if (clinicCursor.moveToFirst()) {
+                        do {
+
+                            ClinicData clinicData = new ClinicData();
+                            clinicData.setClinicName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_NAME)));
+                            clinicData.setLocationId(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
+                            clinicData.setAmount(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_FEES)));
+                            doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
+                            clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
+                            clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
+                            clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+
+                            clinicData.setLocationLat(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LATITUDE)));
+                            clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
+
+                            // set services
+                            String[] split = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE)).split(",");
+//                            clinicData.setDocServices((ArrayList<String>) Arrays.asList(split));
+
+                            // get from appointment table
+//                            doctorList.setAptDate(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATETIME)));
+//                            doctorList.setAptTime(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
+
+                            clinicDataList.add(clinicData);
+                        } while (clinicCursor.moveToNext());
+                    }
+
+                    clinicCursor.close();
+                    // loop end
+
+                    doctorList.setClinicDataList(clinicDataList);
+                    doctorLists.add(doctorList);
+                }
+
+                docCursor.close();
+            } while (cardCursor.moveToNext());
+        }
+
+        cardCursor.close();
 
         // set doc
-        mDashboardDataBuilder.setReceivedDoctorDataList();
+        mDashboardDataBuilder.setReceivedDoctorDataList(doctorLists);
 
         Map<String, Integer> dataMap = new LinkedHashMap<>();
         myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);

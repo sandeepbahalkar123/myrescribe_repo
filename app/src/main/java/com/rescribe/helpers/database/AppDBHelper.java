@@ -102,10 +102,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
         public static final String SPECIALITY_ID = "specialityId";
         public static final String SPECIALITY = "speciality";
         public static final String RATING = "rating";
-        public static final String ISPREMIUM = "isPremium";
+        public static final String IS_PREMIUM = "isPremium";
         public static final String DOC_DEGREE = "docDegree";
         public static final String EXPERIANCE = "experience";
-        public static final String ISPAID_STATUS = "isPaidStatus";
+        public static final String PAID_STATUS = "isPaidStatus";
+        public static final String IS_FAVORITE = "isFavorite";
         public static final String CATEGORY = "category";
         public static final String DOCTOR_GENDER = "doctorGender";
 
@@ -126,7 +127,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         public static final String APPOINTMENT_ID = "appointmentId";
         public static final String APPOINTMENT_DATETIME = "appointmentDateTime";
-        public static final String APPOINTME_TIME = "appointmentTime";
+        public static final String APPOINTMENT_TIME = "appointmentTime";
         public static final String APPOINTMENT_TYPE = "appointmentType";
         public static final String APPOINTMENT_STATUS = "appointmentStatus";
         public static final String TOKEN_NUMBER = "tokenNumber";
@@ -708,12 +709,14 @@ public class AppDBHelper extends SQLiteOpenHelper {
             contentValuesDoc.put(DOC_DATA.SPECIALITY_ID, doctor.getSpecialityId());
             contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality());
             contentValuesDoc.put(DOC_DATA.RATING, doctor.getRating());
-            contentValuesDoc.put(DOC_DATA.ISPREMIUM, doctor.getCategorySpeciality());
+            contentValuesDoc.put(DOC_DATA.IS_PREMIUM, doctor.getCategorySpeciality());
             contentValuesDoc.put(DOC_DATA.DOC_DEGREE, doctor.getDegree());
             contentValuesDoc.put(DOC_DATA.EXPERIANCE, doctor.getExperience());
-            contentValuesDoc.put(DOC_DATA.ISPAID_STATUS, doctor.getPaidStatus());
+            contentValuesDoc.put(DOC_DATA.PAID_STATUS, doctor.getPaidStatus());
             contentValuesDoc.put(DOC_DATA.CATEGORY, doctor.getCategoryName());
             contentValuesDoc.put(DOC_DATA.DOCTOR_GENDER, doctor.getGender());
+            contentValuesDoc.put(DOC_DATA.IS_FAVORITE, doctor.isFavorite() ? 1 : 0);
+
             contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
             contentValuesDoc.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
 
@@ -778,7 +781,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                     contentValuesAppoint.put(DOC_DATA.TOKEN_NUMBER, docDetail.getTokenNumber());
                     contentValuesAppoint.put(DOC_DATA.WAITING_PATIENT_TIME, docDetail.getWaitingPatientTime());
                     contentValuesAppoint.put(DOC_DATA.WAITING_PATIENT_COUNT, docDetail.getWaitingPatientCount());
-                    contentValuesAppoint.put(DOC_DATA.APPOINTME_TIME, docDetail.getAptTime());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_TIME, docDetail.getAptTime());
 
                     db.insert(DOC_DATA.APPOINTMENT_DATA_TABLE, null, contentValuesAppoint);
                 }
@@ -789,13 +792,28 @@ public class AppDBHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
+    public Cursor getAllCardData() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.CARDVIEW_DATA_TABLE, null);
+    }
+
+    public Cursor getAppointmentDoctor() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE, null);
+    }
+
     public Cursor getAllDoctors() {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.DOCTORLIST_DATA_TABLE, null);
     }
 
+    public Cursor getDoctor(int doctorId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCTORLIST_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
+    }
+
     public Cursor getAllClinicsByDoctor(int doctorId) {
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select c.*  from " + DOC_DATA.CLINIC_DATA_TABLE + " c left join " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " dc on dc.clinicId = c.clinicId where dc.doctorId = " + doctorId, null);
+        return db.rawQuery("select c.*, dc.doctorId, dc.clinicFees, dc.appointmentScheduleLimitDays, dc.clinicAppointmentType, dc.clinicServices from " + DOC_DATA.CLINIC_DATA_TABLE + " c inner join " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " dc on dc.clinicId = c.clinicId where dc.doctorId = " + doctorId, null);
     }
 }

@@ -30,12 +30,12 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="300dp">
 
                     <RelativeLayout
                         android:id="@+id/custom_progress_bar"
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="match_parent">
 
                         <ImageView

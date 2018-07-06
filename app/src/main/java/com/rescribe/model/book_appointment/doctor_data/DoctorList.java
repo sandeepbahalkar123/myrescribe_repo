@@ -91,7 +91,11 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("clinicAddress")
     @Expose
     private String clinicAddress;
-    //------
+
+    @SerializedName("specialityId")
+    @Expose
+    private int specialityId;
+
 
     //this parameters are used to sort list by clinicName and doctorName as per functionality
 
@@ -393,6 +397,14 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
 
     //------- THIS IS DONE FOR APPOINTMENT, TO SHOW CONFIRMATION DIALOG BASED ON type="token/appointment" :END
 
+    public int getSpecialityId() {
+        return specialityId;
+    }
+
+    public void setSpecialityId(int specialityId) {
+        this.specialityId = specialityId;
+    }
+
 
     public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
 
@@ -434,7 +446,9 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.tokenNumber = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingPatientTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingPatientCount = ((String) in.readValue((String.class.getClassLoader())));
-            //in.readList(instance.reviewList, (ReviewList.class.getClassLoader()));
+
+            instance.specialityId = ((int) in.readValue((int.class.getClassLoader())));
+
             return instance;
         }
 
@@ -479,6 +493,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(tokenNumber);
         dest.writeValue(waitingPatientTime);
         dest.writeValue(waitingPatientCount);
+
+        dest.writeValue(specialityId);
     }
 
 

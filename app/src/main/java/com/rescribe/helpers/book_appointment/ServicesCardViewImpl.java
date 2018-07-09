@@ -7,14 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.services.IServicesCardViewClickListener;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.DoctorDescriptionBaseActivity;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
+import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmAppointmentActivity;
 import com.rescribe.ui.activities.book_appointment.confirmation_type_activities.ConfirmTokenInfoActivity;
 import com.rescribe.util.RescribeConstants;
 
@@ -211,7 +212,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return temp;
     }
 
-    public static boolean updateFavStatusForDoctorDataObject(DoctorList updatedObject) {
+    public static boolean updateFavStatusForDoctorDataObject(DoctorList updatedObject, AppDBHelper appDBHelper) {
         boolean status = false;
         if (updatedObject != null) {
             for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
@@ -219,6 +220,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 if (updatedObject.getDocId() == tempObject.getDocId()) {
                     tempObject.setFavourite(!tempObject.getFavourite());
                     mReceivedDoctorDataList.set(i, tempObject);
+                    appDBHelper.updateCardTable(tempObject.getDocId(), tempObject.getFavourite() ? 1 : 0, tempObject.getCategoryName());
                     status = true;
                 }
             }

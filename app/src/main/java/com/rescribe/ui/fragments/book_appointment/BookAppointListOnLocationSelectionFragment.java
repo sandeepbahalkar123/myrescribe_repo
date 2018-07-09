@@ -18,6 +18,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -63,6 +64,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     private String mUserSelectedLocation;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
+    private AppDBHelper appDBHelper;
 
     public BookAppointListOnLocationSelectionFragment() {
         // Required empty public constructor
@@ -89,6 +91,9 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     }
 
     private void init(Bundle args) {
+
+        appDBHelper = new AppDBHelper(getContext());
+
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
             mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
@@ -198,7 +203,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                     //--------
                     mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
                 }

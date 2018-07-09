@@ -48,6 +48,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.Common;
@@ -208,6 +209,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private String from;
     private String aptId;
     private String isReschedule;
+    private AppDBHelper appDBHelper;
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -234,6 +236,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     private void init() {
+        appDBHelper = new AppDBHelper(getContext());
         mContext = getContext();
         mSelectedTimeSlot = null;
         mSelectedToTimeSlot = null;
@@ -509,7 +512,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                    boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject, appDBHelper);
                     //----THIS IS DONE FOR, WHEN PAGE OPENED FROM CHAT_ACTIVITY---
                     if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom) && isUpdated) {
                         mClickedDoctorObject.setFavourite(!mClickedDoctorObject.getFavourite());

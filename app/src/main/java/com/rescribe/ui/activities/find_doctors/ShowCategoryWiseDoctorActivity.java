@@ -13,6 +13,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocListAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 27/11/17.
  */
 
-public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperResponse {
+public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,6 +45,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     private DoctorDataHelper doctorDataHelper;
     private String mReceivedTitle;
     private String mClickedItemDataTypeValue;
+    private AppDBHelper appDBHelper;
 
 
     @Override
@@ -53,7 +55,8 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
         ButterKnife.bind(this);
         mDoctorCategoryList = getIntent().getExtras().getParcelableArrayList(getString(R.string.clicked_item_data));
         setSupportActionBar(toolbar);
-        mContext = ShowCategoryWiseDoctor.this;
+        mContext = ShowCategoryWiseDoctorActivity.this;
+        appDBHelper = new AppDBHelper(mContext);
 
         mReceivedTitle = getIntent().getExtras().getString(getString(R.string.toolbarTitle));
         mClickedItemDataTypeValue = getIntent().getExtras().getString(getString(R.string.clicked_item_data_type_value));
@@ -79,7 +82,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     }
 
     private void setUpList() {
-        mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctor) mContext);
+        mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctorActivity) mContext);
         if (getString(R.string.favorite).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getFavouriteDocList(-1);
 
@@ -132,7 +135,7 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
                 //  CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                     //--------
                     mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
 

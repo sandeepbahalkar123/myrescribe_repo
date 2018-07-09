@@ -34,6 +34,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -136,6 +137,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     private ClinicData clinicData;
     private BottomSheetDialog mBottomSheetDialog;
     private ColorGenerator mColorGenerator;
+    private AppDBHelper appDBHelper;
 
     public BookAppointDoctorDescriptionFragment() {
         // Required empty public constructor
@@ -166,7 +168,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     }
 
     private void init() {
-
+        appDBHelper = new AppDBHelper(getContext());
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
         mColorGenerator = ColorGenerator.MATERIAL;
         //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
@@ -371,7 +373,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject, appDBHelper);
                     setFavorite(mClickedDoctorObject.getFavourite());
                 }
                 //    CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());

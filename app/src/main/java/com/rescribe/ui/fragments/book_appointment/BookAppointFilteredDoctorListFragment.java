@@ -17,6 +17,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocListAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -61,6 +62,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private ServicesCardViewImpl mServicesCardViewImpl;
     private HashMap<String, String> mComplaintHashMap;
     private ArrayList<DoctorList> mReceivedPreviousDoctorList;
+    private AppDBHelper appDBHelper;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -72,7 +74,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         // Inflate the layout for this fragment
         View mRootView = inflater.inflate(R.layout.filtered_doc_viewlist_with_bottom_fab_margin, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
-
         init(getArguments());
         return mRootView;
     }
@@ -88,6 +89,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     }
 
     private void init(Bundle args) {
+
+        appDBHelper = new AppDBHelper(getContext());
+
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
             mClickedItemDataTypeValue = args.getString(getString(R.string.clicked_item_data_type_value));
@@ -207,7 +211,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                     //--------
                     mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
                 }

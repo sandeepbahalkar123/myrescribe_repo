@@ -29,6 +29,7 @@ import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -108,6 +109,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private ArrayList<DoctorList> mPreviousLoadedDocList;
     private boolean isFilterApplied = false;
     private String mReceivedTitle = "";
+    private AppDBHelper appDBHelper;
 
     public ArrayList<DoctorList> getmReceivedPreviousDoctorList() {
         return mReceivedPreviousDoctorList;
@@ -137,6 +139,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void init() {
+        appDBHelper = new AppDBHelper(getContext());
         pickSpeciality.setVisibility(View.INVISIBLE);
         recyclerViewLinearLayout.setVisibility(View.INVISIBLE);
         recentDoctorLayout.setVisibility(View.INVISIBLE);
@@ -235,7 +238,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                        mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                         setUpViewPager();
                         if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE) {
                             mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();

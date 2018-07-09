@@ -17,7 +17,6 @@ import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,6 +30,7 @@ import com.rescribe.adapters.find_doctors.FindDoctorsMenuListAdapter;
 import com.rescribe.adapters.find_doctors.ShowDoctorComplaints;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.interfaces.dashboard_menu_click.IOnMenuClickListener;
@@ -119,6 +119,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     private FindDoctorCategoryAdapter mRecentlyVisitedDoctors;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private DashboardMenuList mReceivedDashboardMenuListData;
+    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         getSupportActionBar().setTitle("");
 
         mContext = FindDoctorsActivity.this;
+        appDBHelper = new AppDBHelper(mContext);
         density = CommonMethods.getDeviceResolution(mContext) + "/";
 
         Bundle extras = getIntent().getExtras();
@@ -330,7 +332,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 break;
             case R.id.favouriteDoctors:
                 /*if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3) {*/
-                Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctorActivity.class);
                 viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
                 viewAllFavorite.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.favorite));
                 startActivity(viewAllFavorite);
@@ -341,7 +343,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 break;
             case R.id.recentlyvisitedTextView:
               /*  if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3) {*/
-                Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctorActivity.class);
                 viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
                 viewAllRecentVisited.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.recently_visit_doctor));
 
@@ -353,7 +355,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 break;
             case R.id.sponsoredDoctors:
                /* if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3) {*/
-                Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctor.class);
+                Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctorActivity.class);
                 viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
                 viewAllSponsered.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.sponsored_doctor));
                 startActivity(viewAllSponsered);
@@ -379,7 +381,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
             if (temp.getCommonRespose().isSuccess()) {
                 //--------
-                ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                 //--------
                 setUpViewPager();
             }

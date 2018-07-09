@@ -28,9 +28,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -65,6 +62,7 @@ import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardMenuData;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
+import com.rescribe.model.dashboard_api.card_data.CategoryList;
 import com.rescribe.model.dashboard_api.card_data.DashboardModel;
 import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
 import com.rescribe.model.investigation.Image;
@@ -91,7 +89,6 @@ import com.rescribe.ui.activities.health_repository.HealthRepositoryActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.RescribeConstants;
 
@@ -99,6 +96,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -165,7 +163,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     String previousLocationReceived = "";
     ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
-    //    DashboardDataModel mDashboardDataModel;
     DashboardMenuData mDashboardMenuData;
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
@@ -190,8 +187,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     String snacksTime = "5:00 PM";
 
     private String activityCreatedTimeStamp;
-    private final static String FOLDER_PATH = "images/dashboard/cardBgImage/android/";
-    private String imageBaseURL;
     private NotificationHelper mNotificationPrescriptionHelper;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -225,6 +220,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private String patientId;
     private boolean mIsAppOpenFromLogin;
+    ArrayList<String> cardBgImage = new ArrayList<>();
 
     private void logUser() {
         // TODO: Use the current user's information
@@ -249,12 +245,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mIsAppOpenFromLogin = getIntent().getBooleanExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, false);
 
         activityCreatedTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
-
-        // Pre load
-
-        preLoadBannerImages();
-
-        // Pre load end
 
         appDBHelper = new AppDBHelper(mContext);
         mDashboardHelper = new DashboardHelper(this, this);
@@ -284,48 +274,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 checkAndroidVersion();
             }
         });
-    }
-
-    @SuppressLint("CheckResult")
-    private void preLoadBannerImages() {
-        String density = CommonMethods.getDeviceResolution(mContext) + "/";
-        imageBaseURL = Config.BASE_URL + FOLDER_PATH + density;
-
-        RequestOptions requestOptions1 = new RequestOptions();
-        requestOptions1.dontAnimate();
-        requestOptions1.signature(new ObjectKey(activityCreatedTimeStamp + imageBaseURL + "myappointments.jpg"));
-
-        Glide.with(mContext)
-                .load(imageBaseURL + "myappointments.jpg")
-                .apply(requestOptions1)
-                .into(preloadView);
-
-        RequestOptions requestOptions2 = new RequestOptions();
-        requestOptions2.dontAnimate();
-        requestOptions2.signature(new ObjectKey(activityCreatedTimeStamp + imageBaseURL + "sponsored.jpg"));
-
-        Glide.with(mContext)
-                .load(imageBaseURL + "sponsored.jpg")
-                .apply(requestOptions2)
-                .into(preloadView);
-
-        RequestOptions requestOptions3 = new RequestOptions();
-        requestOptions3.dontAnimate();
-        requestOptions3.signature(new ObjectKey(activityCreatedTimeStamp + imageBaseURL + "recentlyvisited.jpg"));
-
-        Glide.with(mContext)
-                .load(imageBaseURL + "recentlyvisited.jpg")
-                .apply(requestOptions3)
-                .into(preloadView);
-
-        RequestOptions requestOptions4 = new RequestOptions();
-        requestOptions4.dontAnimate();
-        requestOptions4.signature(new ObjectKey(activityCreatedTimeStamp + imageBaseURL + "favorite.jpg"));
-
-        Glide.with(mContext)
-                .load(imageBaseURL + "favorite.jpg")
-                .apply(requestOptions4)
-                .into(preloadView);
     }
 
     @Override
@@ -411,15 +359,17 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         switch (mOldDataTag) {
             case TASK_DASHBOARD_API:
-              /*  DashBoardBaseModel mDashboardBaseModel = (DashBoardBaseModel) customResponse;
-                mDashboardDataModel = mDashboardBaseModel.getDashboardModel();
-                setDoctors();*/
 
                 DashboardModel dashboardModel = (DashboardModel) customResponse;
                 if (dashboardModel.getCommon().getStatusCode().equals(SUCCESS)) {
 
                     // inset card doctors details in database
-                    appDBHelper.addCardDoctors(dashboardModel.getData().getCategoryList());
+                    List<CategoryList> categoryList = dashboardModel.getData().getCategoryList();
+
+                    for (CategoryList category : categoryList)
+                        cardBgImage.add(category.getUrl());
+
+                    appDBHelper.addCardDoctors(categoryList);
 
                     if (dashboardModel.getData().isIsDocUpdated()) {
                         mDashboardHelper.getDoctorList();
@@ -427,12 +377,21 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         // Show doctor data from Database
                         setUpViewPager();
                     }
+
+                    if (mIsAppOpenFromLogin) {
+                        mIsAppOpenFromLogin = false;
+                        doGetMedicationNotificationOnNewLogin();
+                    }
                 }
 
                 break;
 
             case TASK_DOCTORLIST_API:
                 DoctorListModel doctorListModel = (DoctorListModel) customResponse;
+
+                // delete previous records
+//                appDBHelper.deleteAllDoctors();
+
                 // insert doctor data in database and show
                 appDBHelper.addDoctors(doctorListModel.getData().getDoctorList());
                 setUpViewPager();
@@ -447,7 +406,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                        mDashboardDataBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                         setUpViewPager();
                     }
                     //     CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
@@ -460,6 +419,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     private void setUpViewPager() {
+
+        swipeToRefresh.setRefreshing(false);
 
         // set All doctors
         Cursor cardCursor = appDBHelper.getAllCardData();
@@ -489,12 +450,20 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
                     doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
 
+                    Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+                    if (appointmentByDoctorCursor.moveToFirst()) {
+                        // get from appointment table
+                        doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
+                        doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
+                    }
+
                     ArrayList<ClinicData> clinicDataList = new ArrayList<>();
 
                     // loop start
 
                     Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
 
+                    boolean isFirst = true;
                     if (clinicCursor.moveToFirst()) {
                         do {
 
@@ -502,7 +471,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                             clinicData.setClinicName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_NAME)));
                             clinicData.setLocationId(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
                             clinicData.setAmount(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_FEES)));
-                            doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
+                            clinicData.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
                             clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
                             clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
                             clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
@@ -511,12 +480,24 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                             clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
 
                             // set services
-                            String[] split = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE)).split(",");
-//                            clinicData.setDocServices((ArrayList<String>) Arrays.asList(split));
+                            String services = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE));
+                            if (!services.isEmpty()) {
+                                String[] split = services.split(",");
+                                ArrayList<String> servicesList = new ArrayList<>(Arrays.asList(split));
+                                clinicData.setDocServices(servicesList);
+                            }
 
-                            // get from appointment table
-//                            doctorList.setAptDate(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATETIME)));
-//                            doctorList.setAptTime(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
+                            if (isFirst) {
+                                // set clinic appointment book type
+                                Cursor doctorVsClinic = appDBHelper.getDoctorVsClinicById(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)), clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
+                                if (doctorVsClinic.moveToFirst()) {
+                                    // get from appointment table
+                                    doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+                                }
+
+                                doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
+                                isFirst = false;
+                            }
 
                             clinicDataList.add(clinicData);
                         } while (clinicCursor.moveToNext());
@@ -549,26 +530,21 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         dataMap.put(getString(R.string.favorite), favoriteList.size());
 
         ArrayList<DoctorList> mergeList = new ArrayList<>();
-        ArrayList<String> cardBgImage = new ArrayList<>();
 
-        if (myAppoint.size() > 0) {
+        if (!myAppoint.isEmpty()) {
             mergeList.add(myAppoint.get(0));
-            cardBgImage.add(imageBaseURL + "myappointments.jpg");
         }
 
-        if (sponsered.size() > 0) {
+        if (!sponsered.isEmpty()) {
             mergeList.add(sponsered.get(0));
-            cardBgImage.add(imageBaseURL + "sponsored.jpg");
         }
 
-        if (recently_visit_doctor.size() > 0) {
+        if (!recently_visit_doctor.isEmpty()) {
             mergeList.add(recently_visit_doctor.get(0));
-            cardBgImage.add(imageBaseURL + "recentlyvisited.jpg");
         }
 
-        if (favoriteList.size() > 0) {
+        if (!favoriteList.isEmpty()) {
             mergeList.add(favoriteList.get(0));
-            cardBgImage.add(imageBaseURL + "favorite.jpg");
         }
 
         //------------
@@ -631,6 +607,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
 //        if (mOldDataTag.equals(TASK_DASHBOARD_API))
 //            custom_progress_bar.setVisibility(View.GONE);
+        swipeToRefresh.setRefreshing(false);
     }
 
 
@@ -890,9 +867,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
         checkAndroidVersion();
-       /* if (mDashboardDataModel != null) {
-            setUpViewPager();
-        }*/
+        setUpViewPager();
 
         int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
         setBadgeCount(notificationCount);

@@ -86,53 +86,53 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public interface DOC_DATA {
 
-        public static final String CARDVIEW_DATA_TABLE = "CardViewTable";
-        public static final String DOCTORLIST_DATA_TABLE = "Doctor";
-        public static final String CLINIC_DATA_TABLE = "Clinic";
-        public static final String DOCOTORVSCLINIC_DATA_TABLE = "DoctorVsClinic";
-        public static final String APPOINTMENT_DATA_TABLE = "Appointment";
+        String CARDVIEW_DATA_TABLE = "CardViewTable";
+        String DOCTORLIST_DATA_TABLE = "Doctor";
+        String CLINIC_DATA_TABLE = "Clinic";
+        String DOCOTORVSCLINIC_DATA_TABLE = "DoctorVsClinic";
+        String APPOINTMENT_DATA_TABLE = "Appointment";
 
-        public static final String CARD_TYPE = "cardType";
+        String CARD_TYPE = "cardType";
 
-        public static final String DOC_ID = "doctorId";
-        public static final String DOC_NAME = "doctorName";
-        public static final String PHONE_NUMBER = "phoneNumber";
-        public static final String ICON_URL = "iconURL";
-        public static final String ABOUT_DOCTOR = "aboutDoctor";
-        public static final String SPECIALITY_ID = "specialityId";
-        public static final String SPECIALITY = "speciality";
-        public static final String RATING = "rating";
-        public static final String IS_PREMIUM = "isPremium";
-        public static final String DOC_DEGREE = "docDegree";
-        public static final String EXPERIANCE = "experience";
-        public static final String PAID_STATUS = "isPaidStatus";
-        public static final String IS_FAVORITE = "isFavorite";
-        public static final String CATEGORY = "category";
-        public static final String DOCTOR_GENDER = "doctorGender";
+        String DOC_ID = "doctorId";
+        String DOC_NAME = "doctorName";
+        String PHONE_NUMBER = "phoneNumber";
+        String ICON_URL = "iconURL";
+        String ABOUT_DOCTOR = "aboutDoctor";
+        String SPECIALITY_ID = "specialityId";
+        String SPECIALITY = "speciality";
+        String RATING = "rating";
+        String IS_PREMIUM = "isPremium";
+        String DOC_DEGREE = "docDegree";
+        String EXPERIANCE = "experience";
+        String PAID_STATUS = "isPaidStatus";
+        String IS_FAVORITE = "isFavorite";
+        String CATEGORY = "category";
+        String DOCTOR_GENDER = "doctorGender";
 
-        public static final String CLINIC_ID = "clinicId";
-        public static final String CLINIC_NAME = "clinicName";
-        public static final String CLINIC_LATITUDE = "clinicLatitude";
-        public static final String CLINIC_LONGITUDE = "clinicLongitude";
-        public static final String CLINIC_ADDRESS = "clinicAddress";
-        public static final String CLINIC_AREA_NAME = "clinicAreaName";
-        public static final String CLINIC_CITY_NAME = "clinicCityName";
-        public static final String MODIFIED_NDATE = "modifiedDate";
-        public static final String CREATED_DATE = "createdDate";
+        String CLINIC_ID = "clinicId";
+        String CLINIC_NAME = "clinicName";
+        String CLINIC_LATITUDE = "clinicLatitude";
+        String CLINIC_LONGITUDE = "clinicLongitude";
+        String CLINIC_ADDRESS = "clinicAddress";
+        String CLINIC_AREA_NAME = "clinicAreaName";
+        String CLINIC_CITY_NAME = "clinicCityName";
+        String MODIFIED_NDATE = "modifiedDate";
+        String CREATED_DATE = "createdDate";
 
-        public static final String CLINIC_FEES = "clinicFees";
-        public static final String APPOINTMENT_SHEDULE_LIMIT_DAYS = "appointmentScheduleLimitDays";
-        public static final String CLINIC_APPOINTMENT_TYPE = "clinicAppointmentType";
-        public static final String CLINIC_SERVICE = "clinicServices";
+        String CLINIC_FEES = "clinicFees";
+        String APPOINTMENT_SCHEDULE_LIMIT_DAYS = "appointmentScheduleLimitDays";
+        String CLINIC_APPOINTMENT_TYPE = "clinicAppointmentType";
+        String CLINIC_SERVICE = "clinicServices";
 
-        public static final String APPOINTMENT_ID = "appointmentId";
-        public static final String APPOINTMENT_DATETIME = "appointmentDateTime";
-        public static final String APPOINTMENT_TIME = "appointmentTime";
-        public static final String APPOINTMENT_TYPE = "appointmentType";
-        public static final String APPOINTMENT_STATUS = "appointmentStatus";
-        public static final String TOKEN_NUMBER = "tokenNumber";
-        public static final String WAITING_PATIENT_TIME = "waitingPatientTime";
-        public static final String WAITING_PATIENT_COUNT = "waitingPatientCount";
+        String APPOINTMENT_ID = "appointmentId";
+        String APPOINTMENT_DATE = "appointmentDate";
+        String APPOINTMENT_TIME = "appointmentTime";
+        String APPOINTMENT_TYPE = "appointmentType";
+        String APPOINTMENT_STATUS = "appointmentStatus";
+        String TOKEN_NUMBER = "tokenNumber";
+        String WAITING_PATIENT_TIME = "waitingPatientTime";
+        String WAITING_PATIENT_COUNT = "waitingPatientCount";
     }
 
     static AppDBHelper instance = null;
@@ -689,11 +689,25 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
     //----- Notification storing : END
 
+    public void deleteAllDoctors() {
+        // delete all pre data
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, null,null);
+        db.delete(DOC_DATA.DOCTORLIST_DATA_TABLE, null,null);
+        db.delete(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null,null);
+        db.delete(DOC_DATA.APPOINTMENT_DATA_TABLE, null,null);
+        db.delete(DOC_DATA.CLINIC_DATA_TABLE, null,null);
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
     public void addDoctors(List<DoctorList> doctorList) {
 
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
+
         ContentValues contentValuesDoc = new ContentValues();
         ContentValues contentValuesClinic = new ContentValues();
         ContentValues contentValuesClinicVSDoc = new ContentValues();
@@ -741,9 +755,9 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
                 contentValuesClinicVSDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
                 contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_FEES, clinic.getAmount());
-                contentValuesClinicVSDoc.put(DOC_DATA.APPOINTMENT_SHEDULE_LIMIT_DAYS, clinic.getApptScheduleLmtDays());
+                contentValuesClinicVSDoc.put(DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS, clinic.getApptScheduleLmtDays());
                 contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_APPOINTMENT_TYPE, clinic.getAppointmentType());
-                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_SERVICE, CommonMethods.listToString(clinic.getServices(), ","));
+                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_SERVICE, clinic.getServices().isEmpty() ? "" : CommonMethods.listToString(clinic.getServices(), ","));
 
                 db.insert(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null, contentValuesClinicVSDoc);
             }
@@ -775,7 +789,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                     contentValuesAppoint.put(DOC_DATA.APPOINTMENT_ID, docDetail.getBookId());
                     contentValuesAppoint.put(DOC_DATA.DOC_ID, docDetail.getDocId());
                     contentValuesAppoint.put(DOC_DATA.CLINIC_ID, docDetail.getLocationId());
-                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_DATETIME, docDetail.getAptTime());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_DATE, docDetail.getAptDate());
                     contentValuesAppoint.put(DOC_DATA.APPOINTMENT_TYPE, docDetail.getBookType());
                     contentValuesAppoint.put(DOC_DATA.APPOINTMENT_STATUS, docDetail.getPaidStatus());
                     contentValuesAppoint.put(DOC_DATA.TOKEN_NUMBER, docDetail.getTokenNumber());
@@ -797,6 +811,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + DOC_DATA.CARDVIEW_DATA_TABLE, null);
     }
 
+    public Cursor getAppointmentByDoctor(int doctorId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
+    }
+
     public Cursor getAppointmentDoctor() {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE, null);
@@ -812,8 +831,33 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + DOC_DATA.DOCTORLIST_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
     }
 
+    public Cursor getDoctorVsClinicById(int doctorId, int clinicId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId + " AND " + DOC_DATA.CLINIC_ID + " = " + clinicId, null);
+    }
+
     public Cursor getAllClinicsByDoctor(int doctorId) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select c.*, dc.doctorId, dc.clinicFees, dc.appointmentScheduleLimitDays, dc.clinicAppointmentType, dc.clinicServices from " + DOC_DATA.CLINIC_DATA_TABLE + " c inner join " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " dc on dc.clinicId = c.clinicId where dc.doctorId = " + doctorId, null);
+    }
+
+    public void updateCardTable(int doctorId, int isFavorite, String categoryName) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValuesDoc = new ContentValues();
+        ContentValues contentValuesCard = new ContentValues();
+
+        db.beginTransaction();
+        contentValuesDoc.put(DOC_DATA.IS_FAVORITE, isFavorite);
+        db.update(DOC_DATA.DOCTORLIST_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ?", new String[]{String.valueOf(doctorId)});
+
+        if (isFavorite == 1) {
+            contentValuesCard.put(DOC_DATA.DOC_ID, doctorId);
+            contentValuesCard.put(DOC_DATA.CARD_TYPE, categoryName);
+            db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
+        } else
+            db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CARD_TYPE + " = ?", new String[]{String.valueOf(doctorId), categoryName});
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 }

@@ -177,6 +177,7 @@ public class CommonMethods {
         dString.append(year);
         return dString.toString();
     }
+
     public static String getCurrentDateWithSlash() // for enrollmentId
     {
         Calendar calendar = Calendar.getInstance();
@@ -711,7 +712,7 @@ public class CommonMethods {
             abbreviation = R.drawable.attachment_opd;
         else if (caseStudyName.contains("systemic examination") || caseStudyName.contains("examination"))
             abbreviation = R.drawable.examination;
-        else if (caseStudyName.contains("operative procedure")  || caseStudyName.contains("procedure"))
+        else if (caseStudyName.contains("operative procedure") || caseStudyName.contains("procedure"))
             abbreviation = R.drawable.procedure;
 
         return abbreviation;
@@ -1085,9 +1086,10 @@ public class CommonMethods {
 
     public static String listToString(List<String> listOfString, String separator) {
         StringBuilder csvBuilder = new StringBuilder();
-        for(String service : listOfString){
-            csvBuilder.append(service);
-            csvBuilder.append(separator);
+        for (int index = 0; index < listOfString.size(); index++) {
+            csvBuilder.append(listOfString.get(index));
+            if (index != listOfString.size() - 1)
+                csvBuilder.append(separator);
         }
         return csvBuilder.toString();
     }

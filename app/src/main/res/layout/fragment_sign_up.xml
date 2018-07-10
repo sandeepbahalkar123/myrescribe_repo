@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/your_health"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/sp13"
                 app:customFont="@string/roboto_medium" />
 
@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/editTextName"
-                        app:backgroundTint="@color/white" />
+                        app:backgroundTint="@color/colorAccent" />
 
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/editTextName"
@@ -68,7 +68,7 @@
                         android:layout_alignRight="@+id/editTextName"
                         android:layout_alignStart="@+id/editTextName"
                         android:layout_below="@+id/editTextName"
-                        android:background="@color/white" />
+                        android:background="@color/colorAccent" />
 
                     <View
                         android:id="@+id/salutationView"
@@ -81,7 +81,7 @@
                         android:layout_below="@+id/salutationSpinner"
                         android:layout_marginEnd="@dimen/dp12"
                         android:layout_marginRight="@dimen/dp12"
-                        android:background="@color/white" />
+                        android:background="@color/colorAccent" />
 
                 </RelativeLayout>
                 <!--  Email Label -->
@@ -100,7 +100,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignRight="@+id/genderSpinner"
                         android:layout_alignStart="@+id/genderSpinner"
-                        android:background="@color/white" />
+                        android:background="@color/colorAccent" />
 
                     <!--android:layout_marginEnd="@dimen/dp12"
                     android:layout_marginRight="@dimen/dp12"-->
@@ -110,7 +110,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/genderView"
-                        app:backgroundTint="@color/white" />
+                        app:backgroundTint="@color/colorAccent" />
 
                 </RelativeLayout>
 
@@ -125,7 +125,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
-                    android:background="@color/white" />
+                    android:background="@color/colorAccent" />
 
                 <EditText
                     android:id="@+id/editTextEmailID"
@@ -138,7 +138,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
-                    android:background="@color/white" />
+                    android:background="@color/colorAccent" />
 
                 <EditText
                     android:id="@+id/editTextPassword"
@@ -154,7 +154,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
-                    android:background="@color/white" />
+                    android:background="@color/colorAccent" />
 
                 <EditText
                     android:id="@+id/editTextMobileNo"
@@ -167,7 +167,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
-                    android:background="@color/white" />
+                    android:background="@color/colorAccent" />
 
                 <Button
                     android:id="@+id/btnSignUp"
@@ -196,7 +196,7 @@
                     android:padding="@dimen/dp6"
                     android:text="@string/log_in"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorAccent"
                     android:textSize="@dimen/sp14"
                     android:textStyle="bold"
                     android:typeface="sans" />
@@ -222,8 +222,7 @@
                 android:layout_marginLeft="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp10"
                 android:gravity="center_vertical"
-                app:srcCompat="@drawable/or"
-                android:textColor="@color/white" />
+                app:srcCompat="@drawable/or" />
 
             <ImageView
                 android:id="@+id/signUpWithFacebook"
@@ -234,8 +233,7 @@
                 android:layout_marginRight="@dimen/dp20"
                 android:layout_marginTop="@dimen/dp16"
                 android:gravity="center_vertical"
-                app:srcCompat="@drawable/fb_logo_copy"
-                android:textColor="@color/white" />
+                app:srcCompat="@drawable/fb_logo_copy"/>
 
             <ImageView
                 android:id="@+id/signUpWithGoogle"
@@ -246,8 +244,7 @@
                 android:layout_marginRight="@dimen/dp20"
                 android:layout_marginTop="@dimen/dp16"
                 android:gravity="center_vertical"
-                app:srcCompat="@drawable/gmail_copy"
-                android:textColor="@color/white" />
+                app:srcCompat="@drawable/gmail_copy" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -255,8 +252,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp16"
                 android:gravity="center_vertical"
-                app:srcCompat="@drawable/by_continuing_you_accept_the_terms_of_use_and_privacy_policy"
-                android:textColor="@color/white" />
+                app:srcCompat="@drawable/privacy_policy"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

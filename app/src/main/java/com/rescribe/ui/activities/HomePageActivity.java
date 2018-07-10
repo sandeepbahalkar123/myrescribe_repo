@@ -393,8 +393,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             case TASK_DOCTORLIST_API:
                 DoctorListModel doctorListModel = (DoctorListModel) customResponse;
                 if (doctorListModel.getCommon().getStatusCode().equals(SUCCESS)) {
-                    // delete previous records
-//                appDBHelper.deleteAllDoctors();
 
                     // insert doctor data in database and show
                     appDBHelper.addDoctors(doctorListModel.getData().getDoctorList());

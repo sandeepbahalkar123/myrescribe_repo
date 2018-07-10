@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/your_health"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/sp13"
                 app:customFont="@string/roboto_medium" />
 
@@ -51,7 +51,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
-                    android:background="@color/white" />
+                    android:background="@color/colorAccent" />
 
 
                 <EditText
@@ -68,7 +68,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp1"
-                    android:background="@color/white" />
+                    android:background="@color/colorAccent" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/btnOtp"
@@ -88,7 +88,7 @@
                     android:paddingStart="@dimen/dp8"
                     android:paddingTop="@dimen/dp6"
                     android:text="@string/using_otp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorAccent"
                     android:textSize="@dimen/sp16"
                     app:customFont="@string/roboto_regular" />
 
@@ -122,7 +122,7 @@
                         android:gravity="center"
                         android:padding="@dimen/dp6"
                         android:text="@string/forgot_password"
-                        android:textColor="@color/white"
+                        android:textColor="@color/colorAccent"
                         android:textSize="@dimen/sp14"
                         android:textStyle="bold" />
 
@@ -131,7 +131,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/dp10"
                         android:layout_marginRight="@dimen/dp10"
-                        android:background="@color/white" />
+                        android:background="@color/colorAccent" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/signup"
@@ -140,7 +140,7 @@
                         android:gravity="center"
                         android:padding="@dimen/dp6"
                         android:text="@string/sign_up"
-                        android:textColor="@color/white"
+                        android:textColor="@color/colorAccent"
                         android:textSize="@dimen/sp14"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -196,7 +196,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp16"
                 android:gravity="center_vertical"
-                app:srcCompat="@drawable/by_continuing_you_accept_the_terms_of_use_and_privacy_policy"
+                app:srcCompat="@drawable/privacy_policy"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>

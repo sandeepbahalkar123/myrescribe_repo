@@ -734,17 +734,15 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 contentValuesDoc.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
 
                 if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.ADD)) {
-
                     contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
-
                     db.insertWithOnConflict(DOC_DATA.DOCTORLIST_DATA_TABLE, null, contentValuesDoc, SQLiteDatabase.CONFLICT_IGNORE);
                 } else if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.UPDATE)) {
                     // update doctor related info
                     db.update(DOC_DATA.DOCTORLIST_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ? ", new String[]{String.valueOf(doctor.getDocId())});
                 }
-            }
 
-            addClinics(db, contentValuesClinic, contentValuesClinicVSDoc, doctor);
+                addClinics(db, contentValuesClinic, contentValuesClinicVSDoc, doctor);
+            }
         }
 
         db.setTransactionSuccessful();
@@ -753,40 +751,37 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     private void addClinics(SQLiteDatabase db, ContentValues contentValuesClinic, ContentValues contentValuesClinicVSDoc, DoctorList doctor) {
+        for (ClinicList clinic : doctor.getClinicList()) {
 
-        if (!doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.REMOVE)) {
-            for (ClinicList clinic : doctor.getClinicList()) {
+            // insert clinic data
+            contentValuesClinic.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
+            contentValuesClinic.put(DOC_DATA.CLINIC_NAME, clinic.getClinicName());
+            contentValuesClinic.put(DOC_DATA.CLINIC_LATITUDE, clinic.getLocationLat());
+            contentValuesClinic.put(DOC_DATA.CLINIC_LONGITUDE, clinic.getLocationLong());
+            contentValuesClinic.put(DOC_DATA.CLINIC_ADDRESS, clinic.getClinicAddress());
+            contentValuesClinic.put(DOC_DATA.CLINIC_AREA_NAME, clinic.getAreaName());
+            contentValuesClinic.put(DOC_DATA.CLINIC_CITY_NAME, clinic.getCityName());
+            contentValuesClinic.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+            contentValuesClinic.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
 
-                // insert clinic data
-                contentValuesClinic.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
-                contentValuesClinic.put(DOC_DATA.CLINIC_NAME, clinic.getClinicName());
-                contentValuesClinic.put(DOC_DATA.CLINIC_LATITUDE, clinic.getLocationLat());
-                contentValuesClinic.put(DOC_DATA.CLINIC_LONGITUDE, clinic.getLocationLong());
-                contentValuesClinic.put(DOC_DATA.CLINIC_ADDRESS, clinic.getClinicAddress());
-                contentValuesClinic.put(DOC_DATA.CLINIC_AREA_NAME, clinic.getAreaName());
-                contentValuesClinic.put(DOC_DATA.CLINIC_CITY_NAME, clinic.getCityName());
-                contentValuesClinic.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
-                contentValuesClinic.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+            // if clinic exist then update else insert
+            db.insertWithOnConflict(DOC_DATA.CLINIC_DATA_TABLE, null, contentValuesClinic, SQLiteDatabase.CONFLICT_IGNORE);
 
-                // if clinic exist then update else insert
-                db.insertWithOnConflict(DOC_DATA.CLINIC_DATA_TABLE, null, contentValuesClinic, SQLiteDatabase.CONFLICT_IGNORE);
+            // insert clinic vs doctors
+            contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
+            contentValuesClinicVSDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
+            contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_FEES, clinic.getAmount());
+            contentValuesClinicVSDoc.put(DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS, clinic.getApptScheduleLmtDays());
+            contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_APPOINTMENT_TYPE, clinic.getAppointmentType());
+            contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_SERVICE, clinic.getServices().isEmpty() ? "" : CommonMethods.listToString(clinic.getServices(), ","));
 
-                // insert clinic vs doctors
-                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
-                contentValuesClinicVSDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
-                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_FEES, clinic.getAmount());
-                contentValuesClinicVSDoc.put(DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS, clinic.getApptScheduleLmtDays());
-                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_APPOINTMENT_TYPE, clinic.getAppointmentType());
-                contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_SERVICE, clinic.getServices().isEmpty() ? "" : CommonMethods.listToString(clinic.getServices(), ","));
-
-                // if clinic and doc exist then update else insert
-                Cursor checkCursor = db.rawQuery("select * from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctor.getDocId() + " AND " + DOC_DATA.CLINIC_ID + " = " + clinic.getLocationId(), null);
-                if (checkCursor.moveToFirst())
-                    db.update(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, contentValuesClinicVSDoc, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CLINIC_ID + " = ?", new String[]{String.valueOf(doctor.getDocId()), String.valueOf(clinic.getLocationId())});
-                else
-                    db.insert(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null, contentValuesClinicVSDoc);
-                checkCursor.close();
-            }
+            // if clinic and doc exist then update else insert
+            Cursor checkCursor = db.rawQuery("select * from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctor.getDocId() + " AND " + DOC_DATA.CLINIC_ID + " = " + clinic.getLocationId(), null);
+            if (checkCursor.moveToFirst())
+                db.update(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, contentValuesClinicVSDoc, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CLINIC_ID + " = ?", new String[]{String.valueOf(doctor.getDocId()), String.valueOf(clinic.getLocationId())});
+            else
+                db.insert(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null, contentValuesClinicVSDoc);
+            checkCursor.close();
         }
     }
 

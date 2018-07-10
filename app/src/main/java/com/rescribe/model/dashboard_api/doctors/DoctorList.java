@@ -62,7 +62,7 @@ public class DoctorList implements Parcelable {
 
     @SerializedName("docInfoFlag")
     @Expose
-    private String docInfoFlag;
+    private String docInfoFlag = "add";
 
     public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
 

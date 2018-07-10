@@ -1,6 +1,5 @@
 package com.rescribe.ui.activities.book_appointment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,13 +13,11 @@ import android.widget.ImageView;
 
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
-import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -93,7 +90,7 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
                 break;
             case R.id.locationTextView:
                 isLocationChangeViewClicked = true;
-                Intent start = new Intent(this, BookAppointFindLocation.class);
+                Intent start = new Intent(this, BookAppointFindLocationActivity.class);
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }

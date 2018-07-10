@@ -29,6 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -54,20 +55,24 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel;
+import com.rescribe.model.book_appointment.search_doctors.RecentlyVisitedAreaList;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import droidninja.filepicker.utils.GridSpacingItemDecoration;
+
 import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
-public class BookAppointFindLocation extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+public class BookAppointFindLocationActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, HelperResponse, ShowPopularPlacesAdapter.OnPopularPlacesListener, RecentPlacesAdapter.OnRecentPlacesListener {
 
     public static final String TAG = "BookApFindLocation";
@@ -122,7 +127,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         setContentView(R.layout.activity_book_appoint_select_location);
         ButterKnife.bind(this);
 
-        mContext = BookAppointFindLocation.this;
+        mContext = BookAppointFindLocationActivity.this;
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -159,7 +164,8 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
         mDoctorDataHelper.doGetRecentlyVisitedDoctorPlacesData();
 
     }
-  //on start Typing field places adapter is set to show suggestions of location
+
+    //on start Typing field places adapter is set to show suggestions of location
     private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -184,7 +190,8 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
             getAddress(place.getLatLng().latitude, place.getLatLng().longitude, true);
         }
     };
- //To get desired location as per business requirement
+
+    //To get desired location as per business requirement
     private String getArea(Address obj) {
 
         if (obj.getThoroughfare() != null)
@@ -211,9 +218,10 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 break;
         }
     }
-   //Get desired address as per current location or by selection of address
+
+    //Get desired address as per current location or by selection of address
     public void getAddress(double lat, double lng, boolean isFromAutoCompleteTextLocation) {
-        Geocoder geocoder = new Geocoder(BookAppointFindLocation.this, Locale.getDefault());
+        Geocoder geocoder = new Geocoder(BookAppointFindLocationActivity.this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
 
@@ -274,10 +282,11 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                     int spanCount = 3; // 3 columns
                     int spacing = 20; // 50px
                     boolean includeEdge = true;
+                    layoutManager.setAutoMeasureEnabled(true);
+                    popularPlacesRecyclerView.setNestedScrollingEnabled(false);
                     popularPlacesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
                     ShowPopularPlacesAdapter mShowPopularPlacesAdapter = new ShowPopularPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getAreaList(), this);
                     popularPlacesRecyclerView.setAdapter(mShowPopularPlacesAdapter);
-                    popularPlacesRecyclerView.setNestedScrollingEnabled(false);
                 } else {
                     tryLocations.setVisibility(View.GONE);
                 }
@@ -285,9 +294,9 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                     recentlyVisitedPlaces.setVisibility(View.VISIBLE);
                     RecentPlacesAdapter mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
                     LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-                    recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
+                    linearlayoutManager.setAutoMeasureEnabled(true);
                     recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);
-                    recentlyVisitedRecyclerView.setHasFixedSize(true);
+                    recentlyVisitedRecyclerView.setLayoutManager(linearlayoutManager);
                     recentlyVisitedRecyclerView.setAdapter(mRecentPlacesAdapter);
                 } else {
                     recentlyVisitedPlaces.setVisibility(View.GONE);
@@ -324,8 +333,16 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     }
 
     @Override
-    public void onClickOfRecentPlaces(String location) {
-        RescribeApplication.setUserSelectedLocationInfo(this, null, location);
+    public void onClickOfRecentPlaces(RecentlyVisitedAreaList recentlyVisitedArea) {
+        String area;
+
+        if (recentlyVisitedArea.getAreaName() != null) {
+            if (!recentlyVisitedArea.getAreaName().isEmpty())
+                area = recentlyVisitedArea.getAreaName();
+            else area = recentlyVisitedArea.getCity();
+        } else area = recentlyVisitedArea.getCity();
+
+        RescribeApplication.setUserSelectedLocationInfo(this, null,  area + ", " + recentlyVisitedArea.getCity());
         finish();
         openLocationSelectionScreen();
     }
@@ -420,14 +437,14 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
 
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
-                        if (ContextCompat.checkSelfPermission(BookAppointFindLocation.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, BookAppointFindLocation.this);
+                        if (ContextCompat.checkSelfPermission(BookAppointFindLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, BookAppointFindLocationActivity.this);
                         }
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
 
                         try {
-                            status.startResolutionForResult(BookAppointFindLocation.this, REQUEST_CHECK_SETTINGS);
+                            status.startResolutionForResult(BookAppointFindLocationActivity.this, REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         }
@@ -435,7 +452,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         // Location settings are not satisfied. However, we have no way
                         // to fix the settings so we won't show the dialog.
-                        Toast.makeText(BookAppointFindLocation.this, "Please turn on location from settings.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(BookAppointFindLocationActivity.this, "Please turn on location from settings.", Toast.LENGTH_LONG).show();
                         break;
                 }
             }
@@ -477,7 +494,7 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
                 .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(BookAppointFindLocation.this,
+                        ActivityCompat.requestPermissions(BookAppointFindLocationActivity.this,
                                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
                     }
                 })
@@ -588,12 +605,12 @@ public class BookAppointFindLocation extends AppCompatActivity implements Google
     // End Location Things
 
 
-    private void openLocationSelectionScreen(){
+    private void openLocationSelectionScreen() {
         if (getString(R.string.book_appointment).equalsIgnoreCase(mOpeningMode)) {
             Intent i = new Intent(this, BookAppointListOnLocationSelection.class);
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-            i.putExtras( bundle);
+            i.putExtras(bundle);
             startActivity(i);
         }
     }

@@ -332,7 +332,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.locationTextView:
-                Intent start = new Intent(this, BookAppointFindLocation.class);
+                Intent start = new Intent(this, BookAppointFindLocationActivity.class);
                 startActivity(start);
                 break;
         }

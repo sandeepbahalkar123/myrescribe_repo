@@ -1,8 +1,6 @@
 package com.rescribe.util;
 
 
-import android.widget.TextView;
-
 /**
  * @author Sandeep Bahalkar
  */
@@ -293,14 +291,10 @@ public class RescribeConstants {
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";
     public static String TEXT_COLOR = "#000000";
 
-    public static class PRESCRIPTION_LIST_PARAMS {
-        public static final String PATIENT_NAME = "User-ID";
-        public static final String FILE_TYPE = "fileType";
-        public static final String DATE_TYPE = "dateType";
-        public static final String FROM_DATE = "fromDate";
-        public static final String TO_DATE = "toDate";
-        public static final String ANNOTATION_TEXT = "annotationText";
-        public static final String DOC_TYPE_ID = "DocTypeId";
+    public interface DOC_STATUS {
+        String ADD = "add";
+        String UPDATE = "update";
+        String REMOVE = "remove";
     }
 
     public static class DATE_PATTERN {
@@ -350,7 +344,7 @@ public class RescribeConstants {
     }
 
     public static final String[] SALUTATION_SOCIALMEDIA = {"Mr.", "Mrs.", "Miss", "Other"};
-    public static final String[] SALUTATION = {"","Mr.", "Mrs.", "Miss", "Other"};
+    public static final String[] SALUTATION = {"", "Mr.", "Mrs.", "Miss", "Other"};
 
     public static final String[] GENDER = {"MALE", "FEMALE", "TRANSGENDER"};
 

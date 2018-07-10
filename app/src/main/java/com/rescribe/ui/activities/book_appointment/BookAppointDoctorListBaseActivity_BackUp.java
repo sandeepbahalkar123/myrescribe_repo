@@ -215,7 +215,7 @@ public class BookAppointDoctorListBaseActivity_BackUp extends AppCompatActivity 
                 break;
             case R.id.locationTextView:
                 //    BookAppointDoctorListBaseActivityPermissionsDispatcher.callPickPlaceWithCheck(this);
-                Intent start = new Intent(this, BookAppointFindLocation.class);
+                Intent start = new Intent(this, BookAppointFindLocationActivity.class);
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }

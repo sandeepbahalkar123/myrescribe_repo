@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +63,6 @@ public class LoginFragment extends Fragment implements HelperResponse {
     ImageView loginUpWithGmail;
     private OnFragmentInteractionListener mListener;
     private final String TAG = this.getClass().getName();
-    private SignUpFragment signupFragment;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -73,18 +74,28 @@ public class LoginFragment extends Fragment implements HelperResponse {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-
         unbinder = ButterKnife.bind(this, rootView);
 
+        editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-        // TODO : this is done for development, remove it----
-        //--- for drrescribe.com
-    /*    editTextMobileNo.setText("9833898048");
-        editTextPassword.setText("uren1234");*/
-        //---- For 182 server
-        // editTextMobileNo.setText("7738477306");
-        //  editTextPassword.setText("test1234");
-        // TODO : this is done for development, remove it----
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    btnOtp.setAlpha(1f);
+                    btnOtp.setEnabled(true);
+                } else {
+                    btnOtp.setAlpha(.5f);
+                    btnOtp.setEnabled(false);
+                }
+            }
+        });
         return rootView;
     }
 
@@ -140,7 +151,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
                 break;
             case R.id.signup:
                 //on click of signup , Signup fragment is loaded here.
-                signupFragment = new SignUpFragment();
+                SignUpFragment signupFragment = new SignUpFragment();
                 FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, signupFragment);
@@ -225,7 +236,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
 
                 RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), getActivity());
                 RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, ""+patientDetail.getPatientSalutation(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, "" + patientDetail.getPatientSalutation(), getActivity());
 
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

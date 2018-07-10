@@ -26,6 +26,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -78,7 +79,7 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.activities.book_appointment.BookAppointFindLocation;
+import com.rescribe.ui.activities.book_appointment.BookAppointFindLocationActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointmentServices;
 import com.rescribe.ui.activities.dashboard.HealthOffersActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
@@ -118,7 +119,7 @@ import static com.rescribe.notification.DosesAlarmTask.LUNCH_NOTIFICATION_ID;
 import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
 import static com.rescribe.services.MQTTService.NOTIFY;
 import static com.rescribe.services.MQTTService.TOPIC;
-import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocation.REQUEST_CHECK_SETTINGS;
+import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocationActivity.REQUEST_CHECK_SETTINGS;
 import static com.rescribe.util.RescribeConstants.ACTIVE_STATUS;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.APP_LOGO;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.BOOK;
@@ -140,8 +141,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "HomePage";
-    //    @BindView(R.id.custom_progress_bar)
-//    RelativeLayout custom_progress_bar;
+    @BindView(R.id.custom_progress_bar)
+    RelativeLayout custom_progress_bar;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.viewPagerDoctorItem)
@@ -220,7 +221,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private String patientId;
     private boolean mIsAppOpenFromLogin;
-    ArrayList<String> cardBgImage = new ArrayList<>();
+//    ArrayList<String> cardBgImage = new ArrayList<>();
 
     private void logUser() {
         // TODO: Use the current user's information
@@ -243,6 +244,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         logUser();
 
         mIsAppOpenFromLogin = getIntent().getBooleanExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, false);
+
+        // show progress
+        if (mIsAppOpenFromLogin)
+            custom_progress_bar.setVisibility(View.VISIBLE);
 
         activityCreatedTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
 
@@ -366,9 +371,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     // inset card doctors details in database
                     List<CategoryList> categoryList = dashboardModel.getData().getCategoryList();
 
-                    for (CategoryList category : categoryList)
-                        cardBgImage.add(category.getUrl());
-
                     appDBHelper.addCardDoctors(categoryList);
 
                     if (dashboardModel.getData().isIsDocUpdated()) {
@@ -376,11 +378,13 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     } else {
                         // Show doctor data from Database
                         setUpViewPager();
-                    }
 
-                    if (mIsAppOpenFromLogin) {
-                        mIsAppOpenFromLogin = false;
-                        doGetMedicationNotificationOnNewLogin();
+                        if (mIsAppOpenFromLogin) {
+                            // hide progress
+                            custom_progress_bar.setVisibility(View.GONE);
+                            mIsAppOpenFromLogin = false;
+                            doGetMedicationNotificationOnNewLogin();
+                        }
                     }
                 }
 
@@ -388,15 +392,23 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
             case TASK_DOCTORLIST_API:
                 DoctorListModel doctorListModel = (DoctorListModel) customResponse;
-
-                // delete previous records
+                if (doctorListModel.getCommon().getStatusCode().equals(SUCCESS)) {
+                    // delete previous records
 //                appDBHelper.deleteAllDoctors();
 
-                // insert doctor data in database and show
-                appDBHelper.addDoctors(doctorListModel.getData().getDoctorList());
-                setUpViewPager();
+                    // insert doctor data in database and show
+                    appDBHelper.addDoctors(doctorListModel.getData().getDoctorList());
+                    setUpViewPager();
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN), mContext);
+
+                    if (mIsAppOpenFromLogin) {
+                        // hide progress
+                        custom_progress_bar.setVisibility(View.GONE);
+                        mIsAppOpenFromLogin = false;
+                        doGetMedicationNotificationOnNewLogin();
+                    }
+                }
                 break;
 
             case ACTIVE_STATUS:
@@ -448,7 +460,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     doctorList.setExperience(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
                     doctorList.setPaidStatus(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
                     doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
+
                     doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
+                    doctorList.setCardBackground(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE_BACKGROUND)));
 
                     Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
                     if (appointmentByDoctorCursor.moveToFirst()) {
@@ -530,21 +544,26 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         dataMap.put(getString(R.string.favorite), favoriteList.size());
 
         ArrayList<DoctorList> mergeList = new ArrayList<>();
+        ArrayList<String> cardBgImage = new ArrayList<>();
 
         if (!myAppoint.isEmpty()) {
             mergeList.add(myAppoint.get(0));
+            cardBgImage.add(myAppoint.get(0).getCardBackground());
         }
 
         if (!sponsered.isEmpty()) {
             mergeList.add(sponsered.get(0));
+            cardBgImage.add(sponsered.get(0).getCardBackground());
         }
 
         if (!recently_visit_doctor.isEmpty()) {
             mergeList.add(recently_visit_doctor.get(0));
+            cardBgImage.add(recently_visit_doctor.get(0).getCardBackground());
         }
 
         if (!favoriteList.isEmpty()) {
             mergeList.add(favoriteList.get(0));
+            cardBgImage.add(favoriteList.get(0).getCardBackground());
         }
 
         //------------
@@ -615,7 +634,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.locationImageView:
-                Intent start = new Intent(this, BookAppointFindLocation.class);
+                Intent start = new Intent(this, BookAppointFindLocationActivity.class);
 
                 start.putExtra(getString(R.string.opening_mode), getString(R.string.home));
 

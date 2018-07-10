@@ -236,7 +236,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name="com.rescribe.ui.activities.book_appointment.BookAppointFindLocation"
+            android:name="com.rescribe.ui.activities.book_appointment.BookAppointFindLocationActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/doctor_connect"
             android:screenOrientation="portrait"

@@ -301,7 +301,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                 break;
             case R.id.locationTextView:
                 //User can choose location of his choice
-                Intent start = new Intent(this, BookAppointFindLocation.class);
+                Intent start = new Intent(this, BookAppointFindLocationActivity.class);
                 start.putExtra(getString(R.string.opening_mode), getString(R.string.book_appointment));
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;

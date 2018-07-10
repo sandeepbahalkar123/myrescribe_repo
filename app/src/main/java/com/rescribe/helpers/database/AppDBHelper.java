@@ -133,6 +133,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         String TOKEN_NUMBER = "tokenNumber";
         String WAITING_PATIENT_TIME = "waitingPatientTime";
         String WAITING_PATIENT_COUNT = "waitingPatientCount";
+        String CARD_TYPE_BACKGROUND = "backgroundImgUrl";
     }
 
     static AppDBHelper instance = null;
@@ -689,19 +690,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
     //----- Notification storing : END
 
-    public void deleteAllDoctors() {
-        // delete all pre data
-        SQLiteDatabase db = getWritableDatabase();
-        db.beginTransaction();
-        db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, null,null);
-        db.delete(DOC_DATA.DOCTORLIST_DATA_TABLE, null,null);
-        db.delete(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null,null);
-        db.delete(DOC_DATA.APPOINTMENT_DATA_TABLE, null,null);
-        db.delete(DOC_DATA.CLINIC_DATA_TABLE, null,null);
-        db.setTransactionSuccessful();
-        db.endTransaction();
-    }
-
     public void addDoctors(List<DoctorList> doctorList) {
 
         SQLiteDatabase db = getWritableDatabase();
@@ -714,28 +702,59 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         for (DoctorList doctor : doctorList) {
 
-            // insert doc data
-            contentValuesDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
-            contentValuesDoc.put(DOC_DATA.DOC_NAME, doctor.getDocName());
-            contentValuesDoc.put(DOC_DATA.PHONE_NUMBER, doctor.getDocPhone());
-            contentValuesDoc.put(DOC_DATA.ICON_URL, doctor.getDoctorImageUrl());
-            contentValuesDoc.put(DOC_DATA.ABOUT_DOCTOR, doctor.getAboutDoctor());
-            contentValuesDoc.put(DOC_DATA.SPECIALITY_ID, doctor.getSpecialityId());
-            contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality());
-            contentValuesDoc.put(DOC_DATA.RATING, doctor.getRating());
-            contentValuesDoc.put(DOC_DATA.IS_PREMIUM, doctor.getCategorySpeciality());
-            contentValuesDoc.put(DOC_DATA.DOC_DEGREE, doctor.getDegree());
-            contentValuesDoc.put(DOC_DATA.EXPERIANCE, doctor.getExperience());
-            contentValuesDoc.put(DOC_DATA.PAID_STATUS, doctor.getPaidStatus());
-            contentValuesDoc.put(DOC_DATA.CATEGORY, doctor.getCategoryName());
-            contentValuesDoc.put(DOC_DATA.DOCTOR_GENDER, doctor.getGender());
-            contentValuesDoc.put(DOC_DATA.IS_FAVORITE, doctor.isFavorite() ? 1 : 0);
+            if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.REMOVE)) {
+                // delete doctor related data
+                db.delete(DOC_DATA.DOCTORLIST_DATA_TABLE,
+                        DOC_DATA.DOC_ID + " = ? ",
+                        new String[]{String.valueOf(doctor.getDocId())});
 
-            contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
-            contentValuesDoc.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+                // delete doc clinic relation
+                db.delete(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE,
+                        DOC_DATA.DOC_ID + " = ? ",
+                        new String[]{String.valueOf(doctor.getDocId())});
 
-            db.insertWithOnConflict(DOC_DATA.DOCTORLIST_DATA_TABLE, null, contentValuesDoc, SQLiteDatabase.CONFLICT_IGNORE);
+            } else {
 
+                // insert doc data
+                contentValuesDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
+                contentValuesDoc.put(DOC_DATA.DOC_NAME, doctor.getDocName());
+                contentValuesDoc.put(DOC_DATA.PHONE_NUMBER, doctor.getDocPhone());
+                contentValuesDoc.put(DOC_DATA.ICON_URL, doctor.getDoctorImageUrl());
+                contentValuesDoc.put(DOC_DATA.ABOUT_DOCTOR, doctor.getAboutDoctor());
+                contentValuesDoc.put(DOC_DATA.SPECIALITY_ID, doctor.getSpecialityId());
+                contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality());
+                contentValuesDoc.put(DOC_DATA.RATING, doctor.getRating());
+                contentValuesDoc.put(DOC_DATA.IS_PREMIUM, doctor.getCategorySpeciality());
+                contentValuesDoc.put(DOC_DATA.DOC_DEGREE, doctor.getDegree());
+                contentValuesDoc.put(DOC_DATA.EXPERIANCE, doctor.getExperience());
+                contentValuesDoc.put(DOC_DATA.PAID_STATUS, doctor.getPaidStatus());
+                contentValuesDoc.put(DOC_DATA.CATEGORY, doctor.getCategoryName());
+                contentValuesDoc.put(DOC_DATA.DOCTOR_GENDER, doctor.getGender());
+                contentValuesDoc.put(DOC_DATA.IS_FAVORITE, doctor.isFavorite() ? 1 : 0);
+                contentValuesDoc.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+
+                if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.ADD)) {
+
+                    contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+
+                    db.insertWithOnConflict(DOC_DATA.DOCTORLIST_DATA_TABLE, null, contentValuesDoc, SQLiteDatabase.CONFLICT_IGNORE);
+                } else if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.UPDATE)) {
+                    // update doctor related info
+                    db.update(DOC_DATA.DOCTORLIST_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ? ", new String[]{String.valueOf(doctor.getDocId())});
+                }
+            }
+
+            addClinics(db, contentValuesClinic, contentValuesClinicVSDoc, doctor);
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+//        db.close();
+    }
+
+    private void addClinics(SQLiteDatabase db, ContentValues contentValuesClinic, ContentValues contentValuesClinicVSDoc, DoctorList doctor) {
+
+        if (!doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.REMOVE)) {
             for (ClinicList clinic : doctor.getClinicList()) {
 
                 // insert clinic data
@@ -749,6 +768,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 contentValuesClinic.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
                 contentValuesClinic.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
 
+                // if clinic exist then update else insert
                 db.insertWithOnConflict(DOC_DATA.CLINIC_DATA_TABLE, null, contentValuesClinic, SQLiteDatabase.CONFLICT_IGNORE);
 
                 // insert clinic vs doctors
@@ -759,14 +779,15 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_APPOINTMENT_TYPE, clinic.getAppointmentType());
                 contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_SERVICE, clinic.getServices().isEmpty() ? "" : CommonMethods.listToString(clinic.getServices(), ","));
 
-                db.insert(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null, contentValuesClinicVSDoc);
+                // if clinic and doc exist then update else insert
+                Cursor checkCursor = db.rawQuery("select * from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctor.getDocId() + " AND " + DOC_DATA.CLINIC_ID + " = " + clinic.getLocationId(), null);
+                if (checkCursor.moveToFirst())
+                    db.update(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, contentValuesClinicVSDoc, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CLINIC_ID + " = ?", new String[]{String.valueOf(doctor.getDocId()), String.valueOf(clinic.getLocationId())});
+                else
+                    db.insert(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null, contentValuesClinicVSDoc);
+                checkCursor.close();
             }
-
         }
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
-//        db.close();
     }
 
     public void addCardDoctors(List<CategoryList> categoryList) {
@@ -774,6 +795,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
+        // delete pre data
+        db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, null, null);
+        db.delete(DOC_DATA.APPOINTMENT_DATA_TABLE, null, null);
+
         ContentValues contentValuesCard = new ContentValues();
         ContentValues contentValuesAppoint = new ContentValues();
 
@@ -782,6 +807,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 // insert card data
                 contentValuesCard.put(DOC_DATA.DOC_ID, docDetail.getDocId());
                 contentValuesCard.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
+                contentValuesCard.put(DOC_DATA.CARD_TYPE_BACKGROUND, category.getUrl());
+
                 db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
 
                 // insert appointment data

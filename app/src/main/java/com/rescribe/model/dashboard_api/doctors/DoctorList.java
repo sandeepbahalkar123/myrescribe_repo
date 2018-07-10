@@ -59,6 +59,11 @@ public class DoctorList implements Parcelable {
     @SerializedName("paidStatus")
     @Expose
     private int paidStatus;
+
+    @SerializedName("docInfoFlag")
+    @Expose
+    private String docInfoFlag;
+
     public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
 
 
@@ -92,6 +97,7 @@ public class DoctorList implements Parcelable {
         this.rating = ((String) in.readValue((String.class.getClassLoader())));
         this.aboutDoctor = ((String) in.readValue((String.class.getClassLoader())));
         this.paidStatus = ((int) in.readValue((int.class.getClassLoader())));
+        this.docInfoFlag = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public DoctorList() {
@@ -225,6 +231,14 @@ public class DoctorList implements Parcelable {
         this.paidStatus = paidStatus;
     }
 
+    public String getDocInfoFlag() {
+        return docInfoFlag;
+    }
+
+    public void setDocInfoFlag(String docInfoFlag) {
+        this.docInfoFlag = docInfoFlag;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(docId);
         dest.writeValue(categoryName);
@@ -242,6 +256,7 @@ public class DoctorList implements Parcelable {
         dest.writeValue(rating);
         dest.writeValue(aboutDoctor);
         dest.writeValue(paidStatus);
+        dest.writeValue(docInfoFlag);
     }
 
     public int describeContents() {

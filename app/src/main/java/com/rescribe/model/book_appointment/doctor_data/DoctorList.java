@@ -96,7 +96,6 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @Expose
     private int specialityId;
 
-
     //this parameters are used to sort list by clinicName and doctorName as per functionality
 
     private double latitude = 0.0;
@@ -108,6 +107,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     private boolean doctorSearch;
     private boolean isTypedashboard;
     private boolean isAppointmentTypeMixed;
+
+    private String cardBackground;
 
     /*  @SerializedName("reviewList")
     @Expose
@@ -405,6 +406,13 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         this.specialityId = specialityId;
     }
 
+    public String getCardBackground() {
+        return cardBackground;
+    }
+
+    public void setCardBackground(String cardBackground) {
+        this.cardBackground = cardBackground;
+    }
 
     public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
 
@@ -448,6 +456,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.waitingPatientCount = ((String) in.readValue((String.class.getClassLoader())));
 
             instance.specialityId = ((int) in.readValue((int.class.getClassLoader())));
+
+            instance.cardBackground = ((String) in.readValue((String.class.getClassLoader())));
 
             return instance;
         }
@@ -495,6 +505,8 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(waitingPatientCount);
 
         dest.writeValue(specialityId);
+
+        dest.writeValue(cardBackground);
     }
 
 

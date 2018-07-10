@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.rescribe.R;
+import com.rescribe.model.book_appointment.search_doctors.RecentlyVisitedAreaList;
 import com.rescribe.ui.customesViews.CustomTextView;
 
 import java.util.ArrayList;
@@ -23,9 +24,9 @@ public class RecentPlacesAdapter extends RecyclerView.Adapter<RecentPlacesAdapte
 
     private Context mContext;
     OnRecentPlacesListener mOnRecentPlacesListener;
-    private ArrayList<String> mDataList;
+    private ArrayList<RecentlyVisitedAreaList> mDataList;
 
-    public RecentPlacesAdapter(Context mContext, ArrayList<String> dataList,OnRecentPlacesListener mOnRecentPlacesListener) {
+    public RecentPlacesAdapter(Context mContext, ArrayList<RecentlyVisitedAreaList> dataList,OnRecentPlacesListener mOnRecentPlacesListener) {
         this.mDataList = dataList;
         this.mContext = mContext;
         this.mOnRecentPlacesListener = mOnRecentPlacesListener;
@@ -43,7 +44,7 @@ public class RecentPlacesAdapter extends RecyclerView.Adapter<RecentPlacesAdapte
     @Override
     public void onBindViewHolder(ListViewHolder holder, final int position) {
 
-        holder.recentPlaceName.setText(mDataList.get(position));
+        holder.recentPlaceName.setText(mDataList.get(position).getAddress());
         holder.recentPlaceLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +74,6 @@ public class RecentPlacesAdapter extends RecyclerView.Adapter<RecentPlacesAdapte
         }
     }
     public interface OnRecentPlacesListener {
-        void onClickOfRecentPlaces(String location);
+        void onClickOfRecentPlaces(RecentlyVisitedAreaList location);
     }
 }

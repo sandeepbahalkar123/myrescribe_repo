@@ -122,11 +122,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         if (!doctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
             doctorCategoryType.setText(doctorObject.getCategorySpeciality());
             doctorCategoryType.setVisibility(View.VISIBLE);
-        } else {
+        } else
             doctorCategoryType.setVisibility(View.INVISIBLE);
-        }
+
         doctorCategory.setText(doctorObject.getCategoryName());
-        doctorNameTextView.setText(doctorObject.getDocName());
+
+        String drName = doctorObject.getDocName().contains("Dr.") ? doctorObject.getDocName() : "Dr. " + doctorObject.getDocName();
+        doctorNameTextView.setText(drName);
+
         doctorType.setText(doctorObject.getDegree());
         if (doctorObject.getExperience() == 0) {
             doctorExperience.setVisibility(View.GONE);

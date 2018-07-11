@@ -163,7 +163,6 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
             }
 
             String drName = mDoctorObject.getDocName().contains("Dr.") ? mDoctorObject.getDocName() : "Dr. " + mDoctorObject.getDocName();
-
             doctorName.setText(drName);
             aboutDoctor.setText(mDoctorObject.getDegree());
             if (mDoctorObject.getClinicAddress() != null) {  //sandeep

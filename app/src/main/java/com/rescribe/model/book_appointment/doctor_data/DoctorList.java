@@ -78,7 +78,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     private int paidStatus;
     @SerializedName("bookType")
     @Expose
-    private String type; // token/appointment etc
+    private String type = ""; // token/appointment etc
     @SerializedName("tokenNumber")
     @Expose
     private String tokenNumber;

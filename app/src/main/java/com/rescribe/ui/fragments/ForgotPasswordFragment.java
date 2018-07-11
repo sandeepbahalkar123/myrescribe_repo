@@ -28,12 +28,12 @@ import butterknife.OnClick;
 import static com.rescribe.ui.activities.AppGlobalContainerActivity.FORGET_PASSWORD;
 import static com.rescribe.util.RescribeConstants.FROM;
 
-public class ForgotPassword extends Fragment implements HelperResponse {
+public class ForgotPasswordFragment extends Fragment implements HelperResponse {
 
     @BindView(R.id.editTextMobileNo)
     EditText editTextMobileNo;
 
-    public ForgotPassword() {
+    public ForgotPasswordFragment() {
         // Required empty public constructor
     }
 

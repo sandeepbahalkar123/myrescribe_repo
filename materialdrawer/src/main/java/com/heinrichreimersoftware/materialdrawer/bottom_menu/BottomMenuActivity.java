@@ -286,8 +286,6 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
 
         bottomMenuListRecyclerView.setLayoutManager(layoutManager);
         bottomMenuListRecyclerView.setAdapter(bottomMenuAdapter);
-
-
     }
 
     public void addBottomMenu(BottomMenu bottomMenu) {

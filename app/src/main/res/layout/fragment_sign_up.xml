@@ -2,12 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/login_bg">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/login_bg"
         android:orientation="vertical">
 
         <LinearLayout
@@ -144,11 +144,11 @@
                     android:id="@+id/editTextPassword"
                     style="@style/AppLoginNewMainStyle"
                     android:layout_marginTop="@dimen/dp6"
-                    android:hint="@string/enter_password"
-                    android:paddingTop="@dimen/dp16"
-                    android:inputType="textPassword"
                     android:drawableEnd="@drawable/password"
                     android:drawableRight="@drawable/password"
+                    android:hint="@string/enter_password"
+                    android:inputType="textPassword"
+                    android:paddingTop="@dimen/dp16"
                     android:typeface="sans" />
 
                 <View
@@ -156,13 +156,30 @@
                     android:layout_height="@dimen/dp1"
                     android:background="@color/colorAccent" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/countyCode"
+                    android:layout_width="@dimen/dp40"
+                    android:layout_height="wrap_content"
+                    android:text="+91"
+                    android:layout_alignBaseline="@+id/editTextMobileNo"
+                    android:textSize="@dimen/sp16"
+                    android:textColor="@color/colorAccent"
+                    android:typeface="sans" />
+
                 <EditText
                     android:id="@+id/editTextMobileNo"
                     style="@style/AppLoginNewMainStyle"
                     android:layout_marginTop="@dimen/dp6"
+                    android:layout_toRightOf="@+id/countyCode"
                     android:hint="@string/enter_mobile_no"
                     android:inputType="phone"
                     android:typeface="sans" />
+
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -224,35 +241,34 @@
                 android:gravity="center_vertical"
                 app:srcCompat="@drawable/or" />
 
-            <ImageView
-                android:id="@+id/signUpWithFacebook"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_marginRight="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp16"
-                android:gravity="center_vertical"
-                app:srcCompat="@drawable/fb_logo_copy"/>
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/signUpWithFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp28"
+                    app:srcCompat="@drawable/fb" />
+
+                <ImageView
+                    android:id="@+id/signUpWithGoogle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp28"
+                    app:srcCompat="@drawable/google" />
+
+            </LinearLayout>
 
             <ImageView
-                android:id="@+id/signUpWithGoogle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_marginRight="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp16"
                 android:gravity="center_vertical"
-                app:srcCompat="@drawable/gmail_copy" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp16"
-                android:gravity="center_vertical"
-                app:srcCompat="@drawable/privacy_policy"/>
+                app:srcCompat="@drawable/privacy_policy" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -130,8 +130,6 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 dateText.setText(Html.fromHtml(toDisplay));
             }
         }
-
-
     }
 
     @Override
@@ -163,25 +161,6 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
                 isVitalAdded = true;
                 break;
         }
-    }
-
-    private VitalGraphInfoBaseModel test() {
-        try {
-            InputStream is = getAssets().open("vitals_graph.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, "UTF-8");
-            Log.e("test", "doctor_data_22_nov_2017" + json);
-
-            Gson gson = new Gson();
-            VitalGraphInfoBaseModel bookAppointmentBaseModel = gson.fromJson(json, VitalGraphInfoBaseModel.class);
-            return bookAppointmentBaseModel;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 
     private void plotVitalGraphUsingMpChart() {

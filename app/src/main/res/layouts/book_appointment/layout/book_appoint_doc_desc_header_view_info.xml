@@ -136,6 +136,8 @@
                     android:textSize="@dimen/sp16"
                     android:textStyle="bold"
                     android:visibility="gone"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     app:customFont="@string/roboto_bold"
                     tools:text="Cardilogist" />
 

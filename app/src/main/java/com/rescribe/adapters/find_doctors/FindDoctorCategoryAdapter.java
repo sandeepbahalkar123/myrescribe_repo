@@ -134,9 +134,11 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             doctorCategoryType.setVisibility(View.VISIBLE);
         } else {
             doctorCategoryType.setVisibility(View.INVISIBLE);
-        }        //doctorCategory.setText(doctorObject.getCategoryName());
-        doctorNameTextView.setText(doctorObject.getDocName());
-        //  doctorType.setText(doctorObject.getDegree());
+        }
+
+        String drName = doctorObject.getDocName().contains("Dr.") ? doctorObject.getDocName() : "Dr. " + doctorObject.getDocName();
+        doctorNameTextView.setText(drName);
+
         doctorExperience.setText(doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
         aboutDoctor.setText(doctorObject.getDegree() + "");
 

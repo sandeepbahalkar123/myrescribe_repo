@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Rescribe</string>
+    <string name="app_name">Patient Rescribe</string>
     <string name="breakfast_after">breakfastAfter</string>
     <string name="breakfast_before">breakfastBefore</string>
     <string name="lunch_before">lunchBefore</string>
@@ -412,6 +412,7 @@
     <string name="exceeded">exceeded</string>
     <string name="company_name">SCORG TECHNOLOGIES Pvt.Ltd.</string>
     <string name="record_not_found">Record not found.</string>
+    <string name="login_using_otp">Login Using OTP</string>
 
     <!--************************-->
 </resources>

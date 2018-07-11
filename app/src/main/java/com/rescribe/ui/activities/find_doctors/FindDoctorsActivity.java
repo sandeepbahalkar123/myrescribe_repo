@@ -268,9 +268,8 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             recentlyViewPager.setClipToPadding(false);
             recentlyViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             recentlyViewPager.setPageMargin(pager_margin);
-        } else {
+        } else
             recentlyVisitedFindDoctorLayout.setVisibility(View.GONE);
-        }
     }
 
     private void setSponseredPager() {
@@ -281,9 +280,8 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             sponseredViewPager.setClipToPadding(false);
             sponseredViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             sponseredViewPager.setPageMargin(pager_margin);
-        } else {
+        } else
             sponseredFindDoctorLayout.setVisibility(View.GONE);
-        }
     }
 
     private void setFavoritePager() {
@@ -294,9 +292,8 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             favoriteViewPager.setClipToPadding(false);
             favoriteViewPager.setPadding(pager_padding, 0, pager_padding, 0);
             favoriteViewPager.setPageMargin(pager_margin);
-        } else {
+        } else
             favoriteFindDoctorLayout.setVisibility(View.GONE);
-        }
     }
 
 

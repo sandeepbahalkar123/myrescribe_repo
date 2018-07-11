@@ -54,8 +54,8 @@ public class LoginFragment extends Fragment implements HelperResponse {
     Button btnLogin;
     @BindView(R.id.forgotPasswordView)
     CustomTextView forgotPasswordView;
-    @BindView(R.id.signup)
-    CustomTextView signup;
+    @BindView(R.id.btnSignUp)
+    Button signup;
     Unbinder unbinder;
     @BindView(R.id.loginUpWithFacebook)
     ImageView loginUpWithFacebook;
@@ -122,7 +122,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.btnOtp, R.id.btn_login, R.id.forgotPasswordView, R.id.signup, R.id.loginUpWithFacebook, R.id.loginUpWithGmail})
+    @OnClick({R.id.btnOtp, R.id.btn_login, R.id.forgotPasswordView, R.id.btnSignUp, R.id.loginUpWithFacebook, R.id.loginUpWithGmail})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnOtp:
@@ -149,7 +149,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
                 intentObj.putExtra(getString(R.string.title), getString(R.string.forgot_password_header));
                 startActivity(intentObj);
                 break;
-            case R.id.signup:
+            case R.id.btnSignUp:
                 //on click of signup , Signup fragment is loaded here.
                 SignUpFragment signupFragment = new SignUpFragment();
                 FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();

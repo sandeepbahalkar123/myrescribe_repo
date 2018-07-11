@@ -1,275 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/login_bg"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_bg" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp16"
             android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/vector_smart_object" />
-
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/your_health"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/sp13"
-                app:customFont="@string/roboto_medium" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/dp30"
-                android:paddingRight="@dimen/dp30">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp16"
+                android:orientation="vertical">
 
-                <RelativeLayout
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/vector_smart_object" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/your_health"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/sp13"
+                    app:customFont="@string/roboto_medium" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp30"
+                    android:paddingRight="@dimen/dp30">
 
-                    <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/salutationSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/editTextName"
-                        app:backgroundTint="@color/colorAccent" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/editTextName"
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/salutationSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/editTextName"
+                            app:backgroundTint="@color/colorAccent" />
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/editTextName"
+                            style="@style/AppLoginNewMainStyle"
+                            android:layout_toEndOf="@+id/salutationSpinner"
+                            android:layout_toRightOf="@+id/salutationSpinner"
+                            android:hint="@string/name"
+                            android:inputType="textCapWords"
+                            android:typeface="sans" />
+
+                        <View
+                            android:id="@+id/editTextNameView"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp1"
+                            android:layout_alignEnd="@+id/editTextName"
+                            android:layout_alignLeft="@+id/editTextName"
+                            android:layout_alignRight="@+id/editTextName"
+                            android:layout_alignStart="@+id/editTextName"
+                            android:layout_below="@+id/editTextName"
+                            android:background="@color/colorAccent" />
+
+                        <View
+                            android:id="@+id/salutationView"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/dp1"
+                            android:layout_alignEnd="@+id/salutationSpinner"
+                            android:layout_alignLeft="@+id/salutationSpinner"
+                            android:layout_alignRight="@+id/salutationSpinner"
+                            android:layout_alignStart="@+id/salutationSpinner"
+                            android:layout_below="@+id/salutationSpinner"
+                            android:layout_marginEnd="@dimen/dp12"
+                            android:layout_marginRight="@dimen/dp12"
+                            android:background="@color/colorAccent" />
+
+                    </RelativeLayout>
+                    <!--  Email Label -->
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp41"
+                        android:layout_marginTop="@dimen/dp6">
+
+                        <View
+                            android:id="@+id/genderView"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/dp1"
+                            android:layout_alignEnd="@+id/genderSpinner"
+                            android:layout_alignLeft="@+id/genderSpinner"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignRight="@+id/genderSpinner"
+                            android:layout_alignStart="@+id/genderSpinner"
+                            android:background="@color/colorAccent" />
+
+                        <!--android:layout_marginEnd="@dimen/dp12"
+                        android:layout_marginRight="@dimen/dp12"-->
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/genderSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/genderView"
+                            app:backgroundTint="@color/colorAccent" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/editTextAge"
                         style="@style/AppLoginNewMainStyle"
-                        android:layout_toEndOf="@+id/salutationSpinner"
-                        android:layout_toRightOf="@+id/salutationSpinner"
-                        android:hint="@string/name"
-                        android:inputType="textCapWords"
+                        android:layout_marginTop="@dimen/dp6"
+                        android:hint="@string/enter_age"
+                        android:inputType="number"
                         android:typeface="sans" />
 
                     <View
-                        android:id="@+id/editTextNameView"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp1"
-                        android:layout_alignEnd="@+id/editTextName"
-                        android:layout_alignLeft="@+id/editTextName"
-                        android:layout_alignRight="@+id/editTextName"
-                        android:layout_alignStart="@+id/editTextName"
-                        android:layout_below="@+id/editTextName"
                         android:background="@color/colorAccent" />
+
+                    <EditText
+                        android:id="@+id/editTextEmailID"
+                        style="@style/AppLoginNewMainStyle"
+                        android:layout_marginTop="@dimen/dp6"
+                        android:hint="@string/enter_email_id"
+                        android:inputType="textEmailAddress"
+                        android:typeface="sans" />
 
                     <View
-                        android:id="@+id/salutationView"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/dp1"
-                        android:layout_alignEnd="@+id/salutationSpinner"
-                        android:layout_alignLeft="@+id/salutationSpinner"
-                        android:layout_alignRight="@+id/salutationSpinner"
-                        android:layout_alignStart="@+id/salutationSpinner"
-                        android:layout_below="@+id/salutationSpinner"
-                        android:layout_marginEnd="@dimen/dp12"
-                        android:layout_marginRight="@dimen/dp12"
-                        android:background="@color/colorAccent" />
-
-                </RelativeLayout>
-                <!--  Email Label -->
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp41"
-                    android:layout_marginTop="@dimen/dp6">
-
-                    <View
-                        android:id="@+id/genderView"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/dp1"
-                        android:layout_alignEnd="@+id/genderSpinner"
-                        android:layout_alignLeft="@+id/genderSpinner"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignRight="@+id/genderSpinner"
-                        android:layout_alignStart="@+id/genderSpinner"
-                        android:background="@color/colorAccent" />
-
-                    <!--android:layout_marginEnd="@dimen/dp12"
-                    android:layout_marginRight="@dimen/dp12"-->
-
-                    <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/genderSpinner"
                         android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp1"
+                        android:background="@color/colorAccent" />
+
+                    <EditText
+                        android:id="@+id/editTextPassword"
+                        style="@style/AppLoginNewMainStyle"
+                        android:layout_marginTop="@dimen/dp6"
+                        android:drawableEnd="@drawable/password"
+                        android:drawableRight="@drawable/password"
+                        android:hint="@string/enter_password"
+                        android:inputType="textPassword"
+                        android:paddingTop="@dimen/dp16"
+                        android:typeface="sans" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp1"
+                        android:background="@color/colorAccent" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/countyCode"
+                            android:layout_width="@dimen/dp40"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/editTextMobileNo"
+                            android:text="+91"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/sp16"
+                            android:typeface="sans" />
+
+                        <EditText
+                            android:id="@+id/editTextMobileNo"
+                            style="@style/AppLoginNewMainStyle"
+                            android:layout_marginTop="@dimen/dp6"
+                            android:layout_toRightOf="@+id/countyCode"
+                            android:hint="@string/enter_mobile_no"
+                            android:inputType="phone"
+                            android:typeface="sans" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp1"
+                        android:background="@color/colorAccent" />
+
+                    <Button
+                        android:id="@+id/btnSignUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginRight="@dimen/dp10"
+                        android:layout_marginTop="@dimen/dp16"
+                        android:background="@color/login_bg_color"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/dp10"
+                        android:paddingTop="@dimen/dp10"
+                        android:text="@string/sign_up"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/sp16" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/login"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_above="@+id/genderView"
-                        app:backgroundTint="@color/colorAccent" />
+                        android:layout_gravity="right"
+                        android:layout_marginRight="@dimen/dp10"
+                        android:maxLines="2"
+                        android:padding="@dimen/dp6"
+                        android:text="@string/log_in"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/editTextAge"
-                    style="@style/AppLoginNewMainStyle"
-                    android:layout_marginTop="@dimen/dp6"
-                    android:hint="@string/enter_age"
-                    android:inputType="number"
-                    android:typeface="sans" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp1"
-                    android:background="@color/colorAccent" />
-
-                <EditText
-                    android:id="@+id/editTextEmailID"
-                    style="@style/AppLoginNewMainStyle"
-                    android:layout_marginTop="@dimen/dp6"
-                    android:hint="@string/enter_email_id"
-                    android:inputType="textEmailAddress"
-                    android:typeface="sans" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp1"
-                    android:background="@color/colorAccent" />
-
-                <EditText
-                    android:id="@+id/editTextPassword"
-                    style="@style/AppLoginNewMainStyle"
-                    android:layout_marginTop="@dimen/dp6"
-                    android:drawableEnd="@drawable/password"
-                    android:drawableRight="@drawable/password"
-                    android:hint="@string/enter_password"
-                    android:inputType="textPassword"
-                    android:paddingTop="@dimen/dp16"
-                    android:typeface="sans" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp1"
-                    android:background="@color/colorAccent" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/countyCode"
-                    android:layout_width="@dimen/dp40"
-                    android:layout_height="wrap_content"
-                    android:text="+91"
-                    android:layout_alignBaseline="@+id/editTextMobileNo"
-                    android:textSize="@dimen/sp16"
-                    android:textColor="@color/colorAccent"
-                    android:typeface="sans" />
-
-                <EditText
-                    android:id="@+id/editTextMobileNo"
-                    style="@style/AppLoginNewMainStyle"
-                    android:layout_marginTop="@dimen/dp6"
-                    android:layout_toRightOf="@+id/countyCode"
-                    android:hint="@string/enter_mobile_no"
-                    android:inputType="phone"
-                    android:typeface="sans" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp1"
-                    android:background="@color/colorAccent" />
-
-                <Button
-                    android:id="@+id/btnSignUp"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp40"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/dp10"
-                    android:layout_marginRight="@dimen/dp10"
-                    android:layout_marginTop="@dimen/dp16"
-                    android:background="@color/login_bg_color"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/dp10"
-                    android:paddingTop="@dimen/dp10"
-                    android:text="@string/sign_up"
-                    android:textAllCaps="true"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/sp16" />
-
-                <com.rescribe.ui.customesViews.CustomTextView
-                    android:id="@+id/login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/dp10"
-                    android:maxLines="2"
-                    android:padding="@dimen/dp6"
-                    android:text="@string/log_in"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/sp14"
-                    android:textStyle="bold"
-                    android:typeface="sans" />
 
             </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp16"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:padding="@dimen/dp16">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp10"
-                android:layout_marginRight="@dimen/dp10"
-                android:gravity="center_vertical"
-                app:srcCompat="@drawable/or" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/signUpWithFacebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/dp28"
-                    app:srcCompat="@drawable/fb" />
-
-                <ImageView
-                    android:id="@+id/signUpWithGoogle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/dp28"
-                    app:srcCompat="@drawable/google" />
-
-            </LinearLayout>
-
-            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp16"
                 android:gravity="center_vertical"
-                app:srcCompat="@drawable/privacy_policy" />
-        </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+                android:orientation="vertical"
+                android:padding="@dimen/dp16">
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    app:srcCompat="@drawable/or" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/signUpWithFacebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dp28"
+                        app:srcCompat="@drawable/fb" />
+
+                    <ImageView
+                        android:id="@+id/signUpWithGoogle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dp28"
+                        app:srcCompat="@drawable/google" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    app:srcCompat="@drawable/privacy_policy" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

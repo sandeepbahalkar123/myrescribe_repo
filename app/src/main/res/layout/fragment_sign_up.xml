@@ -12,7 +12,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp40"
                 android:orientation="vertical">
 
                 <ImageView
@@ -44,6 +44,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp20"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/dp30"
                     android:paddingRight="@dimen/dp30">
@@ -54,10 +55,10 @@
 
                         <android.support.v7.widget.AppCompatSpinner
                             android:id="@+id/salutationSpinner"
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/dp56"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/editTextName"
-                            app:backgroundTint="@color/colorAccent" />
+                            android:background="@drawable/spinner_bg_signup" />
 
                         <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/editTextName"
@@ -93,48 +94,6 @@
                             android:background="@color/colorAccent" />
 
                     </RelativeLayout>
-                    <!--  Email Label -->
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp41"
-                        android:layout_marginTop="@dimen/dp6">
-
-                        <View
-                            android:id="@+id/genderView"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/dp1"
-                            android:layout_alignEnd="@+id/genderSpinner"
-                            android:layout_alignLeft="@+id/genderSpinner"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignRight="@+id/genderSpinner"
-                            android:layout_alignStart="@+id/genderSpinner"
-                            android:background="@color/colorAccent" />
-
-                        <!--android:layout_marginEnd="@dimen/dp12"
-                        android:layout_marginRight="@dimen/dp12"-->
-
-                        <android.support.v7.widget.AppCompatSpinner
-                            android:id="@+id/genderSpinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_above="@+id/genderView"
-                            app:backgroundTint="@color/colorAccent" />
-
-                    </RelativeLayout>
-
-                    <EditText
-                        android:id="@+id/editTextAge"
-                        style="@style/AppLoginNewMainStyle"
-                        android:layout_marginTop="@dimen/dp6"
-                        android:hint="@string/enter_age"
-                        android:inputType="number"
-                        android:typeface="sans" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp1"
-                        android:background="@color/colorAccent" />
 
                     <EditText
                         android:id="@+id/editTextEmailID"
@@ -142,22 +101,6 @@
                         android:layout_marginTop="@dimen/dp6"
                         android:hint="@string/enter_email_id"
                         android:inputType="textEmailAddress"
-                        android:typeface="sans" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp1"
-                        android:background="@color/colorAccent" />
-
-                    <EditText
-                        android:id="@+id/editTextPassword"
-                        style="@style/AppLoginNewMainStyle"
-                        android:layout_marginTop="@dimen/dp6"
-                        android:drawableEnd="@drawable/password"
-                        android:drawableRight="@drawable/password"
-                        android:hint="@string/enter_password"
-                        android:inputType="textPassword"
-                        android:paddingTop="@dimen/dp16"
                         android:typeface="sans" />
 
                     <View
@@ -195,6 +138,60 @@
                         android:layout_height="@dimen/dp1"
                         android:background="@color/colorAccent" />
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp41"
+                        android:layout_marginTop="@dimen/dp6">
+
+                        <View
+                            android:id="@+id/genderView"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/dp1"
+                            android:layout_alignEnd="@+id/genderSpinner"
+                            android:layout_alignLeft="@+id/genderSpinner"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignRight="@+id/genderSpinner"
+                            android:layout_alignStart="@+id/genderSpinner"
+                            android:background="@color/colorAccent" />
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/genderSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/genderView"
+                            android:background="@drawable/spinner_bg_signup" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/editTextAge"
+                        style="@style/AppLoginNewMainStyle"
+                        android:layout_marginTop="@dimen/dp6"
+                        android:hint="@string/enter_age"
+                        android:inputType="number"
+                        android:typeface="sans" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp1"
+                        android:background="@color/colorAccent" />
+
+                    <EditText
+                        android:id="@+id/editTextPassword"
+                        style="@style/AppLoginNewMainStyle"
+                        android:layout_marginTop="@dimen/dp6"
+                        android:drawableEnd="@drawable/password_key"
+                        android:drawableRight="@drawable/password_key"
+                        android:hint="@string/enter_password"
+                        android:inputType="textPassword"
+                        android:paddingTop="@dimen/dp16"
+                        android:typeface="sans" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp1"
+                        android:background="@color/colorAccent" />
+
                     <Button
                         android:id="@+id/btnSignUp"
                         android:layout_width="match_parent"
@@ -202,7 +199,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp10"
                         android:layout_marginRight="@dimen/dp10"
-                        android:layout_marginTop="@dimen/dp16"
+                        android:layout_marginTop="@dimen/dp28"
                         android:background="@color/login_bg_color"
                         android:gravity="center"
                         android:paddingBottom="@dimen/dp10"

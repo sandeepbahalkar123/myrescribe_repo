@@ -538,25 +538,26 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         dataMap.put(getString(R.string.favorite), favoriteList.size());
 
         ArrayList<DoctorList> mergeList = new ArrayList<>();
+        ArrayList<String> backgroundList = new ArrayList<>();
 
         if (!myAppoint.isEmpty()) {
             mergeList.add(myAppoint.get(0));
-            myAppoint.get(0).setCardBackground(appDBHelper.getCardsBackground(getString(R.string.my_appointments)));
+            backgroundList.add(appDBHelper.getCardsBackground(getString(R.string.my_appointments)));
         }
 
         if (!sponsered.isEmpty()) {
             mergeList.add(sponsered.get(0));
-            sponsered.get(0).setCardBackground(appDBHelper.getCardsBackground(getString(R.string.sponsored_doctor)));
+            backgroundList.add(appDBHelper.getCardsBackground(getString(R.string.sponsored_doctor)));
         }
 
         if (!recently_visit_doctor.isEmpty()) {
             mergeList.add(recently_visit_doctor.get(0));
-            recently_visit_doctor.get(0).setCardBackground(appDBHelper.getCardsBackground(getString(R.string.recently_visited_doctor)));
+            backgroundList.add(appDBHelper.getCardsBackground(getString(R.string.recently_visited_doctor)));
         }
 
         if (!favoriteList.isEmpty()) {
             mergeList.add(favoriteList.get(0));
-            favoriteList.get(0).setCardBackground(appDBHelper.getCardsBackground(getString(R.string.favorite)));
+            backgroundList.add(appDBHelper.getCardsBackground(getString(R.string.favorite)));
         }
 
         //------------
@@ -572,7 +573,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
         viewPagerDoctorItem.setPageMargin(pager_margin);
 
-        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, activityCreatedTimeStamp, mergeList);
+        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, activityCreatedTimeStamp, backgroundList);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
 
@@ -628,11 +629,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         switch (view.getId()) {
             case R.id.locationImageView:
                 Intent start = new Intent(this, BookAppointFindLocationActivity.class);
-
                 start.putExtra(getString(R.string.opening_mode), getString(R.string.home));
-
                 int PLACE_PICKER_REQUEST = 10;
-
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }

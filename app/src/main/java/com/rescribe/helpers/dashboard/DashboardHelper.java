@@ -104,7 +104,7 @@ public class DashboardHelper implements ConnectionListener {
     public void doGetDashboard(String currentCity) {
         this.currentCity = currentCity;
         String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue;
@@ -118,7 +118,7 @@ public class DashboardHelper implements ConnectionListener {
     }
 
     public void getDoctorList() {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DOCTORLIST_API, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DOCTORLIST_API, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
 
         String url = Config.GET_DOCTORLIST_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
@@ -157,9 +157,7 @@ public class DashboardHelper implements ConnectionListener {
         ArticleToSaveReqModel reqModel = new ArticleToSaveReqModel();
         reqModel.setUrl(url);
         reqModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
-
-        int value = isBookMarked ? 0 : 1;
-        reqModel.setRemove(value);
+        reqModel.setRemove(isBookMarked ? 0 : 1);
         mConnectionFactory.setPostParams(reqModel);
 
         mConnectionFactory.setUrl(Config.TO_SAVE_ARTICLE_TO_SERVER);

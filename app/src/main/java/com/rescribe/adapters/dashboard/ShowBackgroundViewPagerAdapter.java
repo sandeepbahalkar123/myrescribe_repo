@@ -29,13 +29,13 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
     private final String activityCreatedTimeStamp;
     //    private final int widthPixelOfBanner;
-    private ArrayList<DoctorList> cardsBack;
+    private ArrayList<String> cardsBack;
     private LayoutInflater mInflater;
     private Context mContext;
 
-    public ShowBackgroundViewPagerAdapter(Context context, String activityCreatedTimeStamp, ArrayList<DoctorList> mergeList) {
+    public ShowBackgroundViewPagerAdapter(Context context, String activityCreatedTimeStamp, ArrayList<String> cardsBack) {
         this.mContext = context;
-        cardsBack = mergeList;
+        this.cardsBack = cardsBack;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
@@ -68,7 +68,7 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
         requestOptions.signature(new ObjectKey(activityCreatedTimeStamp + cardsBack.get(position)));
 
         Glide.with(mContext)
-                .load(cardsBack.get(position).getCardBackground())
+                .load(cardsBack.get(position))
                 .apply(requestOptions)
                 .into(dashboardBackgroundLayout);
 

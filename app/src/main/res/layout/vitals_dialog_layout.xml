@@ -164,6 +164,34 @@
                         android:textSize="14sp"
                         app:customFont="@string/roboto_medium" />
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/nonCategoryRangeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/dp16">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/noncategory"
+                        android:textColor="@color/range_label_color"
+                        android:textSize="14sp"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/nonCategoryRange"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp8"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:customFont="@string/roboto_medium" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
@@ -296,6 +324,34 @@
                         android:layout_weight="1"
                         android:paddingLeft="@dimen/dp8"
                         android:textColor="@color/Red"
+                        android:textSize="14sp"
+                        app:customFont="@string/roboto_medium" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/noncategorySubTypeRangeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/dp16">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="@string/noncategory"
+                        android:textColor="@color/range_label_color"
+                        android:textSize="14sp"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/nonCategorySubTypeRange"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp8"
+                        android:textColor="@color/black"
                         android:textSize="14sp"
                         app:customFont="@string/roboto_medium" />
                 </LinearLayout>

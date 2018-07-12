@@ -11,6 +11,7 @@
     <string name="normal">Normal Level :</string>
     <string name="moderate">Moderate Level :</string>
     <string name="severe">Severe Level :</string>
+    <string name="noncategory">Other Level :</string>
     <string name="location">Location</string>
     <string name="snacks_before">snacksBefore</string>
     <string name="investigations">Investigations</string>

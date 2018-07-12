@@ -115,7 +115,7 @@ public class ComplaintsFragment extends Fragment implements HelperResponse, Adap
               //  activity.setReceivedBookAppointmentBaseModel((BookAppointmentBaseModel) customResponse);
                 //---------------
                 Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.opening_mode), getString(R.string.complaints));
+                bundle.putString(getString(R.string.opening_mode), RescribeConstants.TITLE);
                 bundle.putString(getString(R.string.complaint1), selectIdComplaint1);
                 bundle.putString(getString(R.string.complaint2), selectIdComplaint2);
               //  activity.loadFragment(BookAppointFilteredDoctorListFragment.newInstance(bundle), true);

@@ -135,8 +135,8 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
-            String value = extras.getString(getString(R.string.clicked_item_data_type_value));
+            mReceivedDashboardMenuListData = extras.getParcelable(RescribeConstants.ITEM_DATA);
+            String value = extras.getString(RescribeConstants.ITEM_DATA_VALUE);
 
             if (mReceivedDashboardMenuListData != null) {
                 title.setText(mReceivedDashboardMenuListData.getName());
@@ -212,7 +212,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         if (clickEvent != null) {
             FindDoctorsMenuListAdapter mFindDoctorsAdapter = new FindDoctorsMenuListAdapter(mContext, clickEvent.getClickOptions(), this);
             listView.setAdapter(mFindDoctorsAdapter);
-
         }
         //-------------
 
@@ -234,24 +233,26 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void setUpViewPager() {
-        if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3) {
+        /*if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3)
             viewAllFavorite.setVisibility(View.GONE);
-        } else {
+         else
             viewAllFavorite.setVisibility(View.GONE);
-        }
 
-        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3) {
+        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3)
             viewAllSponsered.setVisibility(View.GONE);
-        } else {
+         else
             viewAllSponsered.setVisibility(View.GONE);
-        }
 
-        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3) {
-            viewAllRecentVisited.setVisibility(View.GONE);
-        } else {
-            viewAllRecentVisited.setVisibility(View.GONE);
 
-        }
+        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3)
+            viewAllRecentVisited.setVisibility(View.GONE);
+         else
+            viewAllRecentVisited.setVisibility(View.GONE);*/
+
+        viewAllFavorite.setVisibility(View.GONE);
+        viewAllSponsered.setVisibility(View.GONE);
+        viewAllRecentVisited.setVisibility(View.GONE);
+
         sponsered = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), 3);
         recently_visit_doctor = mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), 3);
         favoriteList = mServicesCardViewImpl.getFavouriteDocList(3);
@@ -315,42 +316,31 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             case R.id.complaintsImageView:
                 String completeText = complaintsTextView.getText().toString().trim();
                 if (!completeText.isEmpty()) {
-                    Intent intentComplaint = new Intent(FindDoctorsActivity.this, ServicesFilteredDoctorListActivity.class);
                     Bundle bundleData = new Bundle();
-                    bundleData.putString(mContext.getString(R.string.toolbarTitle), complaintsTextView.getText().toString());
-                    bundleData.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.complaints));
-                    HashMap<String, String> h = new HashMap<>();
-                    h.put(getString(R.string.complaint1), complaintsTextView.getText().toString());
-                    bundleData.putSerializable(getString(R.string.complaints), h);
+                    bundleData.putString(RescribeConstants.TITLE, complaintsTextView.getText().toString());
+                    bundleData.putString(RescribeConstants.CATEGORY, complaintsTextView.getText().toString());
+                    Intent intentComplaint = new Intent(FindDoctorsActivity.this, ServicesFilteredDoctorListActivity.class);
                     intentComplaint.putExtras(bundleData);
                     startActivity(intentComplaint);
                 }
-
                 break;
             case R.id.favouriteDoctors:
-                /*if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3) {*/
                 Intent viewAllFavorite = new Intent(mContext, ShowCategoryWiseDoctorActivity.class);
-                viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                viewAllFavorite.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.favorite));
+                viewAllFavorite.putExtra(RescribeConstants.TITLE, getString(R.string.doctorss));
+                viewAllFavorite.putExtra(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.favorite));
                 startActivity(viewAllFavorite);
                 break;
             case R.id.recentlyvisitedTextView:
-              /*  if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3) {*/
                 Intent viewAllRecentVisited = new Intent(mContext, ShowCategoryWiseDoctorActivity.class);
-                viewAllRecentVisited.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                viewAllRecentVisited.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.recently_visit_doctor));
-
+                viewAllRecentVisited.putExtra(RescribeConstants.TITLE, getString(R.string.doctorss));
+                viewAllRecentVisited.putExtra(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.recently_visit_doctor));
                 startActivity(viewAllRecentVisited);
-                /*} else {
-
-                }*/
-
                 break;
             case R.id.sponsoredDoctors:
                /* if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3) {*/
                 Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctorActivity.class);
-                viewAllSponsered.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
-                viewAllSponsered.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.sponsored_doctor));
+                viewAllSponsered.putExtra(RescribeConstants.TITLE, getString(R.string.doctorss));
+                viewAllSponsered.putExtra(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.sponsored_doctor));
                 startActivity(viewAllSponsered);
                /* } else {
 
@@ -403,7 +393,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             Intent intent = new Intent(mContext, BookAppointDoctorListBaseActivity.class);
             Bundle bundle = new Bundle();
             // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
-            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            bundle.putString(RescribeConstants.ITEM_DATA, getString(R.string.doctorss));
             bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
             intent.putExtras(bundle);
             startActivity(intent);

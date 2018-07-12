@@ -58,6 +58,7 @@ import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel
 import com.rescribe.model.book_appointment.search_doctors.RecentlyVisitedAreaList;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -609,7 +610,7 @@ public class BookAppointFindLocationActivity extends AppCompatActivity implement
         if (getString(R.string.book_appointment).equalsIgnoreCase(mOpeningMode)) {
             Intent i = new Intent(this, BookAppointListOnLocationSelection.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.toolbarTitle), getString(R.string.doctorss));
+            bundle.putString(RescribeConstants.TITLE, getString(R.string.doctorss));
             i.putExtras(bundle);
             startActivity(i);
         }

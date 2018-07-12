@@ -81,7 +81,7 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity i
         if (extras == null) {
             extras = new Bundle();
         }
-        title.setText(extras.getString(getString(R.string.toolbarTitle)));
+        title.setText(extras.getString(RescribeConstants.TITLE));
 
         if (intent.getAction() != null) {
             if (intent.getAction().equals(TOKEN_DATA_ACTION) || intent.getAction().equals(FOLLOW_UP_DATA_ACTION))

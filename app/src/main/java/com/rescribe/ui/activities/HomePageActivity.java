@@ -221,7 +221,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private String patientId;
     private boolean mIsAppOpenFromLogin;
-//    ArrayList<String> cardBgImage = new ArrayList<>();
 
     private void logUser() {
         // TODO: Use the current user's information
@@ -370,12 +369,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
                     // inset card doctors details in database
                     List<CategoryList> categoryList = dashboardModel.getData().getCategoryList();
-
                     appDBHelper.addCardDoctors(categoryList);
 
-                    if (dashboardModel.getData().isIsDocUpdated()) {
+//                    if (dashboardModel.getData().isIsDocUpdated()) {
                         mDashboardHelper.getDoctorList();
-                    } else {
+                    /*} else {
                         // Show doctor data from Database
                         setUpViewPager();
 
@@ -385,7 +383,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                             mIsAppOpenFromLogin = false;
                             doGetMedicationNotificationOnNewLogin();
                         }
-                    }
+                    }*/
                 }
 
                 break;
@@ -458,9 +456,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     doctorList.setExperience(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
                     doctorList.setPaidStatus(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
                     doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
-
                     doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
-                    doctorList.setCardBackground(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE_BACKGROUND)));
 
                     Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
                     if (appointmentByDoctorCursor.moveToFirst()) {
@@ -542,26 +538,25 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         dataMap.put(getString(R.string.favorite), favoriteList.size());
 
         ArrayList<DoctorList> mergeList = new ArrayList<>();
-        ArrayList<String> cardBgImage = new ArrayList<>();
 
         if (!myAppoint.isEmpty()) {
             mergeList.add(myAppoint.get(0));
-            cardBgImage.add(myAppoint.get(0).getCardBackground());
+            myAppoint.get(0).setCardBackground(appDBHelper.getCardsBackground(getString(R.string.my_appointments)));
         }
 
         if (!sponsered.isEmpty()) {
             mergeList.add(sponsered.get(0));
-            cardBgImage.add(sponsered.get(0).getCardBackground());
+            sponsered.get(0).setCardBackground(appDBHelper.getCardsBackground(getString(R.string.sponsored_doctor)));
         }
 
         if (!recently_visit_doctor.isEmpty()) {
             mergeList.add(recently_visit_doctor.get(0));
-            cardBgImage.add(recently_visit_doctor.get(0).getCardBackground());
+            recently_visit_doctor.get(0).setCardBackground(appDBHelper.getCardsBackground(getString(R.string.recently_visited_doctor)));
         }
 
         if (!favoriteList.isEmpty()) {
             mergeList.add(favoriteList.get(0));
-            cardBgImage.add(favoriteList.get(0).getCardBackground());
+            favoriteList.get(0).setCardBackground(appDBHelper.getCardsBackground(getString(R.string.favorite)));
         }
 
         //------------
@@ -577,7 +572,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
         viewPagerDoctorItem.setPageMargin(pager_margin);
 
-        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, cardBgImage, activityCreatedTimeStamp);
+        ShowBackgroundViewPagerAdapter mShowBackgroundViewPagerAdapter = new ShowBackgroundViewPagerAdapter(this, activityCreatedTimeStamp, mergeList);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(mShowBackgroundViewPagerAdapter);
 
@@ -649,37 +644,37 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         if (menu.getName().equalsIgnoreCase(getString(R.string.find_doctors))) {
             intent = new Intent(mContext, FindDoctorsActivity.class);
             Bundle b = new Bundle();
-            b.putParcelable(getString(R.string.clicked_item_data), menu);
-            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+            b.putParcelable(RescribeConstants.ITEM_DATA, menu);
+            b.putString(RescribeConstants.ITEM_DATA_VALUE, menu.getName());
             intent.putExtras(b);
         } else if (menu.getName().toLowerCase().startsWith(getString(R.string.on_going_treatment).toLowerCase())) {
             intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle b = new Bundle();
-            b.putParcelable(getString(R.string.clicked_item_data), menu);
-            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+            b.putParcelable(RescribeConstants.ITEM_DATA, menu);
+            b.putString(RescribeConstants.ITEM_DATA_VALUE, menu.getName());
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_repository))) {
             intent = new Intent(mContext, HealthRepositoryActivity.class);
             Bundle b = new Bundle();
-            b.putParcelable(getString(R.string.clicked_item_data), menu);
-            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+            b.putParcelable(RescribeConstants.ITEM_DATA, menu);
+            b.putString(RescribeConstants.ITEM_DATA_VALUE, menu.getName());
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_offers))) {
             intent = new Intent(mContext, HealthOffersActivity.class);
             Bundle b = new Bundle();
-            b.putParcelable(getString(R.string.clicked_item_data), menu);
-            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+            b.putParcelable(RescribeConstants.ITEM_DATA, menu);
+            b.putString(RescribeConstants.ITEM_DATA_VALUE, menu.getName());
             intent.putExtras(b);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_education))) {
             intent = new Intent(mContext, HealthEducation.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), menu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, menu.getName());
             intent.putExtras(bundle);
         } else if (menu.getName().equalsIgnoreCase(getString(R.string.health_services))) {
             intent = new Intent(mContext, BookAppointmentServices.class);
             Bundle b = new Bundle();
-            b.putParcelable(getString(R.string.clicked_item_data), menu);
-            b.putString(getString(R.string.clicked_item_data_type_value), menu.getName());
+            b.putParcelable(RescribeConstants.ITEM_DATA, menu);
+            b.putString(RescribeConstants.ITEM_DATA_VALUE, menu.getName());
             intent.putExtras(b);
         }
         if (intent != null)
@@ -696,7 +691,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             Bundle bundle = new Bundle();
             bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
-            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            bundle.putString(RescribeConstants.ITEM_DATA, getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (menuName.equalsIgnoreCase(SETTINGS)) {
@@ -1056,7 +1051,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA_VALUE, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }
@@ -1070,7 +1065,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticlesActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }

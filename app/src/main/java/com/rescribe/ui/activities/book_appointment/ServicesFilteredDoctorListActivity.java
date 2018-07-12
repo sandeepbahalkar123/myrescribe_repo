@@ -17,6 +17,7 @@ import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.HashMap;
 
@@ -63,12 +64,10 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
         showlocation.setVisibility(View.GONE);
         locationTextView.setVisibility(View.GONE);
         userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-        //  showlocation.setText(userSelectedLocationInfo.get(getString(R.string.location)));
-        //--------
+
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            title.setText(extras.getString(getString(R.string.toolbarTitle)));
-        }
+        if (extras != null)
+            title.setText(extras.getString(RescribeConstants.TITLE));
         mBookAppointFilteredDoctorListFragment = BookAppointFilteredDoctorListFragment.newInstance(extras);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mBookAppointFilteredDoctorListFragment).commit();
 

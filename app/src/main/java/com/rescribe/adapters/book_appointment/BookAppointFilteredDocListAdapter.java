@@ -344,11 +344,11 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getDocSpeciality());
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, doctorObject.getDocSpeciality());
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
-                b.putString(mContext.getString(R.string.toolbarTitle), mReceivedTitleForView);
-                b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
+                b.putString(RescribeConstants.TITLE, mReceivedTitleForView);
+                b.putString(RescribeConstants.CATEGORY, doctorObject.getCategoryName());
                 b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, RescribeConstants.SEARCH_DOCTORS);
                 mOnFilterDocListClickListener.onClickOfCardView(b);
             }
@@ -358,12 +358,12 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.book_appointment));
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
 
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
                 b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
-                b.putString(mContext.getString(R.string.toolbarTitle), mReceivedTitleForView);
+                b.putString(RescribeConstants.TITLE, mReceivedTitleForView);
 
                 mOnFilterDocListClickListener.onClickedOfBookButton(b);
             }
@@ -373,11 +373,11 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.token_number));
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 b.putString(mContext.getString(R.string.opening_mode), mClickedItemDataTypeValue);
-                b.putString(mContext.getString(R.string.toolbarTitle), mReceivedTitleForView);
+                b.putString(RescribeConstants.TITLE, mReceivedTitleForView);
 
                 mOnFilterDocListClickListener.onClickedOfTokenNumber(b);
             }

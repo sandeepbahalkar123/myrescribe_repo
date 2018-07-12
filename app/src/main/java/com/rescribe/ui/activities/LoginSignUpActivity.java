@@ -147,6 +147,9 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                     public void onCompleted(JSONObject object,
                                             GraphResponse response) {
 
+                        // logout facebook session
+                        LoginManager.getInstance().logOut();
+
                         JSONObject json = response.getJSONObject();
 
                         if (object != null)
@@ -181,9 +184,6 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                             loginHelper.doLoginBySocial(signUpRequest);
 
                         }
-
-                        // logout facebook session
-                        LoginManager.getInstance().logOut();
 
                     }
                 });

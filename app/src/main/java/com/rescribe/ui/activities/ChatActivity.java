@@ -941,18 +941,18 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             case R.id.bookAppointmentButton:
                 // call book appointment
                 Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+                intent.putExtra(RescribeConstants.TITLE, getString(R.string.doctor));
                 DoctorList doctorListData = new DoctorList();
                 doctorListData.setDocId(chatList.getId());
                 ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData);
-                intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
                 startActivity(intent);
                 break;
             case R.id.bookAppointmentGetTokenButton:
                 // call book appointment
                 Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-                intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-                intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                intent1.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
+                intent1.putExtra(RescribeConstants.TITLE, getString(R.string.book_appointment));
                 DoctorList doctorListData1 = new DoctorList();
                 doctorListData1.setDocId(chatList.getId());
                 ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);

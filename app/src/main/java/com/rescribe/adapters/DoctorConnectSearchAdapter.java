@@ -13,6 +13,7 @@ import com.rescribe.R;
 import com.rescribe.model.doctor_connect_search.DoctorSpeciality;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class DoctorConnectSearchAdapter extends RecyclerView.Adapter<DoctorConne
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data), doctorConnectSearchModel.getSpeciality());
+                b.putString(RescribeConstants.ITEM_DATA, doctorConnectSearchModel.getSpeciality());
                 mOnDoctorSpecialityClickListener.setOnClickOfDoctorSpeciality(b);
             }
         });

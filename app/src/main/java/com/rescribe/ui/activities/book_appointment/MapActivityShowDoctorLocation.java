@@ -64,7 +64,7 @@ public class MapActivityShowDoctorLocation extends AppCompatActivity implements 
                 onBackPressed();
             }
         });
-        title.setText(intent.getStringExtra(getString(R.string.toolbarTitle)));
+        title.setText(intent.getStringExtra(RescribeConstants.TITLE));
         showlocation.setVisibility(View.VISIBLE);
         showlocation.setText(getIntent().getStringExtra(getString(R.string.location)));
         locationTextView.setVisibility(View.GONE);

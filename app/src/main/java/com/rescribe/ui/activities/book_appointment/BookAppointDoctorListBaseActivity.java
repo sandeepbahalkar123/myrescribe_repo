@@ -170,7 +170,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         if (intent != null) {
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                String title = extras.getString(getString(R.string.clicked_item_data));
+                String title = extras.getString(RescribeConstants.ITEM_DATA);
                 callType = extras.getString(RescribeConstants.CALL_FROM_DASHBOARD);
                 mTitleView.setText(title);
                 bundle.putString(getString(R.string.title), title);
@@ -415,7 +415,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA_VALUE, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }
@@ -429,7 +429,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticlesActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }

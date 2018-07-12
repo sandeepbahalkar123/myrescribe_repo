@@ -251,6 +251,9 @@ public class RescribeConstants {
 
     public static final String GMAIL = "gmail";
     public static final String FACEBOOK = "facebook";
+    public static final String ITEM_DATA = "item_data";
+    public static final String ITEM_DATA_VALUE = "clicked_item_data_value";
+    public static final String CATEGORY = "categories";
 
     public static class USER_STATUS {
         public static final String ONLINE = "Online";

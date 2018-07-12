@@ -61,7 +61,7 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            title.setText(extras.getString(getString(R.string.clicked_item_data)));
+            title.setText(extras.getString(RescribeConstants.ITEM_DATA));
         }
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -157,7 +157,7 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
         Intent intent = new Intent(HealthEducation.this, SaveArticleWebViewActivity.class);
         Bundle b = new Bundle();
         b.putString(getString(R.string.url), data.getArticleUrl());
-        b.putString(getString(R.string.toolbarTitle), getString(R.string.health_education));
+        b.putString(RescribeConstants.TITLE, getString(R.string.health_education));
         b.putBoolean(getString(R.string.save), data.getIsSaved());
         intent.putExtras(b);
         startActivityForResult(intent, ARTICLE_REQUEST_CODE);

@@ -150,7 +150,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
     }
 
-    public void doGetDoctorData(String city, String address, HashMap<String, String> mReceivedComplaintHashMap) {
+    public void doGetDoctorData(String city, String address, String mReceivedComplaintHashMap) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
@@ -163,11 +163,9 @@ public class DoctorDataHelper implements ConnectionListener {
         requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
         //--------In case of complaint added by user from ComplaintFragment.java---
         if (mReceivedComplaintHashMap != null) {
-            if (mReceivedComplaintHashMap.size() > 0) {
                 url = Config.GET_DOCTOR_LIST_BY_COMPLAINT;
-                requestDoctorListBaseModel.setComplaint(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
+                requestDoctorListBaseModel.setComplaint(mReceivedComplaintHashMap);
                 //requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
-            }
         }
         //-----------
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
@@ -223,7 +221,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR);
     }
 
-    public void doFilteringOnSelectedConfig(BookAppointFilterRequestModel requestModel, HashMap<String, String> mReceivedComplaintHashMap) {
+    public void doFilteringOnSelectedConfig(BookAppointFilterRequestModel requestModel, String mReceivedComplaint) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER, Request.Method.POST, false);
 
         //---------
@@ -234,14 +232,8 @@ public class DoctorDataHelper implements ConnectionListener {
             requestModel.setArea(split[0].trim());
         }
         requestModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
-        //---------
-        //--------In case of complaint added by user from ComplaintFragment.java---
-        if (mReceivedComplaintHashMap != null) {
-            if (mReceivedComplaintHashMap.size() > 0) {
-                requestModel.setComplaint(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
-             }
-        }
-        //-----------
+        if (mReceivedComplaint != null)
+                requestModel.setComplaint(mReceivedComplaint);
 
         mConnectionFactory.setPostParams(requestModel);
         mConnectionFactory.setHeaderParams();

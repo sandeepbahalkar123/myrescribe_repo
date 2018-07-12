@@ -36,6 +36,7 @@ import com.rescribe.model.token.FCMData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.HashMap;
 
@@ -139,8 +140,8 @@ public class FCMService extends FirebaseMessagingService {
             icNotificationIcon = R.drawable.ic_notification_appoinments;
 
             // call book appointment
-            intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+            intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
+            intent.putExtra(RescribeConstants.TITLE, getString(R.string.book_appointment));
 
             DoctorList doctorListData1 = new DoctorList();
             doctorListData1.setDocId(fcmTokenData.getDocId());

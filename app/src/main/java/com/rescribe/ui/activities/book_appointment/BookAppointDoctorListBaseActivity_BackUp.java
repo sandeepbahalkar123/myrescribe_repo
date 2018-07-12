@@ -101,7 +101,7 @@ public class BookAppointDoctorListBaseActivity_BackUp extends AppCompatActivity 
             HashMap<String, String> userSelectedLocationInfo = DoctorDataHelper.getUserSelectedLocationInfo();
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
             locationTextView.setText("" + locationReceived);
-            title = intent.getStringExtra(getString(R.string.clicked_item_data));
+            title = intent.getStringExtra(RescribeConstants.ITEM_DATA);
         }
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -396,8 +396,8 @@ public class BookAppointDoctorListBaseActivity_BackUp extends AppCompatActivity 
             //----This is done to hold complaints ----
             Bundle arguments = fragmentToLoad.getArguments();
             if (arguments != null) {
-                if (getString(R.string.complaints).equalsIgnoreCase(arguments.getString(getString(R.string.opening_mode)))) {
-                    mComplaintsUserSearchFor.put(getString(R.string.complaints), getString(R.string.complaints));
+                if (RescribeConstants.TITLE.equalsIgnoreCase(arguments.getString(getString(R.string.opening_mode)))) {
+                    mComplaintsUserSearchFor.put(RescribeConstants.TITLE, RescribeConstants.TITLE);
                     mComplaintsUserSearchFor.put(getString(R.string.complaint1), arguments.getString(getString(R.string.complaint1)));
                     mComplaintsUserSearchFor.put(getString(R.string.complaint2), arguments.getString(getString(R.string.complaint2)));
                 }

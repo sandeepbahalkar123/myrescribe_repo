@@ -59,7 +59,7 @@ public class SavedArticlesActivity extends AppCompatActivity implements HelperRe
         getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-           title.setText(extras.getString(getString(R.string.clicked_item_data)));
+           title.setText(extras.getString(RescribeConstants.ITEM_DATA));
         }
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -152,8 +152,8 @@ public class SavedArticlesActivity extends AppCompatActivity implements HelperRe
         Intent intent = new Intent(this, SaveArticleWebViewActivity.class);
         Bundle b = new Bundle();
         b.putString(getString(R.string.url), data.getArticleUrl());
-        b.putString(getString(R.string.toolbarTitle), getString(R.string.saved_articles));
-        b.putString(getString(R.string.clicked_item_data), getString(R.string.clicked_saved_articles));
+        b.putString(RescribeConstants.TITLE, getString(R.string.saved_articles));
+        b.putString(RescribeConstants.ITEM_DATA, getString(R.string.clicked_saved_articles));
         b.putBoolean(getString(R.string.save), true);
         intent.putExtras(b);
         startActivityForResult(intent, ARTICLE_REQUEST_CODE);

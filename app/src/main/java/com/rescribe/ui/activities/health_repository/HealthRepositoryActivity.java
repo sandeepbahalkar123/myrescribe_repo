@@ -30,6 +30,7 @@ import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
+import com.rescribe.util.RescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,8 +72,8 @@ public class HealthRepositoryActivity extends AppCompatActivity implements IOnMe
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
-            String value = extras.getString(getString(R.string.clicked_item_data_type_value));
+            mReceivedDashboardMenuListData = extras.getParcelable(RescribeConstants.ITEM_DATA);
+            String value = extras.getString(RescribeConstants.ITEM_DATA_VALUE);
 
             if (mReceivedDashboardMenuListData != null)
                 title.setText(mReceivedDashboardMenuListData.getName());
@@ -161,25 +162,25 @@ public class HealthRepositoryActivity extends AppCompatActivity implements IOnMe
         if (data.getName().equalsIgnoreCase(getString(R.string.vital_graph))) {
             Intent intent = new Intent(mContext, VitalGraphActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), data.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, data.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (data.getName().equalsIgnoreCase(getString(R.string.doctor_visit))) {
             Intent intent = new Intent(mContext, DoctorListActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), data.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, data.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (data.getName().equalsIgnoreCase(getString(R.string.my_records))) {
             Intent intent = new Intent(mContext, MyRecordsActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), data.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, data.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (data.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticlesActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), data.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, data.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }

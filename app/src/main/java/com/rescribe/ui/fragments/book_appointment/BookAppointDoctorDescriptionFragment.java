@@ -155,11 +155,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
 
     public static BookAppointDoctorDescriptionFragment newInstance(Bundle b) {
         BookAppointDoctorDescriptionFragment fragment = new BookAppointDoctorDescriptionFragment();
-        Bundle args = b;
-        if (args == null) {
-            args = new Bundle();
-        }
-        fragment.setArguments(args);
+        fragment.setArguments(b);
         return fragment;
     }
 
@@ -171,10 +167,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         appDBHelper = new AppDBHelper(getContext());
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
         mColorGenerator = ColorGenerator.MATERIAL;
-        //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(getString(R.string.toolbarTitle)), false);
+        //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(RescribeConstants.TITLE), false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mReceivedTitle = arguments.getString(getString(R.string.toolbarTitle));
+            mReceivedTitle = arguments.getString(RescribeConstants.TITLE);
         }
     }
 
@@ -417,7 +413,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
             case R.id.bookAppointmentButton:
                 Intent intentObject = new Intent(getActivity(), SelectSlotToBookAppointmentBaseActivity.class);
                 Bundle b = new Bundle();
-                b.putString(getString(R.string.toolbarTitle), mReceivedTitle);
+                b.putString(RescribeConstants.TITLE, mReceivedTitle);
                 b.putInt(getString(R.string.selected_clinic_data_position), mSelectedClinicDataPosition);
                 intentObject.putExtras(b);
                 startActivity(intentObject);
@@ -443,7 +439,7 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intentObjectMap.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
+                intentObjectMap.putExtra(RescribeConstants.TITLE, mReceivedTitle);
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intentObjectMap);

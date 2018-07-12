@@ -245,7 +245,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             });
 
             if (mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName().equals(mContext.getString(R.string.bp))) {
-                String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getCategory();
+                String category = mListDataHeader.get(groupPosition).getVitals().get(mPosition).getUnitName();
                 String[] categoryForBp = category.split(":");
                 categoryForBpMax = categoryForBp[0];
                 categoryForBpMin = categoryForBp.length == 2 ? categoryForBp[1] : "";

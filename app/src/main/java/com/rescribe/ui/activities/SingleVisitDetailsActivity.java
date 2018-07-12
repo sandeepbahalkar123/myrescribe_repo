@@ -234,7 +234,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                             if (pos == null) {
                                 vital.setUnitName(getString(R.string.bp) + " " + dataObject.getUnitValue());
                                 vital.setUnitValue(dataObject.getUnitValue());
-                                vital.setCategory(dataObject.getCategory());
+                                vital.setCategory(dataObject.getUnitName());
                                 vital.setIcon(dataObject.getIcon());
                                 for (int k = 0; k < dataObject.getRanges().size(); k++) {
                                     dataObject.getRanges().get(k).setNameOfVital(getString(R.string.bp_max));
@@ -246,8 +246,8 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                             } else {
                                 Vital previousData = vitalSortedList.get(Integer.parseInt(pos));
                                 String unitValue = previousData.getUnitValue();
-                                String unitCategory = previousData.getCategory();
-                                unitCategory = unitCategory + getString(R.string.colon_sign) + dataObject.getCategory();
+                                String unitCategory = previousData.getUnitName();
+                                unitCategory = unitCategory + getString(R.string.colon_sign) + dataObject.getUnitName();
                                 unitValue = unitValue + "/" + dataObject.getUnitValue();
                                 previousData.setUnitName(getString(R.string.bp));
                                 previousData.setUnitValue(unitValue);
@@ -260,7 +260,7 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                             Vital vital = new Vital();
                             vital.setUnitName(vitalList.get(j).getUnitName());
                             vital.setUnitValue(vitalList.get(j).getUnitValue());
-                            vital.setCategory(vitalList.get(j).getCategory());
+                            vital.setCategory(vitalList.get(j).getUnitName());
                             vital.setRanges(vitalList.get(j).getRanges());
                             vital.setIcon(vitalList.get(j).getIcon());
                             vital.setDisplayName(vitalList.get(j).getDisplayName());

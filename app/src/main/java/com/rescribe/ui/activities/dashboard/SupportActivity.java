@@ -2,6 +2,7 @@ package com.rescribe.ui.activities.dashboard;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
 import com.rescribe.R;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.CommonMethods;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,16 +37,24 @@ public class SupportActivity extends BottomMenuActivity implements BottomMenuAda
     @BindView(R.id.title)
     CustomTextView title;
 
+    @BindView(R.id.versionText)
+    CustomTextView versionText;
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.support_base_layout);
         ButterKnife.bind(this);
+        mContext = this;
         initialize();
     }
 
     private void initialize() {
         title.setText(getIntent().getStringExtra(TITLE));
+
+        String versionString = "v" + CommonMethods.getVersionName(mContext) + "(" + CommonMethods.getVersionCode(mContext) + ")";
+        versionText.setText(versionString);
     }
 
     @NeedsPermission(Manifest.permission.CALL_PHONE)

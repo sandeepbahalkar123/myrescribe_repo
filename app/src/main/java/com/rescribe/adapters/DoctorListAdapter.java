@@ -102,8 +102,8 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             holder.date.setVisibility(View.INVISIBLE);
             holder.circularBulletChildElement.setVisibility(View.VISIBLE);
             holder.circularBulletMainElement.setVisibility(View.GONE);
-
         }
+
         String doctorName = "";
         if (dataObject.getDoctorName().contains("Dr.")) {
             doctorName = dataObject.getDoctorName();
@@ -111,8 +111,14 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
             doctorName = "Dr. " + dataObject.getDoctorName();
         }
         holder.doctorName.setText(doctorName);
-        //holder.doctorAddress.setText(dataObject.getAddress());
-        holder.doctorAddress.setText(dataObject.getAreaName() + ", " + dataObject.getCityName());
+
+        String areaCity;
+        if (dataObject.getAreaName().isEmpty())
+            areaCity = CommonMethods.toCamelCase(dataObject.getCityName());
+        else
+            areaCity = CommonMethods.toCamelCase(dataObject.getAreaName()) + ", " + CommonMethods.toCamelCase(dataObject.getCityName());
+        holder.doctorAddress.setText(areaCity);
+
         holder.doctorType.setText(dataObject.getSpecialization());
 
         holder.parentDataContainer.setBackgroundColor(dataObject.getRowColor());

@@ -102,10 +102,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
         if (model != null) {
             ArrayList<DoctorFilteredInfoAndCaseDetails> doctorsInfoAndCaseDetailsList = model.getFilterModel().getDocVisits();
             Collections.sort(doctorsInfoAndCaseDetailsList, new DateWiseComparator());
-
-            if (doctorsInfoAndCaseDetailsList != null) {
-                setListAdapter(doctorsInfoAndCaseDetailsList);
-            }
+            setListAdapter(doctorsInfoAndCaseDetailsList);
         }
     }
 

@@ -111,7 +111,13 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
                 holder.clinicName.setVisibility(View.VISIBLE);
                 holder.clinicName.setText(clinicDataList.get(0).getClinicName());
                 holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
-                holder.doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+
+                String areaCity;
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                holder.doctorAddress.setText(areaCity);
 
             } else {
                 if (clinicDataList.size() > 0) {
@@ -163,7 +169,14 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
                 holder.clinicName.setText(clinicDataList.get(0).getClinicName());
-                holder.doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+
+                String areaCity = "";
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                holder.doctorAddress.setText(areaCity);
+
                 holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
 
             } else {
@@ -216,7 +229,14 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
                 holder.clinicName.setText(clinicDataList.get(0).getClinicName());
-                holder.doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+
+                String areaCity = "";
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                holder.doctorAddress.setText(areaCity);
+
                 holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
 
             } else {
@@ -437,17 +457,15 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
 
         if (list.size() > 1) {
             int count = 0;
-            String[] clinicAddress = list.get(0).getClinicAddress().split(",");
+            String clinicAddress = list.get(0).getCityName();
             for (ClinicData innerDataObject :
                     list) {
-                String innerClinicAddress = innerDataObject.getClinicAddress();
-                if (innerClinicAddress.endsWith(clinicAddress[clinicAddress.length - 1])) {
+                String innerClinicAddress = innerDataObject.getCityName();
+                if (innerClinicAddress.equalsIgnoreCase(clinicAddress)) {
                     count = count + 1;
                 }
             }
-            if (count == list.size()) {
-                return true;
-            }
+            return count == list.size();
         }
         return false;
     }

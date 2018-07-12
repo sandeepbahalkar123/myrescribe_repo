@@ -10,6 +10,7 @@
     android:layout_marginRight="@dimen/dp6"
     android:layout_marginTop="4dp"
     android:clickable="true"
+    android:focusable="true"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -62,8 +63,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    app:srcCompat="@drawable/dashboard_big_black_ruppee"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/dashboard_big_black_ruppee" />
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/doctorFee"
@@ -107,8 +108,6 @@
                         android:id="@+id/thumbnail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/dp9"
                         android:layout_marginStart="@dimen/dp9"
@@ -126,11 +125,10 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp10"
-                        android:layout_toRightOf="@+id/thumbnail"
                         android:layout_weight="1.2"
                         android:gravity="center|left"
                         android:orientation="vertical">
@@ -139,8 +137,6 @@
                             android:id="@+id/clinicName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/doctorType"
-                            android:layout_toRightOf="@+id/thumbnail"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textColor="@color/black"
@@ -153,8 +149,6 @@
                             android:id="@+id/doctorName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/doctorType"
-                            android:layout_toRightOf="@+id/thumbnail"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textColor="@color/black"
@@ -166,7 +160,6 @@
                             android:id="@+id/aboutDoctor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignTop="@+id/thumbnail"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textColor="@color/dose_completed"
@@ -178,8 +171,6 @@
                             android:id="@+id/doctorExperience"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/doctorName"
-                            android:layout_toRightOf="@+id/thumbnail"
                             android:gravity="right"
                             android:textColor="@color/dose_completed"
                             android:textSize="@dimen/sp11"
@@ -189,8 +180,6 @@
                             android:id="@+id/doctorAddress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/doctorName"
-                            android:layout_toRightOf="@+id/thumbnail"
                             android:gravity="right"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp11"
@@ -232,8 +221,8 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:paddingTop="@dimen/dp6"
-                        app:srcCompat="@drawable/location_green"
-                        android:visibility="invisible" />
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/location_green" />
 
                     <com.rescribe.ui.customesViews.CustomTextView
                         android:id="@+id/distance"
@@ -286,9 +275,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp10"
-                app:srcCompat="@drawable/get_token_btn"
                 android:visibility="invisible"
-                tools:visibility="visible"/>
+                app:srcCompat="@drawable/get_token_btn"
+                tools:visibility="visible" />
 
             <ImageView
                 android:id="@+id/bookAppointmentButton"
@@ -298,8 +287,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp10"
-                app:srcCompat="@drawable/result_book_appointment"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                app:srcCompat="@drawable/result_book_appointment" />
 
             <com.rescribe.ui.customesViews.CustomTextView
                 android:id="@+id/appointmentDate"

@@ -1,9 +1,7 @@
 package com.rescribe.adapters.find_doctors;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -31,7 +29,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.singleton.RescribeApplication;
-import com.rescribe.ui.activities.book_appointment.SelectSlotToBookAppointmentBaseActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -61,7 +58,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
         this.mDataList = doctorLists;
         setColumnNumber(mContext, 2);
         this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
-         /* this.mListSizeWithTypeMap = dataMap;*/
+        /* this.mListSizeWithTypeMap = dataMap;*/
 
         mInflater = LayoutInflater.from(context);
        /* if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
@@ -172,7 +169,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             ratingBar.setVisibility(View.VISIBLE);
             ratingBar.setRating((float) doctorObject.getRating());
             doctorRating.setText("" + doctorObject.getRating());
-
         }
 
 
@@ -195,7 +191,13 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             if (doctorObject.getClinicDataList().size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-                doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+
+                String areaCity;
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                doctorAddress.setText(areaCity);
 
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
@@ -257,7 +259,6 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
                 doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
-
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
 

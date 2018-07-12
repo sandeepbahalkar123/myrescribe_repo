@@ -302,7 +302,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                                 } catch (NumberFormatException e) {
                                     e.printStackTrace();
                                 }
-
                             }
                         }
                         break;

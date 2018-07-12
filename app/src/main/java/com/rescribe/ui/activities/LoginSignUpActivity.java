@@ -181,6 +181,10 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                             loginHelper.doLoginBySocial(signUpRequest);
 
                         }
+
+                        // logout facebook session
+                        LoginManager.getInstance().logOut();
+
                     }
                 });
         Bundle parameters = new Bundle();
@@ -248,6 +252,8 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
             // Signed out, show unauthenticated UI.
 
         }
+
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
     }
 
     @Override

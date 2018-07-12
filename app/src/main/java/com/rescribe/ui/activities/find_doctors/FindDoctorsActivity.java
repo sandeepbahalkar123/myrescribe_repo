@@ -333,10 +333,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 viewAllFavorite.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctorss));
                 viewAllFavorite.putExtra(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.favorite));
                 startActivity(viewAllFavorite);
-                /*} else {
-
-                }
-*/
                 break;
             case R.id.recentlyvisitedTextView:
               /*  if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3) {*/

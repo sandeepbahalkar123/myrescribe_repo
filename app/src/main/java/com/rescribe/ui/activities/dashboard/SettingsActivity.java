@@ -92,8 +92,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     ImageView dashboardArrowIcon;
     @BindView(R.id.selectMenuLayout)
     RelativeLayout selectMenuLayout;
-    @BindView(R.id.title)
-    CustomTextView title;
 
     private Context mContext;
     private AppDBHelper appDBHelper;
@@ -214,8 +212,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         mContext = SettingsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        title.setText(getString(R.string.settings));
+        getSupportActionBar().setTitle(getString(R.string.settings));
 
         ClickEvent clickEvent = mCurrentSelectedBottomMenu.getClickEvent();
         if (clickEvent != null) {

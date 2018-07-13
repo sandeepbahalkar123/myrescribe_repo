@@ -341,6 +341,7 @@ public class RescribeConstants {
         public static final String INVESTIGATION_NOTIFICATION_ID = "investigation_notification_id";
         public static final String IMAGE_ID = "imgId";
         public static final String INV_ID = "invId";
+        public static final String INV_TYPES = "types";
     }
 
     public static final String[] SALUTATION_SOCIALMEDIA = {"Mr.", "Mrs.", "Miss", "Other"};

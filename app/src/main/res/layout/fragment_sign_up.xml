@@ -129,6 +129,7 @@
                             android:layout_toRightOf="@+id/countyCode"
                             android:hint="@string/enter_mobile_no"
                             android:inputType="phone"
+                            android:maxLength="10"
                             android:typeface="sans" />
 
                     </RelativeLayout>

@@ -198,11 +198,13 @@ public class SignUpFragment extends Fragment implements HelperResponse {
             message = enter + getString(R.string.enter_full_name).toLowerCase(Locale.US);
             editTextName.setError(message);
             editTextName.requestFocus();
-        } else if (age.isEmpty()) {
+        } else
+
+            /* else if (age.isEmpty()) {
             message = enter + getString(R.string.enter_age).toLowerCase(Locale.US);
             editTextAge.setError(message);
             editTextAge.requestFocus();
-        } else /*if (email.isEmpty()) {
+        }  if (email.isEmpty()) {
             message = enter + getString(R.string.enter_email_id).toLowerCase(Locale.US);
             editTextEmailID.setError(message);
             editTextEmailID.requestFocus();

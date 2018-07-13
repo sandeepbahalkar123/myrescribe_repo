@@ -86,6 +86,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
         int selectedImageCount = 0;
         StringBuilder imageIds = new StringBuilder();
         StringBuilder invIds = new StringBuilder();
+        StringBuilder invTypes = new StringBuilder();
 
         for (Image image : photoPaths) {
             if (image.isSelected()) {
@@ -101,9 +102,10 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
             for (InvestigationData dataObject : investigationTemp) {
                 if (dataObject.isSelected() && !dataObject.isUploaded())
                     invIds.append(",").append(dataObject.getId());
+                invTypes.append(",").append(dataObject.getInvestigationType());
             }
 
-            investigationHelper.uploadFromAlreadyUploaded(imageIds.toString(), invIds.toString());
+            investigationHelper.uploadFromAlreadyUploaded(imageIds.toString(), invIds.toString(), invTypes.toString());
 
         } else {
             CommonMethods.showToast(mContext, "Please select at least one document");

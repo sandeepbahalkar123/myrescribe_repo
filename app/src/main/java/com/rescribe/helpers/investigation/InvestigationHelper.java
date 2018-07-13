@@ -84,7 +84,7 @@ public class InvestigationHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL);
     }
 
-    public void uploadFromAlreadyUploaded(String imageIds, String invIds) {
+    public void uploadFromAlreadyUploaded(String imageIds, String invIds,String invTypes) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED, Request.Method.POST, false);
 
         Device device = Device.getInstance(mContext);
@@ -99,12 +99,13 @@ public class InvestigationHelper implements ConnectionListener {
         headerParams.put(RescribeConstants.DEVICE_TYPE, device.getDeviceType());
         headerParams.put(RescribeConstants.INVESTIGATION_KEYS.IMAGE_ID, imageIds);
         headerParams.put(RescribeConstants.INVESTIGATION_KEYS.INV_ID, invIds);
+        headerParams.put(RescribeConstants.INVESTIGATION_KEYS.INV_TYPES, invTypes);
         mConnectionFactory.setHeaderParams(headerParams);
         mConnectionFactory.setUrl(Config.INVESTIGATION_UPLOAD);
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED);
     }
 
-    public void doSkipInvestigation(int invID, boolean progress) {
+    public void doSkipInvestigation(int invID, boolean progress, String type) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progress, RescribeConstants.TASK_DO_SKIP_INVESTIGATION, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
         String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
@@ -112,6 +113,9 @@ public class InvestigationHelper implements ConnectionListener {
         ArrayList<Integer> integers = new ArrayList<>();
         integers.add(invID);
         obj.setInvestigationId(integers);
+        ArrayList<String> types = new ArrayList<>();
+        types.add(type);
+        obj.setTypes(types);
         obj.setPatientId(Integer.parseInt(id));
         mConnectionFactory.setPostParams(obj);
         mConnectionFactory.setUrl(Config.DO_SKIP_INVESTIGATION);

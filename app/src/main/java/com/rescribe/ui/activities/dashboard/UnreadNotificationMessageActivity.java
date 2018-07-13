@@ -310,7 +310,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         this.mClickedUnreadInvestigationMessageData = unreadNotificationMessageData;
         InvestigationHelper mInvestigationHelper = new InvestigationHelper(this, this);
         InvestigationNotification data = new Gson().fromJson(unreadNotificationMessageData.getNotificationData(), InvestigationNotification.class);
-        mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true);
+        mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true, data.getNotifications().get(0).getInvestigationType());
 
         clearNotification(this, INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
     }
@@ -792,7 +792,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     @Override
     public void onFollowUpButtonClicked(String type, UnreadBookAppointTokenNotificationData unreadNotificationMessageData) {
-        if (type.equalsIgnoreCase(getResources().getString(R.string.book))){
+        if (type.equalsIgnoreCase(getResources().getString(R.string.book))) {
             Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
 
             FCMData fcmData = new FCMData();

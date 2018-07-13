@@ -14,6 +14,9 @@ public class InvestigationUploadByGmailRequest implements CustomResponse {
     @SerializedName("patientId")
     @Expose
     private int patientId;
+    @SerializedName("types")
+    @Expose
+    private ArrayList<String> types;
 
     public ArrayList<Integer> getInvestigationId() {
         return investigationId;
@@ -31,4 +34,11 @@ public class InvestigationUploadByGmailRequest implements CustomResponse {
         this.patientId = patientId;
     }
 
+    public ArrayList<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(ArrayList<String> types) {
+        this.types = types;
+    }
 }

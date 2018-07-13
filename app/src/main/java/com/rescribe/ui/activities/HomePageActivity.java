@@ -467,6 +467,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         // get from appointment table
                         doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
                         doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
+                        doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
                     }
 
                     ArrayList<ClinicData> clinicDataList = new ArrayList<>();

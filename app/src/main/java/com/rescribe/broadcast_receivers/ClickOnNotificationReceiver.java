@@ -71,8 +71,9 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
                 ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
 
                 int invId = investigationData.get(0).getId();
+                String invType = investigationData.get(0).getInvestigationType();
                 InvestigationHelper mInvestigationHelper = new InvestigationHelper(mContext, this);
-                mInvestigationHelper.doSkipInvestigation(invId, false);
+                mInvestigationHelper.doSkipInvestigation(invId, false, invType);
 
                 AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
                 int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext);

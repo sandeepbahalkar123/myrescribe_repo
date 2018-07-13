@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
@@ -42,13 +43,17 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
     Toolbar toolbar;
     @BindView(R.id.listView)
     RecyclerView mSavedArticleListView;
+    @BindView(R.id.noDataFound)
+    LinearLayout noDataFound;
+    @BindView(R.id.savedArticleDataFound)
+    RelativeLayout savedArticleDataFound;
     @BindView(R.id.emptyListView)
     RelativeLayout mEmptyListView;
     @BindView(R.id.title)
     CustomTextView title;
     private SavedArticleHealthEducationAdapter mSavedArticleListAdapter;
     private DashboardHelper mHelper;
-    private ArrayList<SavedArticleInfo> mReceivedSavedArticleList;
+    private ArrayList<SavedArticleInfo> mReceivedSavedArticleList = new ArrayList<>();
     private int pos;
     private Context mContext;
 
@@ -93,7 +98,7 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
                     if (savedArticleDataModel == null) {
                         isDataListViewVisible(false);
                     } else {
-                        mReceivedSavedArticleList = savedArticleDataModel.getSavedArticleList();
+                          mReceivedSavedArticleList = savedArticleDataModel.getSavedArticleList();
                         if (mReceivedSavedArticleList.size() > 0) {
                             isDataListViewVisible(true);
 
@@ -120,7 +125,7 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
                 }
                 break;
 
-            case RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER:
+            case RescribeConstants.TASK_SAVE_ARTICLES_TO_SERVER: {
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     //  CommonMethods.showToast(this, responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
@@ -133,6 +138,9 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
                         mSavedArticleListAdapter.notifyItemChanged(pos);
                     }
                 }
+                break;
+            }
+
         }
     }
 
@@ -179,6 +187,8 @@ public class HealthEducation extends AppCompatActivity implements HelperResponse
             mSavedArticleListView.setVisibility(View.VISIBLE);
         } else {
             mEmptyListView.setVisibility(View.VISIBLE);
+            noDataFound.setVisibility(View.VISIBLE);
+            savedArticleDataFound.setVisibility(View.GONE);
             mSavedArticleListView.setVisibility(View.GONE);
         }
     }

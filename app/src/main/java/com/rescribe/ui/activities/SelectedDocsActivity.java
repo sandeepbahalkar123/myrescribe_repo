@@ -206,6 +206,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
             if (photoPaths.size() > 0 && photoPaths != null) {
                 customProgressDialog.show();
                 String investigationIds = "";
+                String investigationTypes = "";
 
                 imageUploadedCount = 0;
                 imageUploadFailedCount = 0;
@@ -213,6 +214,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                 for (InvestigationData dataObject : investigation) {
                     if (dataObject.isSelected() && !dataObject.isUploaded()) {
                         investigationIds = investigationIds + "," + dataObject.getId();
+                        investigationTypes = investigationTypes + "," + dataObject.getInvestigationType();
                     }
                 }
 
@@ -231,7 +233,8 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                                 .addHeader(RescribeConstants.DEVICE_TYPE, device.getDeviceType())
 
                                 .addHeader("imgId", image.getImageId())
-                                .addHeader("invId", investigationIds)
+                                .addHeader("invIds", investigationIds)
+                                .addHeader("types", investigationTypes)
                                 .addFileToUpload(image.getImagePath(), "investigationDoc")
                                 .setDelegate(SelectedDocsActivity.this)
                                 .startUpload();

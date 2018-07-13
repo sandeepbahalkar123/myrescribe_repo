@@ -217,11 +217,7 @@
                           ]
                         }
                       },
-                      {
-                        "name": "How It Works?",
-                        "identifier": "",
-                        "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/howitworks.png"
-                      },
+
                       {
                         "name": "Terms of Use",
                         "identifier": "",
@@ -232,16 +228,7 @@
                         "identifier": "",
                         "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/privacypolicy.png"
                       },
-                      {
-                        "name": "Recommend Us",
-                        "identifier": "",
-                        "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/recommendus.png"
-                      },
-                      {
-                        "name": "Feedback",
-                        "identifier": "",
-                        "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/feedback.png"
-                      },
+
                       {
                         "name": "Support",
                         "identifier": "setting_Support",
@@ -369,11 +356,7 @@
               ]
             }
           },
-          {
-            "name": "How It Works?",
-            "identifier": "setting_HowItWorks",
-            "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/howitworks.png"
-          },
+
           {
             "name": "Terms of Use",
             "identifier": "setting_Terms",
@@ -384,16 +367,7 @@
             "identifier": "setting_Privacy",
             "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/privacypolicy.png"
           },
-          {
-            "name": "Recommend Us",
-            "identifier": "setting_Recommended",
-            "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/recommendus.png"
-          },
-          {
-            "name": "Feedback",
-            "identifier": "setting_FeedBack",
-            "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/feedback.png"
-          },
+
           {
             "name": "Support",
             "identifier": "setting_Support",

@@ -82,7 +82,8 @@ public class SocialSignUpInputFragment extends Fragment implements HelperRespons
             Bundle arguments = getArguments();
             mSignUpRequestModel = (SignUpRequestModel) arguments.getSerializable(SIGN_UP_DETAILS);
             if (mSignUpRequestModel.getEmailId() == null || mSignUpRequestModel.getEmailId().isEmpty())
-                mEmailLayout.setVisibility(View.GONE);
+                // mEmailLayout.setVisibility(View.GONE);
+                mEmailLayout.setVisibility(View.VISIBLE);
             else {
                 mSocialLoginEmail.setText(mSignUpRequestModel.getEmailId());
                 mEmailLayout.setVisibility(View.VISIBLE);

@@ -24,7 +24,7 @@ public class Config {
 
     //    public static final String GET_DASHBOARD_DATA = "api/dashboard/getDashboardDetails?patientId=";
     public static final String GET_DASHBOARD_DATA = "api/dashboard/getDocListByCategory?patientId=";
-    public static final String GET_DOCTORLIST_DATA="api/dashboard/getDoctorDetails?patientId=";
+    public static final String GET_DOCTORLIST_DATA = "api/dashboard/getDoctorDetails?patientId=";
 
     public static final String GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA = "api/doctors/getDocCountByArea?patientId=";
     public static final String CONFIRM_APPOINTMENT = "api/patient/bookAppointment ";
@@ -50,6 +50,8 @@ public class Config {
     public static final String LOGIN_WITH_OTP_URL = "authApi/authenticate/patientOtpLogin";
 
     public static final String CHANGE_PASS_WITH_OTP = "authApi/authenticate/forgotpassword";
+    public static final String TERMS_AND_CONDITIONS_URL = "https://rescribe.in/terms-and-conditions.html";
+    public static final String PRIVACY_POLICY = "https://rescribe.in/privacy-policy.html";
 
     public static final String PRESCRIPTION_URL = "api/patient/getPatientPrescriptions?patientId=";
     public static final String DOCTOR_LIST_URL = "api/patient/getDoctorList?patientId=";

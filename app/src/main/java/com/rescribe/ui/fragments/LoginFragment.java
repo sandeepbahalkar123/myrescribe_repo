@@ -25,8 +25,10 @@ import com.rescribe.model.login.PatientDetail;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
 import com.rescribe.ui.activities.HomePageActivity;
+import com.rescribe.ui.activities.WebViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.Locale;
@@ -46,6 +48,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
 
     @BindView(R.id.editTextMobileNo)
     EditText editTextMobileNo;
+
     @BindView(R.id.editTextPassword)
     EditText editTextPassword;
     @BindView(R.id.btnOtp)
@@ -122,7 +125,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.btnOtp, R.id.btn_login, R.id.forgotPasswordView, R.id.btnSignUp, R.id.loginUpWithFacebook, R.id.loginUpWithGmail})
+    @OnClick({R.id.termAndConditions, R.id.privacyPolicy, R.id.btnOtp, R.id.btn_login, R.id.forgotPasswordView, R.id.btnSignUp, R.id.loginUpWithFacebook, R.id.loginUpWithGmail})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnOtp:
@@ -165,6 +168,18 @@ public class LoginFragment extends Fragment implements HelperResponse {
             case R.id.loginUpWithGmail:
                 //Onclick of gmail button logic immplemented in LoginSignupActivity
                 mListener.onClickGoogle(getString(R.string.log_in));
+                break;
+            case R.id.termAndConditions:
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(getString(R.string.title_activity_selected_docs), Config.TERMS_AND_CONDITIONS_URL);
+                intent.putExtra(getString(R.string.title), getString(R.string.terms));
+                startActivity(intent);
+                break;
+            case R.id.privacyPolicy:
+                Intent intentpri = new Intent(getActivity(), WebViewActivity.class);
+                intentpri.putExtra(getString(R.string.title_activity_selected_docs), Config.PRIVACY_POLICY);
+                intentpri.putExtra(getString(R.string.title), getString(R.string.privacy));
+                startActivity(intentpri);
                 break;
         }
     }

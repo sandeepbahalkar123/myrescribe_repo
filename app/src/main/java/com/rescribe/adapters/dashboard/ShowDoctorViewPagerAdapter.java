@@ -29,6 +29,7 @@ import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ import java.util.Map;
  */
 
 public class ShowDoctorViewPagerAdapter extends PagerAdapter {
-    private final CardClickListener cardClickListener;
+   // private final CardClickListener cardClickListener;
     private HelperResponse mHelperResponse;
     private boolean mIsFavAvail = false;
     private Map<String, Integer> mListSizeWithTypeMap;
@@ -48,13 +49,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
     private String cityname;
     private CustomTextView favoriteCount;
 
-    public ShowDoctorViewPagerAdapter(Context context,  CardClickListener cardClickListener, ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
+    public ShowDoctorViewPagerAdapter(Context context,  ArrayList<DoctorList> doctorLists, ServicesCardViewImpl mOnClickOfCardOnDashboard, Map<String, Integer> dataMap, HelperResponse helperResponse) {
         this.mContext = context;
         this.mDataList = doctorLists;
         this.mServicesCardViewClickListener = mOnClickOfCardOnDashboard;
-        this.cardClickListener = cardClickListener;
+       // this.cardClickListener = cardClickListener;
         mInflater = LayoutInflater.from(context);
         this.mListSizeWithTypeMap = dataMap;
+
         if (mListSizeWithTypeMap.get(mContext.getString(R.string.favorite)) > 0) {
             mIsFavAvail = true;
         }
@@ -438,20 +440,22 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                boolean status = !doctorObject.getFavourite();
-//                mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
+              boolean status = !doctorObject.getFavourite();
+               mServicesCardViewClickListener.onFavoriteIconClick(status, doctorObject, favorite, mHelperResponse);
 
-                cardClickListener.onFavoriteClick(doctorObject, favorite, favoriteCount);
+                //cardClickListener.onFavoriteClick(doctorObject, favorite, favoriteCount);
             }
         });
 
         favoriteCount = sizeOfList;
+
         sizeOfList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
                 b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
+               // b.putSerializable("hashMap", (Serializable) mListSizeWithTypeMap);
                 mServicesCardViewClickListener.onClickOfTotalCount(b);
 
             }
@@ -567,8 +571,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         return false;
     }
 
-    public interface CardClickListener{
-        void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList);
-    }
+
 
 }

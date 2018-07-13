@@ -64,7 +64,7 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 //TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
-public class BookAppointDoctorDescriptionFragment extends Fragment implements ShowDoctorViewPagerAdapter.CardClickListener,HelperResponse {
+public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse {
 
     //-------------
     @BindView(R.id.doChat)
@@ -378,16 +378,16 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements Sh
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                   /* ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
-                    setFavorite(mClickedDoctorObject.getFavourite());*/
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                    setFavorite(mClickedDoctorObject.getFavourite());
 
-                    favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                   /* favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
                     if (favoriteDoctor.getFavourite())
                         favoriteIcon.setImageResource(R.drawable.favourite_icon);
                     else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
 
                     // update in database
-                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
+                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());*/
                 }
                 //    CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 break;
@@ -514,13 +514,13 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements Sh
 
     }
 
-    @Override
+  /*  @Override
     public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
         boolean status = !doctorList.getFavourite();
         new DoctorDataHelper(getContext(), this).setFavouriteDoctor(status, doctorList.getDocId());
         favoriteIcon = favorite;
         favoriteDoctor = doctorList;
-    }
+    }*/
 
     class DialogServicesListAdapter extends BaseAdapter {
         Context mContext;

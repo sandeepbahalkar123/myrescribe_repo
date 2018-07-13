@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 27/11/17.
  */
 
-public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperResponse,ShowDoctorViewPagerAdapter.CardClickListener {
+public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -139,16 +139,16 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
                 //  CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    //ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    //mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
-                    favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                    mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
+                   /* favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
                     if (favoriteDoctor.getFavourite())
                         favoriteIcon.setImageResource(R.drawable.favourite_icon);
                     else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
 
                     // update in database
-                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
+                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());*/
                 }
                 break;
         }
@@ -183,11 +183,11 @@ public class ShowCategoryWiseDoctor extends AppCompatActivity implements HelperR
     }
 
 
-    @Override
+  /*  @Override
     public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
         boolean status = !doctorList.getFavourite();
         new DoctorDataHelper(this, this).setFavouriteDoctor(status, doctorList.getDocId());
         favoriteIcon = favorite;
         favoriteDoctor = doctorList;
-    }
+    }*/
 }

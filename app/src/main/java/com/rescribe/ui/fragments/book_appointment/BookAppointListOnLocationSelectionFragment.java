@@ -46,7 +46,7 @@ import butterknife.Unbinder;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class BookAppointListOnLocationSelectionFragment extends Fragment implements HelperResponse,ShowDoctorViewPagerAdapter.CardClickListener, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible {
+public class BookAppointListOnLocationSelectionFragment extends Fragment implements HelperResponse, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible {
 
 
     @BindView(R.id.listView)
@@ -207,16 +207,16 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                 /*   ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                  ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();*/
-                    favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                    mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
+                   /* favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
                     if (favoriteDoctor.getFavourite())
                         favoriteIcon.setImageResource(R.drawable.favourite_icon);
                     else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
 
                     // update in database
-                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
+                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());*/
                 }
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
@@ -317,11 +317,11 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     }
 
-    @Override
+   /* @Override
     public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
         boolean status = !doctorList.getFavourite();
         new DoctorDataHelper(getContext(), this).setFavouriteDoctor(status, doctorList.getDocId());
         favoriteIcon = favorite;
         favoriteDoctor = doctorList;
-    }
+    }*/
 }

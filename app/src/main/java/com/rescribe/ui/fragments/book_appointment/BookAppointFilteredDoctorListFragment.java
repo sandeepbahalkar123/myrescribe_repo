@@ -42,7 +42,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse,ShowDoctorViewPagerAdapter.CardClickListener {
+public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse{
 
 
     @BindView(R.id.listView)
@@ -214,16 +214,16 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                   /* ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                     //--------
-                    mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();*/
-                    favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+                    mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
+                   /* favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
                     if (favoriteDoctor.getFavourite())
                         favoriteIcon.setImageResource(R.drawable.favourite_icon);
                     else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
 
                     // update in database
-                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
+                    appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());*/
                 }
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
@@ -340,14 +340,14 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         super.onDestroyView();
         unbinder.unbind();
     }
-
+/*
     @Override
     public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
         boolean status = !doctorList.getFavourite();
         new DoctorDataHelper(getContext(), this).setFavouriteDoctor(status, doctorList.getDocId());
         favoriteIcon = favorite;
         favoriteDoctor = doctorList;
-    }
+    }*/
 
 
    /* // TODO: NEED TO ADD SAME IN RECENT VISIT FILTER

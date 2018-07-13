@@ -179,7 +179,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             }
         }
         //------ This Activity is base for RecentVisitDoctorFragment
-        mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
+       mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
         //-----------
         //----------

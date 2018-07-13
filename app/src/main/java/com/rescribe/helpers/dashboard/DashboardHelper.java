@@ -63,41 +63,7 @@ public class DashboardHelper implements ConnectionListener {
                 if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DASHBOARD_API)){
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }else if(mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DOCTORLIST_API)){
-
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
-                    Doctorlistmodel doctorlistmodel = (Doctorlistmodel) customResponse;
-                    if(doctorlistmodel!=null){
-                      com.rescribe.model.dashboard_api.DoctorlistModel.Data data=doctorlistmodel.getData();
-
-                      if(data!=null){
-
-                          appDBHelper.deleteDoctor();
-                          appDBHelper.deleteClinic();
-                          appDBHelper.deleteCardViewData();
-                          for(int i=0;i<data.getDoctorList().size();i++){
-
-                              String dateAndTime = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD) + "&time=" + CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
-                              com.rescribe.model.dashboard_api.DoctorlistModel.DoctorList doctorList=data.getDoctorList().get(i);
-
-                              appDBHelper.insertDocotorListData(doctorList.getDocId(),doctorList.getDocName(),doctorList.getDocPhone(),doctorList.getDoctorImageUrl(),doctorList.getAboutDoctor(),
-                                      doctorList.getSpecialityId(),doctorList.getSpeciality(),doctorList.getRating(),doctorList.getCategorySpeciality(),doctorList.getDegree(),
-                                      doctorList.getExperience(),doctorList.getPaidStatus(),doctorList.getCategoryName(),doctorList.getGender(),dateAndTime);
-
-                             for(int j=0;j<doctorList.getClinicList().size();j++){
-
-                                 appDBHelper.insertClinicData(doctorList.getClinicList().get(j).getLocationId(),doctorList.getDocId(),doctorList.getClinicList().get(j).getClinicName(),
-                                         doctorList.getClinicList().get(j).getLocationLat(),doctorList.getClinicList().get(j).getLocationLong(),
-                                         doctorList.getClinicList().get(j).getClinicAddress(),doctorList.getClinicList().get(j).getAreaName(),doctorList.getClinicList().get(j).getCityName());
-
-
-                                 appDBHelper.insertDoctorvsClinicData(doctorList.getDocId(),doctorList.getClinicList().get(j).getLocationId(),doctorList.getClinicList().get(j).getAmount(),doctorList.getClinicList().get(j).getApptScheduleLmtDays(),
-                                         doctorList.getClinicList().get(j).getAppointmentType(),"");
-                             }
-                          }
-                      }
-                    }
-
-
                 }else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_SAVED_ARTICLES)) {
                     SavedArticleBaseModel savedArticleBaseModel = (SavedArticleBaseModel) customResponse;
                     if (savedArticleBaseModel != null) {
@@ -164,7 +130,7 @@ public class DashboardHelper implements ConnectionListener {
         String url = Config.GET_DASHBOARD_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.platform) + mContext.getString(R.string.android) + mContext.getString(R.string.screen_resolution) + screenResolutionValue;
         if (currentCity != null) {
             String dateAndTime = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD) + "&time=" + CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
-            url = url + mContext.getString(R.string.city) + currentCity.trim() + "&date=" + dateAndTime+ "&lastUpdatedDate=" + "2018-07-04T18:50:32.729Z";
+            url = url + mContext.getString(R.string.city) + currentCity.trim() + "&date=" + dateAndTime+ "&lastUpdatedDate=" + "";
 
         }
         mConnectionFactory.setUrl(url);
@@ -173,7 +139,7 @@ public class DashboardHelper implements ConnectionListener {
     public void GetDoctorlist(String currentcity){
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DOCTORLIST_API, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-
+        String lastUpdateDate="2018-07-10T10:14:33.000Z";
         String url = Config.GET_DOCTORLIST_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
         if(currentcity!=null){
             url = url + mContext.getString(R.string.city) + currentcity.trim();

@@ -60,7 +60,7 @@ import butterknife.OnClick;
  * Created by jeetal on 13/10/17.
  */
 
-public class FindDoctorsActivity extends AppCompatActivity implements HelperResponse, IOnMenuClickListener,ShowDoctorViewPagerAdapter.CardClickListener {
+public class FindDoctorsActivity extends AppCompatActivity implements HelperResponse, IOnMenuClickListener {
 
     private static final String FOLDER_PATH = "images/dashboard/menu/finddoctors/android/";
     private String density;
@@ -218,7 +218,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         }
         //-------------
 
-        setUpViewPager();
+       setUpViewPager();
 
 
         ViewTreeObserver vto = bottomFrame.getViewTreeObserver();
@@ -305,7 +305,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     @Override
     protected void onResume() {
         super.onResume();
-        setUpViewPager();
+       setUpViewPager();
     }
 
     @Override
@@ -383,16 +383,16 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
             if (temp.getCommonRespose().isSuccess()) {
                 //--------
-               // ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
                 //--------
                 //setUpViewPager();
-                favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
+               /* favoriteDoctor.setFavourite(!favoriteDoctor.getFavourite());
                 if (favoriteDoctor.getFavourite())
                     favoriteIcon.setImageResource(R.drawable.favourite_icon);
                 else favoriteIcon.setImageResource(R.drawable.favourite_line_icon);
 
                 // update in database
-                appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());
+                appDBHelper.insertfavoriteData(String.valueOf(favoriteDoctor.getDocId()),favoriteDoctor.getFavourite());*/
             }
 
         }
@@ -429,12 +429,12 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         }
     }
 
-    @Override
+   /* @Override
     public void onFavoriteClick(DoctorList doctorList, ImageView favorite, CustomTextView sizeOfList) {
 
         boolean status = !doctorList.getFavourite();
         new DoctorDataHelper(mContext, this).setFavouriteDoctor(status, doctorList.getDocId());
         favoriteIcon = favorite;
         favoriteDoctor = doctorList;
-    }
+    }*/
 }

@@ -3,6 +3,7 @@ package com.rescribe.ui.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +11,12 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,10 +25,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -241,13 +249,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         logUser();
-
-        mIsAppOpenFromLogin = getIntent().getBooleanExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, false);
-
-        // show progress
-        if (mIsAppOpenFromLogin)
-            custom_progress_bar.setVisibility(View.VISIBLE);
-
         activityCreatedTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
 
         appDBHelper = new AppDBHelper(mContext);
@@ -278,6 +279,14 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 checkAndroidVersion();
             }
         });
+
+        mIsAppOpenFromLogin = getIntent().getBooleanExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, false);
+        // show progress
+        if (mIsAppOpenFromLogin) {
+            checkAndroidVersion();
+            custom_progress_bar.setVisibility(View.VISIBLE);
+            getIntent().putExtra(RescribeConstants.APP_OPENING_FROM_LOGIN, false);
+        }
     }
 
     @Override
@@ -366,12 +375,32 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 DashboardModel dashboardModel = (DashboardModel) customResponse;
                 if (dashboardModel.getCommon().getStatusCode().equals(SUCCESS)) {
 
+                    if (dashboardModel.getData().getVersionCode() > CommonMethods.getVersionCode(mContext) && CommonMethods.getVersionCode(mContext) != -1) {
+                        if (!RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SHOW_UPDATE_DIALOG, mContext).equals(RescribeConstants.YES)) {
+                            showUpdateDialog(dashboardModel.getData().getVersionCode(), dashboardModel.getData().getAppURL());
+                            RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SHOW_UPDATE_DIALOG, RescribeConstants.YES, mContext);
+                        } else {
+                            if (RescribePreferencesManager.getBoolean(RescribePreferencesManager.PREFERENCES_KEY.isSkippedClicked, mContext)) {
+                                if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SHOW_UPDATE_DIALOG_ON_SKIPPED, mContext).equalsIgnoreCase(RescribeConstants.YES)) {
+                                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SHOW_UPDATE_DIALOG_ON_SKIPPED, RescribeConstants.NO, mContext);
+                                    showUpdateDialog(dashboardModel.getData().getVersionCode(), dashboardModel.getData().getAppURL());
+                                }
+                            } else if (RescribePreferencesManager.getBoolean(RescribePreferencesManager.PREFERENCES_KEY.isLaterClicked, mContext)) {
+                                if (isVersionCodeIncrementedByOne(dashboardModel.getData().getVersionCode())) {
+                                    RescribePreferencesManager.putInt(RescribePreferencesManager.PREFERENCES_KEY.VERSION_CODE_FROM_SERVER, dashboardModel.getData().getVersionCode(), mContext);
+                                    showUpdateDialog(dashboardModel.getData().getVersionCode(), dashboardModel.getData().getAppURL());
+                                }
+
+                            }
+                        }
+                    }
+
                     // inset card doctors details in database
                     List<CategoryList> categoryList = dashboardModel.getData().getCategoryList();
                     appDBHelper.addCardDoctors(categoryList);
 
 //                    if (dashboardModel.getData().isIsDocUpdated()) {
-                        mDashboardHelper.getDoctorList();
+                    mDashboardHelper.getDoctorList();
                     /*} else {
                         // Show doctor data from Database
                         setUpViewPager();
@@ -425,8 +454,70 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         }
     }
 
-    private void setUpViewPager() {
+    private void showUpdateDialog(final int versionCode, final String appURL) {
 
+        final Dialog dialog = new Dialog(this);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_update_app_layout);
+        AppCompatButton skipButton = (AppCompatButton) dialog.findViewById(R.id.skipButton);
+        AppCompatButton updateButton = (AppCompatButton) dialog.findViewById(R.id.updateButton);
+        AppCompatButton laterButton = (AppCompatButton) dialog.findViewById(R.id.laterButton);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SHOW_UPDATE_DIALOG_ON_SKIPPED, RescribeConstants.NO, mContext);
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isSkippedClicked, true, mContext);
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isUpdatedClicked, false, mContext);
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isLaterClicked, false, mContext);
+                dialog.dismiss();
+            }
+        });
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isSkippedClicked, false, mContext);
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isUpdatedClicked, true, mContext);
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isLaterClicked, false, mContext);
+                Intent viewIntent = new Intent();
+                viewIntent.setAction(Intent.ACTION_VIEW);
+                viewIntent.setData(Uri.parse(appURL));
+                viewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(viewIntent);
+            }
+        });
+        laterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                RescribePreferencesManager.putInt(RescribePreferencesManager.PREFERENCES_KEY.VERSION_CODE_FROM_SERVER, versionCode, mContext);
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isSkippedClicked, false, mContext);
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isUpdatedClicked, false, mContext);
+                RescribePreferencesManager.putBoolean(RescribePreferencesManager.PREFERENCES_KEY.isLaterClicked, true, mContext);
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(lp);
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+
+    }
+
+    private boolean isVersionCodeIncrementedByOne(Integer versionCode) {
+        return RescribePreferencesManager.getInt(RescribePreferencesManager.PREFERENCES_KEY.VERSION_CODE_FROM_SERVER, mContext) + 1 == versionCode;
+    }
+
+    private void setUpViewPager() {
+        int currentItem = viewPagerDoctorItem.getCurrentItem();
         swipeToRefresh.setRefreshing(false);
 
         // set All doctors
@@ -463,6 +554,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
                         doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
                         doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
+
+                        doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
+                        doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
                     }
 
                     ArrayList<ClinicData> clinicDataList = new ArrayList<>();
@@ -501,6 +595,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                                 if (doctorVsClinic.moveToFirst()) {
                                     // get from appointment table
                                     doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+                                    clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
                                 }
 
                                 doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
@@ -567,6 +662,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         //-----------
         // Disable clip to padding
         viewPagerDoctorItem.setClipToPadding(false);
+        viewPagerDoctorItem.setOffscreenPageLimit(4);
 
         int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
         viewPagerDoctorItem.setPadding(pager_padding, 0, pager_padding, 0);
@@ -598,6 +694,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             }
         });
 
+        // set pre state
+        viewPagerDoctorItem.setCurrentItem(currentItem);
     }
 
     @Override
@@ -876,8 +974,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 MQTTService.NOTIFY));
         registerReceiver(mUpdateAppUnreadNotificationCount, new IntentFilter(getString(R.string.unread_notification_update_received)));
 
-        checkAndroidVersion();
-        setUpViewPager();
+        if (!mIsAppOpenFromLogin) {
+            checkAndroidVersion();
+            setUpViewPager();
+        }
 
         int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, this);//appCount + invCount + medCount;// + tokCount;
         setBadgeCount(notificationCount);

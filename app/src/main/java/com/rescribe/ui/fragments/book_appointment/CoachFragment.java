@@ -23,8 +23,7 @@ public class CoachFragment extends Fragment {
 
     // TODO: Rename and change types and number of parameters
     public static CoachFragment newInstance() {
-        CoachFragment fragment = new CoachFragment();
-        return fragment;
+        return new CoachFragment();
     }
 
     @Override

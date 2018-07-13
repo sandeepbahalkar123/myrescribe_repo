@@ -8,6 +8,12 @@ import java.util.List;
 
 public class Data {
 
+    @SerializedName("versionCode")
+    @Expose
+    private Integer versionCode;
+    @SerializedName("appURL")
+    @Expose
+    private String appURL;
     @SerializedName("categoryList")
     @Expose
     private List<CategoryList> categoryList = new ArrayList<CategoryList>();
@@ -31,4 +37,19 @@ public class Data {
         this.isDocUpdated = isDocUpdated;
     }
 
+    public Integer getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(Integer versionCode) {
+        this.versionCode = versionCode;
+    }
+
+    public String getAppURL() {
+        return appURL;
+    }
+
+    public void setAppURL(String appURL) {
+        this.appURL = appURL;
+    }
 }

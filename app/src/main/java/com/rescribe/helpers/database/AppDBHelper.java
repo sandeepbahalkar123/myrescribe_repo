@@ -83,7 +83,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public static final String NOTIFICATION_MSG_TYPE = "notification_msg_type";
     public static final String TIME_STAMP = "time_stamp";
-    private Object cardsBackground;
 
     public interface DOC_DATA {
 
@@ -753,7 +752,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         db.setTransactionSuccessful();
         db.endTransaction();
-//        db.close();
+        db.close();
     }
 
     private void addClinics(SQLiteDatabase db, ContentValues contentValuesClinic, ContentValues contentValuesClinicVSDoc, DoctorList doctor) {
@@ -809,12 +808,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 // insert card data
                 contentValuesCard.put(DOC_DATA.DOC_ID, docDetail.getDocId());
                 contentValuesCard.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
+                db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
 
                 contentValuesCardsBackground.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
                 contentValuesCardsBackground.put(DOC_DATA.IMAGE_URL, category.getUrl());
                 db.insertWithOnConflict(DOC_DATA.CARDS_BACKGROUND_TABLE, null, contentValuesCardsBackground, SQLiteDatabase.CONFLICT_IGNORE);
-
-                db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
 
                 // insert appointment data
                 if (category.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
@@ -836,6 +834,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         db.setTransactionSuccessful();
         db.endTransaction();
+        db.close();
     }
 
     public Cursor getAllCardData() {

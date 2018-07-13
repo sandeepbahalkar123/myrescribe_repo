@@ -248,6 +248,13 @@ public class RescribePreferencesManager {
         String AGE = "age";
         String SALUTATION = "salutation";
         String LAST_UPDATED = "last_updated_date";
+
+        String isSkippedClicked = "is_skipped";
+        String isUpdatedClicked = "is_updated_clicked";
+        String isLaterClicked = "is_later_clicked";
+        String VERSION_CODE_FROM_SERVER = "version_code_from_server";
+        String SHOW_UPDATE_DIALOG = "show_update_dialog";
+        String SHOW_UPDATE_DIALOG_ON_SKIPPED = "show_update_dialog_on_skipped";
     }
 
 

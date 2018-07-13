@@ -173,6 +173,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
                 requestOptions.centerCrop();
+//                requestOptions.override(480, 340);
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);
 
@@ -233,22 +234,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void setUpViewPager() {
-        /*if (mServicesCardViewImpl.getFavouriteDocList(-1).size() > 3)
-            viewAllFavorite.setVisibility(View.GONE);
-         else
-            viewAllFavorite.setVisibility(View.GONE);
-
-        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3)
-            viewAllSponsered.setVisibility(View.GONE);
-         else
-            viewAllSponsered.setVisibility(View.GONE);
-
-
-        if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.recently_visit_doctor), -1).size() > 3)
-            viewAllRecentVisited.setVisibility(View.GONE);
-         else
-            viewAllRecentVisited.setVisibility(View.GONE);*/
-
         viewAllFavorite.setVisibility(View.GONE);
         viewAllSponsered.setVisibility(View.GONE);
         viewAllRecentVisited.setVisibility(View.GONE);

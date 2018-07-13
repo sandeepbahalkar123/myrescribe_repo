@@ -407,6 +407,9 @@
     <string name="company_name">SCORG TECHNOLOGIES Pvt.Ltd.</string>
     <string name="record_not_found">Record not found.</string>
     <string name="login_using_otp">Login Using OTP</string>
+    <string name="update">Update</string>
+    <string name="later">Later</string>
+    <string name="do_you_want_to_update">Update the app to latest version for using new features.</string>
 
     <!--************************-->
 </resources>

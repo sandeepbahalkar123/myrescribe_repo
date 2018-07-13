@@ -254,6 +254,8 @@ public class RescribeConstants {
     public static final String ITEM_DATA = "item_data";
     public static final String ITEM_DATA_VALUE = "clicked_item_data_value";
     public static final String CATEGORY = "categories";
+    public static final String NO = "no";
+    public static final String PATIENT = "patient";
 
     public static class USER_STATUS {
         public static final String ONLINE = "Online";

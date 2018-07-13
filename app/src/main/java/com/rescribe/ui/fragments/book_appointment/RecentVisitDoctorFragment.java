@@ -251,7 +251,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
                 if (receivedDoctorServicesModel != null) {
                     mReceivedDoctorServicesModel = receivedDoctorServicesModel;
-                    mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
+                    // get doctors from database
+//                    mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
                     setDoctorListAdapter(false);
                 }
                 break;

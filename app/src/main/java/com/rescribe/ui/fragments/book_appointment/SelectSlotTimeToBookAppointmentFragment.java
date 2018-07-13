@@ -227,11 +227,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     public static SelectSlotTimeToBookAppointmentFragment newInstance(Bundle b) {
         SelectSlotTimeToBookAppointmentFragment fragment = new SelectSlotTimeToBookAppointmentFragment();
-        Bundle args = b;
-        if (args == null) {
-            args = new Bundle();
-        }
-        fragment.setArguments(args);
+        fragment.setArguments(b);
         return fragment;
     }
 
@@ -320,7 +316,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     @SuppressLint("CheckResult")
     private void setDataInViews() {
-        if (mClickedDoctorObject.getClinicDataList().size() > 0) {
+        if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
             mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
             noDataFound.setVisibility(View.GONE);
         } else {
@@ -354,17 +350,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     .into(mProfileImage);
         }
 
-        //-------
-        if (mClickedDoctorObject.getFavourite()) {
-            mFavorite.setImageResource(R.drawable.fav_icon);
-        } else {
-            mFavorite.setImageResource(R.drawable.result_line_heart_fav);
-        }
-        //---------------
+        mFavorite.setImageResource(mClickedDoctorObject.getFavourite() ? R.drawable.fav_icon : R.drawable.result_line_heart_fav);
 
-        if (mClickedDoctorObject.getRating() == 0) {
+        if (mClickedDoctorObject.getRating() == 0)
             mDocRatingBarLayout.setVisibility(View.INVISIBLE);
-        } else {
+        else {
             mDocRatingBarLayout.setVisibility(View.VISIBLE);
             mDocRating.setText("" + mClickedDoctorObject.getRating());
             mDocRatingBar.setRating((float) mClickedDoctorObject.getRating());
@@ -401,12 +391,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         if (!mClickedDoctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
             mPremiumType.setText("" + mClickedDoctorObject.getCategorySpeciality());
             mPremiumType.setVisibility(View.VISIBLE);
-        } else {
+        } else
             mPremiumType.setVisibility(View.INVISIBLE);
-        }
         //-------------------
 
-        if (mClickedDoctorObject.getClinicDataList().size() > 0) {
+        if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
             mClinicNameSpinnerParentLayout.setVisibility(View.VISIBLE);
 
             ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
@@ -434,9 +423,8 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mClinicNameSpinner.setClickable(true);
                 mClinicNameSpinner.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.spinner_bg));
             }
-        } else {
+        } else
             mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
-        }
 
         //---------
     }
@@ -514,17 +502,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 if (temp.getCommonRespose().isSuccess()) {
                     boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject, appDBHelper);
                     //----THIS IS DONE FOR, WHEN PAGE OPENED FROM CHAT_ACTIVITY---
-                    if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom) && isUpdated) {
+                    if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom) && isUpdated)
                         mClickedDoctorObject.setFavourite(!mClickedDoctorObject.getFavourite());
-                    }
                     //-------
-                    if (mClickedDoctorObject.getFavourite()) {
-                        mFavorite.setImageResource(R.drawable.fav_icon);
-                    } else {
-                        mFavorite.setImageResource(R.drawable.result_line_heart_fav);
-                    }
+                    mFavorite.setImageResource(mClickedDoctorObject.getFavourite() ? R.drawable.fav_icon : R.drawable.result_line_heart_fav);
                 }
-                //   CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
+
                 break;
             case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
                 ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;
@@ -568,15 +551,16 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         showTokenStatusMessageBox(-1, common.getStatusMessage(), mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());
                 }
                 break;
-            case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER:
-                CommonBaseModelContainer temp1 = (CommonBaseModelContainer) customResponse;
 
+            case RescribeConstants.TASK_TO_SET_TOKEN_NOTIFICATION_REMAINDER:
+
+                CommonBaseModelContainer temp1 = (CommonBaseModelContainer) customResponse;
                 if (temp1.getCommonRespose().getStatusCode().equals(SUCCESS))
                     getActivity().finish();
-
                 CommonMethods.showToast(getActivity(), temp1.getCommonRespose().getStatusMessage());
 
                 break;
+
             case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION:
 
                 //get token flow redirected to confirmation page .
@@ -585,17 +569,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     ConfirmTokenModel confirmTokenModel = (ConfirmTokenModel) customResponse;
                     CommonMethods.showToast(getActivity(), confirmTokenModel.getCommon().getStatusMessage());
 
-                    // TODO: exceeded String match is added for now, need to find other way for this
                     if (confirmTokenModel.getCommon().isSuccess() &&
                             !confirmTokenModel.getCommon().getStatusMessage().toLowerCase().contains(getString(R.string.exceeded))) {
 
                         bundleData = new Bundle();
                         mClickedDoctorObject.setTypedashboard(false);
-
-                        if (mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(RescribeConstants.MIXED_APPOINTMENT_TYPE))
-                            mClickedDoctorObject.setAppointmentTypeMixed(true);
-                        else mClickedDoctorObject.setAppointmentTypeMixed(false);
-
+                        mClickedDoctorObject.setAppointmentTypeMixed(mSelectedClinicDataObject.getAppointmentType().equalsIgnoreCase(RescribeConstants.MIXED_APPOINTMENT_TYPE));
                         mClickedDoctorObject.setAddressOfDoctorString(mSelectedClinicDataObject.getClinicAddress());
                         CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
                         mClickedDoctorObject.setAptTime(CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME));
@@ -606,11 +585,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         bundleData.putString(RescribeConstants.WAITING_TIME, confirmTokenModel.getData().getTokenDetail().getWaitingPatientTime());
                         bundleData.putString(RescribeConstants.WAITING_COUNT, confirmTokenModel.getData().getTokenDetail().getWaitingPatientCount());
                         Intent intentObject = new Intent(getContext(), ConfirmTokenInfoActivity.class);
+
+                        appDBHelper.updateTokenNumber(mClickedDoctorObject, mSelectedClinicDataObject, confirmTokenModel.getData().getTokenDetail());
+
                         intentObject.putExtras(bundleData);
                         startActivity(intentObject);
                     }
-
-
                     break;
                 }
             case RescribeConstants.TASK_CONFIRM_APPOINTMENT:

@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
@@ -127,6 +128,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
     private int mLocationId;
     private int mWaitingTime;
     private int mWaitingCount;
+    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +141,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
 
     private void initialize() {
         mContext = ConfirmTokenInfoActivity.this;
+        appDBHelper = new AppDBHelper(mContext);
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         SpannableString location = new SpannableString(getString(R.string.location) + ":");
         location.setSpan(new UnderlineSpan(), 0, location.length(), 0);
@@ -290,7 +293,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
             ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
             if (mResponseAppointmentConfirmationModel.getCommon() != null)
                 if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
-                    // Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                    appDBHelper.updateTokenNumber(mDoctorObject.getDocId(), mLocationId, "Mixed");
                     Intent intent = new Intent(ConfirmTokenInfoActivity.this, HomePageActivity.class);
                     startActivity(intent);
                     finishAffinity();

@@ -18,6 +18,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -63,6 +64,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     private String mUserSelectedLocation;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
+    private AppDBHelper appDBHelper;
 
     public BookAppointListOnLocationSelectionFragment() {
         // Required empty public constructor
@@ -89,9 +91,12 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     }
 
     private void init(Bundle args) {
+
+        appDBHelper = new AppDBHelper(getContext());
+
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
-            mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
+            mReceivedTitle = args.getString(RescribeConstants.TITLE);
             title.setText("" + mReceivedTitle);
         }
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
@@ -166,7 +171,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     }
 
-    public boolean doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
+    public boolean doGetLatestDoctorListOnLocationChange(String mComplaintsUserSearchFor) {
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         String selectedLocation = userSelectedLocationInfo.get(getString(R.string.location));
         if (selectedLocation != null) {
@@ -198,7 +203,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                     //--------
                     mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
                 }
@@ -255,8 +260,8 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 ArrayList<DoctorList> doctorListByClinics = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.filter));
-                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+                intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.filter));
+                intent.putExtra(RescribeConstants.TITLE, getString(R.string.doctor));
                 startActivityForResult(intent, RescribeConstants.DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE);
                 break;
         }

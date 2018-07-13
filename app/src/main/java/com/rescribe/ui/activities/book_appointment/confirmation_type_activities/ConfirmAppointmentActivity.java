@@ -147,7 +147,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
 
 
         if (extras != null) {
-            mDoctorObject = extras.getParcelable(getString(R.string.clicked_item_data));
+            mDoctorObject = extras.getParcelable(RescribeConstants.ITEM_DATA);
             mTokenNo = Integer.parseInt(extras.getString(RescribeConstants.TOKEN_NO));
             mLocationId = Integer.parseInt(extras.getString(RescribeConstants.LOCATION_ID));
             callType = extras.getString(RescribeConstants.CALL_FROM_DASHBOARD);
@@ -163,7 +163,6 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
             }
 
             String drName = mDoctorObject.getDocName().contains("Dr.") ? mDoctorObject.getDocName() : "Dr. " + mDoctorObject.getDocName();
-
             doctorName.setText(drName);
             aboutDoctor.setText(mDoctorObject.getDegree());
             if (mDoctorObject.getClinicAddress() != null) {  //sandeep
@@ -276,7 +275,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                         Bundle bundle = new Bundle();
                         //This CALL_FROM_DASHBOARD is passed to handle onBackPressed of Book Appointment Page which is directed to HomePageActivity
                         bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE);
-                        bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+                        bundle.putString(RescribeConstants.ITEM_DATA, getString(R.string.doctorss));
                         intent.putExtras(bundle);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -293,7 +292,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                     Bundle bundle = new Bundle();
                     //This CALL_FROM_DASHBOARD is passed to handle onBackPressed of Book Appointment Page which is directed to HomePageActivity
                     bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, RescribeConstants.DASHBOARD_CALL_CONFIRMATION_PAGE);
-                    bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+                    bundle.putString(RescribeConstants.ITEM_DATA, getString(R.string.doctorss));
                     intent.putExtras(bundle);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -347,8 +346,8 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                 if (type.equalsIgnoreCase(RESHEDULE_TYPE)) {
 
                     Intent intent1 = new Intent(mContext, SelectSlotToBookAppointmentBaseActivity.class);
-                    intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-                    intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                    intent1.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
+                    intent1.putExtra(RescribeConstants.TITLE, getString(R.string.book_appointment));
                     intent1.putExtra(FROM, RESCHEDULE);
                     intent1.putExtra(APPOINTMENT_ID, aptId);
                     intent1.putExtra(RESHEDULE_TYPE, type);

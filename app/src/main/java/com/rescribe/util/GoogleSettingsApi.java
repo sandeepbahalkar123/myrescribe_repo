@@ -18,10 +18,8 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.rescribe.helpers.book_appointment.DoctorDataHelper;
-import com.rescribe.singleton.RescribeApplication;
 
-import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocation.REQUEST_CHECK_SETTINGS;
+import static com.rescribe.ui.activities.book_appointment.BookAppointFindLocationActivity.REQUEST_CHECK_SETTINGS;
 
 /**
  * Created by sangcomz on 2015-08-25.

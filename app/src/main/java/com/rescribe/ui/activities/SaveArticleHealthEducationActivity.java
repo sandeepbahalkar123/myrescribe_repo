@@ -49,7 +49,7 @@ public class SaveArticleHealthEducationActivity extends AppCompatActivity implem
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mUrl = extras.getString(getString(R.string.url));
-            mViewOpeningFrom = extras.getString(getString(R.string.clicked_item_data));
+            mViewOpeningFrom = extras.getString(RescribeConstants.ITEM_DATA);
             //-------SET BOOKMARK ICON ------
             mIsSaved = extras.getBoolean(getString(R.string.save), false);
             if (mIsSaved) {
@@ -58,7 +58,7 @@ public class SaveArticleHealthEducationActivity extends AppCompatActivity implem
                 mBookMarkIcon.setImageResource(R.drawable.ic_action_bookmark_border);
             }
             //--------------
-            String title = extras.getString(getString(R.string.toolbarTitle));
+            String title = extras.getString(RescribeConstants.TITLE);
 
             if (!(RescribeConstants.BLANK.equalsIgnoreCase(title) || title == null))
                 mWebViewTitle.setText("" + title);

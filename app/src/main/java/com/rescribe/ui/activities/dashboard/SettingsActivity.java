@@ -47,7 +47,6 @@ import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -93,15 +92,12 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     ImageView dashboardArrowIcon;
     @BindView(R.id.selectMenuLayout)
     RelativeLayout selectMenuLayout;
-    @BindView(R.id.title)
-    CustomTextView title;
 
     private Context mContext;
     private AppDBHelper appDBHelper;
 
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private DashboardBottomMenuList mCurrentSelectedBottomMenu;
-    private String profileImageString;
     private BroadcastReceiver mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -180,9 +176,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
                 if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
 
                     for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                        if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                            profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
-                        }
                         if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                             BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                             bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
@@ -203,14 +196,13 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             }
         }
 
-        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, mContext);
-        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, mContext);
+        String userName = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, mContext);
+        String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, mContext);
 
         String salutationText = "";
+        salutationText = SALUTATION[Integer.parseInt(salutation)];
 
-            salutationText = SALUTATION[Integer.parseInt(salutation)];
-
-        setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
+        setUpAdapterForBottomSheet(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, mContext), userName, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, mContext), salutationText);
 
         initialize();
     }
@@ -219,8 +211,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         mContext = SettingsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        title.setText(getString(R.string.settings));
+        getSupportActionBar().setTitle(getString(R.string.settings));
 
         ClickEvent clickEvent = mCurrentSelectedBottomMenu.getClickEvent();
         if (clickEvent != null) {
@@ -251,8 +242,8 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             Bundle bundle = new Bundle();
-            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD,"");
-            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
+            bundle.putString(RescribeConstants.ITEM_DATA, getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
             finish();
@@ -275,8 +266,8 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.NOTIFICATIONS)) {
             Intent intent = new Intent(SettingsActivity.this, NotificationSettingActivity.class);
             Bundle b = new Bundle();
-            b.putParcelable(getString(R.string.clicked_item_data), clickedOption);
-            b.putString(getString(R.string.toolbarTitle), clickedOption.getName());
+            b.putParcelable(RescribeConstants.ITEM_DATA, clickedOption);
+            b.putString(RescribeConstants.TITLE, clickedOption.getName());
             intent.putExtras(b);
             startActivity(intent);
         } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.SUPPORT)) {
@@ -285,7 +276,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             startActivity(intent);
         } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.LOG_OUT)) {
             ActiveRequest activeRequest = new ActiveRequest();
-            String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+            String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
             activeRequest.setId(Integer.parseInt(patientId));
             new LoginHelper(this, SettingsActivity.this).doLogout(activeRequest);
             logout();
@@ -319,14 +310,14 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         //Logout functionality
         if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_gmail))) {
             gmailLogin = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext);
-            mobileNoGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext);
-            passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
+            mobileNoGmail = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext);
+            passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
 
         }
         if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
             facebookLogin = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext);
-            mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
-            passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
+            mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
+            passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
 
         }
 
@@ -338,10 +329,10 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         RescribePreferencesManager.putBoolean(mContext.getString(R.string.offers_alert), offersAlert, mContext);
         RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, gmailLogin, mContext);
         RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, facebookLogin, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mobileNoGmail, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, passwordGmail, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mobileNoFacebook, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mobileNoGmail, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, passwordGmail, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mobileNoFacebook, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
         RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
 
         // Clear all notification
@@ -392,7 +383,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA_VALUE, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }
@@ -401,12 +392,12 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_appointments))) {
             Intent intent = new Intent(mContext, AppointmentActivity.class);
-            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD,"");
+            intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
             startActivity(intent);
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticlesActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }

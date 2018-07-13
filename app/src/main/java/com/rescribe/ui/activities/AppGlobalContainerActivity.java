@@ -1,6 +1,5 @@
 package com.rescribe.ui.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,7 +9,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.rescribe.R;
-import com.rescribe.ui.fragments.ForgotPassword;
+import com.rescribe.ui.fragments.ForgotPasswordFragment;
 import com.rescribe.ui.fragments.OTPConfirmationForSignUp;
 import com.rescribe.ui.fragments.OtpConfirmationForLogin;
 import com.rescribe.ui.fragments.SocialSignUpInputFragment;
@@ -76,9 +75,9 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
             socialLoginInputMobileForConfirmation.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, socialLoginInputMobileForConfirmation);
         } else if (type.equalsIgnoreCase(getString(R.string.forgot_password))) {
-            ForgotPassword forgotPassword = new ForgotPassword();
-            forgotPassword.setArguments(bundle);
-            fragmentTransaction.replace(R.id.blankContainer, forgotPassword);
+            ForgotPasswordFragment forgotPasswordFragment = new ForgotPasswordFragment();
+            forgotPasswordFragment.setArguments(bundle);
+            fragmentTransaction.replace(R.id.blankContainer, forgotPasswordFragment);
         }
         else if(type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))){
             OtpConfirmationForLogin otpConfirmationForLogin = new OtpConfirmationForLogin();

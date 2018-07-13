@@ -8,12 +8,13 @@ import java.util.ArrayList;
 
 public class RecentVisitedModel {
 
+
     @SerializedName("areaList")
     @Expose
     private ArrayList<AreaList> areaList = new ArrayList<AreaList>();
     @SerializedName("recentlyVisitedAreaList")
     @Expose
-    private ArrayList<String> recentlyVisitedAreaList = new ArrayList<String>();
+    private ArrayList<RecentlyVisitedAreaList> recentlyVisitedAreaList = new ArrayList<RecentlyVisitedAreaList>();
 
     public ArrayList<AreaList> getAreaList() {
         return areaList;
@@ -23,14 +24,12 @@ public class RecentVisitedModel {
         this.areaList = areaList;
     }
 
-    public ArrayList<String> getRecentlyVisitedAreaList() {
+    public ArrayList<RecentlyVisitedAreaList> getRecentlyVisitedAreaList() {
         return recentlyVisitedAreaList;
     }
 
-    public void setRecentlyVisitedAreaList(ArrayList<String> recentlyVisitedAreaList) {
+    public void setRecentlyVisitedAreaList(ArrayList<RecentlyVisitedAreaList> recentlyVisitedAreaList) {
         this.recentlyVisitedAreaList = recentlyVisitedAreaList;
     }
-
-
 
 }

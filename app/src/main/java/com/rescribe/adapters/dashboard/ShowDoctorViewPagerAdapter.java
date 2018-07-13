@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
@@ -122,11 +121,14 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
         if (!doctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
             doctorCategoryType.setText(doctorObject.getCategorySpeciality());
             doctorCategoryType.setVisibility(View.VISIBLE);
-        } else {
+        } else
             doctorCategoryType.setVisibility(View.INVISIBLE);
-        }
+
         doctorCategory.setText(doctorObject.getCategoryName());
-        doctorNameTextView.setText(doctorObject.getDocName());
+
+        String drName = doctorObject.getDocName().contains("Dr.") ? doctorObject.getDocName() : "Dr. " + doctorObject.getDocName();
+        doctorNameTextView.setText(drName);
+
         doctorType.setText(doctorObject.getDegree());
         if (doctorObject.getExperience() == 0) {
             doctorExperience.setVisibility(View.GONE);
@@ -264,7 +266,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 clinicName.setText(clinicDataList.get(0).getClinicName());
                 //doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
                 doctorAddress.setText(clinicDataList.get(0).getAreaName() + ", " + clinicDataList.get(0).getCityName());
-
                 doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
 
             } else {
@@ -277,7 +278,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         clinicName.setVisibility(View.VISIBLE);
                         clinicName.setText(clinicDataList.get(0).getClinicName());
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
-
                     } else {
                         SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
                         locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
@@ -285,9 +285,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
                         clinicName.setVisibility(View.VISIBLE);
                         clinicName.setText(clinicDataList.get(0).getClinicName());
-
                     }
-
                 }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
@@ -296,11 +294,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             if (clinicDataList.size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + clinicDataList.get(0).getAmount());
-
-            } else {
+            } else
                 feesToPaid.setVisibility(View.INVISIBLE);
-
-            }
 
             //----------
             if (clinicDataList.size() > 0) {
@@ -319,9 +314,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
-                // doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
                 doctorAddress.setText(clinicDataList.get(0).getAreaName() + ", " + clinicDataList.get(0).getCityName());
-
                 doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
 
             } else {
@@ -341,22 +334,17 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
                         clinicName.setVisibility(View.VISIBLE);
                         clinicName.setText(clinicDataList.get(0).getClinicName());
-
-
                     }
                 }
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
             doctorAppointmentDate.setVisibility(View.GONE);
 
-            //----------------
             if (clinicDataList.size() > 0) {
                 feesToPaid.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + clinicDataList.get(0).getAmount());
-            } else {
+            } else
                 feesToPaid.setVisibility(View.INVISIBLE);
-            }
-            //---------------
 
             if (clinicDataList.size() > 0) {
                 String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
@@ -396,7 +384,6 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
                         clinicName.setVisibility(View.VISIBLE);
                         clinicName.setText(clinicDataList.get(0).getClinicName());
-
                     }
                 }
             }
@@ -424,13 +411,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
             //---------------
         }
-        //---------
-        if (doctorObject.getFavourite()) {
-            favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
-        } else {
-            favorite.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
-        }
-        //---------
+
+        favorite.setImageDrawable(doctorObject.getFavourite() ? mContext.getResources().getDrawable(R.drawable.favourite_icon) : mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -443,19 +425,18 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
-                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, RescribeConstants.CATEGORY);
+                b.putString(RescribeConstants.ITEM_DATA, doctorCategory.getText().toString());
                 mServicesCardViewClickListener.onClickOfTotalCount(b);
-
             }
         });
         doctorCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.category_name));
-                b.putString(mContext.getString(R.string.clicked_item_data), doctorCategory.getText().toString());
-                b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, RescribeConstants.CATEGORY);
+                b.putString(RescribeConstants.ITEM_DATA, doctorCategory.getText().toString());
+                b.putString(RescribeConstants.CATEGORY, doctorObject.getCategoryName());
 
                 mServicesCardViewClickListener.onClickOfTotalCount(b);
             }
@@ -475,9 +456,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                     }
                     //typeDashboard is set for cancel and reshedule flow.
                     doctorObject.setTypedashboard(true);
-                    b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
-                    b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                    b.putString(mContext.getString(R.string.category_name), "");
+                    b.putString(RescribeConstants.ITEM_DATA_VALUE, doctorCategory.getText().toString());
+                    b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
+                    b.putString(RescribeConstants.CATEGORY, "");
                     b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, "");
                     mServicesCardViewClickListener.onClickOfCardView(b);
                 } else {
@@ -486,13 +467,13 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                         doctorObject.setNameOfClinicString(doctorObject.getClinicDataList().get(0).getClinicName());
                         doctorObject.setAddressOfDoctorString(doctorObject.getClinicDataList().get(0).getClinicAddress());
                         doctorObject.setClinicAddress(doctorObject.getClinicDataList().get(0).getClinicAddress());
-
                     }
-                    doctorObject.setTypedashboard(true);
-                    b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorCategory.getText().toString());
-                    b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
 
-                    b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
+                    doctorObject.setTypedashboard(true);
+                    b.putString(RescribeConstants.ITEM_DATA_VALUE, doctorCategory.getText().toString());
+                    b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
+
+                    b.putString(RescribeConstants.CATEGORY, doctorObject.getCategoryName());
                     //TYPE_OF_DOCTOR_SEARCH parameter is set to avail book option for myappointment card
                     b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, "");
                     mServicesCardViewClickListener.onClickOfCardView(b);
@@ -505,8 +486,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.book_appointment));
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
 
                 mServicesCardViewClickListener.onClickedOfBookButton(b);
@@ -518,9 +499,9 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.token_number));
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 mServicesCardViewClickListener.onClickedOfTokenNumber(b);
             }
         });

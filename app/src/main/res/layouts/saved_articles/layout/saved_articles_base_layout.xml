@@ -58,28 +58,50 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/imageView"
+            <LinearLayout
+                android:id="@+id/noDataFound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/help_save_articales" />
-
-            <com.rescribe.ui.customesViews.CustomTextView
-                android:id="@+id/messageText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/imageView"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/dp32"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@drawable/no_records_found"
                 android:gravity="center"
-                android:paddingEnd="@dimen/dp10"
-                android:paddingStart="@dimen/dp10"
-                android:text="@string/help_save_artical_message"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp16"
-                app:customFont="@string/roboto_regular" />
+                android:orientation="vertical"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/savedArticleDataFound"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/help_save_articales" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/messageText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imageView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp32"
+                    android:gravity="center"
+                    android:paddingEnd="@dimen/dp10"
+                    android:paddingStart="@dimen/dp10"
+                    android:text="@string/help_save_artical_message"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp16"
+                    app:customFont="@string/roboto_regular" />
+
+            </RelativeLayout>
+
 
         </RelativeLayout>
 

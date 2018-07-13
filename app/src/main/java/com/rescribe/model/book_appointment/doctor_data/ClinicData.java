@@ -44,6 +44,12 @@ public class ClinicData implements Parcelable {
     @Expose
     private String cityName = "";
 
+    @SerializedName("locationLat")
+    @Expose
+    private String locationLat;
+    @SerializedName("locationLong")
+    @Expose
+    private String locationLong;
 
     public final static Creator<ClinicData> CREATOR = new Creator<ClinicData>() {
 
@@ -74,6 +80,9 @@ public class ClinicData implements Parcelable {
         in.readList(instance.docServices, (String.class.getClassLoader()));
         this.areaName = ((String) in.readValue((String.class.getClassLoader())));
         this.cityName = ((String) in.readValue((String.class.getClassLoader())));
+
+        this.locationLat = ((String) in.readValue((String.class.getClassLoader())));
+        this.locationLong = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -88,6 +97,8 @@ public class ClinicData implements Parcelable {
         dest.writeValue(areaName);
         dest.writeValue(cityName);
 
+        dest.writeValue(locationLat);
+        dest.writeValue(locationLong);
     }
 
 
@@ -174,6 +185,21 @@ public class ClinicData implements Parcelable {
         this.cityName = cityName;
     }
 
+    public String getLocationLat() {
+        return locationLat;
+    }
+
+    public void setLocationLat(String locationLat) {
+        this.locationLat = locationLat;
+    }
+
+    public String getLocationLong() {
+        return locationLong;
+    }
+
+    public void setLocationLong(String locationLong) {
+        this.locationLong = locationLong;
+    }
 
     public int describeContents() {
         return 0;

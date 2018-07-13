@@ -43,8 +43,6 @@ import java.util.Map;
 
 public class FindDoctorCategoryAdapter extends PagerAdapter {
     private HelperResponse mHelperResponse;
-    private boolean mIsFavAvail = false;
-    private Map<String, Integer> mListSizeWithTypeMap;
     private ArrayList<DoctorList> mDataList;
     private LayoutInflater mInflater;
     private Context mContext;
@@ -136,9 +134,11 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             doctorCategoryType.setVisibility(View.VISIBLE);
         } else {
             doctorCategoryType.setVisibility(View.INVISIBLE);
-        }        //doctorCategory.setText(doctorObject.getCategoryName());
-        doctorNameTextView.setText(doctorObject.getDocName());
-        //  doctorType.setText(doctorObject.getDegree());
+        }
+
+        String drName = doctorObject.getDocName().contains("Dr.") ? doctorObject.getDocName() : "Dr. " + doctorObject.getDocName();
+        doctorNameTextView.setText(drName);
+
         doctorExperience.setText(doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
         aboutDoctor.setText(doctorObject.getDegree() + "");
 
@@ -258,7 +258,14 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             if (doctorObject.getClinicDataList().size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(doctorObject.getClinicDataList().get(0).getClinicName());
-                doctorAddress.setText(doctorObject.getClinicDataList().get(0).getClinicAddress());
+
+                String areaCity;
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                doctorAddress.setText(areaCity);
+
             } else {
                 if (doctorObject.getClinicDataList().size() > 0) {
 
@@ -319,7 +326,14 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);
                 clinicName.setText(clinicDataList.get(0).getClinicName());
-                doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
+
+                String areaCity;
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                doctorAddress.setText(areaCity);
+
             } else {
                 if (clinicDataList.size() > 0) {
                     boolean b = checkAllClinicAddressInSameCity(clinicDataList);
@@ -387,9 +401,9 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getCategoryName());
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, doctorObject.getCategoryName());
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
+                b.putString(RescribeConstants.CATEGORY, doctorObject.getCategoryName());
                 b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, RescribeConstants.SEARCH_DOCTORS);
                 mServicesCardViewClickListener.onClickOfCardView(b);
             }
@@ -399,19 +413,20 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.book_appointment));
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
                 mServicesCardViewClickListener.onClickedOfBookButton(b);
             }
         });
+
         tokenNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.token_number));
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 mServicesCardViewClickListener.onClickedOfTokenNumber(b);
             }
         });
@@ -452,9 +467,7 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
                     count = count + 1;
                 }
             }
-            if (count == list.size()) {
-                return true;
-            }
+            return count == list.size();
         }
         return false;
     }

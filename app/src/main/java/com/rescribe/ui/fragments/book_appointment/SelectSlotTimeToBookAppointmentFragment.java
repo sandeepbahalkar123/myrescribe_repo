@@ -48,6 +48,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.Common;
@@ -208,6 +209,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     private String from;
     private String aptId;
     private String isReschedule;
+    private AppDBHelper appDBHelper;
 
     public SelectSlotTimeToBookAppointmentFragment() {
         // Required empty public constructor
@@ -234,6 +236,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
     }
 
     private void init() {
+        appDBHelper = new AppDBHelper(getContext());
         mContext = getContext();
         mSelectedTimeSlot = null;
         mSelectedToTimeSlot = null;
@@ -242,7 +245,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
         yearsExperienceLine.setVisibility(View.GONE);
         selectClinicLine.setVisibility(View.GONE);
         mColorGenerator = ColorGenerator.MATERIAL;
-        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
+        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.COACHMARK_GET_TOKEN, mContext);
         if (!coachMarkStatus.equals(RescribeConstants.YES)) {
             FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -288,7 +291,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             from = arguments.getString(FROM);
             isReschedule = arguments.getString(RESHEDULE_TYPE);
             fcmTokenData = arguments.getParcelable(FCM_DATA);
-            activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
+            activityOpeningFrom = arguments.getString(RescribeConstants.ITEM_DATA_VALUE);
             mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
         }
         //--------------
@@ -509,7 +512,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject);
+                    boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject, appDBHelper);
                     //----THIS IS DONE FOR, WHEN PAGE OPENED FROM CHAT_ACTIVITY---
                     if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom) && isUpdated) {
                         mClickedDoctorObject.setFavourite(!mClickedDoctorObject.getFavourite());
@@ -597,7 +600,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
                         mClickedDoctorObject.setAptTime(CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME));
                         mClickedDoctorObject.setAptDate(mSelectedTimeSlotDate);
-                        bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                        bundleData.putParcelable(RescribeConstants.ITEM_DATA, mClickedDoctorObject);
                         bundleData.putString(RescribeConstants.LOCATION_ID, "" + mSelectedClinicDataObject.getLocationId());
                         bundleData.putString(RescribeConstants.TOKEN_NO, String.valueOf(confirmTokenModel.getData().getTokenDetail().getTokenNumber()));
                         bundleData.putString(RescribeConstants.WAITING_TIME, confirmTokenModel.getData().getTokenDetail().getWaitingPatientTime());
@@ -630,7 +633,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mClickedDoctorObject.setNameOfClinicString(mResponseAppointmentConfirmationModel.getAptList().getClinic_name());
 //                        mClickedDoctorObject.setAddressOfDoctorString(mResponseAppointmentConfirmationModel.getAptList().getAddress());
                         mClickedDoctorObject.setClinicAddress(mResponseAppointmentConfirmationModel.getAptList().getClinicAddress());
-                        bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                        bundleData.putParcelable(RescribeConstants.ITEM_DATA, mClickedDoctorObject);
                         bundleData.putString(RescribeConstants.LOCATION_ID, "" + 0);
                         bundleData.putString(RescribeConstants.TOKEN_NO, "" + 0);
                         Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
@@ -795,7 +798,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intentObjectMap.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+                intentObjectMap.putExtra(RescribeConstants.TITLE, getString(R.string.doctor));
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentObjectMap);

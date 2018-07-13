@@ -13,6 +13,7 @@ import com.rescribe.R;
 import com.rescribe.model.book_appointment.doctor_data.DoctorSpeciality;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +74,8 @@ public class DoctorSpecialistBookAppointmentAdapter extends RecyclerView.Adapter
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data), doctorConnectSearchModel.getSpeciality());
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.doctors_speciality));
+                b.putString(RescribeConstants.ITEM_DATA, doctorConnectSearchModel.getSpeciality());
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.doctors_speciality));
                 mOnDoctorSpecialityClickListener.setOnClickOfDoctorSpeciality(b);
             }
         });

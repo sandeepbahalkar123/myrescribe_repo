@@ -77,7 +77,7 @@ public class VitalGraphHelper implements ConnectionListener {
     public void doGetPatientVitalList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_PATIENT_VITAL_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         mConnectionFactory.setUrl(Config.TASK_GET_PATIENT_VITAL_LIST + "?patientId=" + id);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_PATIENT_VITAL_LIST);
     }
@@ -85,7 +85,7 @@ public class VitalGraphHelper implements ConnectionListener {
     public void doGetPatientVitalDetail(String vitalName) {
        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_PATIENT_VITAL_DETAIL, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         if (vitalName.contains(" ")) {
             try {
                 mConnectionFactory.setUrl(Config.TASK_GET_PATIENT_VITAL_DETAIL + "?patientId=" + id + "&vitalName=" + URLEncoder.encode(vitalName, "UTF-8"));
@@ -103,7 +103,7 @@ public class VitalGraphHelper implements ConnectionListener {
     public void doGetPatientVitalTrackerList() {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_VITAL_TRACKER_LIST, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         mConnectionFactory.setUrl(Config.TASK_GET_PATIENT_VITAL_TRACKER_LIST);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_VITAL_TRACKER_LIST);
     }
@@ -111,7 +111,7 @@ public class VitalGraphHelper implements ConnectionListener {
     public void doAddNewVitalGraphTracker(VitalGraphAddNewTrackerRequestModel model) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_ADD_VITAL_MANUALLY, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
-        model.setPatientId(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        model.setPatientId(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext));
         mConnectionFactory.setPostParams(model);
         mConnectionFactory.setUrl(Config.TASK_PATIENT_ADD_VITAL_MANUALLY);
         mConnectionFactory.createConnection(RescribeConstants.TASK_ADD_VITAL_MANUALLY);

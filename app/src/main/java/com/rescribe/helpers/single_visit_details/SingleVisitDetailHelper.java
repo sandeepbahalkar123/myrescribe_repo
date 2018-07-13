@@ -73,7 +73,7 @@ public class SingleVisitDetailHelper implements ConnectionListener {
     public void doGetOneDayVisit(String opdId, String doctorId) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_ONE_DAY_VISIT, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL + opdId + "&docId=" + doctorId + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext));
+        mConnectionFactory.setUrl(Config.ONE_DAY_VISIT_URL + opdId + "&docId=" + doctorId + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext));
         mConnectionFactory.createConnection(RescribeConstants.TASK_ONE_DAY_VISIT);
     }
 }

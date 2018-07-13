@@ -69,7 +69,7 @@ public class NotificationService extends Service implements HelperResponse {
 
         CommonMethods.Log("ALARM", "MedicationNotificationService");
 
-        String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, this);
+        String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, this);
         boolean isNotificationOn = RescribePreferencesManager.getBoolean(getString(R.string.medication_alert), this);
 
         if (loginStatus.equals(RescribeConstants.YES) && isNotificationOn) {

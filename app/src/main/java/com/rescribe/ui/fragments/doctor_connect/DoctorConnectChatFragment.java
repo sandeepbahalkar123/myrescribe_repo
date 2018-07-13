@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
@@ -69,7 +68,7 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     }
 
     private void init() {
-        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, getContext());
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, getContext());
         mDoctorConnectChatHelper = new DoctorConnectChatHelper(getActivity(), this);
     }
 

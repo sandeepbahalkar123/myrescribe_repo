@@ -44,7 +44,7 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
         int notificationId = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, 10);
         int investigation_notification_id = intent.getIntExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, 10);
         int appointment_notification_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, 10);
-        String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext);
+        String loginStatus = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, mContext);
 
         int unreadMessNotificationID = intent.getIntExtra(mContext.getString(R.string.unread_notification_update_received), -1);
         NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -71,8 +71,9 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
                 ArrayList<InvestigationData> investigationData = intent.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
 
                 int invId = investigationData.get(0).getId();
+                String invType = investigationData.get(0).getInvestigationType();
                 InvestigationHelper mInvestigationHelper = new InvestigationHelper(mContext, this);
-                mInvestigationHelper.doSkipInvestigation(invId, false);
+                mInvestigationHelper.doSkipInvestigation(invId, false, invType);
 
                 AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
                 int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext);

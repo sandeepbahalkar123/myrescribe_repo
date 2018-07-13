@@ -22,7 +22,6 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
-import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.adapters.NotificationAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -53,9 +52,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.APP_LOGO;
-import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
-import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.NOTIFICATION_ID;
 
 public class NotificationActivity extends BottomMenuActivity implements HelperResponse, NotificationAdapter.OnNotificationClickListener, BottomMenuAdapter.OnBottomMenuClickListener {
@@ -203,7 +199,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 mSelectView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + 0);
+                        mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + 0);
                     }
                 });
 
@@ -262,7 +258,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 @Override
                 public void onClick(View v) {
                     mView = view;
-                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI, selectViewTab.isChecked() ? 1 : 0);
+                    mRespondToNotificationHelper.doRespondToNotification(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), data.get(finalI).getMedicinSlot(), data.get(finalI).getMedicineId(), CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 0, RescribeConstants.TASK_RESPOND_NOTIFICATION + "_" + finalI, selectViewTab.isChecked() ? 1 : 0);
                 }
             });
 
@@ -295,7 +291,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 // CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
 
                 CheckBox checkBox = (CheckBox) mView.findViewById(R.id.selectViewTab);
-                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked()? 1:0);
+                mTodayDataList.get(Integer.parseInt(counter)).setTabSelected(checkBox.isChecked() ? 1 : 0);
                 mTodayDataList.get(Integer.parseInt(counter)).setTabWebService(!checkBox.isChecked());
 
                 if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size()) {
@@ -501,9 +497,9 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     @Override
     public void clickCheckBox(View mViewForHeader, int pos, String slotType, ViewGroup viewGroup, Integer medicineId, String takenDate, Integer bundleValue, String taskName, boolean isHeaderCheckboxClick, boolean checked) {
         if (isHeaderCheckboxClick)
-            mRespondToNotificationHelper.doRespondToNotificationForHeaderOfNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName, checked ? 1 : 0);
+            mRespondToNotificationHelper.doRespondToNotificationForHeaderOfNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName, checked ? 1 : 0);
         else
-            mRespondToNotificationHelper.doRespondToNotificationForNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName, checked ? 1 : 0);
+            mRespondToNotificationHelper.doRespondToNotificationForNotificationAdapter(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), slotType, medicineId, takenDate, bundleValue, taskName, checked ? 1 : 0);
     }
 
     @Override

@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 public class CommonMethods {
@@ -176,6 +177,7 @@ public class CommonMethods {
         dString.append(year);
         return dString.toString();
     }
+
     public static String getCurrentDateWithSlash() // for enrollmentId
     {
         Calendar calendar = Calendar.getInstance();
@@ -710,7 +712,7 @@ public class CommonMethods {
             abbreviation = R.drawable.attachment_opd;
         else if (caseStudyName.contains("systemic examination") || caseStudyName.contains("examination"))
             abbreviation = R.drawable.examination;
-        else if (caseStudyName.contains("operative procedure")  || caseStudyName.contains("procedure"))
+        else if (caseStudyName.contains("operative procedure") || caseStudyName.contains("procedure"))
             abbreviation = R.drawable.procedure;
 
         return abbreviation;
@@ -1080,6 +1082,16 @@ public class CommonMethods {
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
+    }
+
+    public static String listToString(List<String> listOfString, String separator) {
+        StringBuilder csvBuilder = new StringBuilder();
+        for (int index = 0; index < listOfString.size(); index++) {
+            csvBuilder.append(listOfString.get(index));
+            if (index != listOfString.size() - 1)
+                csvBuilder.append(separator);
+        }
+        return csvBuilder.toString();
     }
 }
 

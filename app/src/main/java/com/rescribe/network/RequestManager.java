@@ -45,7 +45,8 @@ import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookA
 import com.rescribe.model.case_details.CaseDetailsModel;
 import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
-import com.rescribe.model.dashboard_api.DashBoardBaseModel;
+import com.rescribe.model.dashboard_api.card_data.DashboardModel;
+import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
 import com.rescribe.model.doctor_connect.DoctorConnectBaseModel;
 import com.rescribe.model.doctor_connect.RecentChatDoctorModel;
 import com.rescribe.model.doctor_connect_chat.DoctorConnectChatBaseModel;
@@ -449,9 +450,9 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 // Need to Add
                 LoginModel loginModel = gson.fromJson(data, LoginModel.class);
                 if (loginModel.getLoginData() != null) {
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), mContext);
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(loginModel.getLoginData().getPatientDetail().getPatientId()), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, String.valueOf(loginModel.getLoginData().getPatientDetail().getPatientId()), mContext);
 
                     mHeaderParams.put(RescribeConstants.AUTHORIZATION_TOKEN, loginModel.getLoginData().getAuthToken());
 
@@ -668,8 +669,13 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                         break;
 
                     case RescribeConstants.TASK_DASHBOARD_API: //This is for get archived list
-                        DashBoardBaseModel dashboardBaseModel = new Gson().fromJson(data, DashBoardBaseModel.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardBaseModel, mOldDataTag);
+                        DashboardModel dashboardData = new Gson().fromJson(data, DashboardModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, dashboardData, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.TASK_DOCTORLIST_API: //This is for get archived list
+                        DoctorListModel DoctorListModel = new Gson().fromJson(data, DoctorListModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, DoctorListModel, mOldDataTag);
                         break;
 
                     case RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA: //This is for get archived list
@@ -813,7 +819,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     private void tokenRefreshRequest() {
         loginRequest();
         // Commented as login API is not implemented yet.
-       /* String url = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
+       /* String url = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SERVER_PATH, mContext) + Config.URL_LOGIN;
         CommonMethods.Log(TAG, "Refersh token while sending refresh token api: " + RescribePreferencesManager.getString(RescribeConstants.REFRESH_TOKEN, mContext));
         Map<String, String> headerParams = new HashMap<>();
         headerParams.putAll(mHeaderParams);
@@ -834,8 +840,8 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
         LoginRequestModel loginRequestModel = new LoginRequestModel();
 
-        loginRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, mContext));
-        loginRequestModel.setPassword(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, mContext));
+        loginRequestModel.setMobileNumber(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, mContext));
+        loginRequestModel.setPassword(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD, mContext));
         if (!(RescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getMobileNumber()) &&
                 RescribeConstants.BLANK.equalsIgnoreCase(loginRequestModel.getPassword()))) {
             Map<String, String> headerParams = new HashMap<>();

@@ -53,7 +53,6 @@ public class MyRecordListFragment extends Fragment {
             mYear = arguments.getString(RescribeConstants.YEAR);
         }
         mExpandMyRecordListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
             @Override
             public void onGroupExpand(int groupPosition) {
                 if (lastExpandedPosition != -1

@@ -25,6 +25,9 @@ public class InvestigationData implements Parcelable {
     @SerializedName("investigationKey")
     @Expose
     private String investigationKey;
+    @SerializedName("type")
+    @Expose
+    private String investigationType;
     @SerializedName("DoctorName")
     @Expose
     private String doctorName;
@@ -54,6 +57,7 @@ public class InvestigationData implements Parcelable {
             instance.opdId = ((int) in.readValue((int.class.getClassLoader())));
             instance.invetigationId = ((int) in.readValue((int.class.getClassLoader())));
             instance.drId = ((int) in.readValue((int.class.getClassLoader())));
+            instance.investigationType = ((String) in.readValue((String.class.getClassLoader())));
             return instance;
         }
 
@@ -135,6 +139,14 @@ public class InvestigationData implements Parcelable {
         this.drId = drId;
     }
 
+    public String getInvestigationType() {
+        return investigationType;
+    }
+
+    public void setInvestigationType(String investigationType) {
+        this.investigationType = investigationType;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(selected);
         dest.writeValue(uploaded);
@@ -145,6 +157,7 @@ public class InvestigationData implements Parcelable {
         dest.writeValue(opdId);
         dest.writeValue(invetigationId);
         dest.writeValue(drId);
+        dest.writeValue(investigationType);
     }
 
     public int describeContents() {

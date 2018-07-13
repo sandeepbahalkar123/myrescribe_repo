@@ -150,7 +150,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
     }
 
-    public void doGetDoctorData(String city, String address, HashMap<String, String> mReceivedComplaintHashMap) {
+    public void doGetDoctorData(String city, String address, String mReceivedComplaintHashMap) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_DOCTOR_DATA, Request.Method.POST, true);
         mConnectionFactory.setHeaderParams();
 
@@ -160,14 +160,12 @@ public class DoctorDataHelper implements ConnectionListener {
         requestDoctorListBaseModel.setCityName(city.trim());
         requestDoctorListBaseModel.setDate(CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(),RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD));
         requestDoctorListBaseModel.setTime(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm));
-        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
         //--------In case of complaint added by user from ComplaintFragment.java---
         if (mReceivedComplaintHashMap != null) {
-            if (mReceivedComplaintHashMap.size() > 0) {
                 url = Config.GET_DOCTOR_LIST_BY_COMPLAINT;
-                requestDoctorListBaseModel.setComplaint(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
+                requestDoctorListBaseModel.setComplaint(mReceivedComplaintHashMap);
                 //requestDoctorListBaseModel.setComplaint2(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint2)));
-            }
         }
         //-----------
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
@@ -202,7 +200,7 @@ public class DoctorDataHelper implements ConnectionListener {
         DoctorListByComplaintModel doctorListByComplaintModel = new DoctorListByComplaintModel();
         doctorListByComplaintModel.setCityName(cityName);
         doctorListByComplaintModel.setArea(area);
-        doctorListByComplaintModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        doctorListByComplaintModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
         doctorListByComplaintModel.setComplaint1(complaint1);
         doctorListByComplaintModel.setComplaint2(complaint2);
         mConnectionFactory.setPostParams(doctorListByComplaintModel);
@@ -214,7 +212,7 @@ public class DoctorDataHelper implements ConnectionListener {
     public void setFavouriteDoctor(Boolean isFavourite, int docId) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SET_FAVOURITE_DOCTOR, Request.Method.POST, false);
         RequestFavouriteDoctorModel requestFavouriteDoctorModel = new RequestFavouriteDoctorModel();
-        requestFavouriteDoctorModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        requestFavouriteDoctorModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
         requestFavouriteDoctorModel.setFavouriteflag(isFavourite);
         requestFavouriteDoctorModel.setDoctorId(docId);
         mConnectionFactory.setPostParams(requestFavouriteDoctorModel);
@@ -223,7 +221,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.TASK_SET_FAVOURITE_DOCTOR);
     }
 
-    public void doFilteringOnSelectedConfig(BookAppointFilterRequestModel requestModel, HashMap<String, String> mReceivedComplaintHashMap) {
+    public void doFilteringOnSelectedConfig(BookAppointFilterRequestModel requestModel, String mReceivedComplaint) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER, Request.Method.POST, false);
 
         //---------
@@ -233,15 +231,9 @@ public class DoctorDataHelper implements ConnectionListener {
             requestModel.setCityName(split[1].trim());
             requestModel.setArea(split[0].trim());
         }
-        requestModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
-        //---------
-        //--------In case of complaint added by user from ComplaintFragment.java---
-        if (mReceivedComplaintHashMap != null) {
-            if (mReceivedComplaintHashMap.size() > 0) {
-                requestModel.setComplaint(mReceivedComplaintHashMap.get(mContext.getString(R.string.complaint1)));
-             }
-        }
-        //-----------
+        requestModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
+        if (mReceivedComplaint != null)
+                requestModel.setComplaint(mReceivedComplaint);
 
         mConnectionFactory.setPostParams(requestModel);
         mConnectionFactory.setHeaderParams();
@@ -256,7 +248,7 @@ public class DoctorDataHelper implements ConnectionListener {
 
         String currentTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
 
-        String url = Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date + "&time=" + currentTimeStamp + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + "&docDetailReq=" + isReqDoctorData;;
+        String url = Config.TIME_SLOT_TO_BOOK_APPOINTMENT + "docId=" + docId + "&locationId=" + locationID + "&date=" + date + "&time=" + currentTimeStamp + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext) + "&docDetailReq=" + isReqDoctorData;;
 
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(taskID);//RescribeConstants.TASK_TIME_SLOT_TO_BOOK_APPOINTMENT
@@ -271,7 +263,7 @@ public class DoctorDataHelper implements ConnectionListener {
             String[] locationArea = locationReceived.split(",");
             ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA, Request.Method.GET, true);
             mConnectionFactory.setHeaderParams();
-            mConnectionFactory.setUrl(Config.GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.city) + locationArea[1].trim());
+            mConnectionFactory.setUrl(Config.GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext) + mContext.getString(R.string.city) + locationArea[1].trim());
             mConnectionFactory.createConnection(RescribeConstants.TASK_RECENT_VISIT_DOCTOR_PLACES_DATA);
         }
     }
@@ -282,7 +274,7 @@ public class DoctorDataHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
 
-        String url = Config.GET_TOKEN_NUMBER_OTHER_DETAILS + "docId=" + docId + "&locationId=" + locationID + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String url = Config.GET_TOKEN_NUMBER_OTHER_DETAILS + "docId=" + docId + "&locationId=" + locationID + "&patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
 
         if (selectedTimeStamp != null)
             url = url + "&time=" + selectedTimeStamp;
@@ -300,7 +292,7 @@ public class DoctorDataHelper implements ConnectionListener {
        // requestDoctorListBaseModel.setOs("android");
         requestDoctorListBaseModel.setTime(time);
         requestDoctorListBaseModel.setLocationId(locationID);
-        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
 
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(Config.TO_SET_TOKEN_NOTIFICATION_REMAINDER_ALERT);
@@ -321,7 +313,7 @@ public class DoctorDataHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
 
-        String url = Config.TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String url = Config.TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
 
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_TO_GET_TOKEN_REMAINDER_UNREAD_NOTIFICATIONS);
@@ -336,7 +328,7 @@ public class DoctorDataHelper implements ConnectionListener {
         requestDoctorListBaseModel.setDocId(docId);
         requestDoctorListBaseModel.setTime(time);
         requestDoctorListBaseModel.setLocationId(locationID);
-        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
 
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(Config.TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER);
@@ -352,7 +344,7 @@ public class DoctorDataHelper implements ConnectionListener {
         requestDoctorListBaseModel.setDocId(docId);
         requestDoctorListBaseModel.setTime(time);
         requestDoctorListBaseModel.setLocationId(locationID);
-        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        requestDoctorListBaseModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
 
         mConnectionFactory.setPostParams(requestDoctorListBaseModel);
         mConnectionFactory.setUrl(Config.TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION);
@@ -371,7 +363,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mRequestAppointmentConfirmationModel.setDate(date);
         mRequestAppointmentConfirmationModel.setSlotId(slotId);
         mRequestAppointmentConfirmationModel.setReschedule(reschedule);
-        mRequestAppointmentConfirmationModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        mRequestAppointmentConfirmationModel.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
 
         mConnectionFactory.setPostParams(mRequestAppointmentConfirmationModel);
         mConnectionFactory.setUrl(Config.CONFIRM_APPOINTMENT);
@@ -387,7 +379,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mRequestCancelAppointment.setAptId(aptId);
         mRequestCancelAppointment.setStatus(4);
         mRequestCancelAppointment.setType(type);
-        mRequestCancelAppointment.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        mRequestCancelAppointment.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
 
         mConnectionFactory.setPostParams(mRequestCancelAppointment);
         mConnectionFactory.setUrl(Config.CANCEL_RESCHDULE_APPOINTMENT);
@@ -403,7 +395,7 @@ public class DoctorDataHelper implements ConnectionListener {
         mRequestCancelAppointment.setDocId(docID);
         mRequestCancelAppointment.setLocationId(locationId);
         mRequestCancelAppointment.setTokenNumber(tokenNo);
-        mRequestCancelAppointment.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext)));
+        mRequestCancelAppointment.setPatientId(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)));
         mConnectionFactory.setPostParams(mRequestCancelAppointment);
         mConnectionFactory.setUrl(Config.CANCEL_TOKEN_NUMBER);
         mConnectionFactory.createConnection(RescribeConstants.TASK_CANCEL_GET_TOKEN);

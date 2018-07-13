@@ -38,7 +38,6 @@ import com.rescribe.model.investigation.Image;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
-import com.rescribe.ui.activities.dashboard.ProfileActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
@@ -56,7 +55,6 @@ import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -138,7 +136,6 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
     private ArrayList<ChatDoctor> mChatDoctors;
 
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
-    private String profileImageString;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
     private AppDBHelper appDBHelper;
     private Context mContext;
@@ -196,7 +193,6 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
                     title.setVisibility(View.GONE);
                     mSearchView.setVisibility(View.VISIBLE);
                     mWhiteUnderLine.setVisibility(View.VISIBLE);
-
                 } else {
                     mSearchView.setVisibility(View.GONE);
                     title.setVisibility(View.VISIBLE);
@@ -251,9 +247,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
                 if (dashboardBottomMenuLists.get(i).getName().equals(APP_LOGO)) {
 
                     for (int j = 0; j < dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().size(); j++) {
-                        if (dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
-                            profileImageString = dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getIconImageUrl();
-                        }
+
                         if (!dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName().equalsIgnoreCase(getString(R.string.profile))) {
                             BottomSheetMenu bottomSheetMenu = new BottomSheetMenu();
                             bottomSheetMenu.setName(dashboardBottomMenuLists.get(i).getClickEvent().getClickOptions().get(j).getName());
@@ -273,15 +267,15 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
                     connectIndex = i;
             }
 
-            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this);
-            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, this);
+            String userName = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, this);
+            String salutation = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, this);
 
             String salutationText = "";
 
 
             salutationText = SALUTATION[Integer.parseInt(salutation)];
 
-            setUpAdapterForBottomSheet(profileImageString, userName, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, this), salutationText);
+            setUpAdapterForBottomSheet(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, mContext), userName, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, this), salutationText);
         }
     }
 
@@ -435,7 +429,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
         fragmentTransaction.commit();
 
         if (bundleData != null)
-            mSearchView.setText("" + bundleData.getString(getString(R.string.clicked_item_data)));
+            mSearchView.setText("" + bundleData.getString(RescribeConstants.ITEM_DATA));
 
     }
 
@@ -503,7 +497,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             Bundle bundle = new Bundle();
             bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
-            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            bundle.putString(RescribeConstants.ITEM_DATA, getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
             finish();
@@ -556,7 +550,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA_VALUE, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }
@@ -570,7 +564,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticlesActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }

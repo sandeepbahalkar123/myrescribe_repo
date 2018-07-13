@@ -147,6 +147,9 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                     public void onCompleted(JSONObject object,
                                             GraphResponse response) {
 
+                        // logout facebook session
+                        LoginManager.getInstance().logOut();
+
                         JSONObject json = response.getJSONObject();
 
                         if (object != null)
@@ -162,7 +165,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                         String gender = json.optString("gender").toUpperCase();
                         signUpRequestSocial.setGender(gender);
 
-                        if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.sign_up))) {
+                        if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.sign_up))) {
 
                             Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                             intentObj.putExtra(getString(R.string.type), getString(R.string.login_with_facebook));
@@ -170,7 +173,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                             intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                             startActivity(intentObj);
 
-                        } else if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.log_in))) {
+                        } else if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.log_in))) {
 
                             SocialLoginRequestModel signUpRequest = new SocialLoginRequestModel();
                             signUpRequest.setAuthSocialToken(json.optString("email"));
@@ -181,6 +184,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                             loginHelper.doLoginBySocial(signUpRequest);
 
                         }
+
                     }
                 });
         Bundle parameters = new Bundle();
@@ -223,7 +227,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
             signUpRequestSocial.setAuthSocialType(GMAIL);
             signUpRequestSocial.setAuthSocialToken(acct.getEmail());
 
-            if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.sign_up))) {
+            if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.sign_up))) {
                 //-----------
                 Intent intentObj = new Intent(mContext, AppGlobalContainerActivity.class);
                 intentObj.putExtra(getString(R.string.type), getString(R.string.login_with_gmail));
@@ -231,7 +235,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                 intentObj.putExtra(getString(R.string.title), getString(R.string.sign_up_confirmation));
                 startActivity(intentObj);
 
-            } else if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.log_in))) {
+            } else if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_OR_SIGNUP, mContext).equalsIgnoreCase(getString(R.string.log_in))) {
                 // call api for social login auth from our server
 
                 SocialLoginRequestModel signUpRequest = new SocialLoginRequestModel();
@@ -248,6 +252,8 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
             // Signed out, show unauthenticated UI.
 
         }
+
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
     }
 
     @Override
@@ -259,14 +265,14 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
 
     @Override
     public void onClickGoogle(String loginOrSignup) {
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP, loginOrSignup, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_OR_SIGNUP, loginOrSignup, mContext);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
     public void onClickFacebook(String loginOrSignup) {
-        RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_OR_SIGNUP, loginOrSignup, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_OR_SIGNUP, loginOrSignup, mContext);
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_friends", "email", "public_profile"));
     }
 
@@ -294,29 +300,29 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
                 CommonMethods.Log(TAG + " Token", loginModel.getLoginData().getAuthToken());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), mContext);
 
                 PatientDetail patientDetail = loginModel.getLoginData().getPatientDetail();
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), mContext);
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), mContext);
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, ""+patientDetail.getPatientSalutation(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, ""+patientDetail.getPatientSalutation(), mContext);
 
                 if (RescribePreferencesManager.getString(RescribeConstants.TYPE_OF_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext), mContext);
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext), mContext);
                 }
                 if (RescribePreferencesManager.getString(RescribeConstants.TYPE_OF_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_gmail))) {
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext), mContext);
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mContext), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, mContext), mContext);
                 }
 
                 Intent intent = new Intent(this, HomePageActivity.class);
@@ -331,29 +337,29 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
             LoginModel loginModel = (LoginModel) customResponse;
             if (loginModel.getCommon().isSuccess()) {
                 CommonMethods.Log(TAG + " Token", loginModel.getLoginData().getAuthToken());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), mContext);
 
                 PatientDetail patientDetail = loginModel.getLoginData().getPatientDetail();
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), mContext);
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), mContext);
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), mContext);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, ""+patientDetail.getPatientSalutation(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, ""+patientDetail.getPatientSalutation(), mContext);
 
                 if (RescribePreferencesManager.getString(RescribeConstants.TYPE_OF_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext), mContext);
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext), mContext);
                 }
                 if (RescribePreferencesManager.getString(RescribeConstants.TYPE_OF_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_gmail))) {
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext), mContext);
-                    RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD_GMAIL, mContext), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext), mContext);
+                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, mContext), mContext);
                 }
                 Intent intent = new Intent(this, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

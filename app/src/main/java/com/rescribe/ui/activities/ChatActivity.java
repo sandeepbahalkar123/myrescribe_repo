@@ -458,11 +458,11 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
         appDBHelper = new AppDBHelper(this);
         mInputMethodManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
-        patId = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this);
+        patId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, this);
 
-        salutation = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, this);
-        patientName = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, this);
-        imageUrl = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, this);
+        salutation = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, this);
+        patientName = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, this);
+        imageUrl = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, this);
         swipeLayout.setRefreshing(true);
 
         downloadInit();
@@ -926,7 +926,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         // Uploading
         device = Device.getInstance(ChatActivity.this);
         Url = Config.BASE_URL + Config.CHAT_FILE_UPLOAD;
-        authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, ChatActivity.this);
+        authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, ChatActivity.this);
         uploadNotificationConfig = new UploadNotificationConfig();
         uploadNotificationConfig.setTitleForAllStatuses("File Uploading");
         uploadNotificationConfig.setIconColorForAllStatuses(Color.parseColor("#04abdf"));
@@ -941,18 +941,18 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             case R.id.bookAppointmentButton:
                 // call book appointment
                 Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+                intent.putExtra(RescribeConstants.TITLE, getString(R.string.doctor));
                 DoctorList doctorListData = new DoctorList();
                 doctorListData.setDocId(chatList.getId());
                 ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData);
-                intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
+                intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
                 startActivity(intent);
                 break;
             case R.id.bookAppointmentGetTokenButton:
                 // call book appointment
                 Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-                intent1.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-                intent1.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                intent1.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
+                intent1.putExtra(RescribeConstants.TITLE, getString(R.string.book_appointment));
                 DoctorList doctorListData1 = new DoctorList();
                 doctorListData1.setDocId(chatList.getId());
                 ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);

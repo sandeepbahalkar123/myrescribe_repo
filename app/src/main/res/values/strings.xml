@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Rescribe</string>
+    <string name="app_name">Patient Rescribe</string>
     <string name="breakfast_after">breakfastAfter</string>
     <string name="breakfast_before">breakfastBefore</string>
     <string name="lunch_before">lunchBefore</string>
@@ -219,8 +219,6 @@
     <string name="default_error">default error</string>
     <string name="server_error">Server Error</string>
     <string name="dr">Dr.</string>
-    <string name="clicked_item_data">clicked_item_data</string>
-    <string name="clicked_item_data_type_value">clicked_item_data_type_value</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="type_a_message">Type a message</string>
     <string name="book_appointment">Book Appointment</string>
@@ -234,8 +232,6 @@
     <string name="doctor">Doctor</string>
     <string name="about_doctor"><u>About Doctor :</u></string>
     <string name="recently_visited_doctor">Recently Visited Doctors</string>
-    <!--<string name="clickhere">Not Sure ?......click here</string>-->
-    <!--<string name="clickhere">Not Sure ?......click here</string>-->
     <string name="select_location"><u>Select location</u></string>
     <string name="relevantkeywords">Enter relevant keywords to optimize your doctor search</string>
     <string name="complaint1">Complaint 1:</string>
@@ -270,7 +266,6 @@
     <string name="health_services">Health Services</string>
     <string name="doctorss">Doctors</string>
     <string name="years_experience">years of experience</string>
-    <string name="toolbarTitle">title</string>
 
     <string name="enter_reading">Enter Reading</string>
     <string name="err_reading_date">Reading date should not be greater than current date.</string>
@@ -282,7 +277,7 @@
     <string name="location_address">Location address</string>
     <string name="doctorId">DoctorId</string>
 
-    <string name="favorite">Favourite Doctors</string>
+    <string name="favorite">Favorite Doctors</string>
 
     <string name="reviews">Reviews</string>
     <string name="alerts">Alerts</string>
@@ -321,8 +316,6 @@
     <string name="evening">Evening</string>
     <string name="night">Night</string>
 
-
-    <string name="category_name">category_name</string>
     <string name="consultation">CONSULTATION</string>
     <string name="medicines">MEDICINES</string>
     <string name="lab_test">LAB TEST</string>
@@ -413,6 +406,7 @@
     <string name="exceeded">exceeded</string>
     <string name="company_name">SCORG TECHNOLOGIES Pvt.Ltd.</string>
     <string name="record_not_found">Record not found.</string>
+    <string name="login_using_otp">Login Using OTP</string>
 
     <!--************************-->
 </resources>

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +54,8 @@ public class LoginFragment extends Fragment implements HelperResponse {
     Button btnLogin;
     @BindView(R.id.forgotPasswordView)
     CustomTextView forgotPasswordView;
-    @BindView(R.id.signup)
-    CustomTextView signup;
+    @BindView(R.id.btnSignUp)
+    Button signup;
     Unbinder unbinder;
     @BindView(R.id.loginUpWithFacebook)
     ImageView loginUpWithFacebook;
@@ -61,7 +63,6 @@ public class LoginFragment extends Fragment implements HelperResponse {
     ImageView loginUpWithGmail;
     private OnFragmentInteractionListener mListener;
     private final String TAG = this.getClass().getName();
-    private SignUpFragment signupFragment;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -73,18 +74,28 @@ public class LoginFragment extends Fragment implements HelperResponse {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-
         unbinder = ButterKnife.bind(this, rootView);
 
+        editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-        // TODO : this is done for development, remove it----
-        //--- for drrescribe.com
-    /*    editTextMobileNo.setText("9833898048");
-        editTextPassword.setText("uren1234");*/
-        //---- For 182 server
-        // editTextMobileNo.setText("7738477306");
-        //  editTextPassword.setText("test1234");
-        // TODO : this is done for development, remove it----
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    btnOtp.setAlpha(1f);
+                    btnOtp.setEnabled(true);
+                } else {
+                    btnOtp.setAlpha(.5f);
+                    btnOtp.setEnabled(false);
+                }
+            }
+        });
         return rootView;
     }
 
@@ -111,7 +122,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.btnOtp, R.id.btn_login, R.id.forgotPasswordView, R.id.signup, R.id.loginUpWithFacebook, R.id.loginUpWithGmail})
+    @OnClick({R.id.btnOtp, R.id.btn_login, R.id.forgotPasswordView, R.id.btnSignUp, R.id.loginUpWithFacebook, R.id.loginUpWithGmail})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnOtp:
@@ -138,9 +149,9 @@ public class LoginFragment extends Fragment implements HelperResponse {
                 intentObj.putExtra(getString(R.string.title), getString(R.string.forgot_password_header));
                 startActivity(intentObj);
                 break;
-            case R.id.signup:
+            case R.id.btnSignUp:
                 //on click of signup , Signup fragment is loaded here.
-                signupFragment = new SignUpFragment();
+                SignUpFragment signupFragment = new SignUpFragment();
                 FragmentManager supportFragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, signupFragment);
@@ -213,19 +224,19 @@ public class LoginFragment extends Fragment implements HelperResponse {
 
                 PatientDetail patientDetail = loginModel.getLoginData().getPatientDetail();
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PASSWORD, editTextPassword.getText().toString(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, loginModel.getLoginData().getAuthToken(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, RescribeConstants.YES, getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, String.valueOf(patientDetail.getPatientId()), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, patientDetail.getMobileNumber(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD, editTextPassword.getText().toString(), getActivity());
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, patientDetail.getPatientName(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, patientDetail.getPatientImgUrl(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_EMAIL, patientDetail.getPatientEmail(), getActivity());
 
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), getActivity());
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.SALUTATION, ""+patientDetail.getPatientSalutation(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.AGE, patientDetail.getPatientAge(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.USER_GENDER, patientDetail.getPatientGender(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.SALUTATION, "" + patientDetail.getPatientSalutation(), getActivity());
 
                 Intent intent = new Intent(getActivity(), HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -240,7 +251,7 @@ public class LoginFragment extends Fragment implements HelperResponse {
             //After login user navigated to HomepageActivity
             LoginWithOtp loginModel = (LoginWithOtp) customResponse;
             if (loginModel.getCommon().isSuccess()) {
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER, editTextMobileNo.getText().toString(), getActivity());
                 Intent intent = new Intent(getActivity(), AppGlobalContainerActivity.class);
                 intent.putExtra(getString(R.string.type), getString(R.string.enter_otp_for_login));
                 intent.putExtra(getString(R.string.title), getString(R.string.enter_otp_for_login));

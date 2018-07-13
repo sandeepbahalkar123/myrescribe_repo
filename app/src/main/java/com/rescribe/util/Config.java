@@ -21,7 +21,11 @@ public class Config {
     public static final String DOCTOR_LIST_BY_LOCATION = "api/doctors/getDoctorListByLocation";
     public static final String REVIEW_URL = "api/doctors/getReviewsForDoctor?docId=10";
     public static final String GET_DOCTOR_LIST_BY_COMPLAINT = "api/doctors/getDocListByCityAreaComplaint";
-    public static final String GET_DASHBOARD_DATA = "api/dashboard/getDashboardDetails?patientId=";
+
+    //    public static final String GET_DASHBOARD_DATA = "api/dashboard/getDashboardDetails?patientId=";
+    public static final String GET_DASHBOARD_DATA = "api/dashboard/getDocListByCategory?patientId=";
+    public static final String GET_DOCTORLIST_DATA="api/dashboard/getDoctorDetails?patientId=";
+
     public static final String GET_TASK_RECENT_VISIT_DOCTOR_PLACES_DATA = "api/doctors/getDocCountByArea?patientId=";
     public static final String CONFIRM_APPOINTMENT = "api/patient/bookAppointment ";
     public static final String CANCEL_RESCHDULE_APPOINTMENT = "api/patient/updateAppointmentStatus";
@@ -30,11 +34,15 @@ public class Config {
 
     public static boolean DEV_BUILD = true;
 
+    // QA
+
     public static final String BROKER = "tcp://drrescribe.com:1883"; // Dr Rescribe IP
-
     public static String BASE_URL = "http://drrescribe.com:3003/";
-    //  public static String BASE_URL = "http://192.168.0.182:3003/";
 
+    // Live
+
+//    public static final String BROKER = "tcp://rescribe.in:1883"; // Dr Rescribe IP
+//    public static String BASE_URL = "http://rescribe.in:3003/";
 
     //---------------------
     public Context mContext;

@@ -117,7 +117,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
 
         //--------
         showlocation.setVisibility(View.GONE);
-        isActivityOpenedFromFilterViewMapFAB = getIntent().getStringExtra(getString(R.string.clicked_item_data_type_value));
+        isActivityOpenedFromFilterViewMapFAB = getIntent().getStringExtra(RescribeConstants.ITEM_DATA_VALUE);
         if (getString(R.string.filter).equalsIgnoreCase(isActivityOpenedFromFilterViewMapFAB)) {
             locationTextView.setVisibility(View.VISIBLE);
             mDoctorDataHelper = new DoctorDataHelper(this, this);
@@ -261,8 +261,8 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
                 try {
                     DoctorList doctorList= (DoctorList) doctorL.clone();
                     Intent intent = new Intent(MapActivityPlotNearByDoctor.this, DoctorDescriptionBaseActivity.class);
-                    intent.putExtra(getString(R.string.toolbarTitle),getIntent().getStringExtra(getString(R.string.toolbarTitle)));
-                    intent.putExtra(getString(R.string.clicked_item_data), doctorList);
+                    intent.putExtra(RescribeConstants.TITLE,getIntent().getStringExtra(RescribeConstants.TITLE));
+                    intent.putExtra(RescribeConstants.ITEM_DATA, doctorList);
                     ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorList);
                     startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
                 } catch (CloneNotSupportedException e) {
@@ -332,7 +332,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.locationTextView:
-                Intent start = new Intent(this, BookAppointFindLocation.class);
+                Intent start = new Intent(this, BookAppointFindLocationActivity.class);
                 startActivity(start);
                 break;
         }

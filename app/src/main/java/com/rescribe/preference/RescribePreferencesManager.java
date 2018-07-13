@@ -225,13 +225,10 @@ public class RescribePreferencesManager {
         String INVESTIGATION_ALERT_COUNT = "investigationAlertCount";
         String MEDICATION_ALERT_COUNT = "medicationAlertCount";
         String TOKEN_ALERT_COUNT = "tokenAlertCount";
-        String OFFERS_ALERT_COUNT = "offersAlertCount";
     }
 
-    public interface RESCRIBE_PREFERENCES_KEY {
+    public interface PREFERENCES_KEY {
         String USER_GENDER = "user_gender";
-        String SERVER_CONNECTION_SUCCESS = "success";
-        String IS_VALID_IP_CONFIG = "isvalidipconfig";
         String AUTHTOKEN = "authToken";
         String PATIENT_ID = "patientId";
         String LOGIN_STATUS = "login_status";
@@ -250,5 +247,8 @@ public class RescribePreferencesManager {
         String NEED_NOTIFY = "notification_set";
         String AGE = "age";
         String SALUTATION = "salutation";
+        String LAST_UPDATED = "last_updated_date";
     }
+
+
 }

@@ -8,8 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.rescribe.R;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
+import com.rescribe.model.dashboard_api.card_data.CategoryList;
+import com.rescribe.model.dashboard_api.card_data.DocDetail;
+import com.rescribe.model.dashboard_api.doctors.ClinicList;
+import com.rescribe.model.dashboard_api.doctors.DoctorList;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.investigation.Images;
@@ -25,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AppDBHelper extends SQLiteOpenHelper {
 
@@ -75,11 +81,62 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String DINNER_TIME = "dinnerTime";
     public static final String SNACKS_TIME = "snacksTime";
 
-    //---
     public static final String NOTIFICATION_MSG_TYPE = "notification_msg_type";
     public static final String TIME_STAMP = "time_stamp";
+    private Object cardsBackground;
 
-    //---
+    public interface DOC_DATA {
+
+        String CARDVIEW_DATA_TABLE = "CardViewTable";
+        String CARDS_BACKGROUND_TABLE = "CardsBackground";
+        String DOCTORLIST_DATA_TABLE = "Doctor";
+        String CLINIC_DATA_TABLE = "Clinic";
+        String DOCOTORVSCLINIC_DATA_TABLE = "DoctorVsClinic";
+        String APPOINTMENT_DATA_TABLE = "Appointment";
+
+        String CARD_TYPE = "cardType";
+        String IMAGE_URL = "imageUrl";
+
+        String DOC_ID = "doctorId";
+        String DOC_NAME = "doctorName";
+        String PHONE_NUMBER = "phoneNumber";
+        String ICON_URL = "iconURL";
+        String ABOUT_DOCTOR = "aboutDoctor";
+        String SPECIALITY_ID = "specialityId";
+        String SPECIALITY = "speciality";
+        String RATING = "rating";
+        String IS_PREMIUM = "isPremium";
+        String DOC_DEGREE = "docDegree";
+        String EXPERIANCE = "experience";
+        String PAID_STATUS = "isPaidStatus";
+        String IS_FAVORITE = "isFavorite";
+        String CATEGORY = "category";
+        String DOCTOR_GENDER = "doctorGender";
+
+        String CLINIC_ID = "clinicId";
+        String CLINIC_NAME = "clinicName";
+        String CLINIC_LATITUDE = "clinicLatitude";
+        String CLINIC_LONGITUDE = "clinicLongitude";
+        String CLINIC_ADDRESS = "clinicAddress";
+        String CLINIC_AREA_NAME = "clinicAreaName";
+        String CLINIC_CITY_NAME = "clinicCityName";
+        String MODIFIED_NDATE = "modifiedDate";
+        String CREATED_DATE = "createdDate";
+
+        String CLINIC_FEES = "clinicFees";
+        String APPOINTMENT_SCHEDULE_LIMIT_DAYS = "appointmentScheduleLimitDays";
+        String CLINIC_APPOINTMENT_TYPE = "clinicAppointmentType";
+        String CLINIC_SERVICE = "clinicServices";
+
+        String APPOINTMENT_ID = "appointmentId";
+        String APPOINTMENT_DATE = "appointmentDate";
+        String APPOINTMENT_TIME = "appointmentTime";
+        String APPOINTMENT_TYPE = "appointmentType";
+        String APPOINTMENT_STATUS = "appointmentStatus";
+        String TOKEN_NUMBER = "tokenNumber";
+        String WAITING_PATIENT_TIME = "waitingPatientTime";
+        String WAITING_PATIENT_COUNT = "waitingPatientCount";
+    }
 
     static AppDBHelper instance = null;
     private Context mContext;
@@ -584,14 +641,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 unreadNotificationMessageData.setNotificationData(cursor.getString(cursor.getColumnIndex(COLUMN_DATA)));
                 unreadNotificationMessageData.setNotificationTimeStamp(cursor.getString(cursor.getColumnIndex(TIME_STAMP)));
 
-//                String dateText = CommonMethods.getFormattedDate(unreadNotificationMessageData.getNotificationTimeStamp(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY + " " + RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-//                String today = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.DD_MM_YYYY);
-
-//                if (dateText.equals(today))
                 chatDoctors.add(unreadNotificationMessageData);
-//                else
-//                    deleteUnreadReceivedNotificationMessage(Integer.parseInt(unreadNotificationMessageData.getId()), unreadNotificationMessageData.getNotificationMessageType());
-
                 cursor.moveToNext();
             }
         }
@@ -640,33 +690,211 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         return true;
     }
+    //----- Notification storing : END
 
-    /*public ArrayList<UnreadSavedNotificationMessageData> unreadChatMessagesList() {
-        SQLiteDatabase db = getReadableDatabase();
-        String countQuery = "select * from " + MESSAGE_TABLE;
-        Cursor cursor = db.rawQuery(countQuery, null);
-        ArrayList<UnreadSavedNotificationMessageData> chatDoctors = new ArrayList<>();
-        Gson gson = new Gson();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                String messageJson = cursor.getString(cursor.getColumnIndex(MESSAGE));
-                UnreadSavedNotificationMessageData unreadNotificationMessageData = new UnreadSavedNotificationMessageData();
+    public void addDoctors(List<DoctorList> doctorList) {
 
-                MQTTMessage messageObject = gson.fromJson(messageJson, MQTTMessage.class);
+        SQLiteDatabase db = getWritableDatabase();
 
-                unreadNotificationMessageData.setId(String.valueOf(messageObject.getDocId()));
-                unreadNotificationMessageData.setNotificationMessageType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.CHAT_ALERT_COUNT);
-                unreadNotificationMessageData.setNotificationMessage(mContext.getString(R.string.message_from) + " " + messageObject.getName());
-                unreadNotificationMessageData.setNotificationData(messageObject.getMsg());
-                unreadNotificationMessageData.setNotificationTimeStamp(messageObject.getMsgTime());
-                chatDoctors.add(unreadNotificationMessageData);
-                cursor.moveToNext();
+        db.beginTransaction();
+
+        ContentValues contentValuesDoc = new ContentValues();
+        ContentValues contentValuesClinic = new ContentValues();
+        ContentValues contentValuesClinicVSDoc = new ContentValues();
+
+        for (DoctorList doctor : doctorList) {
+
+            if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.REMOVE)) {
+                // delete doctor related data
+                db.delete(DOC_DATA.DOCTORLIST_DATA_TABLE,
+                        DOC_DATA.DOC_ID + " = ? ",
+                        new String[]{String.valueOf(doctor.getDocId())});
+
+                // delete doc clinic relation
+                db.delete(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE,
+                        DOC_DATA.DOC_ID + " = ? ",
+                        new String[]{String.valueOf(doctor.getDocId())});
+
+            } else {
+
+                // insert doc data
+                contentValuesDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
+                contentValuesDoc.put(DOC_DATA.DOC_NAME, doctor.getDocName());
+                contentValuesDoc.put(DOC_DATA.PHONE_NUMBER, doctor.getDocPhone());
+                contentValuesDoc.put(DOC_DATA.ICON_URL, doctor.getDoctorImageUrl());
+                contentValuesDoc.put(DOC_DATA.ABOUT_DOCTOR, doctor.getAboutDoctor());
+                contentValuesDoc.put(DOC_DATA.SPECIALITY_ID, doctor.getSpecialityId());
+                contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality());
+                contentValuesDoc.put(DOC_DATA.RATING, doctor.getRating());
+                contentValuesDoc.put(DOC_DATA.IS_PREMIUM, doctor.getCategorySpeciality());
+                contentValuesDoc.put(DOC_DATA.DOC_DEGREE, doctor.getDegree());
+                contentValuesDoc.put(DOC_DATA.EXPERIANCE, doctor.getExperience());
+                contentValuesDoc.put(DOC_DATA.PAID_STATUS, doctor.getPaidStatus());
+                contentValuesDoc.put(DOC_DATA.CATEGORY, doctor.getCategoryName());
+                contentValuesDoc.put(DOC_DATA.DOCTOR_GENDER, doctor.getGender());
+                contentValuesDoc.put(DOC_DATA.IS_FAVORITE, doctor.isFavorite() ? 1 : 0);
+                contentValuesDoc.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+
+                if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.ADD)) {
+                    contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+                    db.insertWithOnConflict(DOC_DATA.DOCTORLIST_DATA_TABLE, null, contentValuesDoc, SQLiteDatabase.CONFLICT_IGNORE);
+                } else if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.UPDATE)) {
+                    // update doctor related info
+                    db.update(DOC_DATA.DOCTORLIST_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ? ", new String[]{String.valueOf(doctor.getDocId())});
+                }
+
+                addClinics(db, contentValuesClinic, contentValuesClinicVSDoc, doctor);
             }
         }
-        cursor.close();
-        db.close();
 
-        return chatDoctors;
-    }*/
-    //----- Notification storing : END
+        db.setTransactionSuccessful();
+        db.endTransaction();
+//        db.close();
+    }
+
+    private void addClinics(SQLiteDatabase db, ContentValues contentValuesClinic, ContentValues contentValuesClinicVSDoc, DoctorList doctor) {
+        for (ClinicList clinic : doctor.getClinicList()) {
+
+            // insert clinic data
+            contentValuesClinic.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
+            contentValuesClinic.put(DOC_DATA.CLINIC_NAME, clinic.getClinicName());
+            contentValuesClinic.put(DOC_DATA.CLINIC_LATITUDE, clinic.getLocationLat());
+            contentValuesClinic.put(DOC_DATA.CLINIC_LONGITUDE, clinic.getLocationLong());
+            contentValuesClinic.put(DOC_DATA.CLINIC_ADDRESS, clinic.getClinicAddress());
+            contentValuesClinic.put(DOC_DATA.CLINIC_AREA_NAME, clinic.getAreaName());
+            contentValuesClinic.put(DOC_DATA.CLINIC_CITY_NAME, clinic.getCityName());
+            contentValuesClinic.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+            contentValuesClinic.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
+
+            // if clinic exist then update else insert
+            db.insertWithOnConflict(DOC_DATA.CLINIC_DATA_TABLE, null, contentValuesClinic, SQLiteDatabase.CONFLICT_IGNORE);
+
+            // insert clinic vs doctors
+            contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
+            contentValuesClinicVSDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
+            contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_FEES, clinic.getAmount());
+            contentValuesClinicVSDoc.put(DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS, clinic.getApptScheduleLmtDays());
+            contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_APPOINTMENT_TYPE, clinic.getAppointmentType());
+            contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_SERVICE, clinic.getServices().isEmpty() ? "" : CommonMethods.listToString(clinic.getServices(), ","));
+
+            // if clinic and doc exist then update else insert
+            Cursor checkCursor = db.rawQuery("select * from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctor.getDocId() + " AND " + DOC_DATA.CLINIC_ID + " = " + clinic.getLocationId(), null);
+            if (checkCursor.moveToFirst())
+                db.update(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, contentValuesClinicVSDoc, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CLINIC_ID + " = ?", new String[]{String.valueOf(doctor.getDocId()), String.valueOf(clinic.getLocationId())});
+            else
+                db.insert(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null, contentValuesClinicVSDoc);
+            checkCursor.close();
+        }
+    }
+
+    public void addCardDoctors(List<CategoryList> categoryList) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        // delete pre data
+        db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, null, null);
+        db.delete(DOC_DATA.APPOINTMENT_DATA_TABLE, null, null);
+
+        ContentValues contentValuesCard = new ContentValues();
+        ContentValues contentValuesCardsBackground = new ContentValues();
+        ContentValues contentValuesAppoint = new ContentValues();
+
+        for (CategoryList category : categoryList) {
+            for (DocDetail docDetail : category.getDocDetails()) {
+                // insert card data
+                contentValuesCard.put(DOC_DATA.DOC_ID, docDetail.getDocId());
+                contentValuesCard.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
+
+                contentValuesCardsBackground.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
+                contentValuesCardsBackground.put(DOC_DATA.IMAGE_URL, category.getUrl());
+                db.insertWithOnConflict(DOC_DATA.CARDS_BACKGROUND_TABLE, null, contentValuesCardsBackground, SQLiteDatabase.CONFLICT_IGNORE);
+
+                db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
+
+                // insert appointment data
+                if (category.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_ID, docDetail.getBookId());
+                    contentValuesAppoint.put(DOC_DATA.DOC_ID, docDetail.getDocId());
+                    contentValuesAppoint.put(DOC_DATA.CLINIC_ID, docDetail.getLocationId());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_DATE, docDetail.getAptDate());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_TYPE, docDetail.getBookType());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_STATUS, docDetail.getPaidStatus());
+                    contentValuesAppoint.put(DOC_DATA.TOKEN_NUMBER, docDetail.getTokenNumber());
+                    contentValuesAppoint.put(DOC_DATA.WAITING_PATIENT_TIME, docDetail.getWaitingPatientTime());
+                    contentValuesAppoint.put(DOC_DATA.WAITING_PATIENT_COUNT, docDetail.getWaitingPatientCount());
+                    contentValuesAppoint.put(DOC_DATA.APPOINTMENT_TIME, docDetail.getAptTime());
+
+                    db.insert(DOC_DATA.APPOINTMENT_DATA_TABLE, null, contentValuesAppoint);
+                }
+            }
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    public Cursor getAllCardData() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.CARDVIEW_DATA_TABLE, null);
+    }
+
+    public Cursor getAppointmentByDoctor(int doctorId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
+    }
+
+    public Cursor getAppointmentDoctor() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE, null);
+    }
+
+    public Cursor getAllDoctors() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCTORLIST_DATA_TABLE, null);
+    }
+
+    public Cursor getDoctor(int doctorId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCTORLIST_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
+    }
+
+    public Cursor getDoctorVsClinicById(int doctorId, int clinicId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId + " AND " + DOC_DATA.CLINIC_ID + " = " + clinicId, null);
+    }
+
+    public Cursor getAllClinicsByDoctor(int doctorId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select c.*, dc.doctorId, dc.clinicFees, dc.appointmentScheduleLimitDays, dc.clinicAppointmentType, dc.clinicServices from " + DOC_DATA.CLINIC_DATA_TABLE + " c inner join " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " dc on dc.clinicId = c.clinicId where dc.doctorId = " + doctorId, null);
+    }
+
+    public String getCardsBackground(String cardType) {
+        String cardBack = "";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + DOC_DATA.CARDS_BACKGROUND_TABLE + " where " + DOC_DATA.CARD_TYPE + " = '" + cardType + "'", null);
+        if (cursor.moveToFirst())
+            cardBack = cursor.getString(cursor.getColumnIndex(DOC_DATA.IMAGE_URL));
+        return cardBack;
+    }
+
+    public void updateCardTable(int doctorId, int isFavorite, String categoryName) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValuesDoc = new ContentValues();
+        ContentValues contentValuesCard = new ContentValues();
+
+        db.beginTransaction();
+        contentValuesDoc.put(DOC_DATA.IS_FAVORITE, isFavorite);
+        db.update(DOC_DATA.DOCTORLIST_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ?", new String[]{String.valueOf(doctorId)});
+
+        if (isFavorite == 1) {
+            contentValuesCard.put(DOC_DATA.DOC_ID, doctorId);
+            contentValuesCard.put(DOC_DATA.CARD_TYPE, categoryName);
+            db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
+        } else
+            db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CARD_TYPE + " = ?", new String[]{String.valueOf(doctorId), categoryName});
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
 }

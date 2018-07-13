@@ -81,7 +81,7 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity i
         if (extras == null) {
             extras = new Bundle();
         }
-        title.setText(extras.getString(getString(R.string.toolbarTitle)));
+        title.setText(extras.getString(RescribeConstants.TITLE));
 
         if (intent.getAction() != null) {
             if (intent.getAction().equals(TOKEN_DATA_ACTION) || intent.getAction().equals(FOLLOW_UP_DATA_ACTION))
@@ -107,15 +107,11 @@ public class SelectSlotToBookAppointmentBaseActivity extends AppCompatActivity i
             super.onBackPressed();
     }
 
-    @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView, R.id.showlocation})
+    @OnClick({R.id.bookAppointmentBackButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
-                break;
-            case R.id.locationTextView:
-                break;
-            case R.id.showlocation:
                 break;
         }
     }

@@ -14,6 +14,7 @@ import com.rescribe.model.dashboard_api.ClickEvent;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.customesViews.CustomTextView;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 
@@ -41,8 +42,8 @@ public class NotificationSettingActivity extends AppCompatActivity implements No
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mClickedOptionData = extras.getParcelable(getString(R.string.clicked_item_data));
-            title.setText(extras.getString(getString(R.string.toolbarTitle)));
+            mClickedOptionData = extras.getParcelable(RescribeConstants.ITEM_DATA);
+            title.setText(extras.getString(RescribeConstants.TITLE));
         }
         switchListeners();
     }

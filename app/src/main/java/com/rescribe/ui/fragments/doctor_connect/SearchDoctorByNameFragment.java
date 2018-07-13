@@ -1,6 +1,5 @@
 package com.rescribe.ui.fragments.doctor_connect;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,9 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.rescribe.R;
 import com.rescribe.adapters.DoctorSearchByNameAdapter;
@@ -36,8 +33,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class SearchDoctorByNameFragment extends Fragment implements DoctorConnectActivity.OnClickOfSearchBar {
     @BindView(R.id.listView)
     RecyclerView mRecyclerView;
-    @BindView(R.id.emptyListView)
-    RelativeLayout emptyListView;
+    @BindView(R.id.noDataAvailable)
+    RelativeLayout noDataAvailable;
     Unbinder unbinder;
     @BindView(R.id.displayNote)
     CustomTextView displayNote;
@@ -67,10 +64,10 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View mRootView = inflater.inflate(R.layout.doctor_connect_recycle_view_layout, container, false);
+        final View mRootView = inflater.inflate(R.layout.doctor_connect_search_layout, container, false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mClickedSpecialityOfDoctor = arguments.getString(getString(R.string.clicked_item_data));
+            mClickedSpecialityOfDoctor = arguments.getString(RescribeConstants.ITEM_DATA);
             mReceivedList = getArguments().getParcelableArrayList(RescribeConstants.CONNECT_REQUEST);
         }
 
@@ -83,13 +80,9 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
     private void init() {
         if (mReceivedList == null) {
             mRecyclerView.setVisibility(View.GONE);
-            emptyListView.setVisibility(View.VISIBLE);
-
+            noDataAvailable.setVisibility(View.VISIBLE);
         } else {
-            //Added Dr. to doctorName
-            //TODO : Temporary Fix as data from Server is not in Proper format
-            mRecyclerView.setVisibility(View.VISIBLE);
-            emptyListView.setVisibility(View.GONE);
+
             for (int i = 0; i < filterDataOnDocSpeciality().size(); i++) {
                 String doctorName = filterDataOnDocSpeciality().get(i).getDoctorName();
                 if (doctorName.startsWith("DR. ")) {
@@ -105,15 +98,24 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
                     filterDataOnDocSpeciality().get(i).setDoctorName("Dr. " + doctorName);
                 }
             }
-            doctorSearchByNameAdapter = new DoctorSearchByNameAdapter(getActivity(), filterDataOnDocSpeciality());
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-            mRecyclerView.setLayoutManager(mLayoutManager);
-            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
-                    DividerItemDecoration.VERTICAL);
-            mRecyclerView.addItemDecoration(dividerItemDecoration);
-            mRecyclerView.setAdapter(doctorSearchByNameAdapter);
-           // displayNote.setVisibility(View.VISIBLE);
+
+            ArrayList<ChatDoctor> docList = filterDataOnDocSpeciality();
+            if (docList.isEmpty()) {
+                mRecyclerView.setVisibility(View.GONE);
+                noDataAvailable.setVisibility(View.VISIBLE);
+            } else {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                noDataAvailable.setVisibility(View.GONE);
+
+                doctorSearchByNameAdapter = new DoctorSearchByNameAdapter(getActivity(), docList);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                        DividerItemDecoration.VERTICAL);
+                mRecyclerView.addItemDecoration(dividerItemDecoration);
+                mRecyclerView.setAdapter(doctorSearchByNameAdapter);
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.rescribe.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,7 +36,6 @@ import butterknife.Unbinder;
 
 import static com.rescribe.ui.fragments.OTPConfirmationForSignUp.SIGN_UP_DETAILS;
 import static com.rescribe.util.RescribeConstants.GENDER;
-import static com.rescribe.util.RescribeConstants.SALUTATION;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +43,7 @@ import static com.rescribe.util.RescribeConstants.SALUTATION;
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class SignUpFragment extends Fragment implements HelperResponse{
+public class SignUpFragment extends Fragment implements HelperResponse {
 
     @BindView(R.id.editTextName)
     EditText editTextName;
@@ -198,42 +198,46 @@ public class SignUpFragment extends Fragment implements HelperResponse{
             message = enter + getString(R.string.enter_full_name).toLowerCase(Locale.US);
             editTextName.setError(message);
             editTextName.requestFocus();
-        } else if (age.isEmpty()) {
+        } else
+
+            /* else if (age.isEmpty()) {
             message = enter + getString(R.string.enter_age).toLowerCase(Locale.US);
             editTextAge.setError(message);
             editTextAge.requestFocus();
-        } else if (email.isEmpty()) {
+        }  if (email.isEmpty()) {
             message = enter + getString(R.string.enter_email_id).toLowerCase(Locale.US);
             editTextEmailID.setError(message);
             editTextEmailID.requestFocus();
 
-        } else if (!CommonMethods.isValidEmail(email)) {
-            message = getString(R.string.err_email_invalid);
-            editTextEmailID.setError(message);
-            editTextEmailID.requestFocus();
+        } else*/
+            if (!email.trim().isEmpty()) {
+                if (!CommonMethods.isValidEmail(email)) {
+                    message = getString(R.string.err_email_invalid);
+                    editTextEmailID.setError(message);
+                    editTextEmailID.requestFocus();
+                }
+            } else if (password.isEmpty()) {
+                message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
+                editTextPassword.setError(message);
+                editTextPassword.requestFocus();
 
-        } else if (password.isEmpty()) {
-            message = enter + getString(R.string.enter_password).toLowerCase(Locale.US);
-            editTextPassword.setError(message);
-            editTextPassword.requestFocus();
+            } else if (password.trim().length() < 8) {
+                message = getString(R.string.error_too_small_password);
+                editTextPassword.setError(message);
+                editTextPassword.requestFocus();
 
-        } else if (password.trim().length() < 8) {
-            message = getString(R.string.error_too_small_password);
-            editTextPassword.setError(message);
-            editTextPassword.requestFocus();
+            } else if (mobileNo.isEmpty()) {
+                message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
+                editTextMobileNo.setError(message);
+                editTextMobileNo.requestFocus();
 
-        } else if (mobileNo.isEmpty()) {
-            message = enter + getString(R.string.enter_mobile_no).toLowerCase(Locale.US);
-            editTextMobileNo.setError(message);
-            editTextMobileNo.requestFocus();
+            } else if ((mobileNo.trim().length() < 10) || !(mobileNo.trim().startsWith("7") || mobileNo.trim().startsWith("8") || mobileNo.trim().startsWith("9"))) {
 
-        } else if ((mobileNo.trim().length() < 10) || !(mobileNo.trim().startsWith("7") || mobileNo.trim().startsWith("8") || mobileNo.trim().startsWith("9"))) {
+                message = getString(R.string.err_invalid_mobile_no);
+                editTextMobileNo.setError(message);
+                editTextMobileNo.requestFocus();
 
-            message = getString(R.string.err_invalid_mobile_no);
-            editTextMobileNo.setError(message);
-            editTextMobileNo.requestFocus();
-
-        }
+            }
         return message != null;
     }
 

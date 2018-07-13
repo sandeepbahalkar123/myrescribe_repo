@@ -53,7 +53,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
+                if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LOGIN_STATUS, mContext).equals(RescribeConstants.YES)) {
                     if (getIntent().getExtras() != null) {
                         String dataText = getIntent().getExtras().getString(FCMService.FCM_BODY);
                         if (dataText != null) {
@@ -72,8 +72,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 intent.setAction(TOKEN_DATA_ACTION);
 
                                 // call book appointment
-                                intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-                                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+                                intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
+                                intent.putExtra(RescribeConstants.TITLE, getString(R.string.book_appointment));
 
                                 DoctorList doctorListData1 = new DoctorList();
                                 doctorListData1.setDocId(fcmTokenData.getDocId());

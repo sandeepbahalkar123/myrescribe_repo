@@ -17,6 +17,7 @@ import com.rescribe.R;
 import com.rescribe.adapters.book_appointment.BookAppointFilteredDocListAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -55,12 +56,13 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private DoctorDataHelper mDoctorDataHelper;
     private String mClickedItemDataTypeValue;
     private String mReceivedTitle;
+    private String mCategory;
     private String mClickedItemDataValue;
     private boolean mIsFavoriteList;
     private String mUserSelectedLocation;
     private ServicesCardViewImpl mServicesCardViewImpl;
-    private HashMap<String, String> mComplaintHashMap;
     private ArrayList<DoctorList> mReceivedPreviousDoctorList;
+    private AppDBHelper appDBHelper;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -72,30 +74,26 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         // Inflate the layout for this fragment
         View mRootView = inflater.inflate(R.layout.filtered_doc_viewlist_with_bottom_fab_margin, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
-
         init(getArguments());
         return mRootView;
     }
 
-    public static BookAppointFilteredDoctorListFragment newInstance(Bundle b) {
+    public static BookAppointFilteredDoctorListFragment newInstance(Bundle bundle) {
         BookAppointFilteredDoctorListFragment fragment = new BookAppointFilteredDoctorListFragment();
-        Bundle args = b;
-        if (args == null) {
-            args = new Bundle();
-        }
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     private void init(Bundle args) {
+
+        appDBHelper = new AppDBHelper(getContext());
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
-            mClickedItemDataTypeValue = args.getString(getString(R.string.clicked_item_data_type_value));
-            mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
-            mClickedItemDataValue = args.getString(getString(R.string.clicked_item_data));
+            mClickedItemDataTypeValue = args.getString(RescribeConstants.ITEM_DATA_VALUE);
+            mReceivedTitle = args.getString(RescribeConstants.TITLE);
+            mClickedItemDataValue = args.getString(RescribeConstants.ITEM_DATA);
             mIsFavoriteList = args.getBoolean(getString(R.string.favorite));
-
-            mComplaintHashMap = (HashMap<String, String>) args.getSerializable(getString(R.string.complaints));
+            mCategory = args.getString(RescribeConstants.CATEGORY);
         }
         // OnBackPressed of this page original list of doctor should be shown , thats why that list is set here and accessed in ServicesFilteredDoctorListActivity which is base of this fragment.
         setReceivedPreviousDoctorList(ServicesCardViewImpl.getReceivedDoctorDataList());
@@ -110,7 +108,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
         //*****************
         // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
-        if (mComplaintHashMap != null) {
+        if (mCategory != null) {
             activity.setLocationChangeViewClicked(true);
             mLocationFab.setVisibility(View.VISIBLE);
             mFilterFab.setVisibility(View.VISIBLE);
@@ -118,7 +116,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         //*****************
 
         if (activity.isLocationChangeViewClicked()) {
-            doGetLatestDoctorListOnLocationChange(mComplaintHashMap);
+            doGetLatestDoctorListOnLocationChange(mCategory);
             activity.setLocationChangeViewClicked(false);
         }
     }
@@ -137,7 +135,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 mReceivedList = mServicesCardViewImpl.getFavouriteDocList(-1);
             } else if (mClickedItemDataValue != null) {
                 mReceivedList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataValue, -1);
-            } else if (mComplaintHashMap != null) {
+            } else if (mCategory != null) {
                 // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
                 mReceivedList = ServicesCardViewImpl.getDoctorListByUniqueDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
             } else {
@@ -151,7 +149,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         //-----------
     }
 
-    public void doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
+    public void doGetLatestDoctorListOnLocationChange(String mComplaintsUserSearchFor) {
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         String selectedLocation = userSelectedLocationInfo.get(getString(R.string.location));
         if (selectedLocation != null) {
@@ -207,7 +205,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
                     //--------
-                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                     //--------
                     mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
                 }
@@ -218,7 +216,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                     DoctorServicesModel doctorServices = received.getDoctorServicesModel();
                     if (doctorServices != null) {
                         new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(doctorServices.getDoctorList());
-                        // mReceivedList = doctorServices.filterDocListBySpeciality(mReceivedTitle);
                         doGetReceivedListBasedOnClickedItemData();
                     }
                 }
@@ -229,7 +226,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
                 if (receivedDoctorServicesModel != null) {
 
-                    //   new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
                     mServicesCardViewImpl.setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
                     doGetReceivedListBasedOnClickedItemData();
                     setDoctorListAdapter();
@@ -273,7 +269,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         }
 
         // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
-        if (mComplaintHashMap != null) {
+        if (mCategory != null) {
             mLocationFab.setVisibility(View.VISIBLE);
             mFilterFab.setVisibility(View.VISIBLE);
         }
@@ -305,8 +301,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 }
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                //intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.filter));
-                intent.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
+                intent.putExtra(RescribeConstants.TITLE, mReceivedTitle);
                 startActivityForResult(intent, RescribeConstants.DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE);
                 break;
         }
@@ -314,7 +309,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
     public void onApplyClicked(Bundle data) {
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
-        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel, mComplaintHashMap);
+        mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel, mCategory);
     }
 
     public void onResetClicked() {
@@ -326,29 +321,4 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         super.onDestroyView();
         unbinder.unbind();
     }
-
-
-   /* // TODO: NEED TO ADD SAME IN RECENT VISIT FILTER
-    @Override
-    public void onClickOfDoctorRowItem(Bundle bundleData) {
-        DoctorList mClickedDoctorObject = bundleData.getParcelable(getString(R.string.clicked_item_data));
-        ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
-        //------------
-        if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.doctor_details))) {
-
-            if (mClickedDoctorObject.getCategoryName().equalsIgnoreCase(getString(R.string.my_appointments))) {
-                Intent intent = new Intent(getActivity(), AppointmentActivity.class);
-                startActivity(intent);
-            } else {
-                bundleData.putString(getString(R.string.toolbarTitle), mReceivedTitle);
-                Intent intent = new Intent(getActivity(), DoctorDescriptionBaseActivity.class);
-                intent.putExtras(bundleData);
-                startActivity(intent);
-            }
-        } else if (bundleData.getString(getString(R.string.do_operation)).equalsIgnoreCase(getString(R.string.favorite))) {
-            boolean status = mClickedDoctorObject.getFavourite() ? false : true;
-            mDoctorDataHelper.setFavouriteDoctor(status, mClickedDoctorObject.getDocId());
-        }
-    }
-*/
 }

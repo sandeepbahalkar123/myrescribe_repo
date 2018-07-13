@@ -150,7 +150,13 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         groupViewHolder.doctorName.setText(doctorName);
         // groupViewHolder.doctorAddress.setText(dataObject.getAddress());
-        groupViewHolder.doctorAddress.setText(dataObject.getAreaName() + ", " + dataObject.getCityName());
+
+        String addressText;
+        if (dataObject.getAreaName().isEmpty())
+            addressText = CommonMethods.toCamelCase(dataObject.getCityName());
+        else addressText = CommonMethods.toCamelCase(dataObject.getAreaName()) + ", " + CommonMethods.toCamelCase(dataObject.getCityName());
+        groupViewHolder.doctorAddress.setText(addressText);
+
         groupViewHolder.doctorType.setText(dataObject.getSpecialization());
 
         groupViewHolder.parentDataContainer.setBackgroundColor(dataObject.getRowColor());

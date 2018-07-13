@@ -73,8 +73,8 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
-            String value = extras.getString(getString(R.string.clicked_item_data_type_value));
+            mReceivedDashboardMenuListData = extras.getParcelable(RescribeConstants.ITEM_DATA);
+            String value = extras.getString(RescribeConstants.ITEM_DATA_VALUE);
 
             if (mReceivedDashboardMenuListData != null)
                 title.setText(mReceivedDashboardMenuListData.getName());
@@ -142,7 +142,7 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
             bundle.putString(getString(R.string.latitude), latitude);
             bundle.putString(getString(R.string.longitude), longitude);
             bundle.putString(getString(R.string.location), "");
-            bundle.putString(getString(R.string.clicked_item_data), data.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, data.getName());
             intent.putExtras(bundle);
             startActivityForResult(intent, DOCTOR_DATA_REQUEST_CODE);
         }

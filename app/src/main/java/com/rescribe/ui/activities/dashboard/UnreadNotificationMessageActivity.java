@@ -310,7 +310,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         this.mClickedUnreadInvestigationMessageData = unreadNotificationMessageData;
         InvestigationHelper mInvestigationHelper = new InvestigationHelper(this, this);
         InvestigationNotification data = new Gson().fromJson(unreadNotificationMessageData.getNotificationData(), InvestigationNotification.class);
-        mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true);
+        mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true, data.getNotifications().get(0).getInvestigationType());
 
         clearNotification(this, INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
     }
@@ -388,7 +388,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         //-------------
         mMedicationToNotificationHelper.doRespondToNotificationForNotificationAdapter(
                 Integer.valueOf(RescribePreferencesManager.getString(
-                        RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, this)),
+                        RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, this)),
                 medication.getMedicinSlot(), medication.getMedicineId(), presDate, 0, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER + "_" + mHeaderPosition, checked ? 1 : 0);
 
     }
@@ -792,7 +792,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     @Override
     public void onFollowUpButtonClicked(String type, UnreadBookAppointTokenNotificationData unreadNotificationMessageData) {
-        if (type.equalsIgnoreCase(getResources().getString(R.string.book))){
+        if (type.equalsIgnoreCase(getResources().getString(R.string.book))) {
             Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
 
             FCMData fcmData = new FCMData();
@@ -805,8 +805,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             intent.setAction(FOLLOW_UP_DATA_ACTION);
 
             // call book appointment
-            intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+            intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
+            intent.putExtra(RescribeConstants.TITLE, getString(R.string.book_appointment));
 
             DoctorList doctorListData1 = new DoctorList();
             doctorListData1.setDocId(unreadNotificationMessageData.getDocId());

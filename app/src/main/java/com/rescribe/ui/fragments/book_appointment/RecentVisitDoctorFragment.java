@@ -29,6 +29,7 @@ import com.rescribe.adapters.book_appointment.SortByClinicAndDoctorNameAdapter;
 import com.rescribe.adapters.dashboard.ShowDoctorViewPagerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
@@ -108,6 +109,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private ArrayList<DoctorList> mPreviousLoadedDocList;
     private boolean isFilterApplied = false;
     private String mReceivedTitle = "";
+    private AppDBHelper appDBHelper;
 
     public ArrayList<DoctorList> getmReceivedPreviousDoctorList() {
         return mReceivedPreviousDoctorList;
@@ -137,6 +139,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void init() {
+        appDBHelper = new AppDBHelper(getContext());
         pickSpeciality.setVisibility(View.INVISIBLE);
         recyclerViewLinearLayout.setVisibility(View.INVISIBLE);
         recentDoctorLayout.setVisibility(View.INVISIBLE);
@@ -198,7 +201,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (mSortByClinicAndDoctorNameAdapter.isListByClinicName()) {
                     Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                     intent.putExtra(getString(R.string.doctor_data), mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName());
-                    intent.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
+                    intent.putExtra(RescribeConstants.TITLE, mReceivedTitle);
                     startActivity(intent);
                 } else {
                     //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
@@ -218,7 +221,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     }
                     Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                     intent.putExtra(getString(R.string.doctor_data), doctorListByClinics);
-                    intent.putExtra(getString(R.string.toolbarTitle), mReceivedTitle);
+                    intent.putExtra(RescribeConstants.TITLE, mReceivedTitle);
                     startActivity(intent);
                 }
                 break;
@@ -235,7 +238,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (customResponse != null) {
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
-                        mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject());
+                        mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
                         setUpViewPager();
                         if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE) {
                             mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
@@ -257,7 +260,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (received != null) {
                     DoctorServicesModel doctorServices = received.getDoctorServicesModel();
                     if (doctorServices != null) {
-
                         mReceivedDoctorServicesModel = doctorServices;
                         mServiceCardDataViewBuilder.setReceivedDoctorDataList(doctorServices.getDoctorList());
                         setDoctorListAdapter(isFilterApplied);
@@ -417,15 +419,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     @Override
     public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
-        String specialityName = bundleData.getString(getString(R.string.clicked_item_data));
+        String specialityName = bundleData.getString(RescribeConstants.ITEM_DATA);
         Intent intent = new Intent(getActivity(), ServicesFilteredDoctorListActivity.class);
-        bundleData.putString(getString(R.string.toolbarTitle), specialityName);
+        bundleData.putString(RescribeConstants.TITLE, specialityName);
         intent.putExtra(RescribeConstants.PICK_SPECAILITY, RescribeConstants.SORT_BY_SPECIALITY);
         intent.putExtras(bundleData);
         startActivity(intent);
     }
 
-    public boolean doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
+    public boolean doGetLatestDoctorListOnLocationChange(String mComplaintsUserSearchFor) {
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         String selectedLocation = userSelectedLocationInfo.get(getString(R.string.location));
         if (selectedLocation != null) {
@@ -440,7 +442,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 } else {
                     mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
                     return true;
-
                 }
             }
         }

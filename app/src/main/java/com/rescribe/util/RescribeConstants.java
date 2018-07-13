@@ -1,8 +1,6 @@
 package com.rescribe.util;
 
 
-import android.widget.TextView;
-
 /**
  * @author Sandeep Bahalkar
  */
@@ -172,6 +170,7 @@ public class RescribeConstants {
     public static final String TASK_LOGIN_WITH_SOCIAL = RescribeConstants.BLANK + 64;
 
     public static final String FOLLOW_UP = RescribeConstants.BLANK + 65;
+    public static final String TASK_DOCTORLIST_API = RescribeConstants.BLANK + 66;
 
     //-----------------
 
@@ -252,6 +251,9 @@ public class RescribeConstants {
 
     public static final String GMAIL = "gmail";
     public static final String FACEBOOK = "facebook";
+    public static final String ITEM_DATA = "item_data";
+    public static final String ITEM_DATA_VALUE = "clicked_item_data_value";
+    public static final String CATEGORY = "categories";
 
     public static class USER_STATUS {
         public static final String ONLINE = "Online";
@@ -292,14 +294,10 @@ public class RescribeConstants {
     public static String BUTTON_TEXT_COLOR = "#FFFFFF";
     public static String TEXT_COLOR = "#000000";
 
-    public static class PRESCRIPTION_LIST_PARAMS {
-        public static final String PATIENT_NAME = "User-ID";
-        public static final String FILE_TYPE = "fileType";
-        public static final String DATE_TYPE = "dateType";
-        public static final String FROM_DATE = "fromDate";
-        public static final String TO_DATE = "toDate";
-        public static final String ANNOTATION_TEXT = "annotationText";
-        public static final String DOC_TYPE_ID = "DocTypeId";
+    public interface DOC_STATUS {
+        String ADD = "add";
+        String UPDATE = "update";
+        String REMOVE = "remove";
     }
 
     public static class DATE_PATTERN {
@@ -346,10 +344,11 @@ public class RescribeConstants {
         public static final String INVESTIGATION_NOTIFICATION_ID = "investigation_notification_id";
         public static final String IMAGE_ID = "imgId";
         public static final String INV_ID = "invId";
+        public static final String INV_TYPES = "types";
     }
 
     public static final String[] SALUTATION_SOCIALMEDIA = {"Mr.", "Mrs.", "Miss", "Other"};
-    public static final String[] SALUTATION = {"","Mr.", "Mrs.", "Miss", "Other"};
+    public static final String[] SALUTATION = {"", "Mr.", "Mrs.", "Miss", "Other"};
 
     public static final String[] GENDER = {"MALE", "FEMALE", "TRANSGENDER"};
 

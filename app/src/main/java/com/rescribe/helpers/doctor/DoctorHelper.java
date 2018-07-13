@@ -183,12 +183,11 @@ public class DoctorHelper implements ConnectionListener {
     }
 
     public void doGetDoctorList(String year) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_URL + id + "&year=" + year);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST);
-
     }
 
     public void doGetDoctorAppointment() {
@@ -198,15 +197,14 @@ public class DoctorHelper implements ConnectionListener {
         String date = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
 
         mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setUrl(Config.APPOINTMENTS + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext) + "&date=" + date + "&time=" + time);
+        mConnectionFactory.setUrl(Config.APPOINTMENTS + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext) + "&date=" + date + "&time=" + time);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_APPOINTMENT);
 
     }
 
     public void doFilterDoctorList(DrFilterRequestModel mRequestedFilterRequestModel) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST_FILTERING, Request.Method.POST, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DOCTOR_LIST_FILTERING, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
-
         mConnectionFactory.setPostParams(mRequestedFilterRequestModel);
         mConnectionFactory.setUrl(Config.DOCTOR_LIST_FILTER_URL);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTOR_LIST_FILTERING);

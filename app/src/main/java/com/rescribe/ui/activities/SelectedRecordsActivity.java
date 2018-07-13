@@ -87,11 +87,11 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         });
 
         mContext = SelectedRecordsActivity.this;
-        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK, mContext);
+        String coachMarkStatus = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.COACHMARK, mContext);
         if (coachMarkStatus.equals(RescribeConstants.YES))
             coachmark.setVisibility(View.GONE);
 
-        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.PATIENT_ID, mContext);
+        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
 
         // Show two options for user
 
@@ -284,7 +284,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.coachmark:
                 coachmark.setVisibility(View.GONE);
-                RescribePreferencesManager.putString(RescribePreferencesManager.RESCRIBE_PREFERENCES_KEY.COACHMARK, RescribeConstants.YES, mContext);
+                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.COACHMARK, RescribeConstants.YES, mContext);
                 break;
             case R.id.uploadButton:
                 if (imagePaths.size() > 0) {

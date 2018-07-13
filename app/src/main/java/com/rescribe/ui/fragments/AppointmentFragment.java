@@ -130,7 +130,7 @@ public class AppointmentFragment extends Fragment implements AppointmentAdapter.
         }
         bundleData.putString(RescribeConstants.LOCATION_ID, mAptListObject.getLocationId());
 
-        bundleData.putParcelable(getString(R.string.clicked_item_data), mDoctorList);
+        bundleData.putParcelable(RescribeConstants.ITEM_DATA, mDoctorList);
         intent.putExtras(bundleData);
         getActivity().startActivityForResult(intent, CONFIRM_REQUESTCODE);
     }

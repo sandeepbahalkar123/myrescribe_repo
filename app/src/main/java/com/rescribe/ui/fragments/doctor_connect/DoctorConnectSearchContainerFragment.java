@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rescribe.R;
+import com.rescribe.util.RescribeConstants;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -33,7 +34,7 @@ public class DoctorConnectSearchContainerFragment extends Fragment {
             mListener.addSpecializationOfDoctorFragment(new Bundle());
         else {
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), mListener.getSearchText());
+            bundle.putString(RescribeConstants.ITEM_DATA, mListener.getSearchText());
             mListener.addSearchDoctorByNameFragment(bundle);
         }
 

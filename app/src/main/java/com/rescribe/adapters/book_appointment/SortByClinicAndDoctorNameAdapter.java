@@ -222,23 +222,14 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 holder.tokenNo.setVisibility(View.INVISIBLE);
             }
         }
-        //---------------
 
-        //---------------
-        if (doctorObject.getFavourite()) {
-            holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_heart_fav));
-        } else {
-            holder.favoriteView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.result_line_heart_fav));
-        }
-
-        //----*********-------------
+        holder.favoriteView.setImageDrawable(doctorObject.getFavourite() ? ContextCompat.getDrawable(mContext, R.drawable.result_heart_fav) : ContextCompat.getDrawable(mContext, R.drawable.result_line_heart_fav));
         holder.favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ImageView imageView = (ImageView) v;
                 boolean status = !doctorObject.getFavourite();
                 mClickedItemFavImageView = imageView;
-
                 mOnClinicAndDoctorNameSearchRowItem.onFavoriteIconClick(status, doctorObject, imageView, mHelperResponse);
             }
         });
@@ -247,9 +238,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.doctor));
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.doctor));
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
+                b.putString(RescribeConstants.CATEGORY, doctorObject.getCategoryName());
                 b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, RescribeConstants.SEARCH_DOCTORS);
                 mOnClinicAndDoctorNameSearchRowItem.onClickOfCardView(b);
             }
@@ -259,8 +250,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.book_appointment));
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
 
                 mOnClinicAndDoctorNameSearchRowItem.onClickedOfBookButton(b);
@@ -271,9 +262,9 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.token_number));
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 mOnClinicAndDoctorNameSearchRowItem.onClickedOfTokenNumber(b);
             }
         });

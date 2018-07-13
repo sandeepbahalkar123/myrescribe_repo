@@ -83,16 +83,19 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     public static final String NOTIFICATION_MSG_TYPE = "notification_msg_type";
     public static final String TIME_STAMP = "time_stamp";
+    private Object cardsBackground;
 
     public interface DOC_DATA {
 
         String CARDVIEW_DATA_TABLE = "CardViewTable";
+        String CARDS_BACKGROUND_TABLE = "CardsBackground";
         String DOCTORLIST_DATA_TABLE = "Doctor";
         String CLINIC_DATA_TABLE = "Clinic";
         String DOCOTORVSCLINIC_DATA_TABLE = "DoctorVsClinic";
         String APPOINTMENT_DATA_TABLE = "Appointment";
 
         String CARD_TYPE = "cardType";
+        String IMAGE_URL = "imageUrl";
 
         String DOC_ID = "doctorId";
         String DOC_NAME = "doctorName";
@@ -133,7 +136,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
         String TOKEN_NUMBER = "tokenNumber";
         String WAITING_PATIENT_TIME = "waitingPatientTime";
         String WAITING_PATIENT_COUNT = "waitingPatientCount";
-        String CARD_TYPE_BACKGROUND = "backgroundImgUrl";
     }
 
     static AppDBHelper instance = null;
@@ -795,6 +797,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         db.delete(DOC_DATA.APPOINTMENT_DATA_TABLE, null, null);
 
         ContentValues contentValuesCard = new ContentValues();
+        ContentValues contentValuesCardsBackground = new ContentValues();
         ContentValues contentValuesAppoint = new ContentValues();
 
         for (CategoryList category : categoryList) {
@@ -802,7 +805,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 // insert card data
                 contentValuesCard.put(DOC_DATA.DOC_ID, docDetail.getDocId());
                 contentValuesCard.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
-                contentValuesCard.put(DOC_DATA.CARD_TYPE_BACKGROUND, category.getUrl());
+
+                contentValuesCardsBackground.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
+                contentValuesCardsBackground.put(DOC_DATA.IMAGE_URL, category.getUrl());
+                db.insertWithOnConflict(DOC_DATA.CARDS_BACKGROUND_TABLE, null, contentValuesCardsBackground, SQLiteDatabase.CONFLICT_IGNORE);
 
                 db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
 
@@ -861,6 +867,15 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public Cursor getAllClinicsByDoctor(int doctorId) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select c.*, dc.doctorId, dc.clinicFees, dc.appointmentScheduleLimitDays, dc.clinicAppointmentType, dc.clinicServices from " + DOC_DATA.CLINIC_DATA_TABLE + " c inner join " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " dc on dc.clinicId = c.clinicId where dc.doctorId = " + doctorId, null);
+    }
+
+    public String getCardsBackground(String cardType) {
+        String cardBack = "";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + DOC_DATA.CARDS_BACKGROUND_TABLE + " where " + DOC_DATA.CARD_TYPE + " = '" + cardType + "'", null);
+        if (cursor.moveToFirst())
+            cardBack = cursor.getString(cursor.getColumnIndex(DOC_DATA.IMAGE_URL));
+        return cardBack;
     }
 
     public void updateCardTable(int doctorId, int isFavorite, String categoryName) {

@@ -291,7 +291,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             from = arguments.getString(FROM);
             isReschedule = arguments.getString(RESHEDULE_TYPE);
             fcmTokenData = arguments.getParcelable(FCM_DATA);
-            activityOpeningFrom = arguments.getString(getString(R.string.clicked_item_data_type_value));
+            activityOpeningFrom = arguments.getString(RescribeConstants.ITEM_DATA_VALUE);
             mSelectedClinicDataPosition = arguments.getInt(getString(R.string.selected_clinic_data_position), -1);
         }
         //--------------
@@ -600,7 +600,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.hh_mm, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME);
                         mClickedDoctorObject.setAptTime(CommonMethods.formatDateTime(mScheduledAppointmentsTimeStamp.getText().toString(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a, RescribeConstants.TIME));
                         mClickedDoctorObject.setAptDate(mSelectedTimeSlotDate);
-                        bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                        bundleData.putParcelable(RescribeConstants.ITEM_DATA, mClickedDoctorObject);
                         bundleData.putString(RescribeConstants.LOCATION_ID, "" + mSelectedClinicDataObject.getLocationId());
                         bundleData.putString(RescribeConstants.TOKEN_NO, String.valueOf(confirmTokenModel.getData().getTokenDetail().getTokenNumber()));
                         bundleData.putString(RescribeConstants.WAITING_TIME, confirmTokenModel.getData().getTokenDetail().getWaitingPatientTime());
@@ -633,7 +633,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mClickedDoctorObject.setNameOfClinicString(mResponseAppointmentConfirmationModel.getAptList().getClinic_name());
 //                        mClickedDoctorObject.setAddressOfDoctorString(mResponseAppointmentConfirmationModel.getAptList().getAddress());
                         mClickedDoctorObject.setClinicAddress(mResponseAppointmentConfirmationModel.getAptList().getClinicAddress());
-                        bundleData.putParcelable(getString(R.string.clicked_item_data), mClickedDoctorObject);
+                        bundleData.putParcelable(RescribeConstants.ITEM_DATA, mClickedDoctorObject);
                         bundleData.putString(RescribeConstants.LOCATION_ID, "" + 0);
                         bundleData.putString(RescribeConstants.TOKEN_NO, "" + 0);
                         Intent intentObject = new Intent(getContext(), ConfirmAppointmentActivity.class);
@@ -798,7 +798,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
                 Intent intentObjectMap = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intentObjectMap.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intentObjectMap.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+                intentObjectMap.putExtra(RescribeConstants.TITLE, getString(R.string.doctor));
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intentObjectMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentObjectMap);

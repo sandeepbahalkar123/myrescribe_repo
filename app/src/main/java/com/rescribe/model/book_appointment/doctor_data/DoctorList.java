@@ -108,8 +108,6 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     private boolean isTypedashboard;
     private boolean isAppointmentTypeMixed;
 
-    private String cardBackground;
-
     /*  @SerializedName("reviewList")
     @Expose
     private ArrayList<ReviewList> reviewList = null;*/
@@ -406,14 +404,6 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         this.specialityId = specialityId;
     }
 
-    public String getCardBackground() {
-        return cardBackground;
-    }
-
-    public void setCardBackground(String cardBackground) {
-        this.cardBackground = cardBackground;
-    }
-
     public final static Creator<DoctorList> CREATOR = new Creator<DoctorList>() {
 
         @SuppressWarnings({
@@ -454,10 +444,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
             instance.tokenNumber = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingPatientTime = ((String) in.readValue((String.class.getClassLoader())));
             instance.waitingPatientCount = ((String) in.readValue((String.class.getClassLoader())));
-
             instance.specialityId = ((int) in.readValue((int.class.getClassLoader())));
-
-            instance.cardBackground = ((String) in.readValue((String.class.getClassLoader())));
 
             return instance;
         }
@@ -503,10 +490,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
         dest.writeValue(tokenNumber);
         dest.writeValue(waitingPatientTime);
         dest.writeValue(waitingPatientCount);
-
         dest.writeValue(specialityId);
-
-        dest.writeValue(cardBackground);
     }
 
 

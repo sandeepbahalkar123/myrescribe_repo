@@ -31,7 +31,6 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     /**
      * THIS IS DONE AS NOW REQ THIS TITLE FOR ALL SCENARIO EXPECT FOR COMPLAINT & SPECIALITY CASE.
      */
-    private final String mTitle;
     private Context mContext;
     private AppCompatActivity mParentActivity;
     private static ArrayList<DoctorList> mReceivedDoctorDataList;
@@ -40,28 +39,26 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     public ServicesCardViewImpl(Context context, AppCompatActivity parentActivity) {
         this.mContext = context;
         this.mParentActivity = parentActivity;
-        mTitle = mContext.getString(R.string.doctor);
     }
 
     //onClick of whole card view // searchType Doctor then myappointment doctors will be shown to book appointment
     @Override
     public void onClickOfCardView(Bundle bundleData) {
         String searchType = bundleData.getString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH);
-        String value = bundleData.getString(mContext.getString(R.string.clicked_item_data_type_value));
-        String category = bundleData.getString(mContext.getString(R.string.category_name));
+        String category = bundleData.getString(RescribeConstants.CATEGORY);
         String openingMode = bundleData.getString(mContext.getString(R.string.opening_mode));
-        String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
-        userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
+        String title = bundleData.getString(RescribeConstants.TITLE);
+        userSelectedDoctorListDataObject = bundleData.getParcelable(RescribeConstants.ITEM_DATA);
         if (category.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             if (searchType.equalsIgnoreCase(RescribeConstants.SEARCH_DOCTORS)) {
                 Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
-                intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);
-                if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
+                intent.putExtra(RescribeConstants.ITEM_DATA, userSelectedDoctorListDataObject);
+                if (RescribeConstants.TITLE.equalsIgnoreCase(openingMode) ||
                         mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
-                    intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
+                    intent.putExtra(RescribeConstants.TITLE, title);
                 } else {
-                    intent.putExtra(mContext.getString(R.string.toolbarTitle), mTitle);
-                    bundleData.putString(mContext.getString(R.string.toolbarTitle), mTitle);
+                    intent.putExtra(RescribeConstants.TITLE, mContext.getString(R.string.doctor));
+                    bundleData.putString(RescribeConstants.TITLE, mContext.getString(R.string.doctor));
                 }
                 intent.putExtras(bundleData);
                 mParentActivity.startActivity(intent);
@@ -85,13 +82,13 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         } else {
             // for category other than MyAppointment Detail page will open
             Intent intent = new Intent(mParentActivity, DoctorDescriptionBaseActivity.class);
-            intent.putExtra(mContext.getString(R.string.clicked_item_data), userSelectedDoctorListDataObject);
-            if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
+            intent.putExtra(RescribeConstants.ITEM_DATA, userSelectedDoctorListDataObject);
+            if (RescribeConstants.TITLE.equalsIgnoreCase(openingMode) ||
                     mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
-                intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
+                intent.putExtra(RescribeConstants.TITLE, title);
             } else {
-                intent.putExtra(mContext.getString(R.string.toolbarTitle), mTitle);
-                bundleData.putString(mContext.getString(R.string.toolbarTitle), mTitle);
+                intent.putExtra(RescribeConstants.TITLE, mContext.getString(R.string.doctor));
+                bundleData.putString(RescribeConstants.TITLE, mContext.getString(R.string.doctor));
             }
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
@@ -107,26 +104,25 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
 
     @Override
     public void onClickOfTotalCount(Bundle bundleData) {
-        String nameOfCategoryType = bundleData.getString(mContext.getString(R.string.clicked_item_data));
+        String nameOfCategoryType = bundleData.getString(RescribeConstants.ITEM_DATA);
 // for MyAppointment doctor from dashboard and book appointment horizontal list
         if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             Intent intent = new Intent(mParentActivity, AppointmentActivity.class);
             intent.putExtra(RescribeConstants.CALL_FROM_DASHBOARD, "");
-            bundleData.putString(mContext.getString(R.string.toolbarTitle), mContext.getString(R.string.my_appointments));
+            bundleData.putString(RescribeConstants.TITLE, mContext.getString(R.string.my_appointments));
             intent.putExtras(bundleData);
             //mParentActivity.startActivityForResult(intent, RescribeConstants.DOCTOR_DATA_REQUEST_CODE);
             mParentActivity.startActivity(intent);
         } else if (nameOfCategoryType.equalsIgnoreCase(mContext.getString(R.string.favorite))) { // favorite card name
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
-            bundleData.putString(mContext.getString(R.string.toolbarTitle), nameOfCategoryType);
+            bundleData.putString(RescribeConstants.TITLE, nameOfCategoryType);
             bundleData.putBoolean(mContext.getString(R.string.favorite), true);
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         } else {
             // for sponsered and recent visited doctor list.
             Intent intent = new Intent(mParentActivity, ServicesFilteredDoctorListActivity.class);
-            bundleData.putString(mContext.getString(R.string.toolbarTitle), nameOfCategoryType);
-
+            bundleData.putString(RescribeConstants.TITLE, nameOfCategoryType);
             intent.putExtras(bundleData);
             mParentActivity.startActivity(intent);
         }
@@ -135,19 +131,18 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     //onclick of GetToken button
     @Override
     public void onClickedOfTokenNumber(Bundle bundleData) {
-        userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
+        userSelectedDoctorListDataObject = bundleData.getParcelable(RescribeConstants.ITEM_DATA);
         Intent intent = new Intent(mParentActivity, SelectSlotToBookAppointmentBaseActivity.class);
 
         //---
         String openingMode = bundleData.getString(mContext.getString(R.string.opening_mode));
-        String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
-        if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
+        String title = bundleData.getString(RescribeConstants.TITLE);
+        if (RescribeConstants.TITLE.equalsIgnoreCase(openingMode) ||
                 mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
-            intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
+            intent.putExtra(RescribeConstants.TITLE, title);
         } else {
-            bundleData.putString(mContext.getString(R.string.toolbarTitle), mTitle);
+            bundleData.putString(RescribeConstants.TITLE, mContext.getString(R.string.doctor));
         }
-
 
         intent.putExtras(bundleData);
         mParentActivity.startActivity(intent);
@@ -157,17 +152,17 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     @Override
     public void onClickedOfBookButton(Bundle bundleData) {
 
-        userSelectedDoctorListDataObject = bundleData.getParcelable(mContext.getString(R.string.clicked_item_data));
+        userSelectedDoctorListDataObject = bundleData.getParcelable(RescribeConstants.ITEM_DATA);
         Intent intent = new Intent(mParentActivity, SelectSlotToBookAppointmentBaseActivity.class);
 
         //---
         String openingMode = bundleData.getString(mContext.getString(R.string.opening_mode));
-        String title = bundleData.getString(mContext.getString(R.string.toolbarTitle));
-        if (mContext.getString(R.string.complaints).equalsIgnoreCase(openingMode) ||
+        String title = bundleData.getString(RescribeConstants.TITLE);
+        if (RescribeConstants.TITLE.equalsIgnoreCase(openingMode) ||
                 mContext.getString(R.string.doctors_speciality).equalsIgnoreCase(openingMode)) {
-            intent.putExtra(mContext.getString(R.string.toolbarTitle), title);
+            intent.putExtra(RescribeConstants.TITLE, title);
         } else {
-            bundleData.putString(mContext.getString(R.string.toolbarTitle), mTitle);
+            bundleData.putString(RescribeConstants.TITLE, mContext.getString(R.string.doctor));
         }
 
         intent.putExtras(bundleData);

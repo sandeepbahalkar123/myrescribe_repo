@@ -12,6 +12,7 @@ import com.rescribe.R;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointDoctorDescriptionFragment;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.HashMap;
 
@@ -54,7 +55,7 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
         //--------
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            title.setText(extras.getString(getString(R.string.toolbarTitle)));
+            title.setText(extras.getString(RescribeConstants.TITLE));
         }
         BookAppointDoctorDescriptionFragment mBookAppointDoctorDescriptionFragment = BookAppointDoctorDescriptionFragment.newInstance(extras);
         FragmentManager supportFragmentManager = getSupportFragmentManager();

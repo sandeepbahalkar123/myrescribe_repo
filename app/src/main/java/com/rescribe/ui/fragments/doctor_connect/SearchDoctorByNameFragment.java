@@ -67,7 +67,7 @@ public class SearchDoctorByNameFragment extends Fragment implements DoctorConnec
         final View mRootView = inflater.inflate(R.layout.doctor_connect_search_layout, container, false);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mClickedSpecialityOfDoctor = arguments.getString(getString(R.string.clicked_item_data));
+            mClickedSpecialityOfDoctor = arguments.getString(RescribeConstants.ITEM_DATA);
             mReceivedList = getArguments().getParcelableArrayList(RescribeConstants.CONNECT_REQUEST);
         }
 

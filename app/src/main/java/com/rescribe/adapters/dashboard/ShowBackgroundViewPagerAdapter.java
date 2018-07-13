@@ -2,6 +2,7 @@ package com.rescribe.adapters.dashboard;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.util.DisplayMetrics;
@@ -15,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
 import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 
 import java.util.ArrayList;
 
@@ -26,22 +29,20 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
     private final String activityCreatedTimeStamp;
     //    private final int widthPixelOfBanner;
-    private ArrayList<String> mDataList;
+    private ArrayList<String> cardsBack;
     private LayoutInflater mInflater;
     private Context mContext;
 
-    public ShowBackgroundViewPagerAdapter(Context context, ArrayList<String> doctorLists, String activityCreatedTimeStamp) {
+    public ShowBackgroundViewPagerAdapter(Context context, String activityCreatedTimeStamp, ArrayList<String> cardsBack) {
         this.mContext = context;
-        this.mDataList = doctorLists;
-
+        this.cardsBack = cardsBack;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
 //        widthPixelOfBanner = metrics.widthPixels;
-
         mInflater = LayoutInflater.from(context);
-
         this.activityCreatedTimeStamp = activityCreatedTimeStamp;
+
     }
 
     @Override
@@ -51,7 +52,7 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mDataList.size();
+        return cardsBack.size();
     }
 
     @SuppressLint("CheckResult")
@@ -64,10 +65,10 @@ public class ShowBackgroundViewPagerAdapter extends PagerAdapter {
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.signature(new ObjectKey(activityCreatedTimeStamp + mDataList.get(position)));
+        requestOptions.signature(new ObjectKey(activityCreatedTimeStamp + cardsBack.get(position)));
 
         Glide.with(mContext)
-                .load(mDataList.get(position))
+                .load(cardsBack.get(position))
                 .apply(requestOptions)
                 .into(dashboardBackgroundLayout);
 

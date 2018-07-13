@@ -75,8 +75,8 @@ public class PrescriptionActivity extends AppCompatActivity
         getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            DashboardMenuList mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
-            String value = extras.getString(getString(R.string.clicked_item_data_type_value));
+            DashboardMenuList mReceivedDashboardMenuListData = extras.getParcelable(RescribeConstants.ITEM_DATA);
+            String value = extras.getString(RescribeConstants.ITEM_DATA_VALUE);
 
             if (mReceivedDashboardMenuListData != null)
                 title.setText(mReceivedDashboardMenuListData.getName());

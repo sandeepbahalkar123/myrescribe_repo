@@ -17,6 +17,7 @@ import com.rescribe.R;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.health_offers.HealthOffersFragment;
+import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,8 @@ public class HealthOffersActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mReceivedDashboardMenuListData = extras.getParcelable(getString(R.string.clicked_item_data));
-            String value = extras.getString(getString(R.string.clicked_item_data_type_value));
+            mReceivedDashboardMenuListData = extras.getParcelable(RescribeConstants.ITEM_DATA);
+            String value = extras.getString(RescribeConstants.ITEM_DATA_VALUE);
 
             if (mReceivedDashboardMenuListData != null)
                 title.setText(mReceivedDashboardMenuListData.getName());

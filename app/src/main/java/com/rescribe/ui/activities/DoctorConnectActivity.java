@@ -429,7 +429,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
         fragmentTransaction.commit();
 
         if (bundleData != null)
-            mSearchView.setText("" + bundleData.getString(getString(R.string.clicked_item_data)));
+            mSearchView.setText("" + bundleData.getString(RescribeConstants.ITEM_DATA));
 
     }
 
@@ -497,7 +497,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             Bundle bundle = new Bundle();
             bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
-            bundle.putString(getString(R.string.clicked_item_data), getString(R.string.doctorss));
+            bundle.putString(RescribeConstants.ITEM_DATA, getString(R.string.doctorss));
             intent.putExtras(bundle);
             startActivity(intent);
             finish();
@@ -550,7 +550,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.on_going_treatment))) {
             Intent intent = new Intent(mContext, PrescriptionActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data_type_value), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA_VALUE, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }
@@ -564,7 +564,7 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.saved_articles))) {
             Intent intent = new Intent(mContext, SavedArticlesActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.clicked_item_data), bottomMenu.getName());
+            bundle.putString(RescribeConstants.ITEM_DATA, bottomMenu.getName());
             intent.putExtras(bundle);
             startActivity(intent);
         }

@@ -96,7 +96,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
-            mReceivedTitle = args.getString(getString(R.string.toolbarTitle));
+            mReceivedTitle = args.getString(RescribeConstants.TITLE);
             title.setText("" + mReceivedTitle);
         }
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
@@ -171,7 +171,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     }
 
-    public boolean doGetLatestDoctorListOnLocationChange(HashMap<String, String> mComplaintsUserSearchFor) {
+    public boolean doGetLatestDoctorListOnLocationChange(String mComplaintsUserSearchFor) {
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
         String selectedLocation = userSelectedLocationInfo.get(getString(R.string.location));
         if (selectedLocation != null) {
@@ -260,8 +260,8 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 ArrayList<DoctorList> doctorListByClinics = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
                 Intent intent = new Intent(getActivity(), MapActivityPlotNearByDoctor.class);
                 intent.putParcelableArrayListExtra(getString(R.string.doctor_data), doctorListByClinics);
-                intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.filter));
-                intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.doctor));
+                intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.filter));
+                intent.putExtra(RescribeConstants.TITLE, getString(R.string.doctor));
                 startActivityForResult(intent, RescribeConstants.DOCTOR_LOCATION_CHANGE_FROM_MAP_REQUEST_CODE);
                 break;
         }

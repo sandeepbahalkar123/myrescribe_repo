@@ -151,7 +151,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            mDoctorObject = extras.getParcelable(getString(R.string.clicked_item_data));
+            mDoctorObject = extras.getParcelable(RescribeConstants.ITEM_DATA);
             if (extras.getString(TOKEN_NO) != null) {
                 if (!extras.getString(TOKEN_NO).isEmpty())
                     mTokenNo = Integer.parseInt(extras.getString(RescribeConstants.TOKEN_NO));

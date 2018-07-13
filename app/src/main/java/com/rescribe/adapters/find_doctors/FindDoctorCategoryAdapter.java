@@ -401,9 +401,9 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), doctorObject.getCategoryName());
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
-                b.putString(mContext.getString(R.string.category_name), doctorObject.getCategoryName());
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, doctorObject.getCategoryName());
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
+                b.putString(RescribeConstants.CATEGORY, doctorObject.getCategoryName());
                 b.putString(RescribeConstants.TYPE_OF_DOCTOR_SEARCH, RescribeConstants.SEARCH_DOCTORS);
                 mServicesCardViewClickListener.onClickOfCardView(b);
             }
@@ -413,19 +413,20 @@ public class FindDoctorCategoryAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.book_appointment));
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.book_appointment));
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
                 mServicesCardViewClickListener.onClickedOfBookButton(b);
             }
         });
+
         tokenNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString(mContext.getString(R.string.clicked_item_data_type_value), mContext.getString(R.string.token_number));
+                b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.token_number));
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
-                b.putParcelable(mContext.getString(R.string.clicked_item_data), doctorObject);
+                b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 mServicesCardViewClickListener.onClickedOfTokenNumber(b);
             }
         });

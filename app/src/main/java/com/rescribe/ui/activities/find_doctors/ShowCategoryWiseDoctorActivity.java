@@ -53,13 +53,13 @@ public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_doctors_show_doctor_list);
         ButterKnife.bind(this);
-        mDoctorCategoryList = getIntent().getExtras().getParcelableArrayList(getString(R.string.clicked_item_data));
+        mDoctorCategoryList = getIntent().getExtras().getParcelableArrayList(RescribeConstants.ITEM_DATA);
         setSupportActionBar(toolbar);
         mContext = ShowCategoryWiseDoctorActivity.this;
         appDBHelper = new AppDBHelper(mContext);
 
-        mReceivedTitle = getIntent().getExtras().getString(getString(R.string.toolbarTitle));
-        mClickedItemDataTypeValue = getIntent().getExtras().getString(getString(R.string.clicked_item_data_type_value));
+        mReceivedTitle = getIntent().getExtras().getString(RescribeConstants.TITLE);
+        mClickedItemDataTypeValue = getIntent().getExtras().getString(RescribeConstants.ITEM_DATA_VALUE);
 
         // toolbar title showing type of doctors as per requirement.
         getSupportActionBar().setTitle(mClickedItemDataTypeValue);
@@ -116,7 +116,7 @@ public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements
                 emptyListView.setVisibility(View.VISIBLE);
             }
 
-        } else if (getIntent().getExtras().getString(getString(R.string.toolbarTitle)).equalsIgnoreCase(getString(R.string.complaints))) {
+        } else if (getIntent().getExtras().getString(RescribeConstants.TITLE).equalsIgnoreCase(RescribeConstants.TITLE)) {
            /* HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
             String[] split = locationReceived.split(",");

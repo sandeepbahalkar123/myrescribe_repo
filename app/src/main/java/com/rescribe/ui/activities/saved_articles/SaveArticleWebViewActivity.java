@@ -19,6 +19,7 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.RescribeConstants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +52,7 @@ public class SaveArticleWebViewActivity extends AppCompatActivity implements Hel
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mUrl = extras.getString(getString(R.string.url));
-            mViewOpeningFrom = extras.getString(getString(R.string.clicked_item_data));
+            mViewOpeningFrom = extras.getString(RescribeConstants.ITEM_DATA);
             //-------SET BOOKMARK ICON ------
             mIsSaved = extras.getBoolean(getString(R.string.save), false);
             if (mIsSaved)
@@ -59,7 +60,7 @@ public class SaveArticleWebViewActivity extends AppCompatActivity implements Hel
             else
                 mBookMarkIcon.setImageResource(R.drawable.ic_action_bookmark_border);
             //--------------
-            title = extras.getString(getString(R.string.toolbarTitle));
+            title = extras.getString(RescribeConstants.TITLE);
 
             if (title != null)
                 mWebViewTitle.setText(title);

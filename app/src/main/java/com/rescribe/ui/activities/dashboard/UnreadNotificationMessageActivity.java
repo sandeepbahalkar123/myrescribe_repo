@@ -805,8 +805,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
             intent.setAction(FOLLOW_UP_DATA_ACTION);
 
             // call book appointment
-            intent.putExtra(getString(R.string.clicked_item_data_type_value), getString(R.string.chats));
-            intent.putExtra(getString(R.string.toolbarTitle), getString(R.string.book_appointment));
+            intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
+            intent.putExtra(RescribeConstants.TITLE, getString(R.string.book_appointment));
 
             DoctorList doctorListData1 = new DoctorList();
             doctorListData1.setDocId(unreadNotificationMessageData.getDocId());

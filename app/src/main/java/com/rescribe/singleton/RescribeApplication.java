@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -18,11 +19,13 @@ import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadS
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-import io.fabric.sdk.android.Fabric;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.TreeSet;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Sandeep Bahalkar
@@ -63,11 +66,12 @@ public class RescribeApplication extends MultiDexApplication {
     }
 
     public static void setUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
-        RescribePreferencesManager.putString(ctx.getString(R.string.location),locationText,ctx);
+        RescribePreferencesManager.putString(ctx.getString(R.string.location), locationText, ctx);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, "", ctx);
         userSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
         if (data != null) {
-            RescribePreferencesManager.putString(ctx.getString(R.string.latitude), "" + data.latitude,ctx);
-            RescribePreferencesManager.putString(ctx.getString(R.string.longitude), "" + data.longitude,ctx);
+            RescribePreferencesManager.putString(ctx.getString(R.string.latitude), "" + data.latitude, ctx);
+            RescribePreferencesManager.putString(ctx.getString(R.string.longitude), "" + data.longitude, ctx);
             userSelectedLocationInfo.put(ctx.getString(R.string.latitude), "" + data.latitude);
             userSelectedLocationInfo.put(ctx.getString(R.string.longitude), "" + data.longitude);
         }

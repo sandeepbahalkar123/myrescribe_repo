@@ -119,7 +119,6 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
         mYearSpinnerView.setVisibility(View.GONE);
         mYearSpinnerSingleItem.setVisibility(View.GONE);
 
-
         //-------
         mDoctorHelper = new DoctorHelper(mContext, this);
         //-------

@@ -22,7 +22,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("doc_location_id")
     @Expose
     private int docLocationId;
-    @SerializedName("bookId")
+    @SerializedName("aptId")
     @Expose
     private String aptId;
     @SerializedName("locationId")
@@ -76,7 +76,7 @@ public class DoctorList implements Parcelable, Cloneable, Comparable<DoctorList>
     @SerializedName("paidStatus")
     @Expose
     private int paidStatus;
-    @SerializedName("bookType")
+    @SerializedName("type")
     @Expose
     private String type = ""; // token/appointment etc
     @SerializedName("tokenNumber")

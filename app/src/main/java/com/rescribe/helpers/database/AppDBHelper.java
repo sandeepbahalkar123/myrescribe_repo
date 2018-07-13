@@ -147,6 +147,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
         checkDatabase();
     }
 
+    public Context getContext(){
+        return mContext;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub

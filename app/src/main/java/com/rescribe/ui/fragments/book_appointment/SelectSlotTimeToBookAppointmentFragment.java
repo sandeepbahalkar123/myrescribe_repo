@@ -316,13 +316,14 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     @SuppressLint("CheckResult")
     private void setDataInViews() {
-        if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
-            mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
-            noDataFound.setVisibility(View.GONE);
-        } else {
-            mAppointmentTypeFooterButtonBarLayout.setVisibility(View.GONE);
-            noDataFound.setVisibility(View.VISIBLE);
-        }
+        if (mClickedDoctorObject != null) {
+            if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
+                mAppointmentTypeFooterButtonBarLayout.setVisibility(View.VISIBLE);
+                noDataFound.setVisibility(View.GONE);
+            } else {
+                mAppointmentTypeFooterButtonBarLayout.setVisibility(View.GONE);
+                noDataFound.setVisibility(View.VISIBLE);
+            }
 
         if (mClickedDoctorObject.getDoctorImageUrl() != null) {
 
@@ -425,6 +426,11 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             }
         } else
             mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
+
+        } else {
+            mAppointmentTypeFooterButtonBarLayout.setVisibility(View.GONE);
+            noDataFound.setVisibility(View.VISIBLE);
+        }
 
         //---------
     }

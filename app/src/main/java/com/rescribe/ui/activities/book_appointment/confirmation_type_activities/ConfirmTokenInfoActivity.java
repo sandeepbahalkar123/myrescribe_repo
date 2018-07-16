@@ -293,7 +293,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
             ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
             if (mResponseAppointmentConfirmationModel.getCommon() != null)
                 if (mResponseAppointmentConfirmationModel.getCommon().isSuccess()) {
-                    appDBHelper.updateTokenNumber(mDoctorObject.getDocId(), mLocationId, "Mixed");
+//                    appDBHelper.updateTokenNumber(mDoctorObject.getDocId(), mLocationId, "Mixed");
                     Intent intent = new Intent(ConfirmTokenInfoActivity.this, HomePageActivity.class);
                     startActivity(intent);
                     finishAffinity();

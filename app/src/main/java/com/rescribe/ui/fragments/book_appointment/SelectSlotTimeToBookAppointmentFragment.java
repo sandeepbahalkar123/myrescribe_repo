@@ -586,7 +586,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         bundleData.putString(RescribeConstants.WAITING_COUNT, confirmTokenModel.getData().getTokenDetail().getWaitingPatientCount());
                         Intent intentObject = new Intent(getContext(), ConfirmTokenInfoActivity.class);
 
-                        appDBHelper.updateTokenNumber(mClickedDoctorObject, mSelectedClinicDataObject, confirmTokenModel.getData().getTokenDetail());
+//                        appDBHelper.updateTokenNumber(mClickedDoctorObject, mSelectedClinicDataObject, confirmTokenModel.getData().getTokenDetail());
 
                         intentObject.putExtras(bundleData);
                         startActivity(intentObject);

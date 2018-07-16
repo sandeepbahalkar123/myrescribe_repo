@@ -252,7 +252,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (receivedDoctorServicesModel != null) {
                     mReceivedDoctorServicesModel = receivedDoctorServicesModel;
                     // get doctors from database
-//                    mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
+                    mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
                     setDoctorListAdapter(false);
                 }
                 break;

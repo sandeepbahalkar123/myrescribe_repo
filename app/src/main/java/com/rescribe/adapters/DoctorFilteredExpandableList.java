@@ -1,11 +1,14 @@
 package com.rescribe.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfo;
 import com.rescribe.model.doctors.filter_doctor_list.DoctorFilteredInfoAndCaseDetails;
+import com.rescribe.ui.activities.doctor.DoctorVisitAttachmentsListActivity;
 import com.rescribe.ui.customesViews.CircularImageView;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
@@ -86,7 +90,7 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,
                              View convertView, ViewGroup parent) {
 
         final ChildViewHolder childViewHolder;
@@ -106,15 +110,28 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
         if (child.contains("|") && child.endsWith(RescribeConstants.TRUE)) {
             String[] split = child.split("\\|");
             String substring = split[1].substring(0, 1);
-            childViewHolder.headerName.setText(substring.toUpperCase() + split[1].substring(1, split[1].length()));
+            String header = substring.toUpperCase() + split[1].substring(1, split[1].length());
+            childViewHolder.headerName.setText(header);
             childViewHolder.headerName.setVisibility(View.VISIBLE);
             childViewHolder.childContent.setVisibility(View.GONE);
             childViewHolder.cardDetailsBullet.setVisibility(View.INVISIBLE);
+
+            childViewHolder.headerName.setTag("" + header);
         } else {
-            childViewHolder.cardDetailsBullet.setVisibility(View.VISIBLE);
-            childViewHolder.childContent.setText(child);
-            childViewHolder.headerName.setVisibility(View.GONE);
-            childViewHolder.childContent.setVisibility(View.VISIBLE);
+
+            boolean isValid = URLUtil.isValidUrl(child);
+
+            if (isValid) {
+                childViewHolder.headerName.setVisibility(View.GONE);
+                childViewHolder.childContent.setVisibility(View.GONE);
+                childViewHolder.cardDetailsBullet.setVisibility(View.GONE);
+            } else {
+                childViewHolder.cardDetailsBullet.setVisibility(View.VISIBLE);
+                childViewHolder.childContent.setText(child);
+                childViewHolder.headerName.setVisibility(View.GONE);
+                childViewHolder.childContent.setVisibility(View.VISIBLE);
+            }
+
         }
 
         if (groupPosition % 2 == 1) {
@@ -124,6 +141,35 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
             childViewHolder.childSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
         }
+
+
+        childViewHolder.headerName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String clickedHeaderName = (String) v.getTag();
+
+                if (context.getString(R.string.attachments).equalsIgnoreCase(clickedHeaderName)) {
+
+                    DoctorFilteredInfoAndCaseDetails doctorFilteredInfoAndCaseDetails = getGroup(groupPosition);
+
+                    LinkedHashMap<String, String[]> caseDetailList = doctorFilteredInfoAndCaseDetails.getCaseDetailList();
+
+                    String[] strings = caseDetailList.get(clickedHeaderName.toLowerCase());
+
+                    ArrayList<String> t = new ArrayList<>(Arrays.asList(strings));
+
+                    Intent i = new Intent(context, DoctorVisitAttachmentsListActivity.class);
+                    Bundle b = new Bundle();
+                    b.putStringArrayList(RescribeConstants.ITEM_DATA_VALUE, t);
+                    i.putExtra(RescribeConstants.ITEM_DATA, b);
+
+                    context.startActivity(i);
+
+                }
+
+            }
+        });
 
         return convertView;
     }

@@ -414,5 +414,7 @@
     <string name="privacy"><u>Privacy Policy</u></string>
 
     <!--************************-->
+    <string name="attachments">Attachments</string>
+
 </resources>
 

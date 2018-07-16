@@ -325,107 +325,107 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 noDataFound.setVisibility(View.VISIBLE);
             }
 
-        if (mClickedDoctorObject.getDoctorImageUrl() != null) {
+            if (mClickedDoctorObject.getDoctorImageUrl() != null) {
 
-            String doctorName = mClickedDoctorObject.getDocName();
-            if (doctorName.contains("Dr. ")) {
-                doctorName = doctorName.replace("Dr. ", "");
-            }
-            int color2 = mColorGenerator.getColor(doctorName);
-            TextDrawable drawable = TextDrawable.builder()
-                    .beginConfig()
-                    .width(Math.round(getActivity().getResources().getDimension(R.dimen.dp40))) // width in px
-                    .height(Math.round(getActivity().getResources().getDimension(R.dimen.dp40))) // height in px
-                    .endConfig()
-                    .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.dontAnimate();
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.skipMemoryCache(true);
-            requestOptions.placeholder(drawable);
-            requestOptions.error(drawable);
-
-            Glide.with(getActivity())
-                    .load(mClickedDoctorObject.getDoctorImageUrl())
-                    .apply(requestOptions).thumbnail(0.5f)
-                    .into(mProfileImage);
-        }
-
-        mFavorite.setImageResource(mClickedDoctorObject.getFavourite() ? R.drawable.fav_icon : R.drawable.result_line_heart_fav);
-
-        if (mClickedDoctorObject.getRating() == 0)
-            mDocRatingBarLayout.setVisibility(View.INVISIBLE);
-        else {
-            mDocRatingBarLayout.setVisibility(View.VISIBLE);
-            mDocRating.setText("" + mClickedDoctorObject.getRating());
-            mDocRatingBar.setRating((float) mClickedDoctorObject.getRating());
-        }
-        //----------
-        if (mClickedDoctorObject.getDocName().contains("Dr."))
-            mDoctorName.setText("" + mClickedDoctorObject.getDocName());
-        else mDoctorName.setText("Dr. " + mClickedDoctorObject.getDocName());
-
-        mDoctorSpecialization.setText("" + mClickedDoctorObject.getDegree());
-        //------------
-        mDoctorExperienceLayout.setVisibility(View.GONE);
-        //----------
-        int size = mClickedDoctorObject.getClinicDataList().size();
-        if (size > 0) {
-            mAllClinicPracticeLocationMainLayout.setVisibility(View.VISIBLE);
-
-            String mainString = getString(R.string.practices_at_locations);
-            if (size == 1) {
-                mainString = mainString.substring(0, mainString.length() - 1);
-            }
-            String updatedString = mainString.replace("$$", "" + size);
-            SpannableString contentExp = new SpannableString(updatedString);
-            contentExp.setSpan(new ForegroundColorSpan(
-                            ContextCompat.getColor(getActivity(), R.color.tagColor)),
-                    13, 13 + String.valueOf(size).length(),//hightlight mSearchString
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            mDocPracticesLocationCount.setText(contentExp);
-        } else {
-            mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);
-        }
-        //------------
-        if (!mClickedDoctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
-            mPremiumType.setText("" + mClickedDoctorObject.getCategorySpeciality());
-            mPremiumType.setVisibility(View.VISIBLE);
-        } else
-            mPremiumType.setVisibility(View.INVISIBLE);
-        //-------------------
-
-        if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
-            mClinicNameSpinnerParentLayout.setVisibility(View.VISIBLE);
-
-            ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
-            mClinicNameSpinner.setAdapter(arrayAdapter);
-            mClinicNameSpinner.setSelection(mSelectedClinicDataPosition, false);
-
-            mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
-                    changeViewBasedOnAppointmentType();
+                String doctorName = mClickedDoctorObject.getDocName();
+                if (doctorName.contains("Dr. ")) {
+                    doctorName = doctorName.replace("Dr. ", "");
                 }
+                int color2 = mColorGenerator.getColor(doctorName);
+                TextDrawable drawable = TextDrawable.builder()
+                        .beginConfig()
+                        .width(Math.round(getActivity().getResources().getDimension(R.dimen.dp40))) // width in px
+                        .height(Math.round(getActivity().getResources().getDimension(R.dimen.dp40))) // height in px
+                        .endConfig()
+                        .buildRound(("" + doctorName.charAt(0)).toUpperCase(), color2);
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.dontAnimate();
+                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+                requestOptions.skipMemoryCache(true);
+                requestOptions.placeholder(drawable);
+                requestOptions.error(drawable);
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                Glide.with(getActivity())
+                        .load(mClickedDoctorObject.getDoctorImageUrl())
+                        .apply(requestOptions).thumbnail(0.5f)
+                        .into(mProfileImage);
+            }
 
+            mFavorite.setImageResource(mClickedDoctorObject.getFavourite() ? R.drawable.fav_icon : R.drawable.result_line_heart_fav);
+
+            if (mClickedDoctorObject.getRating() == 0)
+                mDocRatingBarLayout.setVisibility(View.INVISIBLE);
+            else {
+                mDocRatingBarLayout.setVisibility(View.VISIBLE);
+                mDocRating.setText("" + mClickedDoctorObject.getRating());
+                mDocRatingBar.setRating((float) mClickedDoctorObject.getRating());
+            }
+            //----------
+            if (mClickedDoctorObject.getDocName().contains("Dr."))
+                mDoctorName.setText("" + mClickedDoctorObject.getDocName());
+            else mDoctorName.setText("Dr. " + mClickedDoctorObject.getDocName());
+
+            mDoctorSpecialization.setText("" + mClickedDoctorObject.getDegree());
+            //------------
+            mDoctorExperienceLayout.setVisibility(View.GONE);
+            //----------
+            int size = mClickedDoctorObject.getClinicDataList().size();
+            if (size > 0) {
+                mAllClinicPracticeLocationMainLayout.setVisibility(View.VISIBLE);
+
+                String mainString = getString(R.string.practices_at_locations);
+                if (size == 1) {
+                    mainString = mainString.substring(0, mainString.length() - 1);
                 }
-            });
-            if (mClickedDoctorObject.getClinicDataList().size() == 1) {
-                mClinicNameSpinner.setEnabled(false);
-                mClinicNameSpinner.setClickable(false);
-                mClinicNameSpinner.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.transparent));
+                String updatedString = mainString.replace("$$", "" + size);
+                SpannableString contentExp = new SpannableString(updatedString);
+                contentExp.setSpan(new ForegroundColorSpan(
+                                ContextCompat.getColor(getActivity(), R.color.tagColor)),
+                        13, 13 + String.valueOf(size).length(),//hightlight mSearchString
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                mDocPracticesLocationCount.setText(contentExp);
             } else {
-                mClinicNameSpinner.setEnabled(true);
-                mClinicNameSpinner.setClickable(true);
-                mClinicNameSpinner.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.spinner_bg));
+                mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);
             }
-        } else
-            mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
+            //------------
+            if (!mClickedDoctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
+                mPremiumType.setText("" + mClickedDoctorObject.getCategorySpeciality());
+                mPremiumType.setVisibility(View.VISIBLE);
+            } else
+                mPremiumType.setVisibility(View.INVISIBLE);
+            //-------------------
+
+            if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
+                mClinicNameSpinnerParentLayout.setVisibility(View.VISIBLE);
+
+                ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+                mClinicNameSpinner.setAdapter(arrayAdapter);
+                mClinicNameSpinner.setSelection(mSelectedClinicDataPosition, false);
+
+                mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        mSelectedClinicDataObject = mClickedDoctorObject.getClinicDataList().get(position);
+                        changeViewBasedOnAppointmentType();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                if (mClickedDoctorObject.getClinicDataList().size() == 1) {
+                    mClinicNameSpinner.setEnabled(false);
+                    mClinicNameSpinner.setClickable(false);
+                    mClinicNameSpinner.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.transparent));
+                } else {
+                    mClinicNameSpinner.setEnabled(true);
+                    mClinicNameSpinner.setClickable(true);
+                    mClinicNameSpinner.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.spinner_bg));
+                }
+            } else
+                mClinicNameSpinnerParentLayout.setVisibility(View.GONE);
 
         } else {
             mAppointmentTypeFooterButtonBarLayout.setVisibility(View.GONE);
@@ -444,62 +444,70 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case TASKID_TIME_SLOT:
                 TimeSlotListBaseModel slotListBaseModel = (TimeSlotListBaseModel) customResponse;
                 if (slotListBaseModel != null) {
-
-                    tokenMessageTextView.setVisibility(View.GONE);
-
-                    TimeSlotListDataModel selectSlotList = slotListBaseModel.getTimeSlotListDataModel();
-                    if (selectSlotList != null) {
-                        if (selectSlotList.isAppointmentTaken() == 0 || from != null) {
-                            appointmentMessageTextView.setVisibility(View.GONE);
-                            noTimeSlotMessageTextView.setVisibility(View.GONE);
-                            if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
+                    if (slotListBaseModel.getCommon().getStatusCode().equals(SUCCESS)) {
+                        tokenMessageTextView.setVisibility(View.GONE);
+                        TimeSlotListDataModel selectSlotList = slotListBaseModel.getTimeSlotListDataModel();
+                        if (selectSlotList != null) {
+                            if (selectSlotList.isAppointmentTaken() == 0 || from != null) {
+                                appointmentMessageTextView.setVisibility(View.GONE);
                                 noTimeSlotMessageTextView.setVisibility(View.GONE);
-                                selectTimeDateExpandableView.setVisibility(View.VISIBLE);
-                                appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
-                                mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
-                                selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                                if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
+                                    noTimeSlotMessageTextView.setVisibility(View.GONE);
+                                    selectTimeDateExpandableView.setVisibility(View.VISIBLE);
+                                    appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
+                                    mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
+                                    selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                                } else {
+                                    noTimeSlotMessageTextView.setVisibility(View.VISIBLE);
+                                    selectTimeDateExpandableView.setVisibility(View.GONE);
+                                    appointmentTypeIsBookButton.setVisibility(View.GONE);
+                                }
                             } else {
-                                noTimeSlotMessageTextView.setVisibility(View.VISIBLE);
                                 selectTimeDateExpandableView.setVisibility(View.GONE);
                                 appointmentTypeIsBookButton.setVisibility(View.GONE);
+                                appointmentMessageTextView.setVisibility(View.VISIBLE);
                             }
-                        } else {
-                            selectTimeDateExpandableView.setVisibility(View.GONE);
-                            appointmentTypeIsBookButton.setVisibility(View.GONE);
-                            appointmentMessageTextView.setVisibility(View.VISIBLE);
                         }
+
+                        if (!slotListBaseModel.getCommon().getStatusMessage().isEmpty())
+                            CommonMethods.showToast(mContext, slotListBaseModel.getCommon().getStatusMessage());
                     }
                 }
                 break;
             case TASKID_TIME_SLOT_WITH_DOC_DATA:
                 TimeSlotListBaseModel slotListBase = (TimeSlotListBaseModel) customResponse;
                 if (slotListBase != null) {
-                    TimeSlotListDataModel selectSlotList = slotListBase.getTimeSlotListDataModel();
-                    if (selectSlotList != null) {
-                        if (selectSlotList.isAppointmentTaken() == 0 || from != null) {
-                            appointmentMessageTextView.setVisibility(View.GONE);
-                            noTimeSlotMessageTextView.setVisibility(View.GONE);
-                            mClickedDoctorObject = selectSlotList.getDoctorListData();
-                            ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
-
-                            setDataInViews();
-                            //--------------------
-                            if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
+                    if (slotListBase.getCommon().getStatusCode().equals(SUCCESS)) {
+                        TimeSlotListDataModel selectSlotList = slotListBase.getTimeSlotListDataModel();
+                        if (selectSlotList != null) {
+                            if (selectSlotList.isAppointmentTaken() == 0 || from != null) {
+                                appointmentMessageTextView.setVisibility(View.GONE);
                                 noTimeSlotMessageTextView.setVisibility(View.GONE);
-                                selectTimeDateExpandableView.setVisibility(View.VISIBLE);
-                                appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
-                                mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
-                                selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                                mClickedDoctorObject = selectSlotList.getDoctorListData();
+                                ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
+
+                                setDataInViews();
+                                //--------------------
+                                if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
+                                    noTimeSlotMessageTextView.setVisibility(View.GONE);
+                                    selectTimeDateExpandableView.setVisibility(View.VISIBLE);
+                                    appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
+                                    mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
+                                    selectTimeDateExpandableView.setAdapter(mSelectSlotToBookAppointmentAdapter);
+                                } else {
+                                    selectTimeDateExpandableView.setVisibility(View.GONE);
+                                    appointmentTypeIsBookButton.setVisibility(View.GONE);
+                                    noTimeSlotMessageTextView.setVisibility(View.VISIBLE);
+                                }
                             } else {
                                 selectTimeDateExpandableView.setVisibility(View.GONE);
                                 appointmentTypeIsBookButton.setVisibility(View.GONE);
-                                noTimeSlotMessageTextView.setVisibility(View.VISIBLE);
+                                appointmentMessageTextView.setVisibility(View.VISIBLE);
                             }
-                        } else {
-                            selectTimeDateExpandableView.setVisibility(View.GONE);
-                            appointmentTypeIsBookButton.setVisibility(View.GONE);
-                            appointmentMessageTextView.setVisibility(View.VISIBLE);
                         }
+
+                        if (!slotListBase.getCommon().getStatusMessage().isEmpty())
+                            CommonMethods.showToast(mContext, slotListBase.getCommon().getStatusMessage());
                     }
                 }
                 break;

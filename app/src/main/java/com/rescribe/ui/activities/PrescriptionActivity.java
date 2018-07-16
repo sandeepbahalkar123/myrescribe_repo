@@ -38,7 +38,7 @@ public class PrescriptionActivity extends AppCompatActivity
     @BindView(R.id.title)
     CustomTextView title;
     private final String TAG = this.getClass().getName();
-    Context mContext;
+    private Context mContext;
     private String mGetMealTime;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -118,10 +118,9 @@ public class PrescriptionActivity extends AppCompatActivity
             PrescriptionBaseModel prescriptionBaseModel = (PrescriptionBaseModel) customResponse;
             PrescriptionData dataReceived = prescriptionBaseModel.getData();
 
-            if (dataReceived.getPrescriptionModels().size() > 0) {
+            if (!dataReceived.getPrescriptionModels().isEmpty()) {
                 mRecyclerView.setVisibility(View.VISIBLE);
                 emptyListView.setVisibility(View.GONE);
-
             } else {
                 mRecyclerView.setVisibility(View.GONE);
                 emptyListView.setVisibility(View.VISIBLE);

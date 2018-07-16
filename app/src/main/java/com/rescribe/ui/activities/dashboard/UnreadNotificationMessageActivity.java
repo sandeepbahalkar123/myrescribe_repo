@@ -135,6 +135,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private UnreadSavedNotificationMessageData mClickedUnreadInvestigationMessageData;
     private boolean isMedicationLoadMoreFooterClickedPreviously;
     public boolean isAllListEmpty = true;
+    public int isAllListEmptyCount = 0;
 
     private HashMap<String, String> medicNotificationTimeId = new HashMap<>();
     private HashMap<String, ArrayList<Medication>> listDataChild = new HashMap<>();
@@ -174,7 +175,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     }
 
     private void showMessage() {
-        if (isAllListEmpty)
+        //  if (isAllListEmpty)
+        if (isAllListEmptyCount == 4)
             emptyListMessageView.setVisibility(View.VISIBLE);
         else emptyListMessageView.setVisibility(View.GONE);
     }
@@ -183,6 +185,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         ArrayList<UnreadSavedNotificationMessageData> appAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
         //----------------
         if (appAlertList.isEmpty()) {
+            isAllListEmptyCount = isAllListEmptyCount + 1;
             appointmentsListViewLayout.setVisibility(View.GONE);
         } else {
             appointmentsListViewLayout.setVisibility(View.VISIBLE);
@@ -194,6 +197,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
     private void initializeInvestigationListView() {
         ArrayList<UnreadSavedNotificationMessageData> investigationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
         if (investigationAlertList.isEmpty()) {
+            isAllListEmptyCount = isAllListEmptyCount + 1;
             investigationsListViewLayout.setVisibility(View.GONE);
         } else {
             investigationsListViewLayout.setVisibility(View.VISIBLE);
@@ -205,9 +209,10 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         ArrayList<UnreadSavedNotificationMessageData> medicationAlertList = RescribeApplication.doFindUnreadNotificationMessageByType(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
 
         //----------------
-        if (medicationAlertList.isEmpty())
+        if (medicationAlertList.isEmpty()) {
+            isAllListEmptyCount = isAllListEmptyCount + 1;
             mOnGoingMedicationListViewLayout.setVisibility(View.GONE);
-        else {
+        } else {
             //sortListByMealTime(medicationAlertList);
             isAllListEmpty = false;
             mMedicationToNotificationHelper = new RespondToNotificationHelper(this, this);
@@ -326,6 +331,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
             if (unReadCount == 0) {
                 isAllListEmpty = true;
+                isAllListEmptyCount = isAllListEmptyCount + 1;
                 showMessage();
             }
 
@@ -364,6 +370,11 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         //------
         doCreateMedicationDataMap(isMedicationLoadMoreFooterClickedPreviously);
         mOnGoingMedicationListView.setAdapter(mUnreadMedicationNotificationAdapter);
+
+        if (listDataChild.isEmpty()) {
+            isAllListEmptyCount = isAllListEmptyCount + 1;
+            showMessage();
+        }
     }
 
     @Override
@@ -498,6 +509,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
                 if (unReadCount == 0) {
                     isAllListEmpty = true;
+                    isAllListEmptyCount = isAllListEmptyCount + 1;
                     showMessage();
                 }
             }
@@ -533,18 +545,26 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                         } else {
                             unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
                             unreadFollowUpViewLayout.setVisibility(View.GONE);
+                            isAllListEmptyCount = isAllListEmptyCount + 1;
+                            showMessage();
                         }
                     } else {
                         unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
                         unreadFollowUpViewLayout.setVisibility(View.GONE);
+                        isAllListEmptyCount = isAllListEmptyCount + 1;
+                        showMessage();
                     }
                 } else {
                     unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
                     unreadFollowUpViewLayout.setVisibility(View.GONE);
+                    isAllListEmptyCount = isAllListEmptyCount + 1;
+                    showMessage();
                 }
             } else {
                 unreadTokenNotificationListViewLayout.setVisibility(View.GONE);
                 unreadFollowUpViewLayout.setVisibility(View.GONE);
+                isAllListEmptyCount = isAllListEmptyCount + 1;
+                showMessage();
             }
         } else if (mOldDataTag.equals(RescribeConstants.TASK_TO_REJECT_RECEIVED_TOKEN_NOTIFICATION_REMAINDER)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
@@ -563,6 +583,7 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
             if (unReadCount == 0) {
                 isAllListEmpty = true;
+                isAllListEmptyCount = isAllListEmptyCount + 1;
                 showMessage();
             }
 

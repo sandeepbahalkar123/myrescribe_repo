@@ -23,8 +23,10 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
+import com.rescribe.ui.activities.WebViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.Locale;
@@ -152,7 +154,7 @@ public class SignUpFragment extends Fragment implements HelperResponse {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.btnSignUp, R.id.login, R.id.signUpWithFacebook, R.id.signUpWithGoogle})
+    @OnClick({R.id.termAndConditions, R.id.privacyPolicy, R.id.btnSignUp, R.id.login, R.id.signUpWithFacebook, R.id.signUpWithGoogle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //Onclick of Signup button
@@ -187,6 +189,18 @@ public class SignUpFragment extends Fragment implements HelperResponse {
             //Onclick of gmail button logic immplemented in LoginSignupActivity
             case R.id.signUpWithGoogle:
                 mListener.onClickGoogle(getString(R.string.sign_up));
+                break;
+            case R.id.termAndConditions:
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(getString(R.string.title_activity_selected_docs), Config.TERMS_AND_CONDITIONS_URL);
+                intent.putExtra(getString(R.string.title), getString(R.string.terms));
+                startActivity(intent);
+                break;
+            case R.id.privacyPolicy:
+                Intent intentpri = new Intent(getActivity(), WebViewActivity.class);
+                intentpri.putExtra(getString(R.string.title_activity_selected_docs), Config.PRIVACY_POLICY);
+                intentpri.putExtra(getString(R.string.title), getString(R.string.privacy));
+                startActivity(intentpri);
                 break;
         }
     }

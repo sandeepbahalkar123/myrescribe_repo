@@ -270,12 +270,46 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp16"
                     android:gravity="center_vertical"
-                    app:srcCompat="@drawable/privacy_policy" />
+                    android:orientation="horizontal">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="By continuing, you accept the "
+                        android:textColor="@color/Gray"
+                        android:textSize="@dimen/sp10" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/termAndConditions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/terms"
+                        android:textColor="@color/tagColor"
+                        android:textSize="@dimen/sp10" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" and "
+                        android:textColor="@color/Gray"
+                        android:textSize="@dimen/sp10" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/privacyPolicy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/privacy"
+                        android:textColor="@color/tagColor"
+                        android:textSize="@dimen/sp10" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -154,7 +154,8 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         String addressText;
         if (dataObject.getAreaName().isEmpty())
             addressText = CommonMethods.toCamelCase(dataObject.getCityName());
-        else addressText = CommonMethods.toCamelCase(dataObject.getAreaName()) + ", " + CommonMethods.toCamelCase(dataObject.getCityName());
+        else
+            addressText = CommonMethods.toCamelCase(dataObject.getAreaName()) + ", " + CommonMethods.toCamelCase(dataObject.getCityName());
         groupViewHolder.doctorAddress.setText(addressText);
 
         groupViewHolder.doctorType.setText(dataObject.getSpecialization());
@@ -214,7 +215,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         //-------
 
 
-        if (dataObject.getDocImgURL() == null) {
+        if (dataObject.getDocImgURL() == null || RescribeConstants.BLANK.equalsIgnoreCase(dataObject.getDocImgURL())) {
             int color2 = mColorGenerator.getColor(dataObject.getDoctorName());
 
             TextDrawable drawable = TextDrawable.builder()

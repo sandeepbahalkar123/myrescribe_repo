@@ -108,7 +108,7 @@
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
 
-    <string name="forgot_password">Forgot  password?</string>
+    <string name="forgot_password">Forgot Password?</string>
     <string name="forgot_password_header">Forgot Password</string>
     <string name="message_for_mobile_otp">Please input the OTP received on your Mobile No.&#160; %1$s</string>
     <string name="message_forgot_password">Please provide your mobile number</string>
@@ -410,6 +410,8 @@
     <string name="update">Update</string>
     <string name="later">Later</string>
     <string name="do_you_want_to_update">Update the app to latest version for using new features.</string>
+    <string name="terms"><u>Terms of Use</u></string>
+    <string name="privacy"><u>Privacy Policy</u></string>
 
     <!--************************-->
 </resources>

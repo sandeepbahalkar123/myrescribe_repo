@@ -33,6 +33,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         app:kswAnimationDuration="0"
+        app:kswThumbColor="@color/white"
         app:kswTextOff="OFF"
         app:kswTextOn="ON" />
 

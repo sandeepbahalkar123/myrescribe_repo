@@ -264,7 +264,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
 
     @Override
     public void onClickOfSettingMenuOption(ClickOption clickedOption) {
-        //TODO : here 's' is added bcaz API giving notifications as name.
+
         if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.NOTIFICATIONS)) {
             Intent intent = new Intent(SettingsActivity.this, NotificationSettingActivity.class);
             Bundle b = new Bundle();

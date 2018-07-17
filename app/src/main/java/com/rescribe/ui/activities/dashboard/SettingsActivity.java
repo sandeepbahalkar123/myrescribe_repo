@@ -42,12 +42,14 @@ import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationSettingActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.ui.activities.SelectedRecordsGroupActivity;
+import com.rescribe.ui.activities.WebViewActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
 
 import net.gotev.uploadservice.UploadService;
@@ -274,6 +276,16 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             Intent intent = new Intent(SettingsActivity.this, SupportActivity.class);
             intent.putExtra(TITLE, clickedOption.getName());
             startActivity(intent);
+        } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.TERMS_OF_USE)) {
+            Intent intent = new Intent(this, WebViewActivity.class);
+            intent.putExtra(getString(R.string.title_activity_selected_docs), Config.TERMS_AND_CONDITIONS_URL);
+            intent.putExtra(getString(R.string.title), getString(R.string.terms));
+            startActivity(intent);
+        } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.PRIVACY_POLICY)) {
+            Intent intentpri = new Intent(this, WebViewActivity.class);
+            intentpri.putExtra(getString(R.string.title_activity_selected_docs), Config.PRIVACY_POLICY);
+            intentpri.putExtra(getString(R.string.title), getString(R.string.privacy));
+            startActivity(intentpri);
         } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.LOG_OUT)) {
             ActiveRequest activeRequest = new ActiveRequest();
             String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
 
     android:orientation="horizontal">
@@ -62,16 +63,32 @@
                     android:layout_weight="5"
                     android:orientation="vertical">
                     <!-- Artist Name -->
-                    <com.rescribe.ui.customesViews.CustomTextView
-                        android:id="@+id/headerName"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/dp2"
-                        android:text="Rihanna Love the way lie"
-                        android:textColor="@color/recentblue"
-                        android:textSize="@dimen/sp16"
-                        android:textStyle="bold"
-                        android:typeface="sans" />
+                        android:orientation="horizontal">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/headerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingTop="@dimen/dp2"
+                            android:textColor="@color/recentblue"
+                            android:textSize="@dimen/sp16"
+                            android:textStyle="bold"
+                            android:typeface="sans"
+                            tools:text="Rihanna Love the way lie" />
+
+                        <ImageView
+                            android:id="@+id/attachmentImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="@dimen/dp5"
+                            android:src="@drawable/attachment"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

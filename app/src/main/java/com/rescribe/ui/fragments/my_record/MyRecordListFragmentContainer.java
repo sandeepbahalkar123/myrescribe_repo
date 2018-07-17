@@ -108,6 +108,7 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
 
     private void initialize() {
 
+        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getActivity(), R.color.white));
 
         YearSpinnerInteractionListener listener = new YearSpinnerInteractionListener();
         mYearSpinnerView.setOnTouchListener(listener);

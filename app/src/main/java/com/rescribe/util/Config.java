@@ -36,13 +36,14 @@ public class Config {
 
     // QA
 
-    public static final String BROKER = "tcp://drrescribe.com:1883"; // Dr Rescribe IP
-    public static String BASE_URL = "http://drrescribe.com:3003/";
+    //public static final String BROKER = "tcp://drrescribe.com:1883"; // Dr Rescribe IP
+   // public static String BASE_URL = "http://drrescribe.com:3003/";
 
     // Live
 
-//    public static final String BROKER = "tcp://rescribe.in:1883"; // Dr Rescribe IP
-//   public static String BASE_URL = "http://rescribe.in:3003/";
+    public static final String BROKER = "tcp://rescribe.in:1883"; // Dr Rescribe IP
+   public static String BASE_URL = "http://rescribe.in:3003/";
+
 
     //---------------------
     public Context mContext;

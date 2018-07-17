@@ -107,6 +107,10 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
 
         String child = getChild(groupPosition, childPosition);
 
+        //-----
+        childViewHolder.attachmentImageView.setVisibility(View.GONE);
+        //-----
+
         if (child.contains("|") && child.endsWith(RescribeConstants.TRUE)) {
             String[] split = child.split("\\|");
             String substring = split[1].substring(0, 1);
@@ -117,6 +121,10 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
             childViewHolder.cardDetailsBullet.setVisibility(View.INVISIBLE);
 
             childViewHolder.headerName.setTag("" + header);
+
+            if (header.equalsIgnoreCase(context.getString(R.string.attachments))) {
+                childViewHolder.attachmentImageView.setVisibility(View.VISIBLE);
+            }
         } else {
 
             boolean isValid = URLUtil.isValidUrl(child);
@@ -358,6 +366,8 @@ public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
 
         @BindView(R.id.headerName)
         CustomTextView headerName;
+        @BindView(R.id.attachmentImageView)
+        ImageView attachmentImageView;
         @BindView(R.id.childContent)
         CustomTextView childContent;
         @BindView(R.id.cardDetailsBullet)

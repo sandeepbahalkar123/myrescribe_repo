@@ -107,6 +107,7 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
     }
 
     private void initialize() {
+        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getActivity(), R.color.white));
         mYearList = CommonMethods.getYearForDoctorList();
 
         //------------
@@ -323,14 +324,14 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
                     emptyListView.setVisibility(View.VISIBLE);
                 } else {
                     emptyListView.setVisibility(View.GONE);
-                    if(mYearList.size()==1){
+                    if (mYearList.size() == 1) {
                         mYearSpinnerView.setVisibility(View.GONE);
                         mYearSpinnerSingleItem.setVisibility(View.VISIBLE);
                         mTabLayout.setVisibility(View.VISIBLE);
                         SpannableString contentViewAllFavorite = new SpannableString(mYearList.get(0).toString());
                         contentViewAllFavorite.setSpan(new UnderlineSpan(), 0, contentViewAllFavorite.length(), 0);
                         mYearSpinnerSingleItem.setText(contentViewAllFavorite);
-                    }else {
+                    } else {
                         mYearSpinnerView.setVisibility(View.VISIBLE);
                         mTabLayout.setVisibility(View.VISIBLE);
                     }

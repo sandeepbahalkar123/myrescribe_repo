@@ -27,10 +27,15 @@ public class DoctorAttachListAdapter extends RecyclerView.Adapter<DoctorAttachLi
 
     private final ArrayList<String> listData;
     private final Context context;
+    private RequestOptions requestOptions;
 
     public DoctorAttachListAdapter(Context context, ArrayList<String> listData) {
         this.context = context;
         this.listData = listData;
+        requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.error(R.drawable.ic_file);
+        requestOptions.placeholder(R.drawable.ic_file);
 
     }
 
@@ -45,40 +50,39 @@ public class DoctorAttachListAdapter extends RecyclerView.Adapter<DoctorAttachLi
     public void onBindViewHolder(final DoctorAttachListAdapter.FileViewHolder holder, final int position) {
 
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.dontAnimate();
-        requestOptions.error(R.drawable.ic_file);
-        requestOptions.placeholder(R.drawable.ic_file);
-
-
         String url = listData.get(position);
+
         Glide.with(context)
                 .load(url)
                 .apply(requestOptions).thumbnail(0.5f)
                 .into(holder.attachmentImage);
 
-
-        holder.attachmentImage.setTag(url);
+        holder.attachmentImage.setTag(R.id.attachmentImage, url); // "i" means some integer value
 
         holder.attachmentImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // do stuff here
 
-                String tag = "" + v.getTag();
-                ArrayList<VisitCommonData> list = new ArrayList<>();
-                for (String data :
-                        listData) {
-                    VisitCommonData vData = new VisitCommonData();
-                    vData.setUrl(data);
-                    list.add(vData);
+                if (holder.attachmentImage.getTag() != null) {
+                    String tag = "" + v.getTag(R.id.attachmentImage);
+                    //code here what would you like to do.
+
+                    ArrayList<VisitCommonData> list = new ArrayList<>();
+                    for (String data :
+                            listData) {
+                        VisitCommonData vData = new VisitCommonData();
+                        vData.setUrl(data);
+                        list.add(vData);
+                    }
+
+                    Intent intent = new Intent(context, MultipleImageWithSwipeAndZoomActivity.class);
+                    intent.putExtra(RescribeConstants.DOCUMENTS, tag);
+                    intent.putExtra(RescribeConstants.IS_URL, true);
+                    intent.putParcelableArrayListExtra(RescribeConstants.ATTACHMENTS_LIST, list);
+                    context.startActivity(intent);
                 }
 
-                Intent intent = new Intent(context, MultipleImageWithSwipeAndZoomActivity.class);
-                intent.putExtra(RescribeConstants.DOCUMENTS, tag);
-                intent.putExtra(RescribeConstants.IS_URL, true);
-                intent.putParcelableArrayListExtra(RescribeConstants.ATTACHMENTS_LIST, list);
-                context.startActivity(intent);
             }
         });
     }

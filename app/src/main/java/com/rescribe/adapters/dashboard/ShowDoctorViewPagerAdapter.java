@@ -436,8 +436,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 Bundle b = new Bundle();
                 b.putString(RescribeConstants.ITEM_DATA_VALUE, RescribeConstants.CATEGORY);
                 b.putString(RescribeConstants.ITEM_DATA, doctorCategory.getText().toString());
-                b.putString(RescribeConstants.CATEGORY, doctorObject.getCategoryName());
-
+//                b.putString(RescribeConstants.CATEGORY, doctorObject.getCategoryName());
                 mServicesCardViewClickListener.onClickOfTotalCount(b);
             }
         });

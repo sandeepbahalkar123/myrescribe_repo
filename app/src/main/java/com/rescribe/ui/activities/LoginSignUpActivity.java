@@ -67,7 +67,6 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
     private CallbackManager mCallbackManager;
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
-    private static final int REQUEST_PERMISSIONS = 001;
     private LoginFragment loginFragment;
     private SignUpRequestModel signUpRequestSocial;
 

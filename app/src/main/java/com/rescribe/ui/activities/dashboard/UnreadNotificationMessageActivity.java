@@ -146,7 +146,6 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     public boolean isExpanded;
     private Dialog followUpDialog;
-    private FCMData fcmData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 
 public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapter.ListViewHolder> {
 
-    private Context mContext;
     Integer[] mImageMenuICons = {
             R.drawable.metropolis,
             R.drawable.dentist_health_offers,
@@ -30,8 +29,7 @@ public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapte
             R.drawable.full_body_checkup
     };
 
-    public HealthOffersAdapter(final Context mContext) {
-        this.mContext = mContext;
+    public HealthOffersAdapter() {
     }
 
     @Override

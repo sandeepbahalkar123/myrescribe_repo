@@ -108,53 +108,6 @@ public class HealthOffersActivity extends AppCompatActivity {
         healthOffersViewpager.setAdapter(adapter);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @OnClick(/*{R.id.myRecordsLayout, R.id.vitalGraphsLayout, R.id.doctorVisitsLayout, R.id.savedArticlesLayout}*/)
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-          /*  case R.id.myRecordsLayout:
-                MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
-                int completeCount = 0;
-                for (Image image : myRecordsData.getImageArrayList()) {
-                    if (image.isUploading() == RescribeConstants.COMPLETED)
-                        completeCount++;
-                }
-                Intent intent;
-                if (completeCount == myRecordsData.getImageArrayList().size()) {
-                    appDBHelper.deleteMyRecords();
-                    intent = new Intent(HealthOffersActivity.this, MyRecordsActivity.class);
-                } else {
-                    intent = new Intent(HealthOffersActivity.this, SelectedRecordsGroupActivity.class);
-                    intent.putExtra(RescribeConstants.UPLOADING_STATUS, true);
-                    intent.putExtra(RescribeConstants.VISIT_DATE, myRecordsData.getVisitDate());
-                    intent.putExtra(RescribeConstants.OPD_ID, myRecordsData.getDocId());
-                    intent.putExtra(RescribeConstants.DOCTORS_ID, myRecordsData.getDocId());
-                    intent.putExtra(RescribeConstants.DOCUMENTS, myRecordsData.getImageArrayList());
-                }
-                startActivity(intent);
-                break;
-            case R.id.vitalGraphsLayout:
-                Intent intentVital = new Intent(HealthOffersActivity.this, VitalGraphActivity.class);
-                startActivity(intentVital);
-                break;
-            case R.id.doctorVisitsLayout:
-                Intent intentDoctorVisit = new Intent(HealthOffersActivity.this, DoctorListActivity.class);
-                startActivity(intentDoctorVisit);
-                break;
-            case R.id.savedArticlesLayout:
-                break;*/
-        }
-    }
-
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();

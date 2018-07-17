@@ -81,6 +81,14 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
 
     }
 
+    public void disableDrawer(boolean isDisabled) {
+        if (isDisabled) {
+            getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+            if (getActivityDrawerLayout().isDrawerOpen(GravityCompat.END))
+                getActivityDrawerLayout().closeDrawer(GravityCompat.END);
+        } else getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
     @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView, R.id.showlocation})
     public void onViewClicked(View view) {
         switch (view.getId()) {

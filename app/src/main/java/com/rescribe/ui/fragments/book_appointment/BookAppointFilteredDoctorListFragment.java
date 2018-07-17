@@ -63,6 +63,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private ServicesCardViewImpl mServicesCardViewImpl;
     private ArrayList<DoctorList> mReceivedPreviousDoctorList;
     private AppDBHelper appDBHelper;
+    private ServicesFilteredDoctorListActivity activity;
 
     public BookAppointFilteredDoctorListFragment() {
         // Required empty public constructor
@@ -87,6 +88,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     private void init(Bundle args) {
 
         appDBHelper = new AppDBHelper(getContext());
+        activity = (ServicesFilteredDoctorListActivity) getActivity();
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
             mClickedItemDataTypeValue = args.getString(RescribeConstants.ITEM_DATA_VALUE);
@@ -98,13 +100,12 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         // OnBackPressed of this page original list of doctor should be shown , thats why that list is set here and accessed in ServicesFilteredDoctorListActivity which is base of this fragment.
         setReceivedPreviousDoctorList(ServicesCardViewImpl.getReceivedDoctorDataList());
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
-        mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity());
+        mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), activity);
 
         ////////////////////// onResume
 
         doGetReceivedListBasedOnClickedItemData();
         setDoctorListAdapter();
-        ServicesFilteredDoctorListActivity activity = (ServicesFilteredDoctorListActivity) getActivity();
 
         //*****************
         // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
@@ -131,6 +132,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         } else {
             mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.GONE);
+            activity.disableDrawer(true);
             if (mIsFavoriteList) {
                 mReceivedList = mServicesCardViewImpl.getFavouriteDocList(-1);
             } else if (mClickedItemDataValue != null) {
@@ -215,7 +217,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 if (received != null) {
                     DoctorServicesModel doctorServices = received.getDoctorServicesModel();
                     if (doctorServices != null) {
-                        new ServicesCardViewImpl(this.getContext(), (ServicesFilteredDoctorListActivity) getActivity()).setReceivedDoctorDataList(doctorServices.getDoctorList());
+                        new ServicesCardViewImpl(this.getContext(), activity).setReceivedDoctorDataList(doctorServices.getDoctorList());
                         doGetReceivedListBasedOnClickedItemData();
                     }
                 }
@@ -258,6 +260,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         } else {
             mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.GONE);
+            activity.disableDrawer(true);
             mEmptyListView.setVisibility(View.VISIBLE);
             mDoctorListView.setVisibility(View.GONE);
         }
@@ -266,6 +269,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         if (!getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.GONE);
+            activity.disableDrawer(true);
         }
 
         // THIS IS HACK, TO CALL API IN CASE OF COMAPINT-MAP!=NULL
@@ -278,10 +282,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
     @OnClick({R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
-        ServicesFilteredDoctorListActivity activity;
         switch (view.getId()) {
             case R.id.rightFab:
-                activity = (ServicesFilteredDoctorListActivity) getActivity();
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.leftFab:

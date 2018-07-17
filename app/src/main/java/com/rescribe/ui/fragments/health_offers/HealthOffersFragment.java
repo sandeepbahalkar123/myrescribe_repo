@@ -47,8 +47,6 @@ public class HealthOffersFragment  extends Fragment {
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.health_offers_item_layout, container, false);
 
-
-
         Bundle arguments = getArguments();
         if (arguments != null) {
             mAppointmentTypeName = arguments.getString(DATA);
@@ -60,16 +58,13 @@ public class HealthOffersFragment  extends Fragment {
     private void init() {
         mAppointmentListView = (RecyclerView) mRootView.findViewById(R.id.listView);
         mEmptyListView = (RelativeLayout) mRootView.findViewById(R.id.emptyListView);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setDoctorListAdapter();
+        mAppointmentListView.setVisibility(View.GONE);
+        mEmptyListView.setVisibility(View.VISIBLE);
+//        setDoctorListAdapter();
     }
 
     private void setDoctorListAdapter() {
-        mHealthOffersAdapter = new HealthOffersAdapter(getActivity());
+        mHealthOffersAdapter = new HealthOffersAdapter();
         LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mAppointmentListView.setLayoutManager(linearlayoutManager);
         mAppointmentListView.setHasFixedSize(true);

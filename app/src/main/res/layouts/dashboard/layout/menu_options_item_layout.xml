@@ -50,7 +50,7 @@
         android:paddingBottom="@dimen/dp2"
         android:paddingLeft="@dimen/dp6"
         android:paddingTop="@dimen/dp2"
-        android:text="5 Offers"
+        android:text="0 Offers"
         android:textColor="@color/white"
         android:textSize="@dimen/sp10"
         app:customFont="@string/roboto_regular"

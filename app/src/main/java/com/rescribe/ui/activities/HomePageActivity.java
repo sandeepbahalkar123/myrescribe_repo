@@ -555,8 +555,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
                         doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
                         doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
-                        if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN))
+                        if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN)) {
                             doctorList.setType("token");
+                            doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
+                        }
                     }
 
                     ArrayList<ClinicData> clinicDataList = new ArrayList<>();

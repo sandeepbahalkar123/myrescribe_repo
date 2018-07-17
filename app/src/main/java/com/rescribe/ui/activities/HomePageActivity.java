@@ -390,7 +390,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                                     RescribePreferencesManager.putInt(RescribePreferencesManager.PREFERENCES_KEY.VERSION_CODE_FROM_SERVER, dashboardModel.getData().getVersionCode(), mContext);
                                     showUpdateDialog(dashboardModel.getData().getVersionCode(), dashboardModel.getData().getAppURL());
                                 }
-
                             }
                         }
                     }
@@ -554,9 +553,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
                         doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
                         doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
-
                         doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
                         doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
+                        if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN))
+                            doctorList.setType("token");
                     }
 
                     ArrayList<ClinicData> clinicDataList = new ArrayList<>();
@@ -577,7 +577,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                             clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
                             clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
                             clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-
                             clinicData.setLocationLat(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LATITUDE)));
                             clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
 
@@ -594,7 +593,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                                 Cursor doctorVsClinic = appDBHelper.getDoctorVsClinicById(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)), clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
                                 if (doctorVsClinic.moveToFirst()) {
                                     // get from appointment table
-                                    doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+                                    if (!RescribeConstants.TOKEN.equalsIgnoreCase(doctorList.getType())) {
+                                        doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+                                        clinicData.setAppointmentType(doctorList.getType());
+                                    }
                                     clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
                                 }
 

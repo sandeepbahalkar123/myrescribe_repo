@@ -256,6 +256,8 @@ public class RescribeConstants {
     public static final String CATEGORY = "categories";
     public static final String NO = "no";
     public static final String PATIENT = "patient";
+    public static final String USER_AUTHENTICATED = "USER AUTHENTICATED";
+    public static final String TOKEN = "token";
 
     public static class USER_STATUS {
         public static final String ONLINE = "Online";

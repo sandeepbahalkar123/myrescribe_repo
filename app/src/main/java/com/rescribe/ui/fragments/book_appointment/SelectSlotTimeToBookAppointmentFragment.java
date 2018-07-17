@@ -469,7 +469,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             }
                         }
 
-                        if (!slotListBaseModel.getCommon().getStatusMessage().isEmpty())
+                        if (!slotListBaseModel.getCommon().getStatusMessage().equalsIgnoreCase(RescribeConstants.USER_AUTHENTICATED))
                             CommonMethods.showToast(mContext, slotListBaseModel.getCommon().getStatusMessage());
                     }
                 }
@@ -506,7 +506,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             }
                         }
 
-                        if (!slotListBase.getCommon().getStatusMessage().isEmpty())
+                        if (!slotListBase.getCommon().getStatusMessage().equalsIgnoreCase(RescribeConstants.USER_AUTHENTICATED))
                             CommonMethods.showToast(mContext, slotListBase.getCommon().getStatusMessage());
                     }
                 }

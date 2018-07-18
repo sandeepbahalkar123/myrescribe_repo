@@ -32,6 +32,7 @@ import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
+import com.rescribe.network.RequestPool;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
 import com.rescribe.singleton.RescribeApplication;
@@ -74,6 +75,8 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.SETTINGS;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.SALUTATION;
+import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
+import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 import static com.rescribe.util.RescribeConstants.TITLE;
 
 /**
@@ -299,16 +302,10 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         }
     }
 
-    @OnClick({R.id.menuIcon})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.menuIcon:
-                break;
-        }
-    }
-
-
     private void logout() {
+        RequestPool.getInstance(this.mContext).cancellAllPreviousRequestWithSameTag(TASK_DASHBOARD_API);
+        RequestPool.getInstance(this.mContext).cancellAllPreviousRequestWithSameTag(TASK_DOCTORLIST_API);
+
         String mobileNoGmail = "";
         String passwordGmail = "";
         String mobileNoFacebook = "";

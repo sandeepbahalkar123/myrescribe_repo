@@ -10,6 +10,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
+import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
+
 public class RequestPool {
     private RequestQueue mRequestQueue;
     private Context mContext;
@@ -20,7 +23,6 @@ public class RequestPool {
     }
 
     public static synchronized RequestPool getInstance(Context context) {
-
         return new RequestPool(context);
     }
 

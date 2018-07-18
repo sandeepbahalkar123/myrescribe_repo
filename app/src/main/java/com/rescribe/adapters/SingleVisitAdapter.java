@@ -914,6 +914,10 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                 LinearLayout severeRangeLayout = (LinearLayout) dialog.findViewById(R.id.severeSubTypeRangeLayout);
                 severeRangeLayout.setVisibility(View.GONE);
             }
+            if (nonCategorySubTypeRange.getText().toString().trim().length() == 0) {
+                LinearLayout noncategorySubTypeRangeLayout = (LinearLayout) dialog.findViewById(R.id.noncategorySubTypeRangeLayout);
+                noncategorySubTypeRangeLayout.setVisibility(View.GONE);
+            }
             if (normalSubTypeRange.getText().toString().trim().length() == 0 && moderateSubTypeRange.getText().toString().trim().length() == 0 && severeSubTypeRange.getText().toString().trim().length() == 0) {
                 bpMinLayout.setVisibility(View.GONE);
                 showVitalUnitNameIconLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.vital_curve_allcorners_grey));

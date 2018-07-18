@@ -46,18 +46,18 @@ public class GuideScreenActivity extends AppCompatActivity {
         images.add(R.drawable.guide_doctor_connect);
 
         title = new ArrayList<>();
-        title.add("Book Appointment");
-        title.add("Health Reminder");
-        title.add("Health Repository");
-        title.add("Vital Graph");
-        title.add("Doctor Connect");
+        title.add(getString(R.string.book_appointment));
+        title.add(getString(R.string.health_reminder));
+        title.add(getString(R.string.health_repository));
+        title.add(getString(R.string.vital_graph));
+        title.add(getString(R.string.doctor_connect));
 
         descriptions = new ArrayList<>();
-        descriptions.add("Find a location convenient doctor based on your complaints / speciality.");
-        descriptions.add("Get timely alerts on your medications and advised investigations");
-        descriptions.add("Access your medical records, doctor visits and articles penned by health experts.");
-        descriptions.add("Track your vitals and take necessary medical guidance.");
-        descriptions.add("Chat with doctors online and get answers to your health queries.");
+        descriptions.add(getString(R.string.guide_book_appointment));
+        descriptions.add(getString(R.string.guide_health_reminder));
+        descriptions.add(getString(R.string.guide_health_repository));
+        descriptions.add(getString(R.string.guide_vital_graph));
+        descriptions.add(getString(R.string.guide_doctor_connect));
 
         viewPager.setAdapter(new SliderAdapter(this, images, title, descriptions));
         indicator.setupWithViewPager(viewPager, true);

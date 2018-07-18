@@ -37,6 +37,7 @@ import com.rescribe.services.MQTTService;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.ConnectSplashActivity;
+import com.rescribe.ui.activities.GuideScreenActivity;
 import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationSettingActivity;
@@ -292,6 +293,9 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             activeRequest.setId(Integer.parseInt(patientId));
             new LoginHelper(this, SettingsActivity.this).doLogout(activeRequest);
             logout();
+        } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.HOW_IT_WORKS)) {
+            Intent intentGuide = new Intent(mContext, GuideScreenActivity.class);
+            startActivity(intentGuide);
         }
     }
 

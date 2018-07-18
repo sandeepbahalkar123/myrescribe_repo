@@ -217,7 +217,11 @@
                           ]
                         }
                       },
-
+                      {
+                        "name": "How it Works?",
+                        "identifier": "",
+                        "iconImageUrl": ""
+                      },
                       {
                         "name": "Terms of Use",
                         "identifier": "",
@@ -228,7 +232,6 @@
                         "identifier": "",
                         "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/privacypolicy.png"
                       },
-
                       {
                         "name": "Support",
                         "identifier": "setting_Support",
@@ -307,7 +310,8 @@
           }
         ]
       }
-    },{
+    },
+    {
       "name": "Connect",
       "identifier": "bottomMenu_Connect",
       "iconImageUrl": "menu_connect",
@@ -356,7 +360,11 @@
               ]
             }
           },
-
+          {
+            "name": "How it Works?",
+            "identifier": "",
+            "iconImageUrl": ""
+          },
           {
             "name": "Terms of Use",
             "identifier": "setting_Terms",
@@ -367,7 +375,6 @@
             "identifier": "setting_Privacy",
             "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/privacypolicy.png"
           },
-
           {
             "name": "Support",
             "identifier": "setting_Support",

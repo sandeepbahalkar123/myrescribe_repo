@@ -24,6 +24,7 @@ import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.PatientDetail;
 import com.rescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.GuideScreenActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.ResetPasswordActivity;
 import com.rescribe.util.CommonMethods;

@@ -324,7 +324,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
                     RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD, RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, mContext), mContext);
                 }
 
-                Intent intent = new Intent(this, HomePageActivity.class);
+                Intent intent = new Intent(mContext, HomePageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

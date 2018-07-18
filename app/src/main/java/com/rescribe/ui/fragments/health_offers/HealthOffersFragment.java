@@ -32,7 +32,6 @@ public class HealthOffersFragment  extends Fragment {
     public HealthOffersFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static HealthOffersFragment newInstance(String data) {
         HealthOffersFragment fragment = new HealthOffersFragment();

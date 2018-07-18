@@ -24,6 +24,7 @@ import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.requestmodel.login.SignUpRequestModel;
 import com.rescribe.model.requestmodel.login.SignUpVerifyOTPRequestModel;
 import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.ui.activities.GuideScreenActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -209,6 +210,10 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
+                Intent intentGuide = new Intent(getActivity(), GuideScreenActivity.class);
+                startActivity(intentGuide);
+
                 getActivity().finish();
             } else {
                 CommonMethods.showToast(getActivity(), loginModel.getCommon().getStatusMessage());

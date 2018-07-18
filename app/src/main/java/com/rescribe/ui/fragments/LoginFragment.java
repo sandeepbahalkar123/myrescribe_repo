@@ -24,6 +24,7 @@ import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.PatientDetail;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.AppGlobalContainerActivity;
+import com.rescribe.ui.activities.GuideScreenActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.WebViewActivity;
 import com.rescribe.ui.customesViews.CustomTextView;

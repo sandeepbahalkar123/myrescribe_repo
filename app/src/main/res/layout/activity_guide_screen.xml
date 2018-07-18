@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/footer"
+        app:tabBackground="@drawable/indicator_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/skipButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dp12"
+            android:background="@color/transparent"
+            android:text="Skip"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/sp20" />
+
+        <Button
+            android:id="@+id/gettingStartedButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp52"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorAccent"
+            android:text="GET STARTED"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp20" />
+    </RelativeLayout>
+
+</RelativeLayout>

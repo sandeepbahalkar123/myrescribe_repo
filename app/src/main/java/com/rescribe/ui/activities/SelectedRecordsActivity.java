@@ -101,6 +101,14 @@ public class SelectedRecordsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.select_file_dialog);
         dialog.setCanceledOnTouchOutside(false);
 
+        dialog.findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedRecordsActivity.this);
+            }
+        });
+
         dialog.findViewById(R.id.gallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

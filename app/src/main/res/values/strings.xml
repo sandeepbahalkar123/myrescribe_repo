@@ -422,6 +422,7 @@
     <string name="guide_health_repository">Access your medical records, doctor visits and articles penned by health experts.</string>
     <string name="guide_vital_graph">Track your vitals and take necessary medical guidance.</string>
     <string name="guide_doctor_connect">Chat with doctors online and get answers to your health queries.</string>
+    <string name="camera">Camera</string>
 
 </resources>
 

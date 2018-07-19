@@ -193,7 +193,7 @@
                     android:layout_marginEnd="@dimen/dp8"
                     android:layout_marginRight="@dimen/dp8"
                     android:padding="@dimen/dp8"
-                    app:srcCompat="@drawable/guide_calendar" />
+                    app:srcCompat="@drawable/calendar" />
 
             </RelativeLayout>
 

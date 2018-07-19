@@ -62,7 +62,7 @@ public class MenuOptionsDashBoardAdapter extends RecyclerView.Adapter<MenuOption
         });
 
         if (mDashboardMenuList.get(position).getName().equals(mContext.getString(R.string.health_offers)))
-            holder.healthoffersTag.setVisibility(View.VISIBLE);
+            holder.healthoffersTag.setVisibility(View.GONE/*View.VISIBLE*/);
         else holder.healthoffersTag.setVisibility(View.GONE);
 
         int resourceId = mContext.getResources().getIdentifier(dashboardMenuList.getIconImageUrl(), DRAWABLE, BuildConfig.APPLICATION_ID);

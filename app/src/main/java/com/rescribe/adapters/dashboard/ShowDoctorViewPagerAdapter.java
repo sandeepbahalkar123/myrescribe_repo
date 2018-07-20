@@ -216,7 +216,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
                 doctorAppointmentDate.setVisibility(View.GONE);
                 feesToPaid.setVisibility(View.VISIBLE);
-                if (clinicDataList.size() > 0) {
+                if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
                     feesToPaid.setVisibility(View.VISIBLE);
                     feesToPaid.setText("" + clinicDataList.get(0).getAmount());
 
@@ -290,8 +290,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
             doctorAppointmentDate.setVisibility(View.GONE);
-            feesToPaid.setVisibility(View.VISIBLE);
-            if (clinicDataList.size() > 0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
                 feesToPaid.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + clinicDataList.get(0).getAmount());
             } else
@@ -340,7 +339,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
             doctorAppointmentDate.setVisibility(View.GONE);
 
-            if (clinicDataList.size() > 0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
                 feesToPaid.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + clinicDataList.get(0).getAmount());
             } else
@@ -391,7 +390,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             doctorAppointmentDate.setVisibility(View.GONE);
 
             //----------------
-            if (clinicDataList.size() > 0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
                 feesToPaid.setVisibility(View.VISIBLE);
                 feesToPaid.setText("" + clinicDataList.get(0).getAmount());
             } else {

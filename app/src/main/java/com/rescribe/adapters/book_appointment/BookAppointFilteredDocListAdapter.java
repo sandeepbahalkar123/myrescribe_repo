@@ -143,7 +143,7 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
-            if (clinicDataList.size() > 0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
@@ -205,7 +205,7 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
             //----------
-            if (clinicDataList.size() > 0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
                 holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
@@ -265,7 +265,7 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
-            if (clinicDataList.size() > 0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
                 holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());

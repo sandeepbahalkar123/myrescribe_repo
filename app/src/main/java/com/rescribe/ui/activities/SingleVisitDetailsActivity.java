@@ -142,8 +142,37 @@ public class SingleVisitDetailsActivity extends AppCompatActivity implements Hel
                         flag = false;
 
                     if (flag) {
-                        if (childObject.get(0).getName().length() <= TEXT_LIMIT)
-                            mHistoryExpandableListView.collapseGroup(groupPosition);
+
+                        if(!listDataList.get(groupPosition).getCaseDetailName().contains("allergie")){
+                            if (childObject.get(0).getName().length() <= TEXT_LIMIT)
+                                mHistoryExpandableListView.collapseGroup(groupPosition);
+
+                        }else{
+                            String textToShow = "";
+                            String name = childObject.get(0).getName();
+                            String medicineName = childObject.get(0).getMedicinename();
+                            String remarks = childObject.get(0).getRemarks();
+
+                            if(!name.isEmpty()){
+                                if(name.contains("food")){
+                                    textToShow += name;
+                                    if (!remarks.isEmpty())
+                                        textToShow += "-" +remarks;
+                                }else{
+                                    textToShow += name;
+                                    if (!medicineName.isEmpty())
+                                        textToShow += "-" +medicineName;
+                                    if (!remarks.isEmpty())
+                                        textToShow += "-" +remarks;
+                                }
+                            }else{
+                                textToShow += name;
+                            }
+
+                            if (textToShow.length() <= TEXT_LIMIT)
+                                mHistoryExpandableListView.collapseGroup(groupPosition);
+                        }
+
                     }
                 }
 

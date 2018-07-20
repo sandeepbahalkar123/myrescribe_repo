@@ -139,10 +139,11 @@
                     android:textSize="@dimen/sp16"
                     android:textStyle="bold"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     android:maxLines="2"
                     android:ellipsize="end"
                     app:customFont="@string/roboto_bold"
-                    tools:text="Cardilogist" />
+                    tools:text="Sai Clinic" />
 
                 <!-- Artist Name -->
                 <com.rescribe.ui.customesViews.CustomTextView
@@ -160,7 +161,6 @@
                     android:id="@+id/doctorSpecialization"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:textColor="@color/dose_completed"
                     android:textSize="@dimen/sp13"
                     android:textStyle="bold"

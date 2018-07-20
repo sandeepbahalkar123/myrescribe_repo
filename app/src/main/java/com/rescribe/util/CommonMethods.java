@@ -726,7 +726,7 @@ public class CommonMethods {
     public static int getVitalIcons(String vitalDetailName) {
 
         // Drawable abbreviation = ContextCompat.getDrawable(context, R.drawable.ellipse_2);
-        int abbreviation = R.drawable.defaulticon;
+        int abbreviation = R.drawable.vitaldefaulticon;
         if (vitalDetailName.equalsIgnoreCase("bp"))
             abbreviation = R.drawable.bp;
         else if (vitalDetailName.equalsIgnoreCase("weight"))

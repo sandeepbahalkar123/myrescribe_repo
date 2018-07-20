@@ -150,6 +150,9 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             }
 
         } else if (headerName.contains(CHILD_TYPE_PRESCRIPTIONS)) {
+            childViewHolder.tableLayout.setVisibility(View.GONE);
+            childViewHolder.itemsLayout.setVisibility(View.VISIBLE);
+
             final List<VisitCommonData> childObject = mListDataHeader.get(groupPosition).getCommonData();
 
             String textToShow = "";
@@ -176,11 +179,22 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             String textToShow = "";
             if (headerName.contains(CHILD_TYPE_ALLERGIES)) {
-                textToShow = childObject.get(childPosition).getName();
-                if (!childObject.get(childPosition).getMedicinename().isEmpty())
-                    textToShow += "-" + childObject.get(childPosition).getMedicinename();
-                if (!childObject.get(childPosition).getRemarks().isEmpty())
-                    textToShow += "-" + childObject.get(childPosition).getRemarks();
+                if(!childObject.get(childPosition).getName().isEmpty()) {
+                    if (childObject.get(childPosition).getName().contains("food")) {
+                        textToShow = childObject.get(childPosition).getName();
+                        if (!childObject.get(childPosition).getRemarks().isEmpty())
+                            textToShow += "-" + childObject.get(childPosition).getRemarks();
+                    } else {
+                        textToShow = childObject.get(childPosition).getName();
+                        if (!childObject.get(childPosition).getMedicinename().isEmpty())
+                            textToShow += "-" + childObject.get(childPosition).getMedicinename();
+                        if (!childObject.get(childPosition).getRemarks().isEmpty())
+                            textToShow += "-" + childObject.get(childPosition).getRemarks();
+                    }
+                }else{
+                    textToShow = childObject.get(childPosition).getName();
+                }
+
             } else textToShow = childObject.get(childPosition).getName();
 
             childViewHolder.textView_name.setText(textToShow);
@@ -563,6 +577,38 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                         } else {
                             groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
                         }
+                }else if (caseDetailName.contains(CHILD_TYPE_ALLERGIES)) {
+
+                    if (!mListDataHeader.get(groupPosition).getCommonData().isEmpty()) {
+
+                        String textToShow = "";
+
+                        String name = mListDataHeader.get(groupPosition).getCommonData().get(0).getName();
+                        String medicineName = mListDataHeader.get(groupPosition).getCommonData().get(0).getMedicinename();
+                        String remarks = mListDataHeader.get(groupPosition).getCommonData().get(0).getRemarks();
+
+                        if(!name.isEmpty()){
+                            if(name.contains("food")){
+                                textToShow += name;
+                                if (!remarks.isEmpty())
+                                    textToShow += "-" +remarks;
+                            }else{
+                                textToShow += name;
+                                if (!medicineName.isEmpty())
+                                    textToShow += "-" +medicineName;
+                                if (!remarks.isEmpty())
+                                    textToShow += "-" +remarks;
+                            }
+                        }else{
+                            textToShow += name;
+                        }
+
+                        if (textToShow.length() > TEXT_LIMIT)
+                            groupViewHolder.mDetailFirstPoint.setText(textToShow.substring(0, TEXT_LIMIT - 1) + "...");
+                        else groupViewHolder.mDetailFirstPoint.setText(textToShow);
+
+                    }
+
                 } else if (mVisitDetailList.size() > 1) {
                     int length = mVisitDetailList.get(0).getName().length();
                     String text = mVisitDetailList.get(0).getName().substring(0, length < TEXT_LIMIT ? length - 1 : TEXT_LIMIT - 1) + "...";

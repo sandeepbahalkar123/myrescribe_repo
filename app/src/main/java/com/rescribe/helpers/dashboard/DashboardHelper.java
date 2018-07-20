@@ -4,9 +4,13 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.rescribe.R;
+import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.dashboard_api.card_data.CategoryList;
+import com.rescribe.model.dashboard_api.card_data.DashboardModel;
+import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
 import com.rescribe.model.saved_article.SavedArticleBaseModel;
 import com.rescribe.model.saved_article.SavedArticleInfo;
 import com.rescribe.model.saved_article.request_model.ArticleToSaveReqModel;
@@ -16,6 +20,10 @@ import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
 import com.rescribe.util.RescribeConstants;
+
+import java.util.List;
+
+import static com.rescribe.util.RescribeConstants.SUCCESS;
 
 /**
  * Created by riteshpandhurkar on 1/3/17.
@@ -27,10 +35,12 @@ public class DashboardHelper implements ConnectionListener {
     private Context mContext;
     private HelperResponse mHelperResponseManager;
     private String currentCity = "";
+    private AppDBHelper appDBHelper;
 
     public DashboardHelper(Context context, HelperResponse loginActivity) {
         this.mContext = context;
         this.mHelperResponseManager = loginActivity;
+        appDBHelper = new AppDBHelper(mContext);
     }
 
     @Override
@@ -40,8 +50,22 @@ public class DashboardHelper implements ConnectionListener {
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
                 if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DASHBOARD_API)) {
+                    DashboardModel dashboardModel = (DashboardModel) customResponse;
+                    if (dashboardModel.getCommon().getStatusCode().equals(SUCCESS)) {
+                        // inset card doctors details in database
+                        List<CategoryList> categoryList = dashboardModel.getData().getCategoryList();
+                        appDBHelper.addCardDoctors(categoryList);
+                        getDoctorList();
+                    }
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
+
                 } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_DOCTORLIST_API)) {
+                    DoctorListModel doctorListModel = (DoctorListModel) customResponse;
+                    if (doctorListModel.getCommon().getStatusCode().equals(SUCCESS)) {
+                        // insert doctor data in database and show
+                        appDBHelper.addDoctors(doctorListModel.getData().getDoctorList());
+                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN), mContext);
+                    }
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 } else if (mOldDataTag.equalsIgnoreCase(RescribeConstants.TASK_GET_SAVED_ARTICLES)) {
                     SavedArticleBaseModel savedArticleBaseModel = (SavedArticleBaseModel) customResponse;

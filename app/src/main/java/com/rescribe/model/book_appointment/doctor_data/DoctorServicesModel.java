@@ -45,6 +45,10 @@ public class DoctorServicesModel implements Parcelable, CustomResponse {
         this.doctorList = doctorList;
     }
 
+    public void setDoctorSpecialities(ArrayList<String> doctorSpecialities) {
+        this.doctorSpecialities = doctorSpecialities;
+    }
+
     public ArrayList<DoctorSpeciality> getDoctorSpecialities() {
         ArrayList<DoctorSpeciality> temp = new ArrayList<>();
         ArrayList<String> doctorSpecialities = this.doctorSpecialities;

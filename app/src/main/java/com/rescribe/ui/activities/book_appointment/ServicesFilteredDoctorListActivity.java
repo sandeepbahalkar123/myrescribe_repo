@@ -2,8 +2,6 @@ package com.rescribe.ui.activities.book_appointment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -48,9 +46,9 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     FrameLayout viewContainer;
     HashMap<String, String> userSelectedLocationInfo;
     private BookAppointFilteredDoctorListFragment mBookAppointFilteredDoctorListFragment;
-    private Fragment mDrawerLoadedFragment;
     private int PLACE_PICKER_REQUEST = 1;
     private boolean isLocationChangeViewClicked = false;
+    private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +68,6 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
             title.setText(extras.getString(RescribeConstants.TITLE));
         mBookAppointFilteredDoctorListFragment = BookAppointFilteredDoctorListFragment.newInstance(extras);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mBookAppointFilteredDoctorListFragment).commit();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
-            }
-        }, 100);
-
     }
 
     public void disableDrawer(boolean isDisabled) {
@@ -86,7 +75,13 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
             getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
             if (getActivityDrawerLayout().isDrawerOpen(GravityCompat.END))
                 getActivityDrawerLayout().closeDrawer(GravityCompat.END);
-        } else getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        } else {
+            if (mDrawerLoadedFragment == null) {
+                mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
+            }
+            getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
     }
 
     @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView, R.id.showlocation})

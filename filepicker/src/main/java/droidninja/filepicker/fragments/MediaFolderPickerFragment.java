@@ -35,6 +35,9 @@ import droidninja.filepicker.utils.GridSpacingItemDecoration;
 import droidninja.filepicker.utils.ImageCaptureManager;
 import droidninja.filepicker.utils.MediaStoreHelper;
 
+import static droidninja.filepicker.fragments.MediaDetailPickerFragment.PHOTO_TAKEN;
+import static droidninja.filepicker.fragments.MediaDetailPickerFragment.PHOTO_TAKEN_DELAY;
+
 
 public class MediaFolderPickerFragment extends BaseFragment implements FolderGridAdapter.FolderGridAdapterListener {
 
@@ -44,11 +47,11 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
 
     TextView emptyView;
 
-    private PhotoPickerFragmentListener mListener;
     private FolderGridAdapter photoGridAdapter;
     private ImageCaptureManager imageCaptureManager;
     private RequestManager mGlideRequestManager;
     private int fileType;
+    private MediaDetailPickerFragment.PhotoPickerFragmentListener mListener;
 
     public MediaFolderPickerFragment() {
         // Required empty public constructor
@@ -62,11 +65,20 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
         return inflater.inflate(R.layout.fragment_media_folder_picker, container, false);
     }
 
+
+    public static MediaFolderPickerFragment newInstance(int fileType) {
+        MediaFolderPickerFragment photoPickerFragment = new MediaFolderPickerFragment();
+        Bundle bun = new Bundle();
+        bun.putInt(FILE_TYPE, fileType);
+        photoPickerFragment.setArguments(bun);
+        return photoPickerFragment;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof PhotoPickerFragmentListener) {
-            mListener = (PhotoPickerFragmentListener) context;
+        if (context instanceof MediaDetailPickerFragment.PhotoPickerFragmentListener) {
+            mListener = (MediaDetailPickerFragment.PhotoPickerFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement PhotoPickerFragmentListener");
@@ -78,18 +90,6 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
         super.onDetach();
         mListener = null;
     }
-
-    public static MediaFolderPickerFragment newInstance(int fileType) {
-        MediaFolderPickerFragment photoPickerFragment = new MediaFolderPickerFragment();
-        Bundle bun = new Bundle();
-        bun.putInt(FILE_TYPE, fileType);
-        photoPickerFragment.setArguments(bun);
-        return photoPickerFragment;
-    }
-
-    public interface PhotoPickerFragmentListener {
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +139,9 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
         });
 
         getDataFromMedia();
+
+        if (PickerManager.getInstance().isOpenCameraDirect())
+            takePhoto();
     }
 
     private void getDataFromMedia() {
@@ -219,6 +222,10 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
 
     @Override
     public void onCameraClicked() {
+        takePhoto();
+    }
+
+    private void takePhoto() {
         try {
             Intent intent = imageCaptureManager.dispatchTakePictureIntent(getActivity());
             if (intent != null)
@@ -251,8 +258,24 @@ public class MediaFolderPickerFragment extends BaseFragment implements FolderGri
                         public void run() {
                             getDataFromMedia();
 
+                            if (PickerManager.getInstance().isEnableMultiplePhotos()) {
+                                if (PHOTO_TAKEN < PickerManager.getInstance().getMaxCount()) {
+                                    PHOTO_TAKEN += 1;
+                                    takePhoto();
+                                } else {
+                                    if (PickerManager.getInstance().isOpenCameraDirect()) {
+                                        PHOTO_TAKEN = 1;
+                                        mListener.onCameraCanceled();
+                                    }
+                                    Toast.makeText(getContext(), "You taken " + PickerManager.getInstance().getMaxCount() + " photos.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
                         }
-                    }, 1000);
+                    }, PHOTO_TAKEN_DELAY);
+                } else {
+                    if (PickerManager.getInstance().isOpenCameraDirect())
+                        mListener.onCameraCanceled();
                 }
                 break;
         }

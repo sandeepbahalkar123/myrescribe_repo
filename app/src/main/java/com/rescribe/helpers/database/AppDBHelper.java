@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.TokenDetail;
-import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.card_data.CategoryList;
@@ -90,7 +88,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         String CARDVIEW_DATA_TABLE = "CardViewTable";
         String CARDS_BACKGROUND_TABLE = "CardsBackground";
-        String DOCTORLIST_DATA_TABLE = "Doctor";
+        String DOCTOR_DATA_TABLE = "Doctor";
         String CLINIC_DATA_TABLE = "Clinic";
         String DOCOTORVSCLINIC_DATA_TABLE = "DoctorVsClinic";
         String APPOINTMENT_DATA_TABLE = "Appointment";
@@ -711,7 +709,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
             if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.REMOVE)) {
                 // delete doctor related data
-                db.delete(DOC_DATA.DOCTORLIST_DATA_TABLE,
+                db.delete(DOC_DATA.DOCTOR_DATA_TABLE,
                         DOC_DATA.DOC_ID + " = ? ",
                         new String[]{String.valueOf(doctor.getDocId())});
 
@@ -742,10 +740,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
                 if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.ADD)) {
                     contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
-                    db.insertWithOnConflict(DOC_DATA.DOCTORLIST_DATA_TABLE, null, contentValuesDoc, SQLiteDatabase.CONFLICT_IGNORE);
+                    db.insertWithOnConflict(DOC_DATA.DOCTOR_DATA_TABLE, null, contentValuesDoc, SQLiteDatabase.CONFLICT_IGNORE);
                 } else if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.UPDATE)) {
                     // update doctor related info
-                    db.update(DOC_DATA.DOCTORLIST_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ? ", new String[]{String.valueOf(doctor.getDocId())});
+                    db.update(DOC_DATA.DOCTOR_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ? ", new String[]{String.valueOf(doctor.getDocId())});
                 }
 
                 addClinics(db, contentValuesClinic, contentValuesClinicVSDoc, doctor);
@@ -854,14 +852,14 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE, null);
     }
 
-    public Cursor getAllDoctors() {
+    public Cursor getDoctorsSpecialities() {
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select * from " + DOC_DATA.DOCTORLIST_DATA_TABLE, null);
+        return db.rawQuery("select DISTINCT " + DOC_DATA.SPECIALITY + ", " + DOC_DATA.SPECIALITY_ID + " from " + DOC_DATA.DOCTOR_DATA_TABLE + " WHERE NOT (" + DOC_DATA.SPECIALITY + " = '') ", null);
     }
 
     public Cursor getDoctor(int doctorId) {
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select * from " + DOC_DATA.DOCTORLIST_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
+        return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
     }
 
     public Cursor getDoctorVsClinicById(int doctorId, int clinicId) {
@@ -890,7 +888,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         db.beginTransaction();
         contentValuesDoc.put(DOC_DATA.IS_FAVORITE, isFavorite);
-        db.update(DOC_DATA.DOCTORLIST_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ?", new String[]{String.valueOf(doctorId)});
+        db.update(DOC_DATA.DOCTOR_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ?", new String[]{String.valueOf(doctorId)});
 
         if (isFavorite == 1) {
             contentValuesCard.put(DOC_DATA.DOC_ID, doctorId);
@@ -904,7 +902,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateTokenNumber(com.rescribe.model.book_appointment.doctor_data.DoctorList doctor, ClinicData clinicData, TokenDetail tokenDetail) {
+    /*public void updateTokenNumber(com.rescribe.model.book_appointment.doctor_data.DoctorList doctor, ClinicData clinicData, TokenDetail tokenDetail) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValuesAppoint = new ContentValues();
 
@@ -934,5 +932,5 @@ public class AppDBHelper extends SQLiteOpenHelper {
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();
-    }
+    }*/
 }

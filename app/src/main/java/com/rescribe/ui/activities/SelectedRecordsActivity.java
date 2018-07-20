@@ -105,7 +105,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                SelectedRecordsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedRecordsActivity.this);
+                SelectedRecordsActivityPermissionsDispatcher.onPickCameraPhotoWithCheck(SelectedRecordsActivity.this);
             }
         });
 
@@ -200,7 +200,7 @@ public class SelectedRecordsActivity extends AppCompatActivity {
             Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
         else {
 
-            ArrayList photos = new ArrayList();
+            ArrayList<String> photos = new ArrayList();
             for (Image photo : imagePaths) {
                 if (photo.getType() == FilePickerConst.REQUEST_CODE_PHOTO)
                 photos.add(photo.getImagePath());
@@ -211,6 +211,34 @@ public class SelectedRecordsActivity extends AppCompatActivity {
                     .setActivityTheme(R.style.AppTheme)
                     .enableVideoPicker(false)
                     .enableCameraSupport(true)
+                    .enableCameraMultiplePhotos(false)
+                    .openCameraDirect(false)
+                    .showGifs(false)
+                    .showFolderView(true)
+                    .enableOrientation(true)
+                    .pickPhoto(this);
+        }
+    }
+
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void onPickCameraPhoto() {
+        if (imagePaths.size() == MAX_ATTACHMENT_COUNT)
+            Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
+        else {
+
+            ArrayList<String> photos = new ArrayList();
+            for (Image photo : imagePaths) {
+                if (photo.getType() == FilePickerConst.REQUEST_CODE_PHOTO)
+                    photos.add(photo.getImagePath());
+            }
+
+            FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
+                    .setSelectedFiles(photos)
+                    .setActivityTheme(R.style.AppTheme)
+                    .enableVideoPicker(false)
+                    .enableCameraSupport(true)
+                    .enableCameraMultiplePhotos(false)
+                    .openCameraDirect(true)
                     .showGifs(false)
                     .showFolderView(true)
                     .enableOrientation(true)

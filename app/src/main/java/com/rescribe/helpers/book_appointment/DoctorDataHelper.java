@@ -174,7 +174,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doGetDrawerFilterConfigurationData(String cityName) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.GET_BOOK_APPOINTMENT_FILTER_APPOINTMENT_DATA + cityName);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_BOOK_APPOINT_DRAWER_CONFIG);

@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -64,14 +65,12 @@ import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
-import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardMenuData;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
-import com.rescribe.model.dashboard_api.card_data.CategoryList;
 import com.rescribe.model.dashboard_api.card_data.DashboardModel;
 import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
 import com.rescribe.model.investigation.Image;
@@ -99,13 +98,13 @@ import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
+import com.rescribe.util.ImageUtils;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -144,7 +143,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
  * Created by jeetal on 28/6/17.
  */
 
-public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener,
+public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener, ImageUtils.ImageAttachmentListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -229,6 +228,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private String patientId;
     private boolean mIsAppOpenFromLogin;
+    private ImageUtils imageUtils;
 
     private void logUser() {
         // TODO: Use the current user's information
@@ -245,6 +245,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
         mContext = HomePageActivity.this;
+        imageUtils = new ImageUtils(this);
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
 
         patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
@@ -393,24 +394,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                             }
                         }
                     }
-
-                    // inset card doctors details in database
-                    List<CategoryList> categoryList = dashboardModel.getData().getCategoryList();
-                    appDBHelper.addCardDoctors(categoryList);
-
-//                    if (dashboardModel.getData().isIsDocUpdated()) {
-                    mDashboardHelper.getDoctorList();
-                    /*} else {
-                        // Show doctor data from Database
-                        setUpViewPager();
-
-                        if (mIsAppOpenFromLogin) {
-                            // hide progress
-                            custom_progress_bar.setVisibility(View.GONE);
-                            mIsAppOpenFromLogin = false;
-                            doGetMedicationNotificationOnNewLogin();
-                        }
-                    }*/
                 }
 
                 break;
@@ -418,13 +401,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             case TASK_DOCTORLIST_API:
                 DoctorListModel doctorListModel = (DoctorListModel) customResponse;
                 if (doctorListModel.getCommon().getStatusCode().equals(SUCCESS)) {
-
-                    // insert doctor data in database and show
-                    appDBHelper.addDoctors(doctorListModel.getData().getDoctorList());
                     setUpViewPager();
-
-                    RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN), mContext);
-
                     if (mIsAppOpenFromLogin) {
                         // hide progress
                         custom_progress_bar.setVisibility(View.GONE);
@@ -518,111 +495,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private void setUpViewPager() {
         int currentItem = viewPagerDoctorItem.getCurrentItem();
         swipeToRefresh.setRefreshing(false);
-
-        // set All doctors
-        Cursor cardCursor = appDBHelper.getAllCardData();
-        ArrayList<DoctorList> doctorLists = new ArrayList<>();
-        if (cardCursor.moveToFirst()) {
-            do {
-
-                // get Card Data
-                Cursor docCursor = appDBHelper.getDoctor(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                if (docCursor.moveToFirst()) {
-
-                    DoctorList doctorList = new DoctorList();
-                    doctorList.setDocId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                    doctorList.setDocName(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_NAME)));
-                    doctorList.setDocPhone(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PHONE_NUMBER)));
-                    doctorList.setDoctorImageUrl(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ICON_URL)));
-                    doctorList.setAboutDoctor(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ABOUT_DOCTOR)));
-
-                    doctorList.setDocSpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
-                    doctorList.setSpecialityId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY_ID)));
-
-                    doctorList.setRating(docCursor.getDouble(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.RATING)));
-                    doctorList.setCategorySpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_PREMIUM)));
-                    doctorList.setDegree(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_DEGREE)));
-                    doctorList.setExperience(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
-                    doctorList.setPaidStatus(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
-                    doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
-                    doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
-
-                    Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                    if (appointmentByDoctorCursor.moveToFirst()) {
-                        // get from appointment table
-                        doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
-                        doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
-                        doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
-                        doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
-                        doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
-                        if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN)) {
-                            doctorList.setType("token");
-                            doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
-                        }
-                    }
-
-                    ArrayList<ClinicData> clinicDataList = new ArrayList<>();
-
-                    // loop start
-
-                    Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-
-                    boolean isFirst = true;
-                    if (clinicCursor.moveToFirst()) {
-                        do {
-
-                            ClinicData clinicData = new ClinicData();
-                            clinicData.setClinicName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_NAME)));
-                            clinicData.setLocationId(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
-                            clinicData.setAmount(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_FEES)));
-                            clinicData.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
-                            clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
-                            clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
-                            clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-                            clinicData.setLocationLat(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LATITUDE)));
-                            clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
-
-                            // set services
-                            String services = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE));
-                            if (!services.isEmpty()) {
-                                String[] split = services.split(",");
-                                ArrayList<String> servicesList = new ArrayList<>(Arrays.asList(split));
-                                clinicData.setDocServices(servicesList);
-                            }
-
-                            if (isFirst) {
-                                // set clinic appointment book type
-                                Cursor doctorVsClinic = appDBHelper.getDoctorVsClinicById(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)), clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
-                                if (doctorVsClinic.moveToFirst()) {
-                                    // get from appointment table
-                                    if (!RescribeConstants.TOKEN.equalsIgnoreCase(doctorList.getType())) {
-                                        doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-                                        clinicData.setAppointmentType(doctorList.getType());
-                                    }
-                                    clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
-                                }
-
-                                doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
-                                isFirst = false;
-                            }
-
-                            clinicDataList.add(clinicData);
-                        } while (clinicCursor.moveToNext());
-                    }
-
-                    clinicCursor.close();
-                    // loop end
-
-                    doctorList.setClinicDataList(clinicDataList);
-                    doctorLists.add(doctorList);
-                }
-
-                docCursor.close();
-            } while (cardCursor.moveToNext());
-        }
-
-        cardCursor.close();
-
+        ArrayList<DoctorList> doctorLists = CommonMethods.getDoctorListFromDb(appDBHelper);
         // set doc
         mDashboardDataBuilder.setReceivedDoctorDataList(doctorLists);
 
@@ -1403,5 +1276,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         }
     }
     //-- Medication Prescription notification configuration : END
+
+
+    @Override
+    public void imageAttachment(int from, Bitmap file, Uri uri) {
+
+    }
 
 }

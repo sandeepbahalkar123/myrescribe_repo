@@ -160,6 +160,8 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                     .setActivityTheme(R.style.AppTheme)
                     .enableVideoPicker(false)
                     .enableCameraSupport(true)
+                    .enableCameraMultiplePhotos(false)
+                    .openCameraDirect(false)
                     .showGifs(false)
                     .showFolderView(true)
                     .enableOrientation(true)

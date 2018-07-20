@@ -113,6 +113,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             activity.setLocationChangeViewClicked(true);
             mLocationFab.setVisibility(View.VISIBLE);
             mFilterFab.setVisibility(View.VISIBLE);
+            activity.disableDrawer(false);
         }
         //*****************
 
@@ -129,6 +130,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             mReceivedList = mServicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
             mLocationFab.setVisibility(View.VISIBLE);
             mFilterFab.setVisibility(View.VISIBLE);
+            activity.disableDrawer(false);
         } else {
             mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.GONE);
@@ -257,6 +259,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
             mDoctorListView.setVisibility(View.VISIBLE);
             mLocationFab.setVisibility(View.VISIBLE);
             mFilterFab.setVisibility(View.VISIBLE);
+            activity.disableDrawer(false);
         } else {
             mLocationFab.setVisibility(View.GONE);
             mFilterFab.setVisibility(View.GONE);
@@ -276,6 +279,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         if (mCategory != null) {
             mLocationFab.setVisibility(View.VISIBLE);
             mFilterFab.setVisibility(View.VISIBLE);
+            activity.disableDrawer(false);
         }
         //*****************
     }

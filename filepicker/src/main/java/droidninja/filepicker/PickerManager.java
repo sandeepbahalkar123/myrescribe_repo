@@ -34,11 +34,15 @@ public class PickerManager {
 
     private boolean enableCamera = true;
 
+    private boolean enableMultiplePhotos = false;
+
     private boolean enableOrientation = false;
 
     private boolean showFolderView = true;
 
     private String providerAuthorities;
+
+    private boolean openCameraDirect = false;
 
     private PickerManager() {
         mediaFiles = new ArrayList<>();
@@ -208,5 +212,21 @@ public class PickerManager {
 
     public void setProviderAuthorities(String providerAuthorities) {
         this.providerAuthorities = providerAuthorities;
+    }
+
+    public void setEnableMultiplePhotos(boolean enableMultiplePhotos) {
+        this.enableMultiplePhotos = enableMultiplePhotos;
+    }
+
+    public boolean isEnableMultiplePhotos() {
+        return enableMultiplePhotos;
+    }
+
+    public void openCameraDirect(boolean openCameraDirect) {
+        this.openCameraDirect = openCameraDirect;
+    }
+
+    public boolean isOpenCameraDirect() {
+        return openCameraDirect;
     }
 }

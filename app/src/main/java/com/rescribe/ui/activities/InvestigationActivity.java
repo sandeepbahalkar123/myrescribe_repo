@@ -68,7 +68,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     @BindView(R.id.buttonLayout)
     LinearLayout buttonLayout;
 
-    private LinearLayoutManager mLayoutManager;
     private InvestigationViewAdapter mAdapter;
     private Context mContext;
     private ArrayList<InvestigationData> investigation = new ArrayList<InvestigationData>();
@@ -113,7 +112,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
         if (animator instanceof SimpleItemAnimator)
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 

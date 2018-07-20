@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -64,14 +65,12 @@ import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
-import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.dashboard_api.DashboardMenuData;
 import com.rescribe.model.dashboard_api.DashboardMenuList;
-import com.rescribe.model.dashboard_api.card_data.CategoryList;
 import com.rescribe.model.dashboard_api.card_data.DashboardModel;
 import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
 import com.rescribe.model.investigation.Image;
@@ -99,13 +98,13 @@ import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
+import com.rescribe.util.ImageUtils;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -144,7 +143,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
  * Created by jeetal on 28/6/17.
  */
 
-public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener,
+public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener, ImageUtils.ImageAttachmentListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -229,6 +228,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private String patientId;
     private boolean mIsAppOpenFromLogin;
+    private ImageUtils imageUtils;
 
     private void logUser() {
         // TODO: Use the current user's information
@@ -245,6 +245,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
         mContext = HomePageActivity.this;
+        imageUtils = new ImageUtils(this);
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
 
         patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
@@ -1275,5 +1276,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         }
     }
     //-- Medication Prescription notification configuration : END
+
+
+    @Override
+    public void imageAttachment(int from, Bitmap file, Uri uri) {
+
+    }
 
 }

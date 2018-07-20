@@ -290,7 +290,7 @@ public class MapActivityPlotNearByDoctor extends AppCompatActivity implements He
             public void onClick(View v) {
 
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + mUserSelectedLocationInfo.get(getString(R.string.latitude)) + "," + mUserSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + doctorL.getLatitude() + "," + mLocations.get(doctorL.getLongitude())));
+                        Uri.parse("http://maps.google.com/maps?saddr=" + mUserSelectedLocationInfo.get(getString(R.string.latitude)) + "," + mUserSelectedLocationInfo.get(getString(R.string.longitude)) + "&daddr=" + doctorL.getLatitude() + "," + doctorL.getLongitude()));
                 startActivity(intent);
             }
         });

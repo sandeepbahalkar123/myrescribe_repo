@@ -20,6 +20,7 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView;
 import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -349,11 +350,11 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     //on click of logo bottomsheet  dialog opens and on click of profileImage ProfileAcivity is opened
     @Override
-    public void onProfileImageClick() {
+    public void onProfileImageClick(CircularImageView profileImageView) {
 //        Intent intent = new Intent(this, ProfileActivity.class);
 //        startActivity(intent);
 
-        super.onProfileImageClick();
+        super.onProfileImageClick(profileImageView);
     }
 
     //on click of drawer apply button

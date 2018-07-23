@@ -68,21 +68,6 @@ public class RackMonthPicker {
         mNegativeButton.setOnClickListener(builder.negativeButtonClick());
         return this;
     }
-
-    /*public RackMonthPicker setPositiveText(String text){
-        mPositiveButton.setText(text);
-        return this;
-    }
-
-    public RackMonthPicker setNegativeText(String text){
-        mNegativeButton.setText(text);
-        return this;
-    }
-
-    public void dismiss() {
-        mAlertDialog.dismiss();
-    }*/
-
     private class Builder implements MonthButtonListener, HorizontalPicker.OnItemSelected {
 
         private final ImageView next;
@@ -95,7 +80,7 @@ public class RackMonthPicker {
         private int fromMonth = -1;
         private AlertDialog.Builder alertBuilder;
         private View contentView;
-        private int year = 2000;
+        private int year = Calendar.getInstance().get(Calendar.YEAR);
         private static final int MIN_LIMIT = 1990;
         private int min_limit_year = MIN_LIMIT;
 
@@ -177,7 +162,6 @@ public class RackMonthPicker {
                 public void onClick(View view) {
                     year++;
                     horizontalPicker.setSelectedItem(yearArray.indexOf(String.valueOf(year)));
-
                     validation();
                 }
             };

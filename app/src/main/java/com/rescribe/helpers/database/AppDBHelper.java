@@ -46,10 +46,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String MESSAGE = "message";
     public static final String MESSAGE_TABLE = "unread_messages";
 
-    // Skip Function
-    public static final String SKIP_INV_TABLE = "skip_investigation";
-    public static final String SKIP_INV_DOCTOR_ID = "skip_inv_doctor_id";
-
     public static final String INV_ID = "inv_id";
     public static final String INV_NAME = "inv_name";
     public static final String INV_NAME_KEY = "inv_key";
@@ -146,7 +142,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         checkDatabase();
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return mContext;
     }
 
@@ -262,10 +258,22 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public void deleteDatabase() {
-        File dbFile = mContext.getDatabasePath(DATABASE_NAME);
-        dbFile.delete();
+        // delete all tables data
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(INVESTIGATION_TABLE, null, null);
+        db.delete(MESSAGE_TABLE, null, null);
+        db.delete(APP_DATA_TABLE, null, null);
+        db.delete(MESSAGE_UPLOAD_TABLE, null, null);
+        db.delete(MY_RECORDS_TABLE, null, null);
+        db.delete(NOTIFICATION_MESSAGE_TABLE, null, null);
 
-        CommonMethods.Log("DeletedOfflineDatabase", "APP_DATA , PREFERENCES TABLE, INVESTIGATION");
+        db.delete(DOC_DATA.APPOINTMENT_DATA_TABLE, null, null);
+        db.delete(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, null, null);
+        db.delete(DOC_DATA.CARDS_BACKGROUND_TABLE, null, null);
+        db.delete(DOC_DATA.CLINIC_DATA_TABLE, null, null);
+        db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, null, null);
+        db.delete(DOC_DATA.DOCTOR_DATA_TABLE, null, null);
+        db.close();
     }
 
     public boolean insertPreferences(String userId, String breakfastTime, String lunchTime, String snacksTime, String dinnerTime) {
@@ -306,13 +314,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
         db.update(PREFERENCES_TABLE, contentValues, USER_ID + " = ? ", new String[]{userId});
         return true;
-    }
-
-    private int deletePreferences(String userId) {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(PREFERENCES_TABLE,
-                USER_ID + " = ? ",
-                new String[]{userId});
     }
 
     // investigation

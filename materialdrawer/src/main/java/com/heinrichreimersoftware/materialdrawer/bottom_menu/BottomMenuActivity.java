@@ -76,7 +76,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         imageUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onProfileImageClick();
+                onProfileImageClick(imageUrl);
             }
         });
 
@@ -111,6 +111,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         bottomSheetMenuLayout.startAnimation(slideUpAnimation);
     }
 
+    @SuppressLint("CheckResult")
     public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo, String salutationText) {
 
         mMobileNumber.setText("+91 - " + patientMobileNo);
@@ -325,7 +326,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     }
 
     @Override
-    public void onProfileImageClick() {
+    public void onProfileImageClick(CircularImageView profileImageView) {
 
     }
 

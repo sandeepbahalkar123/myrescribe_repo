@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -18,6 +17,7 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
+import com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView;
 import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.adapters.settings.SettingsAdapter;
@@ -60,7 +60,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter.connectIndex;
 import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
@@ -259,11 +258,11 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
     }
 
     @Override
-    public void onProfileImageClick() {
+    public void onProfileImageClick(CircularImageView profileImageView) {
 //        Intent intent = new Intent(this, ProfileActivity.class);
 //        startActivity(intent);
 
-        super.onProfileImageClick();
+        super.onProfileImageClick(profileImageView);
     }
 
     @Override

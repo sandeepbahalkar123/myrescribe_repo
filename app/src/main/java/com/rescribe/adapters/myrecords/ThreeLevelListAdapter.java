@@ -1,5 +1,6 @@
 package com.rescribe.adapters.myrecords;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -45,9 +46,11 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
     private List<MyRecordInfoAndReports> mListDataHeader;// header titles
     // child data in format of header title, child title
     private HashMap<MyRecordInfoAndReports, ArrayList<MyRecordReports>> mListDataChild;
+    private boolean isChanged = false;
 
     private Context context;
 
+    @SuppressLint("CheckResult")
     public ThreeLevelListAdapter(Context context, ArrayList<MyRecordInfoAndReports> mOriginalList) {
         this.context = context;
 
@@ -117,17 +120,17 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
         final GroupViewHolder groupViewHolder;
         if (convertView == null) {
-
             convertView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_doctor_list_layout, parent, false);
-
             groupViewHolder = new GroupViewHolder(convertView);
             convertView.setTag(groupViewHolder);
-        } else {
+        } else
             groupViewHolder = (GroupViewHolder) convertView.getTag();
-        }
 
+        String previousDate = "";
         MyRecordInfoAndReports group = getGroup(groupPosition);
+        if (groupPosition != 0)
+            previousDate = getGroup(groupPosition - 1).getMyRecordDoctorInfo().getDate();
 
         MyRecordDoctorInfo dataObject = group.getMyRecordDoctorInfo();
         String doctorName = "";
@@ -136,7 +139,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         } else {
             doctorName = "Dr. " + dataObject.getDoctorName();
         }
-
 
         int newHeightWidth;
         if (groupPosition == 0)
@@ -149,7 +151,6 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.circularBulletMainElement.getLayoutParams().width = newHeightWidth;
 
         groupViewHolder.doctorName.setText(doctorName);
-        // groupViewHolder.doctorAddress.setText(dataObject.getAddress());
 
         String addressText;
         if (dataObject.getAreaName().isEmpty())
@@ -157,11 +158,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         else
             addressText = CommonMethods.toCamelCase(dataObject.getAreaName()) + ", " + CommonMethods.toCamelCase(dataObject.getCityName());
         groupViewHolder.doctorAddress.setText(addressText);
-
         groupViewHolder.doctorType.setText(dataObject.getSpecialization());
-
-        groupViewHolder.parentDataContainer.setBackgroundColor(dataObject.getRowColor());
-        groupViewHolder.sideBarView.setBackgroundColor(dataObject.getSideBarViewColor());
 
         //--------
         Date date = CommonMethods.convertStringToDate(dataObject.getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
@@ -174,46 +171,35 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             groupViewHolder.date.setText(Html.fromHtml(toDisplay));
         }
 
-        //---------
-        groupViewHolder.footerBarLayout.setVisibility(View.VISIBLE);
-        groupViewHolder.circularBulletChildElement.setVisibility(View.GONE);
+        if (previousDate.equals(dataObject.getDate())) {
+            groupViewHolder.date.setVisibility(View.INVISIBLE);
+            groupViewHolder.circularBulletMainElement.setVisibility(View.GONE);
+            groupViewHolder.circularBulletChildElement.setVisibility(View.VISIBLE);
+        } else {
+            groupViewHolder.date.setVisibility(View.VISIBLE);
+            groupViewHolder.circularBulletMainElement.setVisibility(View.VISIBLE);
+            groupViewHolder.circularBulletChildElement.setVisibility(View.GONE);
+            isChanged = !isChanged;
+        }
+
+        if (dataObject.getBgColor() == null) {
+            if (isChanged) {
+                dataObject.setBgColor(ContextCompat.getColor(context, R.color.white));
+                dataObject.setSlideBarColor(ContextCompat.getColor(context, R.color.dark_blue));
+            } else {
+                dataObject.setBgColor(ContextCompat.getColor(context, R.color.divider));
+                dataObject.setSlideBarColor(ContextCompat.getColor(context, R.color.recentblue));
+            }
+        }
+
+        convertView.setBackgroundColor(dataObject.getBgColor());
+        groupViewHolder.sideBarView.setBackgroundColor(dataObject.getSlideBarColor());
+
         if (groupPosition == 0)
             groupViewHolder.upperLine.setVisibility(View.INVISIBLE);
         else {
             groupViewHolder.upperLine.setVisibility(View.VISIBLE);
         }
-
-        if (groupPosition % 2 == 1) {
-            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
-            groupViewHolder.footerDividerViewLeft.setBackgroundColor(isExpanded ? ContextCompat.getColor(context, R.color.divider) : ContextCompat.getColor(context, R.color.white));
-
-            groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
-            groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.darkblue));
-
-            //--- this is done to keep same bgColor for group n child and sub-childes.
-            dataObject.setRowColor(ContextCompat.getColor(context, R.color.divider));
-            groupViewHolder.footerDividerViewHalfRight.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            groupViewHolder.footerDividerViewRight.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            //----------------
-        } else {
-
-            boolean isLast = groupPosition == mListDataHeader.size() - 1;
-
-            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            groupViewHolder.footerDividerViewLeft.setBackgroundColor((isExpanded || isLast) ? ContextCompat.getColor(context, R.color.white) : ContextCompat.getColor(context, R.color.divider));
-
-            groupViewHolder.sideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
-            groupViewHolder.footerSideBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.recentblue));
-
-            //--- this is done to keep same bgColor for group n child and sub-childes.
-            dataObject.setRowColor(ContextCompat.getColor(context, R.color.white));
-            groupViewHolder.footerDividerViewHalfRight.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
-            groupViewHolder.footerDividerViewRight.setBackgroundColor(ContextCompat.getColor(context, R.color.divider));
-            //----------------
-
-        }
-        //-------
-
 
         if (dataObject.getDocImgURL() == null || RescribeConstants.BLANK.equalsIgnoreCase(dataObject.getDocImgURL())) {
             int color2 = mColorGenerator.getColor(dataObject.getDoctorName());
@@ -246,21 +232,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
         final SecondLevelExpandableListView secondLevelELV = new SecondLevelExpandableListView(context);
 
         MyRecordInfoAndReports group = getGroup(groupPosition);
-
-        //----------
-        MyRecordDoctorInfo dataObject = group.getMyRecordDoctorInfo();
-
-        int color;
-        int bgColor = dataObject.getRowColor();
-        if (groupPosition % 2 == 1) {
-            color = ContextCompat.getColor(context, R.color.darkblue);
-        } else {
-            color = ContextCompat.getColor(context, R.color.recentblue);
-        }
-
-        //-----------
-
-        secondLevelELV.setAdapter(new SecondLevelAdapter(context, group.getMyRecordReportInfo(), color, bgColor));
+        secondLevelELV.setAdapter(new SecondLevelAdapter(context, group.getMyRecordReportInfo(), group.getMyRecordDoctorInfo().getSlideBarColor(), group.getMyRecordDoctorInfo().getBgColor()));
 
         secondLevelELV.setGroupIndicator(null);
         secondLevelELV.setChildIndicator(null);
@@ -279,8 +251,7 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
                 SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
                 MyRecordReports childGroup = adapter.getGroup(groupPosition);
-                if (childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigation)) || childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigations))) {
-                } else {
+                if (!childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigation)) && !childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigations))) {
                     secondLevelELV.collapseGroup(groupPosition);
                     Intent intent = new Intent(context, ShowRecordsActivity.class);
                     ArrayList<MyRecordReports.MyRecordReportList> reportList = childGroup.getReportList();

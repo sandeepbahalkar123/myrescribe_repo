@@ -175,9 +175,15 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     private void showMessage() {
         //  if (isAllListEmpty)
-        if (isAllListEmptyCount == 4)
+//        if (isAllListEmptyCount == 4)
+//            emptyListMessageView.setVisibility(View.VISIBLE);
+//        else emptyListMessageView.setVisibility(View.GONE);
+
+        if(unreadTokenNotificationListViewLayout.getVisibility()==View.GONE && unreadFollowUpViewLayout.getVisibility()==View.GONE && appointmentsListViewLayout.getVisibility()==View.GONE && investigationsListViewLayout.getVisibility()==View.GONE && mOnGoingMedicationListViewLayout.getVisibility()==View.GONE ){
             emptyListMessageView.setVisibility(View.VISIBLE);
-        else emptyListMessageView.setVisibility(View.GONE);
+        }else{
+            emptyListMessageView.setVisibility(View.GONE);
+        }
     }
 
     private void initializeAppointmentsListView() {
@@ -585,6 +591,8 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
                 isAllListEmptyCount = isAllListEmptyCount + 1;
                 showMessage();
             }
+
+            showMessage();
 
             initializeInvestigationListView();
         } else if (RescribeConstants.FOLLOW_UP.equals(mOldDataTag)) {

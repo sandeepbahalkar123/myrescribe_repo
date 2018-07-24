@@ -170,6 +170,11 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private void initialize() {
 
         mContext = BookAppointDoctorListBaseActivity.this;
+
+        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         imageUtils = new ImageUtils(this);
         mCustomProgressDialog = new CustomProgressDialog(this);
         appDBHelper = new AppDBHelper(mContext);
@@ -210,45 +215,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         //------ This Activity is base for RecentVisitDoctorFragment
         mRecentVisitDoctorFragment = RecentVisitDoctorFragment.newInstance(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mRecentVisitDoctorFragment).commit();
-        //-----------
-        //----------
-        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                //Called when a drawer's position changes.
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                //Called when a drawer has settled in a completely open state.
-                //The drawer is interactive at this point.
-                // If you have 2 drawers (left and right) you can distinguish
-                // them by using id of the drawerView. int id = drawerView.getId();
-                // id will be your layout's id: for example R.id.left_drawer
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Called when a drawer has settled in a completely closed state.
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
-            }
-        });
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            }
-        }, 100);
-
     }
 
     //BottomMenu is Set here // BottomMenu is shown on Bookappointment page only i it opens from bottomMenuBar otherwise it is hidden
@@ -343,7 +309,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
-
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
                     //get image URI and set to create image of jpg format.
@@ -365,7 +330,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         switch (requestCode) {
             case ImageUtils.CAMERA_REQUEST_CODE:
             case ImageUtils.GALLERY_REQUEST_CODE:
@@ -444,7 +408,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     }
 
-    //TODO: PENDING
     public DrawerLayout getActivityDrawerLayout() {
         return mDrawerLayout;
     }
@@ -454,7 +417,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     }
 
-    //Clicks of Bottomsheet dialog are managed here
+    // Clicks of Bottom sheet dialog are managed here
     @Override
     public void onBottomSheetMenuClick(BottomSheetMenu bottomMenu) {
         if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.vital_graph))) {
@@ -463,10 +426,8 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.notification) + "s")) {
             Intent intent = new Intent(this, UnreadNotificationMessageActivity.class);
             startActivity(intent);
-
             RescribePreferencesManager.putInt(RescribeConstants.NOTIFICATION_COUNT, 0, this);
             setBadgeCount(0);
-
         } else if (bottomMenu.getName().equalsIgnoreCase(getString(R.string.my_records))) {
             MyRecordsData myRecordsData = appDBHelper.getMyRecordsData();
             int completeCount = 0;

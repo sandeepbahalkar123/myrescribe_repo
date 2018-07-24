@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -59,8 +60,6 @@ import butterknife.Unbinder;
 
 import static com.rescribe.ui.activities.DoctorConnectActivity.PAID;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
-
-//TODO , NNED TO IMPLEMNT AS PER NEW JSON
 
 public class BookAppointDoctorDescriptionFragment extends Fragment implements HelperResponse {
 
@@ -168,12 +167,11 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         mDoctorDataHelper = new DoctorDataHelper(getActivity(), this);
         mColorGenerator = ColorGenerator.MATERIAL;
         //   BookAppointDoctorListBaseActivity.setToolBarTitle(args.getString(RescribeConstants.TITLE), false);
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mReceivedTitle = arguments.getString(RescribeConstants.TITLE);
-        }
+        if (getArguments() != null)
+            mReceivedTitle = getArguments().getString(RescribeConstants.TITLE);
     }
 
+    @SuppressLint("CheckResult")
     private void setDataInViews() {
 
         if (!mClickedDoctorObject.getClinicDataList().isEmpty())
@@ -218,8 +216,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     .load(mClickedDoctorObject.getDoctorImageUrl())
                     .apply(requestOptions).thumbnail(0.5f)
                     .into(mProfileImage);
-
-
         }
         //-------
         setFavorite(mClickedDoctorObject.getFavourite());
@@ -261,10 +257,9 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             mDocPracticesLocationCount.setText(contentExp);
-        } else {
+        } else
             mAllClinicPracticeLocationMainLayout.setVisibility(View.GONE);
 
-        }
         //------------
         if (!mClickedDoctorObject.getCategorySpeciality().equalsIgnoreCase("")) {
             mPremiumType.setText("" + mClickedDoctorObject.getCategorySpeciality());
@@ -272,23 +267,17 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         } else {
             mPremiumType.setVisibility(View.INVISIBLE);
         }
-        //-----------
-        //requestOptions.placeholder(R.drawable.layer_12);
-      /*  if (!mClickedDoctorObject.getAddressOfDoctorString().isEmpty()) {
-            Glide.with(getActivity())
-                    .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mClickedDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mClickedDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x250")
-                    .into(locationImage);
-        }*/
 
-        //---------
-        if (mClickedDoctorObject.getClinicDataList().size() > 0) {
+        if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
             ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
-
             mClinicNameSpinner.setAdapter(arrayAdapter);
-            for(int i = 0 ;i < mClickedDoctorObject.getClinicDataList().size() ;i++){
-                String clinicNameSpinner = mClickedDoctorObject.getNameOfClinicString();
-                if(clinicNameSpinner.equalsIgnoreCase(mClickedDoctorObject.getClinicDataList().get(i).getClinicName()))
-                mClinicNameSpinner.setSelection(i);
+
+            if (!mClickedDoctorObject.isDoctorSearch()) {
+                for (int i = 0; i < mClickedDoctorObject.getClinicDataList().size(); i++) {
+                    String clinicNameSpinner = mClickedDoctorObject.getNameOfClinicString();
+                    if (clinicNameSpinner.equalsIgnoreCase(mClickedDoctorObject.getClinicDataList().get(i).getClinicName()))
+                        mClinicNameSpinner.setSelection(i);
+                }
             }
 
             mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -301,7 +290,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                     } else {
                         mClinicName.setVisibility(View.VISIBLE);
                         mClinicName.setText("" + clinicData.getClinicName());
-
                     }
                     if (clinicData.getAmount() == 0) {
                         ruppeeShadow.setVisibility(View.INVISIBLE);

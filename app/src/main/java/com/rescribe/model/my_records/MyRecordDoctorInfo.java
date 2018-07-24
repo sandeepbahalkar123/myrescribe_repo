@@ -42,21 +42,27 @@ public class MyRecordDoctorInfo implements CustomResponse, Serializable {
     @Expose
     private String cityName;
 
-    private int color;
-
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
-
+    private Integer bgColor;
+    private Integer slideBarColor;
 
     private boolean isStartElement;
-    private int rowColor;
-    private int sideBarViewColor;
     private boolean isExpanded;
+
+    public Integer getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(Integer bgColor) {
+        this.bgColor = bgColor;
+    }
+
+    public Integer getSlideBarColor() {
+        return slideBarColor;
+    }
+
+    public void setSlideBarColor(Integer slideBarColor) {
+        this.slideBarColor = slideBarColor;
+    }
 
     public String getId() {
         return id;
@@ -101,14 +107,6 @@ public class MyRecordDoctorInfo implements CustomResponse, Serializable {
         isStartElement = startElement;
     }
 
-    public int getRowColor() {
-        return rowColor;
-    }
-
-    public void setRowColor(int rowColor) {
-        this.rowColor = rowColor;
-    }
-
     public boolean isExpanded() {
         return isExpanded;
     }
@@ -123,14 +121,6 @@ public class MyRecordDoctorInfo implements CustomResponse, Serializable {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
-    }
-
-    public int getSideBarViewColor() {
-        return sideBarViewColor;
-    }
-
-    public void setSideBarViewColor(int sideBarViewColor) {
-        this.sideBarViewColor = sideBarViewColor;
     }
 
     public String getDocImgURL() {
@@ -158,10 +148,7 @@ public class MyRecordDoctorInfo implements CustomResponse, Serializable {
                 ", date='" + date + '\'' +
                 ", specialization='" + specialization + '\'' +
                 ", docImgURL='" + docImgURL + '\'' +
-                ", color=" + color +
                 ", isStartElement=" + isStartElement +
-                ", rowColor=" + rowColor +
-                ", sideBarViewColor=" + sideBarViewColor +
                 ", isExpanded=" + isExpanded +
                 '}';
     }

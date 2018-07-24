@@ -23,9 +23,6 @@ import java.util.Map;
 
 public class DoctorListFragment extends Fragment implements View.OnClickListener {
 
-    private static final String COUNT = "column-count";
-    private static final String MONT = "VALUE";
-    private static final String VALUE = "VALUE";
     RecyclerView mDoctorListView;
     DoctorListAdapter showDoctorListAdapter;
     private View mRootView;

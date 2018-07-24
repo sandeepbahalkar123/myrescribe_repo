@@ -231,11 +231,8 @@ public class FilterFragment extends Fragment {
 
     public interface OnDrawerInteractionListener {
         void onApply();
-
         void onSelectDoctors();
-
         void onSelectSpeciality();
-
         void onReset();
     }
 

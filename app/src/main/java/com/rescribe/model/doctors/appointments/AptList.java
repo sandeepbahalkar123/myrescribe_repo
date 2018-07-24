@@ -81,10 +81,6 @@ public class AptList implements CustomResponse, Serializable {
     @Expose
     private String clinicAddress;
 
-
-    //--------------------------
-
-
     public String getClinicAddress() {
         return clinicAddress;
     }

@@ -482,9 +482,6 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                 else
                     bookAppointFilterRequestModel.setClinicFeesRange(new Integer[]{((Long) mClinicFeesSeekBar.getSelectedMinValue()).intValue(), ((Long) mClinicFeesSeekBar.getSelectedMaxValue()).intValue()});
 
-                // bookAppointFilterRequestModel.setDistance(new String[]{"" + mDistanceSeekBar.getProgress(), "" + mDistanceSeekBar.getProgress()});
-
-                //------
                 ArrayList<String> temp = new ArrayList<>();
                 for (Object o : mSelectedDays.entrySet()) {
                     Map.Entry pair = (Map.Entry) o;
@@ -492,11 +489,10 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                         temp.add((String) pair.getKey());
                     }
                 }
-                //  bookAppointFilterRequestModel.setAvailability(temp.toArray(new String[temp.size()]));
-                //------
+
                 if (mFilterSelectLocationsAdapter != null)
                     bookAppointFilterRequestModel.setLocationList(mFilterSelectLocationsAdapter.getSelectedLocation().toArray(new String[temp.size()]));
-                //------
+
                 if (mSortByPriceNameFilterAdapter != null) {
                     String[] split = mSortByPriceNameFilterAdapter.getSelectedSortedOption().split("\\|");
                     if (split.length == 2) {
@@ -504,7 +500,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                         bookAppointFilterRequestModel.setSortOrder(split[1]);
                     }
                 }
-                //------
+
                 Bundle b = new Bundle();
                 b.putParcelable(getString(R.string.filter), bookAppointFilterRequestModel);
                 mListener.onApply(b, true);

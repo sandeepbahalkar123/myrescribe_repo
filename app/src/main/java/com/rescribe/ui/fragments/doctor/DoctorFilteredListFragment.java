@@ -167,8 +167,7 @@ public class DoctorFilteredListFragment extends Fragment implements HelperRespon
         public int compare(DoctorFilteredInfoAndCaseDetails m1, DoctorFilteredInfoAndCaseDetails m2) {
             Date m1Date = CommonMethods.convertStringToDate(m1.getDoctorFilteredInfo().getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
             Date m2Date = CommonMethods.convertStringToDate(m2.getDoctorFilteredInfo().getDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD);
-            int i = m2Date.compareTo(m1Date);
-            return i;
+            return m2Date.compareTo(m1Date);
         }
     }
 }

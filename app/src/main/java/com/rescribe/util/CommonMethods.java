@@ -1,5 +1,6 @@
 package com.rescribe.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -38,13 +39,27 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CheckIpConnection;
 import com.rescribe.interfaces.DatePickerDialogListener;
+import com.rescribe.interfaces.profile_photo.ProfilePhotoUpload;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
+import com.rescribe.model.profile_upload.ProfilePhotoResponse;
+import com.rescribe.preference.RescribePreferencesManager;
+import com.rescribe.singleton.Device;
+import com.rescribe.ui.customesViews.CustomProgressDialog;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
+import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadStatusDelegate;
+
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -1204,6 +1219,75 @@ public class CommonMethods {
 
         cardCursor.close();
         return doctorLists;
+    }
+
+    public static void uploadProfilePhoto(final String filepath, final Context mContext, final CustomProgressDialog mCustomProgressDialog) {
+
+        String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, mContext);
+        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, mContext);
+        try {
+            mCustomProgressDialog.show();
+            MultipartUploadRequest uploadRequest = new MultipartUploadRequest(mContext, System.currentTimeMillis() + patientId, Config.BASE_URL + Config.PROFILE_UPLOAD)
+                    .setUtf8Charset()
+                    .setMaxRetries(RescribeConstants.MAX_RETRIES)
+                    .addHeader(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
+                    .addHeader(RescribeConstants.DEVICEID, Device.getInstance(mContext).getDeviceId())
+                    .addHeader(RescribeConstants.OS, Device.getInstance(mContext).getOS())
+                    .addHeader(RescribeConstants.OSVERSION, Device.getInstance(mContext).getOSVersion())
+                    .addHeader(RescribeConstants.DEVICE_TYPE, Device.getInstance(mContext).getDeviceType())
+                    .addHeader("patientId", patientId)
+                    .addFileToUpload(filepath, "patImage");
+
+            uploadRequest.setNotificationConfig(new UploadNotificationConfig());
+
+            uploadRequest.setDelegate(new UploadStatusDelegate() {
+                @Override
+                public void onProgress(Context context, UploadInfo uploadInfo) {
+                    // your code here
+                    CommonMethods.Log(TAG, "Progress: " + uploadInfo.getProgressPercent());
+                }
+
+                @Override
+                public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse,
+                                    Exception exception) {
+                    // your code here
+                    mCustomProgressDialog.dismiss();
+                    Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
+
+                @SuppressLint("CheckResult")
+                @Override
+                public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+                    // On Profile Image Upload on Server is completed that event is captured in this function.
+                    String bodyAsString = serverResponse.getBodyAsString();
+                    CommonMethods.Log(TAG, bodyAsString);
+                    ProfilePhotoResponse profilePhotoResponse = new Gson().fromJson(bodyAsString, ProfilePhotoResponse.class);
+                    if (profilePhotoResponse.getCommon().isSuccess()) {
+                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, profilePhotoResponse.getData().getPatImgUrl(), mContext);
+                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_UPDATE_TIME, profilePhotoResponse.getData().getModificationDate(), mContext);
+                        Toast.makeText(context, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                        if (mContext instanceof ProfilePhotoUpload) {
+                            ProfilePhotoUpload profilePhotoUpload = (ProfilePhotoUpload) mContext;
+                            profilePhotoUpload.setProfilePhoto(filepath, profilePhotoResponse.getData().getModificationDate());
+                        } else Log.e(TAG, "Activity Must implement ProfilePhotoUpload");
+                    } else
+                        Toast.makeText(context, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+
+                    mCustomProgressDialog.dismiss();
+                }
+
+                @Override
+                public void onCancelled(Context context, UploadInfo uploadInfo) {
+                    // your code here
+                    mCustomProgressDialog.dismiss();
+                }
+            });
+
+            uploadRequest.startUpload();
+
+        } catch (FileNotFoundException | MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

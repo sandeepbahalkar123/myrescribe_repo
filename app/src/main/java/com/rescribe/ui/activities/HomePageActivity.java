@@ -20,6 +20,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -38,6 +39,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -64,6 +68,7 @@ import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.interfaces.profile_photo.ProfilePhotoUpload;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTMessage;
@@ -78,12 +83,14 @@ import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.NotificationModel;
+import com.rescribe.model.profile_upload.ProfilePhotoResponse;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DeleteUnreadNotificationAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
+import com.rescribe.singleton.Device;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocationActivity;
@@ -96,13 +103,25 @@ import com.rescribe.ui.activities.find_doctors.FindDoctorsActivity;
 import com.rescribe.ui.activities.health_repository.HealthRepositoryActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
+import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.ImageUtils;
 import com.rescribe.util.RescribeConstants;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
+import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadStatusDelegate;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -145,7 +164,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 
 public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener, ImageUtils.ImageAttachmentListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, ProfilePhotoUpload {
 
     private static final String TAG = "HomePage";
     @BindView(R.id.custom_progress_bar)
@@ -229,6 +248,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private String patientId;
     private boolean mIsAppOpenFromLogin;
     private ImageUtils imageUtils;
+    private CustomProgressDialog mCustomProgressDialog;
 
     private void logUser() {
         // TODO: Use the current user's information
@@ -245,6 +265,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         setContentView(R.layout.main_dashboard_layout);
         ButterKnife.bind(this);
         mContext = HomePageActivity.this;
+        mCustomProgressDialog = new CustomProgressDialog(mContext);
         imageUtils = new ImageUtils(this);
         RescribeApplication.setPreviousUserSelectedLocationInfo(this, null, null);
 
@@ -316,6 +337,24 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                         }
                         break;
                 }
+                break;
+
+            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    //get image URI and set to create image of jpg format.
+                    Uri resultUri = result.getUri();
+//                String path = Environment.getExternalStorageDirectory() + File.separator + "DrRescribe" + File.separator + "ProfilePhoto" + File.separator;
+                    imageUtils.callImageCropMethod(resultUri);
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                Exception error = result.getError();
+                }
+                break;
+
+            case ImageUtils.CAMERA_REQUEST_CODE:
+            case ImageUtils.GALLERY_REQUEST_CODE:
+                imageUtils.onActivityResult(requestCode, resultCode, data);
                 break;
         }
     }
@@ -685,6 +724,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 //        Intent intent = new Intent(this, ProfileActivity.class);
 //           startActivity(intent);
 
+        // onclick of profile image imagePicker dialog called.
+        imageUtils.imagePicker(1);
         super.onProfileImageClick();
     }
 
@@ -861,6 +902,20 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         int unreadMessageCount = appDBHelper.unreadMessageCount();
         setConnectBadgeCount(unreadMessageCount);
+        setProfilePhoto(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, this), RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_UPDATE_TIME, this));
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void setProfilePhoto(String filePath, String profilePhotoSignature) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.signature(new ObjectKey(profilePhotoSignature));
+
+        Glide.with(mContext)
+                .load(filePath)
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(profileImageView);
     }
 
     @Override
@@ -1173,6 +1228,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     }
                 }
                 break;
+
+            case ImageUtils.CAMERA_REQUEST_CODE:
+            case ImageUtils.GALLERY_REQUEST_CODE:
+                imageUtils.request_permission_result(requestCode, permissions, grantResults);
+                break;
         }
     }
 
@@ -1280,7 +1340,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     @Override
     public void imageAttachment(int from, Bitmap file, Uri uri) {
-
+        //file path is given below to generate new image as required i.e jpg format
+        String path = Environment.getExternalStorageDirectory() + File.separator + "Rescribe" + File.separator + "ProfilePhoto" + File.separator;
+        imageUtils.createImage(file, path, false);
+        CommonMethods.uploadProfilePhoto(ImageUtils.FILEPATH, mContext, mCustomProgressDialog);
     }
-
 }

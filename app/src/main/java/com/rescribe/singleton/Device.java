@@ -24,7 +24,7 @@ public class Device {
         this.windowManager = windowManager;
     }
 
-    public Device(Context context) {
+    private Device(Context context) {
         this.context = context;
     }
 
@@ -33,7 +33,6 @@ public class Device {
      */
 
     public static Device getInstance(Context context) {
-
         return new Device(context);
     }
 

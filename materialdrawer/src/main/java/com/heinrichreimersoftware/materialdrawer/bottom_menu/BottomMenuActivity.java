@@ -50,7 +50,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
     public boolean isOpen;
     private LinearLayout linearTableLayout;
     private int mPosition;
-    private CircularImageView imageUrl;
+    public CircularImageView profileImageView;
     private TextView mPatientName;
     private TextView mMobileNumber;
     private ColorGenerator mColorGenerator;
@@ -68,12 +68,12 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         mPatientName = (TextView) findViewById(R.id.patientName);
         mMobileNumber = (TextView) findViewById(R.id.mobileNumber);
         bottomMenuListRecyclerView = (RecyclerView) findViewById(R.id.bottomMenuListRecyclerView);
-        imageUrl = (CircularImageView) findViewById(R.id.imageUrl);
+        profileImageView = (CircularImageView) findViewById(R.id.imageUrl);
         int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
         mColorGenerator = ColorGenerator.MATERIAL;
         createBottomMenu();
 
-        imageUrl.setOnClickListener(new View.OnClickListener() {
+        profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onProfileImageClick();
@@ -111,6 +111,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         bottomSheetMenuLayout.startAnimation(slideUpAnimation);
     }
 
+    @SuppressLint("CheckResult")
     public void setUpAdapterForBottomSheet(String patientImageUrl, String patientName, String patientMobileNo, String salutationText) {
 
         mMobileNumber.setText("+91 - " + patientMobileNo);
@@ -139,7 +140,7 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         Glide.with(this)
                 .load(patientImageUrl)
                 .apply(requestOptions)
-                .into(imageUrl);
+                .into(profileImageView);
 
         linearTableLayout.removeAllViews();
 

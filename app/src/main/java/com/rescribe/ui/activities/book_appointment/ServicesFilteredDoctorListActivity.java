@@ -72,15 +72,14 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
 
     public void disableDrawer(boolean isDisabled) {
         if (isDisabled) {
-            getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-            if (getActivityDrawerLayout().isDrawerOpen(GravityCompat.END))
-                getActivityDrawerLayout().closeDrawer(GravityCompat.END);
+            getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END);
+            getActivityDrawerLayout().closeDrawer(GravityCompat.END);
         } else {
             if (mDrawerLoadedFragment == null) {
                 mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
             }
-            getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, GravityCompat.END);
         }
     }
 

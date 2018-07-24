@@ -250,15 +250,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     //  CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
                 break;
-            /*case RescribeConstants.TASK_GET_DOCTOR_DATA:
-                DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
-                if (receivedDoctorServicesModel != null) {
-                    mReceivedDoctorServicesModel = receivedDoctorServicesModel;
-                    // get doctors from database
-//                    mServiceCardDataViewBuilder.setReceivedDoctorDataList(mReceivedDoctorServicesModel.getDoctorList());
-                    setDoctorListAdapter(false);
-                }
-                break;*/
 
             case TASK_DOCTORLIST_API:
                 DoctorListModel doctorListModel = (DoctorListModel) customResponse;
@@ -376,7 +367,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             mergeList.add(favoriteList.get(0));
 
         //----- Set Up view Pager :START-------
-        if (mergeList.size() == 0) {
+        if (mergeList.isEmpty()) {
             mViewpager.setVisibility(View.GONE);
             //mCircleIndicator.setVisibility(View.GONE);
         } else {
@@ -471,7 +462,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     public void onApplyClicked(Bundle data) {
         isFilterApplied = true;
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
-
         mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel, null);
     }
 

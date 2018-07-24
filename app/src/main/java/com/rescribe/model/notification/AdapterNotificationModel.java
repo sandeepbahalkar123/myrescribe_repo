@@ -19,9 +19,18 @@ public class AdapterNotificationModel implements CustomResponse{
     private SlotModel slotModel;
     private List<Medication> medication = null;
     private boolean isExpanded = false;
+
     private boolean isLunchThere = true;
     private boolean isDinnerThere = true;
     private boolean isBreakThere = true;
+    private boolean isSnacksThere = true;
+
+    private boolean isLunchExpanded = false;
+    private boolean isDinnerExpanded = false;
+    private boolean isBreakFastExpanded = false;
+    private boolean isSnacksExpanded = false;
+    private String date;
+    private boolean isTabSelected = false;
 
     public SlotModel getSlotModel() {
         return slotModel;
@@ -122,15 +131,6 @@ public class AdapterNotificationModel implements CustomResponse{
     public void setTabSelected(boolean tabSelected) {
         isTabSelected = tabSelected;
     }
-
-    private boolean isSnacksThere = true;
-    private boolean isLunchExpanded = false;
-    private boolean isDinnerExpanded = false;
-    private boolean isBreakFastExpanded = false;
-    private boolean isSnacksExpanded = false;
-    private String date;
-    private boolean isTabSelected = false;
-
 
     public String getPrescriptionDate() {
         return prescriptionDate;

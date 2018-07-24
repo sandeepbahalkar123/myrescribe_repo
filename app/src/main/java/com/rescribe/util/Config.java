@@ -31,6 +31,7 @@ public class Config {
     public static final String CANCEL_RESCHDULE_APPOINTMENT = "api/patient/updateAppointmentStatus";
     public static final String CANCEL_TOKEN_NUMBER = "api/doctors/cancelTokenNo";
     public static final String FOLLOW_UP_RESPONSE = "api/patient/notificationResponse";
+    public static final String PROFILE_UPLOAD = "api/upload/uploadPatientImage";
 
     public static boolean DEV_BUILD = true;
 

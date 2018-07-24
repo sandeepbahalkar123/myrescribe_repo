@@ -253,7 +253,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
                 b.putString(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.book_appointment));
                 b.putParcelable(RescribeConstants.ITEM_DATA, doctorObject);
                 b.putInt(mContext.getString(R.string.selected_clinic_data_position), 0);
-
                 mOnClinicAndDoctorNameSearchRowItem.onClickedOfBookButton(b);
             }
         });

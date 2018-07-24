@@ -65,7 +65,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     private CustomProgressDialog mProgressDialog;
     private boolean isHeaderExpand = true;
     private RespondToNotificationHelper mRespondToNotificationHelper;
-    private ArrayList<Medication> mTodayDataList;
+    private ArrayList<Medication> mTodayDataList = new ArrayList<>();
     ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
 
     @BindView(R.id.recycler)
@@ -173,69 +173,67 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
         }
 
         if (!medi.isEmpty()) {
-            if (medi.size() != 0) {
-                mHeaderLayoutParent.setVisibility(View.VISIBLE);
-                String slotMedicine = "";
+            mHeaderLayoutParent.setVisibility(View.VISIBLE);
+            String slotMedicine = "";
 
-                if (getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(mMedicineSlot)) {
-                    slotMedicine = getString(R.string.smallcasebreakfast);
-                } else if (getResources().getString(R.string.lunch_medication).equalsIgnoreCase(mMedicineSlot)) {
-                    slotMedicine = getString(R.string.smallcaselunch);
-                } else if (getResources().getString(R.string.dinner_medication).equalsIgnoreCase(mMedicineSlot)) {
-                    slotMedicine = getString(R.string.smallcasedinner);
-                } else if (getResources().getString(R.string.snacks_medication).equalsIgnoreCase(mMedicineSlot)) {
-                    slotMedicine = getString(R.string.smallcasesnacks);
-                }
-                mSlotTextView.setText(mMedicineSlot);
-                mTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
-                mDateTextView.setText(mNotificationDate);
-                mDoseCompletedLabel.setText(getString(R.string.dosage_completed));
-                mDividerLineInList.setVisibility(View.VISIBLE);
-                mDividerLine.setVisibility(View.VISIBLE);
-                addHeaderTabletView(mTabletListLayout, medi);
-                mTabletListLayout.setVisibility(View.VISIBLE);
-                mSelectView.setVisibility(View.INVISIBLE);
-                final String finalSlotMedicine = slotMedicine;
-                mSelectView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + 0);
-                    }
-                });
-
-                mHeaderLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (isHeaderExpand) {
-                            onHeaderCollapse();
-                        } else {
-                            isHeaderExpand = true;
-                            if (mAdapter.preExpandedPos != -1) {
-                                mAdapter.collapseAll();
-                                mAdapter.notifyItemChanged(mAdapter.preExpandedPos);
-                                mAdapter.preExpandedPos = -1;
-                            }
-                            mDividerLine.setVisibility(View.VISIBLE);
-                            mTabletListLayout.setVisibility(View.VISIBLE);
-                            mSelectView.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                });
-
-                final String finalSlotMedicine1 = slotMedicine;
-                SwipeDismissTouchListener swipeDismissTouchListener = new SwipeDismissTouchListener(
-                        mHeaderLayout,
-                        null,
-                        new SwipeDismissTouchListener.OnDismissCallback() {
-                            @Override
-                            public void onDismiss(View view, Object token) {
-                                mHeaderLayoutParent.removeView(view);
-                                onSwiped(finalSlotMedicine1);
-                            }
-                        });
-
-                mHeaderLayout.setOnTouchListener(swipeDismissTouchListener);
+            if (getResources().getString(R.string.breakfast_medication).equalsIgnoreCase(mMedicineSlot)) {
+                slotMedicine = getString(R.string.smallcasebreakfast);
+            } else if (getResources().getString(R.string.lunch_medication).equalsIgnoreCase(mMedicineSlot)) {
+                slotMedicine = getString(R.string.smallcaselunch);
+            } else if (getResources().getString(R.string.dinner_medication).equalsIgnoreCase(mMedicineSlot)) {
+                slotMedicine = getString(R.string.smallcasedinner);
+            } else if (getResources().getString(R.string.snacks_medication).equalsIgnoreCase(mMedicineSlot)) {
+                slotMedicine = getString(R.string.smallcasesnacks);
             }
+            mSlotTextView.setText(mMedicineSlot);
+            mTimeTextView.setText(CommonMethods.getDayFromDate(RescribeConstants.DATE_PATTERN.DD_MM_YYYY, CommonMethods.getCurrentDateTime()));
+            mDateTextView.setText(mNotificationDate);
+            mDoseCompletedLabel.setText(getString(R.string.dosage_completed));
+            mDividerLineInList.setVisibility(View.VISIBLE);
+            mDividerLine.setVisibility(View.VISIBLE);
+            addHeaderTabletView(mTabletListLayout, medi);
+            mTabletListLayout.setVisibility(View.VISIBLE);
+            mSelectView.setVisibility(View.INVISIBLE);
+            final String finalSlotMedicine = slotMedicine;
+            mSelectView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mRespondToNotificationHelper.doRespondToNotificationForHeader(Integer.valueOf(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext)), finalSlotMedicine, mMedicineId, CommonMethods.formatDateTime(CommonMethods.getCurrentDateTime(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE), 1, RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER + "_" + 0);
+                }
+            });
+
+            mHeaderLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isHeaderExpand) {
+                        onHeaderCollapse();
+                    } else {
+                        isHeaderExpand = true;
+                        if (mAdapter.preExpandedPos != -1) {
+                            mAdapter.collapseAll();
+                            mAdapter.notifyItemChanged(mAdapter.preExpandedPos);
+                            mAdapter.preExpandedPos = -1;
+                        }
+                        mDividerLine.setVisibility(View.VISIBLE);
+                        mTabletListLayout.setVisibility(View.VISIBLE);
+                        mSelectView.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+
+            final String finalSlotMedicine1 = slotMedicine;
+            SwipeDismissTouchListener swipeDismissTouchListener = new SwipeDismissTouchListener(
+                    mHeaderLayout,
+                    null,
+                    new SwipeDismissTouchListener.OnDismissCallback() {
+                        @Override
+                        public void onDismiss(View view, Object token) {
+                            mHeaderLayoutParent.removeView(view);
+                            onSwiped(finalSlotMedicine1);
+                        }
+                    });
+
+            mHeaderLayout.setOnTouchListener(swipeDismissTouchListener);
         }
     }
 
@@ -296,8 +294,9 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
 
                 if (mAdapter.getSelectedCount(mTodayDataList) == mTodayDataList.size()) {
                     mHeaderLayoutParent.removeView(mHeaderLayout);
+                    mTodayDataList.clear();
                     if (mAdapter != null) {
-                        if (mAdapter.getItemCount() == 0)
+                        if (mAdapter.getItemCount() == 0 && mTodayDataList.isEmpty())
                             mNoDataAvailable.setVisibility(View.VISIBLE);
                     }
 
@@ -333,11 +332,9 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                         notificationListForAdapter.add(notificationDataForAdapter);
                     }
                 }
-                if (notificationListForHeader.size() != 0) {
-                    if (!notificationListForHeader.isEmpty()) {
-                        addHeader(notificationListForHeader);
-                    }
-                }
+                if (!notificationListForHeader.isEmpty())
+                    addHeader(notificationListForHeader);
+
                 // DoctorConnectChatData for recyclerview Adapter is sorted to set data according to UI .
                 List<AdapterNotificationData> adapterNotificationParentData = new ArrayList<>();
                 List<AdapterNotificationModel> adapterNotificationModelListForDinner = new ArrayList<>();
@@ -400,6 +397,10 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                     slotModel.setLunch(lunchList);
                     adapterNotificationModel.setMedication(slotModel);
                     adapterNotificationModel.setPrescriptionDate(notifyDate);
+                    adapterNotificationModel.setBreakThere(!breakfastList.isEmpty());
+                    adapterNotificationModel.setDinnerThere(!dinnerList.isEmpty());
+                    adapterNotificationModel.setSnacksThere(!snackList.isEmpty());
+                    adapterNotificationModel.setLunchThere(!lunchList.isEmpty());
                     adapterNotificationModelListForDinner.add(adapterNotificationModel);
                 }
 
@@ -417,8 +418,9 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             if (responseLogNotificationModel.getCommon().isSuccess()) {
                 //    CommonMethods.showToast(mContext, responseLogNotificationModel.getNotificationResponseModel().getMsg());
                 mHeaderLayoutParent.removeView(mHeaderLayout);
+                mTodayDataList.clear();
                 if (mAdapter != null) {
-                    if (mAdapter.getItemCount() == 0)
+                    if (mAdapter.getItemCount() == 0 && mTodayDataList.isEmpty())
                         mNoDataAvailable.setVisibility(View.VISIBLE);
                 }
 
@@ -428,9 +430,17 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             //handled click from NotificationAdapter checkbox in header layout
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_FOR_HEADER_ADAPTER)) {
             mAdapter.onSuccessOfNotificationCheckBoxClick(mOldDataTag, customResponse);
+            if (mAdapter != null) {
+                if (mAdapter.getItemCount() == 0 && mTodayDataList.isEmpty())
+                    mNoDataAvailable.setVisibility(View.VISIBLE);
+            }
             //handled click from NotificationAdapter checkbox in sublist layout
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
             mAdapter.onSuccessOfNotificationCheckBoxClick(mOldDataTag, customResponse);
+            if (mAdapter != null) {
+                if (mAdapter.getItemCount() == 0 && mTodayDataList.isEmpty())
+                    mNoDataAvailable.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -480,10 +490,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
             mAdapter.onNoConnectionOfNotificationCheckBoxClick(mOldDataTag, serverErrorMessage);
         } else if (mOldDataTag.startsWith(RescribeConstants.TASK_RESPOND_NOTIFICATION_ADAPTER)) {
             mAdapter.onNoConnectionOfNotificationCheckBoxClick(mOldDataTag, serverErrorMessage);
-
         }
-
-
     }
 
     @Override
@@ -505,7 +512,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     @Override
     public void onSwiped(String slotType) {
         if (mAdapter != null) {
-            if (mAdapter.getItemCount() == 0)
+            if (mAdapter.getItemCount() == 0 && mTodayDataList.isEmpty())
                 mNoDataAvailable.setVisibility(View.VISIBLE);
         }
     }

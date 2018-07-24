@@ -46,10 +46,12 @@ import static android.content.ContentValues.TAG;
 @SuppressLint("SdCardPath")
 public class ImageUtils {
 
+    public static final int CAMERA_REQUEST_CODE = 0;
+    public static final int GALLERY_REQUEST_CODE = 1;
+
     private Context context;
     private Activity current_activity;
     private Fragment current_fragment;
-
     private ImageAttachmentListener imageAttachment_callBack;
 
     private Uri imageUri;
@@ -273,9 +275,9 @@ public class ImageUtils {
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (isFragment)
-                permissionCheckFragment(1);
+                permissionCheckFragment(from);
             else
-                permissionCheck(1);
+                permissionCheck(from);
         } else {
             cameraCall();
         }
@@ -293,9 +295,9 @@ public class ImageUtils {
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (isFragment)
-                permissionCheckFragment(2);
+                permissionCheckFragment(from);
             else
-                permissionCheck(2);
+                permissionCheck(from);
         } else {
             galleyCall();
         }
@@ -336,7 +338,7 @@ public class ImageUtils {
         dialog.findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchCamera(from);
+                launchCamera(CAMERA_REQUEST_CODE);
                 dialog.dismiss();
 
             }
@@ -345,7 +347,7 @@ public class ImageUtils {
         dialog.findViewById(R.id.gallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchGallery(from);
+                launchGallery(GALLERY_REQUEST_CODE);
                 dialog.dismiss();
             }
         });
@@ -388,9 +390,9 @@ public class ImageUtils {
             return;
         }
 
-        if (code == 1)
+        if (code == CAMERA_REQUEST_CODE)
             cameraCall();
-        else if (code == 2)
+        else if (code == GALLERY_REQUEST_CODE)
             galleyCall();
     }
 
@@ -431,9 +433,9 @@ public class ImageUtils {
             return;
         }
 
-        if (code == 1)
+        if (code == CAMERA_REQUEST_CODE)
             cameraCall();
-        else if (code == 2)
+        else if (code == GALLERY_REQUEST_CODE)
             galleyCall();
     }
 
@@ -460,9 +462,9 @@ public class ImageUtils {
         intent1.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 
         if (isFragment)
-            current_fragment.startActivityForResult(intent1, 0);
+            current_fragment.startActivityForResult(intent1, CAMERA_REQUEST_CODE);
         else
-            current_activity.startActivityForResult(intent1, 0);
+            current_activity.startActivityForResult(intent1, CAMERA_REQUEST_CODE);
     }
 
     /**
@@ -476,9 +478,9 @@ public class ImageUtils {
         intent2.setType("image/*");
 
         if (isFragment)
-            current_fragment.startActivityForResult(intent2, 1);
+            current_fragment.startActivityForResult(intent2, GALLERY_REQUEST_CODE);
         else
-            current_activity.startActivityForResult(intent2, 1);
+            current_activity.startActivityForResult(intent2, GALLERY_REQUEST_CODE);
 
     }
 
@@ -492,7 +494,7 @@ public class ImageUtils {
      */
     public void request_permission_result(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case 1:
+            case CAMERA_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     cameraCall();
                 } else {
@@ -500,7 +502,7 @@ public class ImageUtils {
                 }
                 break;
 
-            case 2:
+            case GALLERY_REQUEST_CODE:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     galleyCall();
@@ -523,7 +525,7 @@ public class ImageUtils {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         switch (requestCode) {
-            case 0:
+            case CAMERA_REQUEST_CODE:
 
                 if (resultCode == RESULT_OK) {
 
@@ -541,7 +543,7 @@ public class ImageUtils {
 
                 }
                 break;
-            case 1:
+            case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     Log.i("Gallery", "Photo");
                     Uri selectedImage = data.getData();

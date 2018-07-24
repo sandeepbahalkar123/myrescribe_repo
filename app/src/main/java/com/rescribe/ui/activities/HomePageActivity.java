@@ -40,7 +40,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
 import com.crashlytics.android.Crashlytics;
@@ -56,7 +55,6 @@ import com.google.gson.Gson;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView;
 import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.adapters.dashboard.MenuOptionsDashBoardAdapter;
@@ -70,6 +68,7 @@ import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.interfaces.profile_photo.ProfilePhotoUpload;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTMessage;
@@ -165,7 +164,7 @@ import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 
 public class HomePageActivity extends BottomMenuActivity implements HelperResponse, MenuOptionsDashBoardAdapter.onMenuListClickListener, LocationListener, ImageUtils.ImageAttachmentListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, ProfilePhotoUpload {
 
     private static final String TAG = "HomePage";
     @BindView(R.id.custom_progress_bar)
@@ -250,7 +249,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private boolean mIsAppOpenFromLogin;
     private ImageUtils imageUtils;
     private CustomProgressDialog mCustomProgressDialog;
-    private CircularImageView profileImageView;
 
     private void logUser() {
         // TODO: Use the current user's information
@@ -722,15 +720,13 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     @Override
-    public void onProfileImageClick(CircularImageView profileImageView) {
+    public void onProfileImageClick() {
 //        Intent intent = new Intent(this, ProfileActivity.class);
 //           startActivity(intent);
 
         // onclick of profile image imagePicker dialog called.
-        this.profileImageView = profileImageView;
         imageUtils.imagePicker(1);
-
-        super.onProfileImageClick(profileImageView);
+        super.onProfileImageClick();
     }
 
     private void doConfigureMenuOptions() {
@@ -906,6 +902,20 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         int unreadMessageCount = appDBHelper.unreadMessageCount();
         setConnectBadgeCount(unreadMessageCount);
+        setProfilePhoto(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, this), RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_UPDATE_TIME, this));
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void setProfilePhoto(String filePath, String profilePhotoSignature) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.signature(new ObjectKey(profilePhotoSignature));
+
+        Glide.with(mContext)
+                .load(filePath)
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(profileImageView);
     }
 
     @Override
@@ -1333,79 +1343,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         //file path is given below to generate new image as required i.e jpg format
         String path = Environment.getExternalStorageDirectory() + File.separator + "Rescribe" + File.separator + "ProfilePhoto" + File.separator;
         imageUtils.createImage(file, path, false);
-        uploadProfilePhoto(ImageUtils.FILEPATH);
+        CommonMethods.uploadProfilePhoto(ImageUtils.FILEPATH, mContext, mCustomProgressDialog);
     }
-
-    private void uploadProfilePhoto(final String filepath) {
-        String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, this);
-        try {
-            mCustomProgressDialog.show();
-            MultipartUploadRequest uploadRequest = new MultipartUploadRequest(this, System.currentTimeMillis() + patientId, Config.BASE_URL + Config.PROFILE_UPLOAD)
-                    .setUtf8Charset()
-                    .setMaxRetries(RescribeConstants.MAX_RETRIES)
-                    .addHeader(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
-                    .addHeader(RescribeConstants.DEVICEID, Device.getInstance(this).getDeviceId())
-                    .addHeader(RescribeConstants.OS, Device.getInstance(this).getOS())
-                    .addHeader(RescribeConstants.OSVERSION, Device.getInstance(this).getOSVersion())
-                    .addHeader(RescribeConstants.DEVICE_TYPE, Device.getInstance(this).getDeviceType())
-                    .addHeader("patientId", patientId)
-                    .addFileToUpload(filepath, "patImage");
-
-            uploadRequest.setNotificationConfig(new UploadNotificationConfig());
-
-            uploadRequest.setDelegate(new UploadStatusDelegate() {
-                @Override
-                public void onProgress(Context context, UploadInfo uploadInfo) {
-                    // your code here
-                    CommonMethods.Log(TAG, "Progress: " + uploadInfo.getProgressPercent());
-                }
-
-                @Override
-                public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse,
-                                    Exception exception) {
-                    // your code here
-                    mCustomProgressDialog.dismiss();
-                    Toast.makeText(context, getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-
-                @SuppressLint("CheckResult")
-                @Override
-                public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-                    // On Profile Image Upload on Server is completed that event is captured in this function.
-                    String bodyAsString = serverResponse.getBodyAsString();
-                    CommonMethods.Log(TAG, bodyAsString);
-                    ProfilePhotoResponse profilePhotoResponse = new Gson().fromJson(bodyAsString, ProfilePhotoResponse.class);
-                    if (profilePhotoResponse.getCommon().isSuccess()) {
-                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, profilePhotoResponse.getData().getPatImgUrl(), mContext);
-                        Toast.makeText(context, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-
-                        RequestOptions requestOptions = new RequestOptions();
-                        requestOptions.dontAnimate();
-                        requestOptions.signature(new ObjectKey(profilePhotoResponse));
-
-                        Glide.with(mContext)
-                                .load(ImageUtils.FILEPATH)
-                                .apply(requestOptions).thumbnail(0.5f)
-                                .into(profileImageView);
-                    } else
-                        Toast.makeText(context, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-
-                    mCustomProgressDialog.dismiss();
-                }
-
-                @Override
-                public void onCancelled(Context context, UploadInfo uploadInfo) {
-                    // your code here
-                    mCustomProgressDialog.dismiss();
-                }
-            });
-
-            uploadRequest.startUpload();
-
-        } catch (FileNotFoundException | MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
 }

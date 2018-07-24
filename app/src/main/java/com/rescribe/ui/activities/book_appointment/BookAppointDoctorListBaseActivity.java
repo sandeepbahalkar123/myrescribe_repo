@@ -1,10 +1,14 @@
 package com.rescribe.ui.activities.book_appointment;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
@@ -13,9 +17,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
@@ -26,11 +35,14 @@ import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
+import com.rescribe.interfaces.profile_photo.ProfilePhotoUpload;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
+import com.rescribe.model.profile_upload.ProfilePhotoResponse;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
+import com.rescribe.singleton.Device;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.ConnectSplashActivity;
@@ -43,12 +55,25 @@ import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.ui.activities.doctor.DoctorListActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
+import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.Config;
+import com.rescribe.util.ImageUtils;
 import com.rescribe.util.RescribeConstants;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
+import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadStatusDelegate;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -74,7 +99,7 @@ import static com.rescribe.util.RescribeConstants.SALUTATION;
  */
 
 
-public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener, ImageUtils.ImageAttachmentListener, ProfilePhotoUpload {
 
     private static final String TAG = "BookAppActivity";
 
@@ -90,6 +115,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     FrameLayout mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    private ImageUtils imageUtils;
+    private CustomProgressDialog mCustomProgressDialog;
 
     private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
     private int PLACE_PICKER_REQUEST = 1;
@@ -142,6 +170,8 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private void initialize() {
 
         mContext = BookAppointDoctorListBaseActivity.this;
+        imageUtils = new ImageUtils(this);
+        mCustomProgressDialog = new CustomProgressDialog(this);
         appDBHelper = new AppDBHelper(mContext);
 
         if (getIntent().getParcelableArrayListExtra(BOTTOM_MENUS) != null) {
@@ -310,6 +340,49 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    //get image URI and set to create image of jpg format.
+                    Uri resultUri = result.getUri();
+//                String path = Environment.getExternalStorageDirectory() + File.separator + "DrRescribe" + File.separator + "ProfilePhoto" + File.separator;
+                    imageUtils.callImageCropMethod(resultUri);
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                Exception error = result.getError();
+                }
+                break;
+
+            case ImageUtils.CAMERA_REQUEST_CODE:
+            case ImageUtils.GALLERY_REQUEST_CODE:
+                imageUtils.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case ImageUtils.CAMERA_REQUEST_CODE:
+            case ImageUtils.GALLERY_REQUEST_CODE:
+                imageUtils.request_permission_result(requestCode, permissions, grantResults);
+                break;
+        }
+    }
+
+    @Override
+    public void imageAttachment(int from, Bitmap file, Uri uri) {
+        //file path is given below to generate new image as required i.e jpg format
+        String path = Environment.getExternalStorageDirectory() + File.separator + "Rescribe" + File.separator + "ProfilePhoto" + File.separator;
+        imageUtils.createImage(file, path, false);
+        CommonMethods.uploadProfilePhoto(ImageUtils.FILEPATH, mContext, mCustomProgressDialog);
+    }
+
+    @Override
     public void onBackPressed() {
 
         if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
@@ -350,11 +423,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
     //on click of logo bottomsheet  dialog opens and on click of profileImage ProfileAcivity is opened
     @Override
-    public void onProfileImageClick(CircularImageView profileImageView) {
+    public void onProfileImageClick() {
 //        Intent intent = new Intent(this, ProfileActivity.class);
 //        startActivity(intent);
 
-        super.onProfileImageClick(profileImageView);
+        imageUtils.imagePicker(1);
+        super.onProfileImageClick();
     }
 
     //on click of drawer apply button
@@ -466,6 +540,19 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         super.onPause();
         unregisterReceiver(receiver);
         unregisterReceiver(mUpdateAppUnreadNotificationCount);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void setProfilePhoto(String filePath, String profilePhotoSignature) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.dontAnimate();
+        requestOptions.signature(new ObjectKey(profilePhotoSignature));
+
+        Glide.with(mContext)
+                .load(filePath)
+                .apply(requestOptions).thumbnail(0.5f)
+                .into(profileImageView);
     }
 
 }

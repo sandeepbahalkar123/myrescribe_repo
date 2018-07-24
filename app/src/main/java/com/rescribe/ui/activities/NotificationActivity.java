@@ -22,7 +22,6 @@ import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView;
 import com.rescribe.R;
 import com.rescribe.adapters.NotificationAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -542,7 +541,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
     }
 
     @Override
-    public void onProfileImageClick(CircularImageView profileImageView) {
+    public void onProfileImageClick() {
 
     }
 

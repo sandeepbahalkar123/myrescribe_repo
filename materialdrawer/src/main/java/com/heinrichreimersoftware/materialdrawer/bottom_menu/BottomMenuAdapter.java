@@ -134,7 +134,7 @@ public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.Li
     public interface OnBottomMenuClickListener {
         void onBottomSheetMenuClick(BottomSheetMenu bottomMenu);
         void onBottomMenuClick(BottomMenu bottomMenu);
-        void onProfileImageClick(CircularImageView profileImageView);
+        void onProfileImageClick();
     }
 
 }

@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,19 +16,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.gson.Gson;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView;
 import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
@@ -39,10 +35,8 @@ import com.rescribe.interfaces.profile_photo.ProfilePhotoUpload;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
-import com.rescribe.model.profile_upload.ProfilePhotoResponse;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
-import com.rescribe.singleton.Device;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
 import com.rescribe.ui.activities.ConnectSplashActivity;
@@ -57,23 +51,14 @@ import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
+import com.rescribe.ui.fragments.book_appointment.DrawerForFilterBookAppointmentFragment;
 import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 import com.rescribe.util.ImageUtils;
 import com.rescribe.util.RescribeConstants;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.ServerResponse;
-import net.gotev.uploadservice.UploadInfo;
-import net.gotev.uploadservice.UploadNotificationConfig;
-import net.gotev.uploadservice.UploadStatusDelegate;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -99,7 +84,7 @@ import static com.rescribe.util.RescribeConstants.SALUTATION;
  */
 
 
-public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener, ImageUtils.ImageAttachmentListener, ProfilePhotoUpload {
+public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implements BottomMenuAdapter.OnBottomMenuClickListener, GoogleApiClient.OnConnectionFailedListener, DrawerForFilterBookAppointmentFragment.OnDrawerInteractionListener, ImageUtils.ImageAttachmentListener, ProfilePhotoUpload {
 
     private static final String TAG = "BookAppActivity";
 
@@ -122,7 +107,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
     private int PLACE_PICKER_REQUEST = 1;
 
-    private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
+    private DrawerForFilterBookAppointmentFragment mDrawerLoadedFragment;
 
     private ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private Context mContext;
@@ -171,7 +156,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
         mContext = BookAppointDoctorListBaseActivity.this;
 
-        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+        mDrawerLoadedFragment = DrawerForFilterBookAppointmentFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 

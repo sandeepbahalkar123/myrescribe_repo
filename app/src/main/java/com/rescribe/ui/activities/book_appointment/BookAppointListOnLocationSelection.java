@@ -1,38 +1,24 @@
 package com.rescribe.ui.activities.book_appointment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.rescribe.R;
-import com.rescribe.singleton.RescribeApplication;
-import com.rescribe.ui.customesViews.CustomTextView;
-import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
 import com.rescribe.ui.fragments.book_appointment.BookAppointListOnLocationSelectionFragment;
-import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
-import com.rescribe.ui.fragments.doctor.DoctorListFragmentContainer;
-
-import java.util.HashMap;
+import com.rescribe.ui.fragments.book_appointment.DrawerForFilterBookAppointmentFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 /**
  * Created by jeetal on 6/11/17.
  */
 
-public class BookAppointListOnLocationSelection extends AppCompatActivity implements DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+public class BookAppointListOnLocationSelection extends AppCompatActivity implements DrawerForFilterBookAppointmentFragment.OnDrawerInteractionListener {
 
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
@@ -42,7 +28,7 @@ public class BookAppointListOnLocationSelection extends AppCompatActivity implem
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
     private FragmentManager mFragmentManager;
-    private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
+    private DrawerForFilterBookAppointmentFragment mDrawerLoadedFragment;
     private BookAppointListOnLocationSelectionFragment mLoadedFragment;
 
 
@@ -59,7 +45,7 @@ public class BookAppointListOnLocationSelection extends AppCompatActivity implem
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mLoadedFragment).commit();
         //-----------
         //------
-        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+        mDrawerLoadedFragment = DrawerForFilterBookAppointmentFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
 
     }

@@ -118,16 +118,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
 
-    public ArrayList<DoctorList> getmReceivedPreviousDoctorList() {
-        return mReceivedPreviousDoctorList;
-    }
-
-    public void setmReceivedPreviousDoctorList(ArrayList<DoctorList> mReceivedPreviousDoctorList) {
-        this.mReceivedPreviousDoctorList = mReceivedPreviousDoctorList;
-    }
-
-    private ArrayList<DoctorList> mReceivedPreviousDoctorList;
-
     public RecentVisitDoctorFragment() {
 
     }
@@ -209,7 +199,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     intent.putExtra(RescribeConstants.TITLE, mReceivedTitle);
                     startActivity(intent);
                 } else {
-                    //this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
+                    // this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
                     doctorListByClinics = new ArrayList<>();
                     ArrayList<DoctorList> sortedListByClinicNameOrDoctorName = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
                     for (int i = 0; i < sortedListByClinicNameOrDoctorName.size(); i++) {
@@ -326,7 +316,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
     private void setUpViewPager() {
 
-        ArrayList<DoctorList> doctorLists = CommonMethods.getDoctorListFromDb(appDBHelper);
+        ArrayList<DoctorList> doctorLists = CommonMethods.getCategoryDoctorsFromDb(appDBHelper);
         mServiceCardDataViewBuilder.setReceivedDoctorDataList(doctorLists);
 
         ArrayList<String> specialities = new ArrayList<>();

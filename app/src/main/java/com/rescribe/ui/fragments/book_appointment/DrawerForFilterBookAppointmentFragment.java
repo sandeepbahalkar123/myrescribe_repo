@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class DrawerForFilterDoctorBookAppointment extends Fragment implements HelperResponse {
+public class DrawerForFilterBookAppointmentFragment extends Fragment implements HelperResponse {
 
     @BindView(R.id.applyButton)
     Button applyButton;
@@ -168,12 +168,12 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     private SortByPriceNameFilterAdapter mSortByPriceNameFilterAdapter;
     //--------
 
-    public DrawerForFilterDoctorBookAppointment() {
+    public DrawerForFilterBookAppointmentFragment() {
         // Required empty public constructor
     }
 
-    public static DrawerForFilterDoctorBookAppointment newInstance() {
-        DrawerForFilterDoctorBookAppointment fragment = new DrawerForFilterDoctorBookAppointment();
+    public static DrawerForFilterBookAppointmentFragment newInstance() {
+        DrawerForFilterBookAppointmentFragment fragment = new DrawerForFilterBookAppointmentFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
         return fragment;
@@ -365,57 +365,57 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
     }
 
     private void setDataInDrawerFields() {
-        ArrayList<LocationList> locations = new ArrayList<>();
-        if (bookAppointFilterBaseModel != null) {
-            BookAppointFilterBaseModel.FilterConfigData filterConfigData = bookAppointFilterBaseModel.getFilterConfigData();
+        if (mLocationContentRecycleView != null) {
+            ArrayList<LocationList> locations = new ArrayList<>();
+            if (bookAppointFilterBaseModel != null) {
+                BookAppointFilterBaseModel.FilterConfigData filterConfigData = bookAppointFilterBaseModel.getFilterConfigData();
 
-            if (filterConfigData != null) {
+                if (filterConfigData != null) {
+                    if (!filterConfigData.getLocationList().isEmpty()) {
 
-                if (!filterConfigData.getLocationList().isEmpty()) {
-
-                    for (int i = 0; i < filterConfigData.getLocationList().size(); i++) {
-                        LocationList locationList = new LocationList();
-                        if (filterConfigData.getLocationList().get(i).getIsDoctorAvailable()) {
-                            locationList.setAreaName(filterConfigData.getLocationList().get(i).getAreaName());
-                            locationList.setIsDoctorAvailable(filterConfigData.getLocationList().get(i).getIsDoctorAvailable());
-                            locations.add(locationList);
+                        for (int i = 0; i < filterConfigData.getLocationList().size(); i++) {
+                            LocationList locationList = new LocationList();
+                            if (filterConfigData.getLocationList().get(i).getIsDoctorAvailable()) {
+                                locationList.setAreaName(filterConfigData.getLocationList().get(i).getAreaName());
+                                locationList.setIsDoctorAvailable(filterConfigData.getLocationList().get(i).getIsDoctorAvailable());
+                                locations.add(locationList);
+                            }
                         }
-                    }
-                    //--------
+                        //--------
 
-                    mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), locations);
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                    mLocationContentRecycleView.setLayoutManager(layoutManager);
-                    mLocationContentRecycleView.setHasFixedSize(true);
-                    mLocationContentRecycleView.setNestedScrollingEnabled(false);
-                    mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
+                        mFilterSelectLocationsAdapter = new FilterSelectLocationsAdapter(getActivity(), locations);
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                        mLocationContentRecycleView.setLayoutManager(layoutManager);
+                        mLocationContentRecycleView.setHasFixedSize(true);
+                        mLocationContentRecycleView.setNestedScrollingEnabled(false);
+                        mLocationContentRecycleView.setAdapter(mFilterSelectLocationsAdapter);
 
-                    mLocationView.setVisibility(View.VISIBLE);
-                    mLocationContentRecycleView.setVisibility(View.VISIBLE);
+                        mLocationView.setVisibility(View.VISIBLE);
+                        mLocationContentRecycleView.setVisibility(View.VISIBLE);
 
-                } else {
-                    mLocationView.setVisibility(View.GONE);
-                    mLocationContentRecycleView.setVisibility(View.GONE);
-                }
-
-                //------
-                ArrayList<Integer> clinicFeesRange = filterConfigData.getClinicFeesRange();
-                if (!clinicFeesRange.isEmpty()) {
-                    Integer min = clinicFeesRange.get(0);
-                    Integer max = clinicFeesRange.get(clinicFeesRange.size() - 1);
-                    if (max != 0 && min < max) {
-
-                        mClinicFeesSeekBarMinValue.setText(String.valueOf(min));
-                        mClinicFeesSeekBarMaxValue.setText(String.valueOf(max));
-
-                        setThumbValue(mLeftThumbView, String.valueOf(min));
-                        setThumbValue(mRightThumbView, String.valueOf(max));
-
-                        mClinicFeesSeekBar.setMinValue(Float.parseFloat(String.valueOf(min)))
-                                .setMaxValue(Float.parseFloat(String.valueOf(max)))
-                                .setMinStartValue(Float.parseFloat(String.valueOf(min)))
-                                .setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
                     } else {
+                        mLocationView.setVisibility(View.GONE);
+                        mLocationContentRecycleView.setVisibility(View.GONE);
+                    }
+
+                    //------
+                    ArrayList<Integer> clinicFeesRange = filterConfigData.getClinicFeesRange();
+                    if (!clinicFeesRange.isEmpty()) {
+                        Integer min = clinicFeesRange.get(0);
+                        Integer max = clinicFeesRange.get(clinicFeesRange.size() - 1);
+                        if (max != 0 && min < max) {
+
+                            mClinicFeesSeekBarMinValue.setText(String.valueOf(min));
+                            mClinicFeesSeekBarMaxValue.setText(String.valueOf(max));
+
+                            setThumbValue(mLeftThumbView, String.valueOf(min));
+                            setThumbValue(mRightThumbView, String.valueOf(max));
+
+                            mClinicFeesSeekBar.setMinValue(Float.parseFloat(String.valueOf(min)))
+                                    .setMaxValue(Float.parseFloat(String.valueOf(max)))
+                                    .setMinStartValue(Float.parseFloat(String.valueOf(min)))
+                                    .setMaxStartValue(Float.parseFloat(String.valueOf(max))).apply();
+                        } else {
 
                        /* setThumbValue(mLeftThumbView, String.valueOf(250));
                         setThumbValue(mRightThumbView, String.valueOf(25000));
@@ -425,11 +425,11 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                                 .setMinStartValue(250)
                                 .setMaxStartValue(25000).apply();*/
 
-                        mClinicFeesView.setVisibility(View.GONE);
+                            mClinicFeesView.setVisibility(View.GONE);
 
-                    }
-                } else mClinicFeesView.setVisibility(View.GONE);
-                //------
+                        }
+                    } else mClinicFeesView.setVisibility(View.GONE);
+                    //------
               /*  ArrayList<String> distanceFeesRange = filterConfigData.get();
                 if (distanceFeesRange.size() > 0) {
                     String min = distanceFeesRange.get(0);
@@ -439,10 +439,10 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
                     mDistanceSeekBar.setProgress(Integer.parseInt(min));
                     mDistanceSeekBar.setMax(Integer.parseInt(max));
                 }*/
-                //------
+                    //------
+                }
             }
         }
-
     }
 
     @Override
@@ -462,6 +462,7 @@ public class DrawerForFilterDoctorBookAppointment extends Fragment implements He
 
     public interface OnDrawerInteractionListener {
         void onApply(Bundle b, boolean drawerRequired);
+
         void onReset(boolean drawerRequired);
     }
 

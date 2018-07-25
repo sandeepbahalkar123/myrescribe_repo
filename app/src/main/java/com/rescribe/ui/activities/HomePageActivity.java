@@ -83,14 +83,12 @@ import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.notification.NotificationModel;
-import com.rescribe.model.profile_upload.ProfilePhotoResponse;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DeleteUnreadNotificationAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
-import com.rescribe.singleton.Device;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.book_appointment.BookAppointFindLocationActivity;
@@ -105,23 +103,14 @@ import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.ImageUtils;
 import com.rescribe.util.RescribeConstants;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.ServerResponse;
-import net.gotev.uploadservice.UploadInfo;
-import net.gotev.uploadservice.UploadNotificationConfig;
-import net.gotev.uploadservice.UploadStatusDelegate;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -534,7 +523,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private void setUpViewPager() {
         int currentItem = viewPagerDoctorItem.getCurrentItem();
         swipeToRefresh.setRefreshing(false);
-        ArrayList<DoctorList> doctorLists = CommonMethods.getDoctorListFromDb(appDBHelper);
+        ArrayList<DoctorList> doctorLists = CommonMethods.getCategoryDoctorsFromDb(appDBHelper);
         // set doc
         mDashboardDataBuilder.setReceivedDoctorDataList(doctorLists);
 

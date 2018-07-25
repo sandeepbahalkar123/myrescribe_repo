@@ -6,7 +6,7 @@ package com.rescribe.ui.activities.book_appointment;
 /*
 
 @RuntimePermissions
-public class BookAppointDoctorListBaseActivity_BackUp extends AppCompatActivity implements HelperResponse, DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener, GoogleApiClient.OnConnectionFailedListener {
+public class BookAppointDoctorListBaseActivity_BackUp extends AppCompatActivity implements HelperResponse, DrawerForFilterBookAppointmentFragment.OnDrawerInteractionListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "BookAppointDoctorListBaseActivity";
     @BindView(R.id.bookAppointmentBackButton)
@@ -106,7 +106,7 @@ public class BookAppointDoctorListBaseActivity_BackUp extends AppCompatActivity 
         //------
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+        mDrawerLoadedFragment = DrawerForFilterBookAppointmentFragment.newInstance();
         fragmentTransaction.replace(R.id.nav_view, mDrawerLoadedFragment);
         fragmentTransaction.commit();
         Bundle bundle = new Bundle();
@@ -175,7 +175,7 @@ public class BookAppointDoctorListBaseActivity_BackUp extends AppCompatActivity 
         doOperationOnDrawer(drawerRequired);
         if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
             BookAppointFilteredDoctorListFragment bookAppointFilteredDoctorListFragment = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
-            if (mDrawerLoadedFragment instanceof DrawerForFilterDoctorBookAppointment) {
+            if (mDrawerLoadedFragment instanceof DrawerForFilterBookAppointmentFragment) {
                 bookAppointFilteredDoctorListFragment.onApplyClicked(b);
             }
         }
@@ -187,7 +187,7 @@ public class BookAppointDoctorListBaseActivity_BackUp extends AppCompatActivity 
         doOperationOnDrawer(drawerRequired);
         if (mCurrentlyLoadedFragment instanceof BookAppointFilteredDoctorListFragment) {
             BookAppointFilteredDoctorListFragment bookAppointFilteredDoctorListFragment = (BookAppointFilteredDoctorListFragment) mCurrentlyLoadedFragment;
-            if (mDrawerLoadedFragment instanceof DrawerForFilterDoctorBookAppointment) {
+            if (mDrawerLoadedFragment instanceof DrawerForFilterBookAppointmentFragment) {
                 bookAppointFilteredDoctorListFragment.onResetClicked();
             }
         }

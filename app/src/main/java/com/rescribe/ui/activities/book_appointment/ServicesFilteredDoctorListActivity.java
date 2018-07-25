@@ -14,7 +14,7 @@ import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.fragments.book_appointment.BookAppointFilteredDoctorListFragment;
-import com.rescribe.ui.fragments.book_appointment.DrawerForFilterDoctorBookAppointment;
+import com.rescribe.ui.fragments.book_appointment.DrawerForFilterBookAppointmentFragment;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.HashMap;
@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * Created by jeetal on 6/11/17.
  */
 
-public class ServicesFilteredDoctorListActivity extends AppCompatActivity implements DrawerForFilterDoctorBookAppointment.OnDrawerInteractionListener {
+public class ServicesFilteredDoctorListActivity extends AppCompatActivity implements DrawerForFilterBookAppointmentFragment.OnDrawerInteractionListener {
 
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
@@ -48,7 +48,7 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
     private BookAppointFilteredDoctorListFragment mBookAppointFilteredDoctorListFragment;
     private int PLACE_PICKER_REQUEST = 1;
     private boolean isLocationChangeViewClicked = false;
-    private DrawerForFilterDoctorBookAppointment mDrawerLoadedFragment;
+    private DrawerForFilterBookAppointmentFragment mDrawerLoadedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class ServicesFilteredDoctorListActivity extends AppCompatActivity implem
             getActivityDrawerLayout().closeDrawer(GravityCompat.END);
         } else {
             if (mDrawerLoadedFragment == null) {
-                mDrawerLoadedFragment = DrawerForFilterDoctorBookAppointment.newInstance();
+                mDrawerLoadedFragment = DrawerForFilterBookAppointmentFragment.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
             }
             getActivityDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, GravityCompat.END);

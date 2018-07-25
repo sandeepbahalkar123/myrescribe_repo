@@ -838,19 +838,19 @@ public class AppDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Cursor getAllCardData() {
+    public Cursor getCardDoctorsData() {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.CARDVIEW_DATA_TABLE, null);
+    }
+
+    public Cursor getCardDoctorData(int doctorId) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.CARDVIEW_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
     }
 
     public Cursor getAppointmentByDoctor(int doctorId) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
-    }
-
-    public Cursor getAppointmentDoctor() {
-        SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE, null);
     }
 
     public Cursor getDoctorsSpecialities() {
@@ -861,6 +861,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public Cursor getDoctor(int doctorId) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
+    }
+
+    public Cursor getDoctors() {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE, null);
     }
 
     public Cursor getDoctorVsClinicById(int doctorId, int clinicId) {

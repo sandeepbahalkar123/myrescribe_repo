@@ -411,9 +411,9 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
 
     private void doCreateMedicationDataMap(boolean isRequiredAllElements) {
         mUnreadMedicationNotificationAdapter.removeAllSections();
+        configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
 
         if (!listDataChild.isEmpty()) {
-            configureGroupChildMapList(mUnreadMedicationNotificationMessageDataList);
             Map.Entry<String, ArrayList<Medication>> entry = listDataChild.entrySet().iterator().next();
 
             //------ Show timeStamp of first element in header view------

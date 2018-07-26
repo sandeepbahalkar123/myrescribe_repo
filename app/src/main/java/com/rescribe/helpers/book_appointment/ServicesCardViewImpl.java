@@ -264,8 +264,8 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     }
 
     //set doctor list using this function
-    public static void setUserSelectedDoctorListDataObject(DoctorList userSelectedDoctorListDataObject) {
-        ServicesCardViewImpl.userSelectedDoctorListDataObject = userSelectedDoctorListDataObject;
+    public static void setUserSelectedDoctorListDataObject(DoctorList userSelectedDoctorListData) {
+        userSelectedDoctorListDataObject = userSelectedDoctorListData;
     }
 
     public void setReceivedDoctorDataList(ArrayList<DoctorList> list) {

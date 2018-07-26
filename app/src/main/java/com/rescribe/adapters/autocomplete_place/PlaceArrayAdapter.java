@@ -47,7 +47,9 @@ public class PlaceArrayAdapter
 
     @Override
     public int getCount() {
-        return mResultList.size();
+        if (mResultList != null)
+            return mResultList.size();
+        return 0;
     }
 
     @Override

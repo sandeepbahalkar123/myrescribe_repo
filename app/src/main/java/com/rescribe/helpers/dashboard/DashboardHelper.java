@@ -1,6 +1,8 @@
 package com.rescribe.helpers.dashboard;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.rescribe.R;
@@ -54,6 +56,22 @@ public class DashboardHelper implements ConnectionListener {
                     if (dashboardModel.getCommon().getStatusCode().equals(SUCCESS)) {
                         // inset card doctors details in database
                         List<CategoryList> categoryList = dashboardModel.getData().getCategoryList();
+
+                        SQLiteDatabase writableDatabase = appDBHelper.getWritableDatabase();
+
+                        if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, mContext).isEmpty()) {
+                            int isDelete1 = writableDatabase.delete(AppDBHelper.DOC_DATA.DOCTOR_DATA_TABLE, "1", null);
+                            int isDelete2 = writableDatabase.delete(AppDBHelper.DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, "1", null);
+                            int isDelete3 = writableDatabase.delete(AppDBHelper.DOC_DATA.CLINIC_DATA_TABLE, "1", null);
+                            Log.d("DOCTOR_DELETED_ITEMS", isDelete1 + " " + isDelete2 + " " + isDelete3);
+                        }
+
+                        int isDelete1 = writableDatabase.delete(AppDBHelper.DOC_DATA.CARDVIEW_DATA_TABLE, "1", null);
+                        int isDelete2 = writableDatabase.delete(AppDBHelper.DOC_DATA.APPOINTMENT_DATA_TABLE, "1", null);
+                        Log.d("CARD_DELETED_ITEMS", isDelete1 + " " + isDelete2);
+
+                        writableDatabase.close();
+
                         appDBHelper.addCardDoctors(categoryList);
                         getDoctorList();
                     }

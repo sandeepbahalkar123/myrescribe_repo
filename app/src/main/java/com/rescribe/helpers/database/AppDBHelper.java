@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
@@ -699,7 +700,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public void addDoctors(List<DoctorList> doctorList) {
 
         SQLiteDatabase db = getWritableDatabase();
-
         db.beginTransaction();
 
         ContentValues contentValuesDoc = new ContentValues();
@@ -741,7 +741,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
                 if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.ADD)) {
                     contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
-                    db.insertWithOnConflict(DOC_DATA.DOCTOR_DATA_TABLE, null, contentValuesDoc, SQLiteDatabase.CONFLICT_IGNORE);
+                    long isInserted = db.insert(DOC_DATA.DOCTOR_DATA_TABLE, null, contentValuesDoc);
+                    Log.d(TAG, "DOCTOR_TABLE_ROW " + isInserted);
                 } else if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.UPDATE)) {
                     // update doctor related info
                     db.update(DOC_DATA.DOCTOR_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ? ", new String[]{String.valueOf(doctor.getDocId())});
@@ -771,7 +772,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
             contentValuesClinic.put(DOC_DATA.MODIFIED_NDATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
 
             // if clinic exist then update else insert
-            db.insertWithOnConflict(DOC_DATA.CLINIC_DATA_TABLE, null, contentValuesClinic, SQLiteDatabase.CONFLICT_IGNORE);
+            long isInserted = db.insertWithOnConflict(DOC_DATA.CLINIC_DATA_TABLE, null, contentValuesClinic, SQLiteDatabase.CONFLICT_IGNORE);
+            Log.d(TAG, "CLINIC_TABLE_ROW " + isInserted);
+            if (isInserted == -1) {
+                int isUpdated = db.update(DOC_DATA.CLINIC_DATA_TABLE, contentValuesClinic, DOC_DATA.CLINIC_ID + " = ?", new String[]{String.valueOf(clinic.getLocationId())});
+                Log.d(TAG, "CLINIC_TABLE_ROW_UPDATE " + isUpdated);
+            }
 
             // insert clinic vs doctors
             contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_ID, clinic.getLocationId());
@@ -796,9 +802,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
-        // delete pre data
-        db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, null, null);
-        db.delete(DOC_DATA.APPOINTMENT_DATA_TABLE, null, null);
 
         ContentValues contentValuesCard = new ContentValues();
         ContentValues contentValuesCardsBackground = new ContentValues();
@@ -813,7 +816,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
                 contentValuesCardsBackground.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
                 contentValuesCardsBackground.put(DOC_DATA.IMAGE_URL, category.getUrl());
-                db.insertWithOnConflict(DOC_DATA.CARDS_BACKGROUND_TABLE, null, contentValuesCardsBackground, SQLiteDatabase.CONFLICT_IGNORE);
+                long isInserted = db.insertWithOnConflict(DOC_DATA.CARDS_BACKGROUND_TABLE, null, contentValuesCardsBackground, SQLiteDatabase.CONFLICT_IGNORE);
+                Log.d(TAG, "CARDS_BACKGROUND_TABLE_ROW " + isInserted);
 
                 // insert appointment data
                 if (category.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {

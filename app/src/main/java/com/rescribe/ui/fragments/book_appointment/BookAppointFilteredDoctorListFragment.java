@@ -174,7 +174,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
     private void setDoctorListAdapter() {
 
-        if (mReceivedList.size() == 0) {
+        if (mReceivedList.isEmpty()) {
             isDataListViewVisible(false);
         } else {
             isDataListViewVisible(true);
@@ -206,11 +206,8 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         switch (mOldDataTag) {
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
-                // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
-                    //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
-                    //--------
                     mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
                 }
                 break;
@@ -227,9 +224,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 break;
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
                 DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
-
                 if (receivedDoctorServicesModel != null) {
-
                     mServicesCardViewImpl.setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
                     doGetReceivedListBasedOnClickedItemData();
                     setDoctorListAdapter();

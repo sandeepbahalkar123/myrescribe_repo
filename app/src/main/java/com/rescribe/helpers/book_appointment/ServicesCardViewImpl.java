@@ -215,7 +215,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 if (updatedObject.getDocId() == tempObject.getDocId()) {
                     tempObject.setFavourite(!tempObject.getFavourite());
                     mReceivedDoctorDataList.set(i, tempObject);
-                    appDBHelper.updateCardTable(tempObject.getDocId(), tempObject.getFavourite() ? 1 : 0, appDBHelper.getContext().getString(R.string.favorite));
+                    appDBHelper.updateCardTable(updatedObject, appDBHelper.getContext().getString(R.string.favorite));
                     status = true;
                 }
             }

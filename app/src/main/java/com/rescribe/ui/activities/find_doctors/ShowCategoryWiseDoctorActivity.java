@@ -38,7 +38,6 @@ public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements
     @BindView(R.id.emptyListView)
     RelativeLayout emptyListView;
     private BookAppointFilteredDocListAdapter mBookAppointFilteredDocListAdapterAdapter;
-    private ServicesCardViewImpl mServicesCardViewImpl;
     private Context mContext;
     private ArrayList<DoctorList> mDoctorCategoryList;
     private String locationReceived = "";
@@ -77,12 +76,7 @@ public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements
     }
 
     private void initialize() {
-        setUpList();
-
-    }
-
-    private void setUpList() {
-        mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctorActivity) mContext);
+        ServicesCardViewImpl mServicesCardViewImpl = new ServicesCardViewImpl(mContext, (ShowCategoryWiseDoctorActivity) mContext);
         if (getString(R.string.favorite).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getFavouriteDocList(-1);
 
@@ -93,9 +87,8 @@ public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements
                 showDoctorList.setLayoutManager(layoutManager);
                 showDoctorList.setHasFixedSize(true);
                 showDoctorList.setAdapter(mBookAppointFilteredDocListAdapterAdapter);
-            } else {
+            } else
                 emptyListView.setVisibility(View.VISIBLE);
-            }
 
         } else if (getString(R.string.recently_visit_doctor).equalsIgnoreCase(mClickedItemDataTypeValue)) {
             mDoctorCategoryList = mServicesCardViewImpl.getCategoryWiseDoctorList(mClickedItemDataTypeValue, -1);
@@ -112,17 +105,8 @@ public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements
                 showDoctorList.setLayoutManager(layoutManager);
                 showDoctorList.setHasFixedSize(true);
                 showDoctorList.setAdapter(mBookAppointFilteredDocListAdapterAdapter);
-            } else {
+            } else
                 emptyListView.setVisibility(View.VISIBLE);
-            }
-
-        } else if (getIntent().getExtras().getString(RescribeConstants.TITLE).equalsIgnoreCase(RescribeConstants.TITLE)) {
-           /* HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-            locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-            String[] split = locationReceived.split(",");
-            doctorDataHelper = new DoctorDataHelper(this,this);
-            doctorDataHelper.doGetDoctorListByComplaint(split[1].trim(), split[0].trim(), selectIdComplaint1, selectIdComplaint2);*/
-
         }
     }
 
@@ -134,11 +118,8 @@ public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 //  CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
-                    //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
-                    //--------
                     mBookAppointFilteredDocListAdapterAdapter.updateClickedItemFavImage();
-
                 }
                 break;
         }
@@ -164,7 +145,7 @@ public class ShowCategoryWiseDoctorActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        setUpList();
+        initialize();
     }
 
     @Override

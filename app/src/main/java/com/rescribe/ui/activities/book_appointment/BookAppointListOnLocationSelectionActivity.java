@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
  * Created by jeetal on 6/11/17.
  */
 
-public class BookAppointListOnLocationSelection extends AppCompatActivity implements DrawerForFilterBookAppointmentFragment.OnDrawerInteractionListener {
+public class BookAppointListOnLocationSelectionActivity extends AppCompatActivity implements DrawerForFilterBookAppointmentFragment.OnDrawerInteractionListener {
 
     @BindView(R.id.nav_view)
     FrameLayout mNavView;
@@ -27,25 +27,20 @@ public class BookAppointListOnLocationSelection extends AppCompatActivity implem
 
     @BindView(R.id.viewContainer)
     FrameLayout viewContainer;
-    private FragmentManager mFragmentManager;
-    private DrawerForFilterBookAppointmentFragment mDrawerLoadedFragment;
-    private BookAppointListOnLocationSelectionFragment mLoadedFragment;
 
+    private BookAppointListOnLocationSelectionFragment mLoadedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.global_drawer_layout_container);
         ButterKnife.bind(this);
-        mFragmentManager = getSupportFragmentManager();
 
-        //------
         Bundle extras = getIntent().getExtras();
         mLoadedFragment = BookAppointListOnLocationSelectionFragment.newInstance(extras);
         getSupportFragmentManager().beginTransaction().replace(R.id.viewContainer, mLoadedFragment).commit();
-        //-----------
-        //------
-        mDrawerLoadedFragment = DrawerForFilterBookAppointmentFragment.newInstance();
+
+        DrawerForFilterBookAppointmentFragment mDrawerLoadedFragment = DrawerForFilterBookAppointmentFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
 
     }

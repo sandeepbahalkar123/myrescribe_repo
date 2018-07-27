@@ -27,7 +27,7 @@ import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.book_appointment.doctor_data.DoctorServicesModel;
 import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppointFilterRequestModel;
 import com.rescribe.singleton.RescribeApplication;
-import com.rescribe.ui.activities.book_appointment.BookAppointListOnLocationSelection;
+import com.rescribe.ui.activities.book_appointment.BookAppointListOnLocationSelectionActivity;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
@@ -44,7 +44,6 @@ import butterknife.Unbinder;
 
 public class BookAppointListOnLocationSelectionFragment extends Fragment implements HelperResponse, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible {
 
-
     @BindView(R.id.listView)
     RecyclerView mDoctorListView;
     @BindView(R.id.title)
@@ -58,9 +57,8 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     @BindView(R.id.searchView)
     EditTextWithDeleteButton mSearchView;
     Unbinder unbinder;
-    private DoctorDataHelper mDoctorDataHelper;
 
-    private String mReceivedTitle;
+    private DoctorDataHelper mDoctorDataHelper;
     private String mUserSelectedLocation;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
@@ -82,25 +80,20 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     public static BookAppointListOnLocationSelectionFragment newInstance(Bundle b) {
         BookAppointListOnLocationSelectionFragment fragment = new BookAppointListOnLocationSelectionFragment();
-        Bundle args = b;
-        if (args == null) {
-            args = new Bundle();
-        }
-        fragment.setArguments(args);
+        fragment.setArguments(b);
         return fragment;
     }
 
     private void init(Bundle args) {
-
         appDBHelper = new AppDBHelper(getContext());
-
         mDoctorListView.setNestedScrollingEnabled(false);
         if (args != null) {
-            mReceivedTitle = args.getString(RescribeConstants.TITLE);
+            String mReceivedTitle = args.getString(RescribeConstants.TITLE);
             title.setText("" + mReceivedTitle);
         }
+
         mDoctorDataHelper = new DoctorDataHelper(getContext(), this);
-        mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity());
+        mServicesCardViewImpl = new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelectionActivity) getActivity());
 
         mSearchView.addTextChangedListener(new EditTextWithDeleteButton.TextChangedListener() {
             @Override
@@ -131,12 +124,11 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
     }
 
     public void onBackPressed() {
-        BookAppointListOnLocationSelection activity = (BookAppointListOnLocationSelection) getActivity();
+        BookAppointListOnLocationSelectionActivity activity = (BookAppointListOnLocationSelectionActivity) getActivity();
         if (activity.getActivityDrawerLayout().isDrawerOpen(GravityCompat.END)) {
             activity.getActivityDrawerLayout().closeDrawer(GravityCompat.END);
-        } else {
+        } else
             activity.onBackPressed();
-        }
     }
 
     private void setDoctorListAdapter() {
@@ -186,7 +178,6 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 } else {
                     mDoctorDataHelper.doGetDoctorData("", "", mComplaintsUserSearchFor);
                     return true;
-
                 }
             }
         }
@@ -196,15 +187,12 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
         switch (mOldDataTag) {
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 // CommonMethods.showToast(getActivity(), temp.getCommonRespose().getStatusMessage());
                 if (temp.getCommonRespose().isSuccess()) {
-                    //--------
                     ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
-                    //--------
                     mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
                 }
                 break;
@@ -213,7 +201,7 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
                 if (received != null) {
                     DoctorServicesModel doctorServices = received.getDoctorServicesModel();
                     if (doctorServices != null) {
-                        new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity()).setReceivedDoctorDataList(doctorServices.getDoctorList());
+                        new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelectionActivity) getActivity()).setReceivedDoctorDataList(doctorServices.getDoctorList());
                         // mReceivedList = doctorServices.filterDocListBySpeciality(mReceivedTitle);
                     }
                 }
@@ -222,7 +210,9 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
                 DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();
                 if (receivedDoctorServicesModel != null) {
-                    new ServicesCardViewImpl(this.getContext(), (BookAppointListOnLocationSelection) getActivity()).setReceivedDoctorDataList(receivedDoctorServicesModel.getDoctorList());
+                    ArrayList<DoctorList> doctorList = receivedDoctorServicesModel.getDoctorList();
+                    ServicesCardViewImpl servicesCardView = new ServicesCardViewImpl(getContext(), (BookAppointListOnLocationSelectionActivity) getActivity());
+                    servicesCardView.setReceivedDoctorDataList(doctorList);
                     setDoctorListAdapter();
                 }
                 break;
@@ -247,10 +237,10 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     @OnClick({R.id.rightFab, R.id.leftFab, R.id.bookAppointmentBackButton})
     public void onViewClicked(View view) {
-        BookAppointListOnLocationSelection activity;
+        BookAppointListOnLocationSelectionActivity activity;
         switch (view.getId()) {
             case R.id.rightFab:
-                activity = (BookAppointListOnLocationSelection) getActivity();
+                activity = (BookAppointListOnLocationSelectionActivity) getActivity();
                 activity.getActivityDrawerLayout().openDrawer(GravityCompat.END);
                 break;
             case R.id.bookAppointmentBackButton:
@@ -269,12 +259,10 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
 
     public void onApplyClicked(Bundle data) {
         BookAppointFilterRequestModel requestModel = data.getParcelable(getString(R.string.filter));
-
         mDoctorDataHelper.doFilteringOnSelectedConfig(requestModel, null);
     }
 
     public void onResetClicked() {
-
     }
 
     @Override

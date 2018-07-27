@@ -36,12 +36,11 @@ import java.util.HashMap;
 
 public class DoctorDataHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
-    HelperResponse mHelperResponseManager;
+    private String TAG = this.getClass().getName();
+    private Context mContext;
+    private HelperResponse mHelperResponseManager;
 
     private static DoctorServicesModel receivedDoctorServicesModel = null;
-    private static DashboardDataModel mDashboardDataModel = null;
 
     public DoctorDataHelper(Context context, HelperResponse servicesActivity) {
         this.mContext = context;

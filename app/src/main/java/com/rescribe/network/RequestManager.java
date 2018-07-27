@@ -413,7 +413,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
         }
     }
 
-    private String fixEncoding(String response) {
+    /*private String fixEncoding(String response) {
         try {
             byte[] u = response.getBytes("ISO-8859-1");
             response = new String(u, "UTF-8");
@@ -422,7 +422,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
             return null;
         }
         return response;
-    }
+    }*/
 
     @Override
     public void parseJson(String data, boolean isTokenExpired) {

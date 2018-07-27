@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
+import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.card_data.CategoryList;
@@ -891,56 +892,25 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return cardBack;
     }
 
-    public void updateCardTable(int doctorId, int isFavorite, String categoryName) {
+    public void updateCardTable(com.rescribe.model.book_appointment.doctor_data.DoctorList doctor, String categoryName) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValuesDoc = new ContentValues();
         ContentValues contentValuesCard = new ContentValues();
+        int isFav = doctor.getFavourite() ? 1 : 0;
 
         db.beginTransaction();
-        contentValuesDoc.put(DOC_DATA.IS_FAVORITE, isFavorite);
-        db.update(DOC_DATA.DOCTOR_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ?", new String[]{String.valueOf(doctorId)});
+        contentValuesDoc.put(DOC_DATA.IS_FAVORITE, isFav);
+        db.update(DOC_DATA.DOCTOR_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ?", new String[]{String.valueOf(doctor.getDocId())});
 
-        if (isFavorite == 1) {
-            contentValuesCard.put(DOC_DATA.DOC_ID, doctorId);
+        if (isFav == 1) {
+            contentValuesCard.put(DOC_DATA.DOC_ID, doctor.getDocId());
             contentValuesCard.put(DOC_DATA.CARD_TYPE, categoryName);
             db.insert(DOC_DATA.CARDVIEW_DATA_TABLE, null, contentValuesCard);
         } else
-            db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CARD_TYPE + " = ?", new String[]{String.valueOf(doctorId), categoryName});
+            db.delete(DOC_DATA.CARDVIEW_DATA_TABLE, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CARD_TYPE + " = ?", new String[]{String.valueOf(doctor.getDocId()), categoryName});
 
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();
     }
-
-    /*public void updateTokenNumber(com.rescribe.model.book_appointment.doctor_data.DoctorList doctor, ClinicData clinicData, TokenDetail tokenDetail) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues contentValuesAppoint = new ContentValues();
-
-        db.beginTransaction();
-        contentValuesAppoint.put(DOC_DATA.TOKEN_NUMBER, tokenDetail.getTokenNumber());
-        contentValuesAppoint.put(DOC_DATA.WAITING_PATIENT_TIME, tokenDetail.getWaitingPatientTime());
-        contentValuesAppoint.put(DOC_DATA.WAITING_PATIENT_COUNT, tokenDetail.getWaitingPatientCount());
-        db.update(DOC_DATA.APPOINTMENT_DATA_TABLE, contentValuesAppoint, DOC_DATA.APPOINTMENT_ID + " = ? ", new String[]{doctor.getAptId()});
-
-        ContentValues contentValuesClinicVSDoc = new ContentValues();
-        contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_APPOINTMENT_TYPE,  "Token");
-        db.update(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, contentValuesClinicVSDoc, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CLINIC_ID + " = ?", new String[]{String.valueOf(doctor.getDocId()), String.valueOf(clinicData.getLocationId())});
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-    }
-
-    public void updateTokenNumber(int doctorId, int clinicId, String type) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues contentValuesClinicVSDoc = new ContentValues();
-
-        db.beginTransaction();
-        contentValuesClinicVSDoc.put(DOC_DATA.CLINIC_APPOINTMENT_TYPE,  type);
-        db.update(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, contentValuesClinicVSDoc, DOC_DATA.DOC_ID + " = ? AND " + DOC_DATA.CLINIC_ID + " = ?", new String[]{String.valueOf(doctorId), String.valueOf(clinicId)});
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-    }*/
 }

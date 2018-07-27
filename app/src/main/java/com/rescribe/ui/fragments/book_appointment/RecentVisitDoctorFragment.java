@@ -103,6 +103,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @BindView(R.id.viewDoctorPager)
     LinearLayout viewDoctorPager;
     Unbinder unbinder;
+
     DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
     private ArrayList<DoctorList> doctorListByClinics;
@@ -146,9 +147,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 //        viewDoctorPager.setVisibility(View.INVISIBLE);
         doConfigureDataListViewVisibility(false, false);
         Bundle arguments = getArguments();
-        if (arguments != null) {
-            mReceivedTitle = arguments.getString(getString(R.string.title));
-        }
+        if (arguments != null) mReceivedTitle = arguments.getString(getString(R.string.title));
 
         mServiceCardDataViewBuilder = new ServicesCardViewImpl(this.getContext(), (BookAppointDoctorListBaseActivity) getActivity());
         mDoctorDataHelper = new DoctorDataHelper(this.getContext(), this);
@@ -264,16 +263,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void setDoctorListAdapter(boolean isShowSortByClinicAndDoctorNameAdapter) {
-            mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this);
-            LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
-            showDoctorsRecyclerView.setNestedScrollingEnabled(false);
-            // off recyclerView Animation
-            RecyclerView.ItemAnimator animator = showDoctorsRecyclerView.getItemAnimator();
-            if (animator instanceof SimpleItemAnimator)
-                ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
-            showDoctorsRecyclerView.setAdapter(mSortByClinicAndDoctorNameAdapter);
-
+        mSortByClinicAndDoctorNameAdapter = new SortByClinicAndDoctorNameAdapter(getActivity(), ServicesCardViewImpl.getReceivedDoctorDataList(), mServiceCardDataViewBuilder, RecentVisitDoctorFragment.this, this);
+        LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        showDoctorsRecyclerView.setLayoutManager(linearlayoutManager);
+        showDoctorsRecyclerView.setNestedScrollingEnabled(false);
+        // off recyclerView Animation
+        RecyclerView.ItemAnimator animator = showDoctorsRecyclerView.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator)
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+        showDoctorsRecyclerView.setAdapter(mSortByClinicAndDoctorNameAdapter);
 
         if (mReceivedDoctorServicesModel.getDoctorSpecialities().isEmpty()) {
             pickSpeciality.setVisibility(View.GONE);
@@ -315,67 +313,66 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     private void setUpViewPager() {
+        if (mViewpager != null) {
+            mServiceCardDataViewBuilder.setReceivedDoctorDataList(CommonMethods.getCategoryDoctorsFromDb(appDBHelper));
+            ArrayList<String> specialities = new ArrayList<>();
+            // get all specialities
+            Cursor specialitiesCursor = appDBHelper.getDoctorsSpecialities();
+            if (specialitiesCursor.moveToFirst()) {
+                do {
+                    specialities.add(specialitiesCursor.getString(specialitiesCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
+                } while (specialitiesCursor.moveToNext());
+            }
+            mReceivedDoctorServicesModel.setDoctorSpecialities(specialities);
 
-        ArrayList<DoctorList> doctorLists = CommonMethods.getCategoryDoctorsFromDb(appDBHelper);
-        mServiceCardDataViewBuilder.setReceivedDoctorDataList(doctorLists);
+            int currentItem = mViewpager.getCurrentItem();
 
-        ArrayList<String> specialities = new ArrayList<>();
-        // get all specialities
-        Cursor specialitiesCursor = appDBHelper.getDoctorsSpecialities();
-        if (specialitiesCursor.moveToFirst()) {
-            do {
-                specialities.add(specialitiesCursor.getString(specialitiesCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
-            } while (specialitiesCursor.moveToNext());
+            Map<String, Integer> dataMap = new LinkedHashMap<>();
+            ArrayList<DoctorList> myAppoint = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);
+            ArrayList<DoctorList> sponsered = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1);
+            ArrayList<DoctorList> recently_visit_doctor = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor), -1);
+            ArrayList<DoctorList> favoriteList = mServiceCardDataViewBuilder.getFavouriteDocList(-1);
+
+            dataMap.put(getString(R.string.my_appointments), myAppoint.size());
+            dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
+            dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
+            dataMap.put(getString(R.string.favorite), favoriteList.size());
+
+            ArrayList<DoctorList> mergeList = new ArrayList<>();
+
+            if (myAppoint.size() > 0)
+                mergeList.add(myAppoint.get(0));
+
+            if (sponsered.size() > 0)
+                mergeList.add(sponsered.get(0));
+
+            if (recently_visit_doctor.size() > 0)
+                mergeList.add(recently_visit_doctor.get(0));
+
+            if (favoriteList.size() > 0)
+                mergeList.add(favoriteList.get(0));
+
+            //----- Set Up view Pager :START-------
+            if (mergeList.isEmpty()) {
+                mViewpager.setVisibility(View.GONE);
+                //mCircleIndicator.setVisibility(View.GONE);
+            } else {
+                mViewpager.setVisibility(View.VISIBLE);
+                mRecentVisitedDoctorPagerAdapter = new ShowDoctorViewPagerAdapter(getActivity(), mergeList, mServiceCardDataViewBuilder, dataMap, this);
+                mViewpager.setAdapter(mRecentVisitedDoctorPagerAdapter);
+                mViewpager.setClipToPadding(false);
+                //------
+                int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
+                mViewpager.setPadding(pager_padding, 0, pager_padding, 0);
+                int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
+                mViewpager.setPageMargin(pager_margin);
+                //------
+            }
+
+            // set pre state
+            mViewpager.setCurrentItem(currentItem);
+            setDoctorListAdapter(false);
         }
-        mReceivedDoctorServicesModel.setDoctorSpecialities(specialities);
-
-        int currentItem = mViewpager.getCurrentItem();
-
-        Map<String, Integer> dataMap = new LinkedHashMap<>();
-        ArrayList<DoctorList> myAppoint = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);
-        ArrayList<DoctorList> sponsered = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1);
-        ArrayList<DoctorList> recently_visit_doctor = mServiceCardDataViewBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor), -1);
-        ArrayList<DoctorList> favoriteList = mServiceCardDataViewBuilder.getFavouriteDocList(-1);
-
-        dataMap.put(getString(R.string.my_appointments), myAppoint.size());
-        dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
-        dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
-        dataMap.put(getString(R.string.favorite), favoriteList.size());
-
-        ArrayList<DoctorList> mergeList = new ArrayList<>();
-
-        if (myAppoint.size() > 0)
-            mergeList.add(myAppoint.get(0));
-
-        if (sponsered.size() > 0)
-            mergeList.add(sponsered.get(0));
-
-        if (recently_visit_doctor.size() > 0)
-            mergeList.add(recently_visit_doctor.get(0));
-
-        if (favoriteList.size() > 0)
-            mergeList.add(favoriteList.get(0));
-
-        //----- Set Up view Pager :START-------
-        if (mergeList.isEmpty()) {
-            mViewpager.setVisibility(View.GONE);
-            //mCircleIndicator.setVisibility(View.GONE);
-        } else {
-            mViewpager.setVisibility(View.VISIBLE);
-            mRecentVisitedDoctorPagerAdapter = new ShowDoctorViewPagerAdapter(getActivity(), mergeList, mServiceCardDataViewBuilder, dataMap, this);
-            mViewpager.setAdapter(mRecentVisitedDoctorPagerAdapter);
-            mViewpager.setClipToPadding(false);
-            //------
-            int pager_padding = getResources().getDimensionPixelSize(R.dimen.pager_padding);
-            mViewpager.setPadding(pager_padding, 0, pager_padding, 0);
-            int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
-            mViewpager.setPageMargin(pager_margin);
-            //------
-        }
-
-        // set pre state
-        mViewpager.setCurrentItem(currentItem);
-        setDoctorListAdapter(false);
     }
 
 
@@ -410,6 +407,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE && mSortByClinicAndDoctorNameAdapter != null) {
                     mSortByClinicAndDoctorNameAdapter.notifyDataSetChanged();
                 }
+            }
+        }
+        if (searchView != null){
+            if (searchView.getText().toString().isEmpty()){
+                setUpViewPager();
             }
         }
     }

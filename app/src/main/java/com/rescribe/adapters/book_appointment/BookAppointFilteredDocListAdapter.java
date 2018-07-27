@@ -73,39 +73,19 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             holder.doctorExperience.setVisibility(View.GONE);
         } else {
             holder.doctorExperience.setVisibility(View.VISIBLE);
-            holder.doctorExperience.setText("" + doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
-
+            holder.doctorExperience.setText(doctorObject.getExperience() + " " + mContext.getString(R.string.years_experience));
         }
-        if(!doctorObject.getCategorySpeciality().equalsIgnoreCase("")){
+
+        if (!doctorObject.getCategorySpeciality().isEmpty()) {
             holder.doctorCategoryType.setText(doctorObject.getCategorySpeciality());
             holder.doctorCategoryType.setVisibility(View.VISIBLE);
-        }else{
+        } else
             holder.doctorCategoryType.setVisibility(View.INVISIBLE);
-        }
+
         holder.aboutDoctor.setText(doctorObject.getDegree());
-/////
-        //-------------
         ArrayList<ClinicData> clinicDataList = doctorObject.getClinicDataList();
-        /// MyAppointment Category is commented as per new flow appointment category is considered non - category so that patient can book appointment.
-       /* if (doctorObject.getCategoryName().equals(mContext.getString(R.string.my_appointments))) {
-            holder.ruppessIcon.setVisibility(View.INVISIBLE);
-            holder.doctorFee.setVisibility(View.INVISIBLE);
-            holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
-            holder.appointmentDate.setVisibility(View.VISIBLE);
-            holder.tokenNo.setVisibility(View.INVISIBLE);
-            SpannableString content = new SpannableString(CommonMethods.getFormattedDate(doctorObject.getAptDate(), RescribeConstants.DATE_PATTERN.YYYY_MM_DD, RescribeConstants.DATE_PATTERN.MMM_DD_YYYY) + ", " + CommonMethods.getFormattedDate(doctorObject.getAptTime(), RescribeConstants.DATE_PATTERN.HH_mm_ss, RescribeConstants.DATE_PATTERN.hh_mm_a));
-            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-            holder.appointmentDate.setText(content);
-            if (clinicDataList.size() > 0) {
-                holder.clinicName.setVisibility(View.VISIBLE);
-                holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
-                holder.doctorAddress.setText(clinicDataList.get(0).getClinicAddress());
-                holder.clinicName.setText(clinicDataList.get(0).getClinicName());
-            } else {
-                holder.clinicName.setVisibility(View.GONE);
-            }
-            //Sponsered Doctors
-        } else*/ if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
+
+        if (doctorObject.getCategoryName().equals(mContext.getString(R.string.favorite))) {
 
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
@@ -120,7 +100,7 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
                 holder.doctorAddress.setText(areaCity);
 
             } else {
-                if (clinicDataList.size() > 0) {
+                if (!clinicDataList.isEmpty()) {
                     boolean b = checkAllClinicAddressInSameCity(clinicDataList);
                     if (b) {
                         SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
@@ -136,14 +116,13 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
                         holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
                         holder.clinicName.setVisibility(View.VISIBLE);
                         holder.clinicName.setText(clinicDataList.get(0).getClinicName());
-
                     }
                 }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
-            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount() > 0) {
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
@@ -153,7 +132,66 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             }
 
             //--------------
-            if (clinicDataList.size() > 0) {
+            if (!clinicDataList.isEmpty()) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
+                    holder.tokenNo.setVisibility(View.VISIBLE);
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                    holder.bookAppointmentButton.setVisibility(View.VISIBLE);
+                    holder.tokenNo.setVisibility(View.INVISIBLE);
+                }
+            }
+            //---------------Recently Visited Category
+
+        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.sponsored_doctor))) {
+
+            if (clinicDataList.size() == 1) {
+                holder.clinicName.setVisibility(View.VISIBLE);
+                holder.clinicName.setText(clinicDataList.get(0).getClinicName());
+                holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
+
+                String areaCity;
+                if (doctorObject.getClinicDataList().get(0).getAreaName().isEmpty())
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                else
+                    areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
+                holder.doctorAddress.setText(areaCity);
+
+            } else {
+                if (!clinicDataList.isEmpty()) {
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.VISIBLE);
+                        holder.clinicName.setText(clinicDataList.get(0).getClinicName());
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        holder.doctorAddress.setText(locationString);
+                        holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        holder.clinicName.setVisibility(View.VISIBLE);
+                        holder.clinicName.setText(clinicDataList.get(0).getClinicName());
+                    }
+                }
+            }
+            holder.bookAppointmentButton.setVisibility(View.VISIBLE);
+            holder.appointmentDate.setVisibility(View.INVISIBLE);
+
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount() > 0) {
+                holder.ruppessIcon.setVisibility(View.VISIBLE);
+                holder.doctorFee.setVisibility(View.VISIBLE);
+                holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
+            } else {
+                holder.doctorFee.setVisibility(View.INVISIBLE);
+                holder.ruppessIcon.setVisibility(View.INVISIBLE);
+            }
+
+            //--------------
+            if (!clinicDataList.isEmpty()) {
                 String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
                 if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
@@ -176,11 +214,10 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
                 else
                     areaCity = CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getAreaName()) + ", " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName());
                 holder.doctorAddress.setText(areaCity);
-
                 holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.dose_completed));
 
             } else {
-                if (clinicDataList.size() > 0) {
+                if (!clinicDataList.isEmpty()) {
 
                     boolean b = checkAllClinicAddressInSameCity(clinicDataList);
                     if (b) {
@@ -205,7 +242,7 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
             //----------
-            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount() > 0) {
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
                 holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
@@ -214,7 +251,7 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
             }
             //----------
-            if (clinicDataList.size() > 0) {
+            if (!clinicDataList.isEmpty()) {
                 String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
                 if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     holder.bookAppointmentButton.setVisibility(View.INVISIBLE);
@@ -225,7 +262,7 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
                 }
             }
             //---------------if Doctor Doesnt belong to any Category
-        } else if (doctorObject.getCategoryName().equals("")||doctorObject.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
+        } else if (doctorObject.getCategoryName().equals("") || doctorObject.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
             if (clinicDataList.size() == 1) {
                 holder.clinicName.setVisibility(View.VISIBLE);
                 holder.clinicName.setText(clinicDataList.get(0).getClinicName());
@@ -257,26 +294,23 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
                         holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
                         holder.clinicName.setVisibility(View.VISIBLE);
                         holder.clinicName.setText(clinicDataList.get(0).getClinicName());
-
                     }
-
                 }
             }
             holder.bookAppointmentButton.setVisibility(View.VISIBLE);
             holder.appointmentDate.setVisibility(View.INVISIBLE);
 
-            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount() > 0) {
                 holder.doctorFee.setVisibility(View.VISIBLE);
                 holder.ruppessIcon.setVisibility(View.VISIBLE);
                 holder.doctorFee.setText("" + clinicDataList.get(0).getAmount());
             } else {
                 holder.doctorFee.setVisibility(View.INVISIBLE);
                 holder.ruppessIcon.setVisibility(View.INVISIBLE);
-
             }
 
             //----------
-            if (clinicDataList.size() > 0) {
+            if (!clinicDataList.isEmpty()) {
                 String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
                 if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
                     holder.bookAppointmentButton.setVisibility(View.INVISIBLE);

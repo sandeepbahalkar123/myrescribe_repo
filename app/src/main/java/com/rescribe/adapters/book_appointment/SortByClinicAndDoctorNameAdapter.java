@@ -399,11 +399,8 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     }
 
     public void updateClickedItemFavImage() {
-        DoctorList userSelectedDoctorListDataObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
-        if (userSelectedDoctorListDataObject.getFavourite()) {
-            mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
-        } else {
-            mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
+        if (mClickedItemFavImageView != null) {
+            mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(ServicesCardViewImpl.getUserSelectedDoctorListDataObject().getFavourite() ? R.drawable.favourite_icon : R.drawable.favourite_line_icon));
         }
     }
 

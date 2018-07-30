@@ -39,10 +39,10 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
 
         String prefix[] = uploadInfo.getUploadId().split("_");
         if (prefix[0].equals(patientId)) {
-                instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.FAILED);
-            } else {
-                instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
-            }
+            instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.FAILED);
+        } else {
+            instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.FAILED);
+        }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(uploadInfo.getNotificationID());
@@ -59,29 +59,30 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
         String prefix[] = uploadInfo.getUploadId().split("_");
         if (prefix[0].equals(patientId)) {
 
-                MQTTMessage mqttMessage = instance.getMessageUploadById(uploadInfo.getUploadId());
+            MQTTMessage mqttMessage = instance.getMessageUploadById(uploadInfo.getUploadId());
 
-                String response = serverResponse.getBodyAsString();
-                ChatFileUploadModel chatFileUploadModel = gson.fromJson(response, ChatFileUploadModel.class);
+            String response = serverResponse.getBodyAsString();
+            ChatFileUploadModel chatFileUploadModel = gson.fromJson(response, ChatFileUploadModel.class);
 
-                String fileUrl = chatFileUploadModel.getData().getDocUrl();
-                // send via mqtt
-                if (mqttMessage != null) {
+            String fileUrl = chatFileUploadModel.getData().getDocUrl();
+            // send via mqtt
+            if (mqttMessage != null) {
 
-                    mqttMessage.setFileUrl(fileUrl);
+                mqttMessage.setFileUrl(fileUrl);
 
-                    Intent intentService = new Intent(context, MQTTService.class);
-                    intentService.putExtra(SEND_MESSAGE, true);
-                    intentService.putExtra(MESSAGE_LIST, mqttMessage);
-                    context.startService(intentService);
-                }
-                instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
-            } else {
-                instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
+                Intent intentService = new Intent(context, MQTTService.class);
+                intentService.putExtra(SEND_MESSAGE, true);
+                intentService.putExtra(MESSAGE_LIST, mqttMessage);
+                context.startService(intentService);
             }
+            instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
+        } else
+            instance.updateMyRecordsData(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(uploadInfo.getNotificationID());
+        Integer notificationID = uploadInfo.getNotificationID();
+        if (notificationID != null)
+            notificationManager.cancel(notificationID);
 
         CommonMethods.Log("ImagedUploadIdHome", uploadInfo.getUploadId() + " onCompleted");
     }

@@ -50,7 +50,6 @@ public class InvestigationHelper implements ConnectionListener {
             case ConnectionListener.SERVER_ERROR:
                 CommonMethods.Log(TAG, mContext.getString(R.string.server_error));
                 mHelperResponseManager.onServerError(mOldDataTag, mContext.getString(R.string.server_error));
-
                 break;
             case ConnectionListener.NO_CONNECTION_ERROR:
                 CommonMethods.Log(TAG, mContext.getString(R.string.no_connection_error));
@@ -68,7 +67,7 @@ public class InvestigationHelper implements ConnectionListener {
     }
 
     public void getInvestigationList(boolean progressBar) {
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progressBar, RescribeConstants.INVESTIGATION_LIST, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progressBar, RescribeConstants.INVESTIGATION_LIST, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
         // HardCoded
         mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext));

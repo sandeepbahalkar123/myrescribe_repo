@@ -205,18 +205,21 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
     public void onViewClicked() {
 
         if (NetworkUtil.isInternetAvailable(mContext)) {
-            if (photoPaths.size() > 0 && photoPaths != null) {
+            if (!photoPaths.isEmpty()) {
                 customProgressDialog.show();
-                String investigationIds = "";
-                String investigationTypes = "";
+                StringBuilder investigationIds = new StringBuilder();
+                StringBuilder investigationTypes = new StringBuilder();
 
                 imageUploadedCount = 0;
                 imageUploadFailedCount = 0;
 
                 for (InvestigationData dataObject : investigation) {
                     if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                        investigationIds = investigationIds + "," + dataObject.getId();
-                        investigationTypes = investigationTypes + "," + dataObject.getInvestigationType();
+
+                        investigationIds.append(dataObject.getId()).append(", ");
+
+                        if (dataObject.getInvestigationType() != null)
+                        investigationTypes.append(dataObject.getInvestigationType()).append(", ");
                     }
                 }
 
@@ -235,8 +238,8 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                                 .addHeader(RescribeConstants.DEVICE_TYPE, device.getDeviceType())
 
                                 .addHeader("imgId", image.getImageId())
-                                .addHeader("invIds", investigationIds)
-                                .addHeader("types", investigationTypes)
+                                .addHeader("invIds", investigationIds.toString())
+                                .addHeader("types", investigationTypes.toString())
                                 .addFileToUpload(image.getImagePath(), "investigationDoc")
                                 .setDelegate(SelectedDocsActivity.this)
                                 .startUpload();

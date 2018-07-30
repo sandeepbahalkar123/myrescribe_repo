@@ -231,19 +231,16 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     CommonBaseModelContainer responseFavouriteDoctorBaseModel = (CommonBaseModelContainer) customResponse;
                     if (responseFavouriteDoctorBaseModel.getCommonRespose().isSuccess()) {
                         mServiceCardDataViewBuilder.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
-                        setUpViewPager();
-                        if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE) {
-                            mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
-                        }
+                        setUpViewPager(true);
+                        mSortByClinicAndDoctorNameAdapter.updateClickedItemFavImage();
                     }
-                    //  CommonMethods.showToast(getActivity(), responseFavouriteDoctorBaseModel.getCommonRespose().getStatusMessage());
                 }
                 break;
 
             case TASK_DOCTORLIST_API:
                 DoctorListModel doctorListModel = (DoctorListModel) customResponse;
                 if (doctorListModel.getCommon().getStatusCode().equals(SUCCESS)) {
-                    setUpViewPager();
+                    setUpViewPager(false);
                 }
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
@@ -275,7 +272,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
         if (mReceivedDoctorServicesModel.getDoctorSpecialities().isEmpty()) {
             pickSpeciality.setVisibility(View.GONE);
-            //   doubtMessage.setVisibility(View.GONE);
             mSpecialityEmptyListView.setVisibility(View.VISIBLE);
             prevBtn.setVisibility(View.INVISIBLE);
             nextBtn.setVisibility(View.INVISIBLE);
@@ -294,25 +290,23 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
             mBookAppointSpecialityListView.setNestedScrollingEnabled(false);
 
-            // mBookAppointSpecialityListView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
             mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
             mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
             pickSpeciality.setVisibility(View.VISIBLE);
             viewDoctorPager.setVisibility(View.VISIBLE);
-            //  doubtMessage.setVisibility(View.VISIBLE);
         }
         //---set data ---------
 
         //------manage sorted_listview visibility---
         if (isShowSortByClinicAndDoctorNameAdapter) {
             mSortByClinicAndDoctorNameAdapter.getFilter().filter(searchView.getText().toString());
-            doConfigureDataListViewVisibility(true, mReceivedDoctorServicesModel.getDoctorList().size() == 0);
+            doConfigureDataListViewVisibility(true, mReceivedDoctorServicesModel.getDoctorList().isEmpty());
         } else {
             doConfigureDataListViewVisibility(false, false);
         }
     }
 
-    private void setUpViewPager() {
+    private void setUpViewPager(boolean isFavorite) {
         if (mViewpager != null) {
             mServiceCardDataViewBuilder.setReceivedDoctorDataList(CommonMethods.getCategoryDoctorsFromDb(appDBHelper));
             ArrayList<String> specialities = new ArrayList<>();
@@ -340,24 +334,24 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
             ArrayList<DoctorList> mergeList = new ArrayList<>();
 
-            if (myAppoint.size() > 0)
+            if (!myAppoint.isEmpty())
                 mergeList.add(myAppoint.get(0));
 
-            if (sponsered.size() > 0)
+            if (!sponsered.isEmpty())
                 mergeList.add(sponsered.get(0));
 
-            if (recently_visit_doctor.size() > 0)
+            if (!recently_visit_doctor.isEmpty())
                 mergeList.add(recently_visit_doctor.get(0));
 
-            if (favoriteList.size() > 0)
+            if (!favoriteList.isEmpty())
                 mergeList.add(favoriteList.get(0));
 
-            //----- Set Up view Pager :START-------
             if (mergeList.isEmpty()) {
                 mViewpager.setVisibility(View.GONE);
-                //mCircleIndicator.setVisibility(View.GONE);
             } else {
-                mViewpager.setVisibility(View.VISIBLE);
+                if (!isFavorite)
+                    mViewpager.setVisibility(View.VISIBLE);
+
                 mRecentVisitedDoctorPagerAdapter = new ShowDoctorViewPagerAdapter(getActivity(), mergeList, mServiceCardDataViewBuilder, dataMap, this);
                 mViewpager.setAdapter(mRecentVisitedDoctorPagerAdapter);
                 mViewpager.setClipToPadding(false);
@@ -366,12 +360,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 mViewpager.setPadding(pager_padding, 0, pager_padding, 0);
                 int pager_margin = getResources().getDimensionPixelSize(R.dimen.pager_margin);
                 mViewpager.setPageMargin(pager_margin);
-                //------
             }
 
             // set pre state
             mViewpager.setCurrentItem(currentItem);
-            setDoctorListAdapter(false);
+            if (showDoctorsRecyclerView.getVisibility() != View.VISIBLE)
+                setDoctorListAdapter(false);
         }
     }
 
@@ -409,9 +403,9 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 }
             }
         }
-        if (searchView != null){
-            if (searchView.getText().toString().isEmpty()){
-                setUpViewPager();
+        if (searchView != null) {
+            if (searchView.getText().toString().isEmpty()) {
+                setUpViewPager(false);
             }
         }
     }
@@ -434,7 +428,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             if (selectedLocation.equalsIgnoreCase(mUserSelectedLocation)) {
                 mUserSelectedLocation = selectedLocation;
             } else {
-                setUpViewPager();
+                setUpViewPager(false);
                 mUserSelectedLocation = selectedLocation;
                 String[] split = mUserSelectedLocation.split(",");
                 if (split.length == 2) {

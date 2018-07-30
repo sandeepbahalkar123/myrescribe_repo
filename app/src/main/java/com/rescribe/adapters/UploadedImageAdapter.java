@@ -1,5 +1,6 @@
 package com.rescribe.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +51,7 @@ public class UploadedImageAdapter extends RecyclerView.Adapter<UploadedImageAdap
         return new UploadedImageAdapter.FileViewHolder(view);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(final UploadedImageAdapter.FileViewHolder holder, final int position) {
         final Image path = paths.get(position);

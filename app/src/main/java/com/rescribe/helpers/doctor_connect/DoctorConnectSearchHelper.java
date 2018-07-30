@@ -19,9 +19,9 @@ import com.rescribe.util.RescribeConstants;
 
 public class DoctorConnectSearchHelper implements ConnectionListener {
 
-    String TAG = this.getClass().getName();
-    Context mContext;
-    HelperResponse mHelperResponseManager;
+    private String TAG = this.getClass().getName();
+    private Context mContext;
+    private HelperResponse mHelperResponseManager;
 
     public DoctorConnectSearchHelper(Context context, HelperResponse doctorConnectSearchActivity) {
         this.mContext = context;
@@ -34,7 +34,7 @@ public class DoctorConnectSearchHelper implements ConnectionListener {
 
         switch (responseResult) {
             case ConnectionListener.RESPONSE_OK:
-                if (mOldDataTag == RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST) {
+                if (mOldDataTag.equals(RescribeConstants.TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST)) {
                     mHelperResponseManager.onSuccess(mOldDataTag, customResponse);
                 }
                 break;

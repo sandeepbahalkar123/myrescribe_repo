@@ -98,7 +98,6 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
         // Update server status with image id
 
         if (selectedImageCount > 0) {
-
             for (InvestigationData dataObject : investigationTemp) {
                 if (dataObject.isSelected() && !dataObject.isUploaded())
                     invIds.append(",").append(dataObject.getId());

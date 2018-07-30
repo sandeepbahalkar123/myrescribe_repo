@@ -10,7 +10,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
-import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.card_data.CategoryList;
@@ -52,6 +51,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public static final String INV_NAME = "inv_name";
     public static final String INV_NAME_KEY = "inv_key";
     public static final String INV_OPD_ID = "inv_opd_id";
+    public static final String INV_TYPE = "inv_type";
     public static final String INV_DR_NAME = "inv_dr_name";
     public static final String INV_UPLOAD_STATUS = "upload_status";
     public static final String INV_UPLOADED_IMAGES = "uploaded_images";
@@ -320,28 +320,40 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     // investigation
 
-    public boolean insertInvestigationData(int id, String name, String key, String dr_name, int opd_id, boolean isUploaded, String imageJson) {
-        if (investigationDataTableNumberOfRows(id) == 0) {
-            SQLiteDatabase db = getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
+    public void insertInvestigationData(ArrayList<InvestigationData> investigation) {
 
-            contentValues.put(INV_ID, id);
-            contentValues.put(INV_NAME, name);
-            contentValues.put(INV_NAME_KEY, key);
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
 
-            contentValues.put(INV_DR_NAME, dr_name);
-            contentValues.put(INV_OPD_ID, opd_id);
+        db.beginTransaction();
+        for (InvestigationData dataObject : investigation) {
+            if (investigationDataTableNumberOfRows(db, dataObject.getId()) == 0) {
 
-            contentValues.put(INV_UPLOAD_STATUS, isUploaded ? 1 : 0);
-            contentValues.put(INV_UPLOADED_IMAGES, imageJson);
+                Images images = new Images();
+                images.setImageArray(dataObject.getPhotos());
 
-            db.insert(INVESTIGATION_TABLE, null, contentValues);
+                contentValues.put(INV_ID, dataObject.getId());
+                contentValues.put(INV_NAME, dataObject.getTitle());
+                contentValues.put(INV_NAME_KEY, dataObject.getInvestigationKey());
+
+                contentValues.put(INV_DR_NAME, dataObject.getDoctorName());
+                contentValues.put(INV_OPD_ID, dataObject.getOpdId());
+
+                contentValues.put(INV_TYPE, dataObject.getInvestigationType());
+
+                contentValues.put(INV_UPLOAD_STATUS, dataObject.isUploaded() ? 1 : 0);
+                contentValues.put(INV_UPLOADED_IMAGES, new Gson().toJson(images));
+
+                db.insert(INVESTIGATION_TABLE, null, contentValues);
+            }
         }
-        return true;
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
     }
 
-    private int investigationDataTableNumberOfRows(int id) {
-        SQLiteDatabase db = getReadableDatabase();
+    private int investigationDataTableNumberOfRows(SQLiteDatabase db, int id) {
         return (int) DatabaseUtils.queryNumEntries(db, INVESTIGATION_TABLE, INV_ID + " = ? ", new String[]{String.valueOf(id)});
     }
 
@@ -375,6 +387,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 dataObject.setOpdId(cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_OPD_ID)));
 
                 dataObject.setInvestigationKey(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_NAME_KEY)));
+                dataObject.setInvestigationType(cursor.getString(cursor.getColumnIndex(AppDBHelper.INV_TYPE)));
+
                 dataObject.setSelected(cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1);
                 dataObject.setUploaded(cursor.getInt(cursor.getColumnIndex(AppDBHelper.INV_UPLOAD_STATUS)) == 1);
                 dataObject.setPhotos(imageArray);

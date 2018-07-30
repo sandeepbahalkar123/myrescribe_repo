@@ -27,7 +27,7 @@ public class InvestigationData implements Parcelable {
     private String investigationKey;
     @SerializedName("type")
     @Expose
-    private String investigationType;
+    private String investigationType = "";
     @SerializedName("DoctorName")
     @Expose
     private String doctorName;

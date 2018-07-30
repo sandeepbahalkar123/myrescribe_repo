@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.adapters.InvestigationViewAdapter;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -26,7 +25,6 @@ import com.rescribe.helpers.investigation.InvestigationHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.investigation.Image;
-import com.rescribe.model.investigation.Images;
 import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.model.investigation.gmail.InvestigationUploadByGmailModel;
 import com.rescribe.model.investigation.request.InvestigationUploadByGmailRequest;
@@ -343,13 +341,8 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         title.setText(titleText);
 
-        if (investigation.size() > 0) {
-
-            for (InvestigationData dataObject : investigation) {
-                Images images = new Images();
-                images.setImageArray(dataObject.getPhotos());
-                appDBHelper.insertInvestigationData(dataObject.getId(), dataObject.getTitle(), dataObject.getInvestigationKey(), dataObject.getDoctorName(), dataObject.getOpdId(), dataObject.isUploaded(), new Gson().toJson(images));
-            }
+        if (!investigation.isEmpty()) {
+            appDBHelper.insertInvestigationData(investigation);
 
             int isAlreadyUploadedButtonVisible = View.GONE;
 
@@ -362,6 +355,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                     dataObject.setId(investigation.get(i).getId());
                     dataObject.setTitle(investigation.get(i).getTitle());
                     dataObject.setInvestigationKey(investigation.get(i).getInvestigationKey());
+                    dataObject.setInvestigationType(investigation.get(i).getInvestigationType());
                     dataObject.setDoctorName(investigation.get(i).getDoctorName());
                     dataObject.setOpdId(investigation.get(i).getOpdId());
                     dataObject.setSelected(investigation.get(i).isSelected());

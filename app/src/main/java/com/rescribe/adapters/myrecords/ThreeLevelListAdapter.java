@@ -156,7 +156,12 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             addressText = CommonMethods.toCamelCase(dataObject.getCityName());
         else
             addressText = CommonMethods.toCamelCase(dataObject.getAreaName()) + ", " + CommonMethods.toCamelCase(dataObject.getCityName());
-        groupViewHolder.doctorAddress.setText(addressText);
+
+        if (addressText.isEmpty())
+            groupViewHolder.doctorAddress.setText(dataObject.getAddress());
+        else
+            groupViewHolder.doctorAddress.setText(addressText);
+
         groupViewHolder.doctorType.setText(dataObject.getSpecialization());
 
         //--------

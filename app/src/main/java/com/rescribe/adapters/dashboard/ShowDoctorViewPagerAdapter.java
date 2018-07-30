@@ -309,6 +309,53 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
             }
             //---------------
 
+        } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.favorite))) {
+            if (clinicDataList.size() == 1) {
+                clinicName.setVisibility(View.VISIBLE);
+                clinicName.setText(clinicDataList.get(0).getClinicName());
+                doctorAddress.setText(clinicDataList.get(0).getAreaName() + ", " + clinicDataList.get(0).getCityName());
+                doctorAddress.setTextColor(mContext.getResources().getColor(R.color.grey_shade));
+
+            } else {
+                if (clinicDataList.size() > 0) {
+                    boolean b = checkAllClinicAddressInSameCity(clinicDataList);
+                    if (b) {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(clinicDataList.get(0).getClinicName());
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                    } else {
+                        SpannableString locationString = new SpannableString(clinicDataList.size() + " " + mContext.getString(R.string.locations));
+                        locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
+                        doctorAddress.setText(locationString);
+                        doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
+                        clinicName.setVisibility(View.VISIBLE);
+                        clinicName.setText(clinicDataList.get(0).getClinicName());
+                    }
+                }
+            }
+            designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.desing_line_for_big_name));
+            doctorAppointmentDate.setVisibility(View.GONE);
+
+            if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount()>0) {
+                feesToPaid.setVisibility(View.VISIBLE);
+                feesToPaid.setText("" + clinicDataList.get(0).getAmount());
+            } else
+                feesToPaid.setVisibility(View.INVISIBLE);
+
+            if (clinicDataList.size() > 0) {
+                String appointmentType = doctorObject.getClinicDataList().get(0).getAppointmentType();
+                if (mContext.getString(R.string.token).equalsIgnoreCase(appointmentType) || mContext.getString(R.string.mixed).equalsIgnoreCase(appointmentType)) {
+                    bookAppointmentButton.setVisibility(View.GONE);
+                    tokenNo.setVisibility(View.VISIBLE);
+                } else if (doctorObject.getClinicDataList().get(0).getAppointmentType().equalsIgnoreCase(mContext.getString(R.string.book))) {
+                    bookAppointmentButton.setVisibility(View.VISIBLE);
+                    tokenNo.setVisibility(View.GONE);
+                }
+            }
+            //---------------
         } else if (doctorObject.getCategoryName().equals(mContext.getString(R.string.recently_visit_doctor))) {
             if (clinicDataList.size() == 1) {
                 clinicName.setVisibility(View.VISIBLE);

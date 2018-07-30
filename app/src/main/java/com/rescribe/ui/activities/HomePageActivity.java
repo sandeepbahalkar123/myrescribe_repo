@@ -240,7 +240,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private CustomProgressDialog mCustomProgressDialog;
 
     private void logUser() {
-        // TODO: Use the current user's information
         // You can call any combination of these three methods
         Crashlytics.setUserIdentifier(patientId);
         Crashlytics.setUserEmail(RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_EMAIL, mContext));

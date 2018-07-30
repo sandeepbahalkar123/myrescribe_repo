@@ -514,11 +514,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             case RescribeConstants.TASK_SET_FAVOURITE_DOCTOR:
                 CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
                 if (temp.getCommonRespose().isSuccess()) {
-                    boolean isUpdated = ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject, appDBHelper);
-                    //----THIS IS DONE FOR, WHEN PAGE OPENED FROM CHAT_ACTIVITY---
-                    if (getString(R.string.chats).equalsIgnoreCase(activityOpeningFrom) && isUpdated)
-                        mClickedDoctorObject.setFavourite(!mClickedDoctorObject.getFavourite());
-                    //-------
+                    ServicesCardViewImpl.updateFavStatusForDoctorDataObject(mClickedDoctorObject, appDBHelper);
                     mFavorite.setImageResource(mClickedDoctorObject.getFavourite() ? R.drawable.fav_icon : R.drawable.result_line_heart_fav);
                 }
 

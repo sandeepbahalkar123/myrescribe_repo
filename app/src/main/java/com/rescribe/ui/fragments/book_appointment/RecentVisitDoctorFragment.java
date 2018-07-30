@@ -119,10 +119,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
 
-    public RecentVisitDoctorFragment() {
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -301,9 +297,8 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         if (isShowSortByClinicAndDoctorNameAdapter) {
             mSortByClinicAndDoctorNameAdapter.getFilter().filter(searchView.getText().toString());
             doConfigureDataListViewVisibility(true, mReceivedDoctorServicesModel.getDoctorList().isEmpty());
-        } else {
+        } else
             doConfigureDataListViewVisibility(false, false);
-        }
     }
 
     private void setUpViewPager(boolean isFavorite) {
@@ -416,7 +411,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         String specialityName = bundleData.getString(RescribeConstants.ITEM_DATA);
         Intent intent = new Intent(getActivity(), ServicesFilteredDoctorListActivity.class);
         bundleData.putString(RescribeConstants.TITLE, specialityName);
-        intent.putExtra(RescribeConstants.PICK_SPECAILITY, RescribeConstants.SORT_BY_SPECIALITY);
         intent.putExtras(bundleData);
         startActivity(intent);
     }

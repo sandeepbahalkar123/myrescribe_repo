@@ -335,14 +335,8 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
         }
         ////-------------------
 
+        holder.favoriteView.setImageDrawable(mContext.getResources().getDrawable(doctorObject.getFavourite() ? R.drawable.favourite_icon : R.drawable.favourite_line_icon));
 
-        //----------
-        if (doctorObject.getFavourite()) {
-            holder.favoriteView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
-        } else {
-            holder.favoriteView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
-        }
-        //-----------
         String doctorName = doctorObject.getDocName();
         if (doctorName.contains("Dr. ")) {
             doctorName = doctorName.replace("Dr. ", "");
@@ -474,12 +468,7 @@ public class BookAppointFilteredDocListAdapter extends RecyclerView.Adapter<Book
     }
 
     public void updateClickedItemFavImage() {
-        DoctorList userSelectedDoctorListDataObject = ServicesCardViewImpl.getUserSelectedDoctorListDataObject();
-        if (userSelectedDoctorListDataObject.getFavourite()) {
-            mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_icon));
-        } else {
-            mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.favourite_line_icon));
-        }
+        mClickedItemFavImageView.setImageDrawable(mContext.getResources().getDrawable(ServicesCardViewImpl.getUserSelectedDoctorListDataObject().getFavourite() ? R.drawable.favourite_icon : R.drawable.favourite_line_icon));
     }
 
     /**

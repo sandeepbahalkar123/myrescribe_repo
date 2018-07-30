@@ -210,12 +210,13 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
     public static boolean updateFavStatusForDoctorDataObject(DoctorList updatedObject, AppDBHelper appDBHelper) {
         boolean status = false;
         if (updatedObject != null) {
+            updatedObject.setFavourite(!updatedObject.getFavourite());
+            appDBHelper.updateCardTable(updatedObject, appDBHelper.getContext().getString(R.string.favorite));
             for (int i = 0; i < mReceivedDoctorDataList.size(); i++) {
                 DoctorList tempObject = mReceivedDoctorDataList.get(i);
                 if (updatedObject.getDocId() == tempObject.getDocId()) {
-                    tempObject.setFavourite(!tempObject.getFavourite());
+                    tempObject.setFavourite(updatedObject.getFavourite());
                     mReceivedDoctorDataList.set(i, tempObject);
-                    appDBHelper.updateCardTable(updatedObject, appDBHelper.getContext().getString(R.string.favorite));
                     status = true;
                 }
             }

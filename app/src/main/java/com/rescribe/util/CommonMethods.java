@@ -1221,10 +1221,10 @@ public class CommonMethods {
         return doctorLists;
     }
 
-    public static ArrayList<DoctorList> getAllDoctorsFromDb(AppDBHelper appDBHelper) {
+    public static ArrayList<DoctorList> getDoctorsBySpeciality(AppDBHelper appDBHelper, String speciality) {
         ArrayList<DoctorList> doctorLists = new ArrayList<>();
         // get Card Data
-        Cursor docCursor = appDBHelper.getDoctors();
+        Cursor docCursor = appDBHelper.getDoctorsBySpeciality(speciality);
         if (docCursor.moveToFirst()) {
             do {
                 DoctorList doctorList = new DoctorList();

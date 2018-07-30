@@ -1,6 +1,7 @@
 package com.rescribe.ui.fragments.book_appointment;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import com.rescribe.model.book_appointment.filterdrawer.request_model.BookAppoin
 import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.book_appointment.MapActivityPlotNearByDoctor;
 import com.rescribe.ui.activities.book_appointment.ServicesFilteredDoctorListActivity;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     @BindView(R.id.leftFab)
     FloatingActionButton mLocationFab;
     Unbinder unbinder;
+
     BookAppointFilteredDocListAdapter mBookAppointFilteredDocListAdapterAdapter;
     private ArrayList<DoctorList> mReceivedList = new ArrayList<>();
     private DoctorDataHelper mDoctorDataHelper;
@@ -127,7 +130,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
         //------------
 
         if (getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
-            mReceivedList = mServicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
+//            mReceivedList = mServicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
+            mReceivedList = CommonMethods.getDoctorsBySpeciality(appDBHelper, mClickedItemDataValue);
+
             mLocationFab.setVisibility(View.VISIBLE);
             mFilterFab.setVisibility(View.VISIBLE);
             activity.disableDrawer(false);
@@ -146,11 +151,9 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 mReceivedList = ServicesCardViewImpl.getReceivedDoctorDataList();
             }
         }
-        //------------
-        if (mReceivedList == null) {
+
+        if (mReceivedList == null)
             mReceivedList = new ArrayList<>();
-        }
-        //-----------
     }
 
     public void doGetLatestDoctorListOnLocationChange(String mComplaintsUserSearchFor) {

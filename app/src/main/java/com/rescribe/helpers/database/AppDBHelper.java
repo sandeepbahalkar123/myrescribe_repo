@@ -882,6 +882,11 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
     }
 
+    public Cursor getDoctorsBySpeciality(String speciality) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.SPECIALITY + " = '" + speciality + "'", null);
+    }
+
     public Cursor getDoctors() {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE, null);

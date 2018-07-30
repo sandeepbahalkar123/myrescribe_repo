@@ -2,10 +2,12 @@ package com.rescribe.helpers.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -25,10 +27,12 @@ import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +72,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
     private static final String PREFERENCES_TABLE = "preferences_table";
     private static final String DATABASE_NAME = "MyRescribe.sqlite";
     private static final String DB_PATH_SUFFIX = "/data/data/com.rescribe/databases/";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     public static final String APP_DATA_TABLE = "PrescriptionData";
     public static final String COLUMN_ID = "dataId";
     public static final String COLUMN_DATA = "data";
@@ -160,10 +164,66 @@ public class AppDBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
 //        db.execSQL("DROP TABLE IF EXISTS " + APP_DATA_TABLE);
 //        db.execSQL("DROP TABLE IF EXISTS " + PREFERENCES_TABLE);
-        deleteDatabase();
-        copyDataBase();
+        //  deleteDatabase();
+        //  copyDataBase();
 //        onCreate(db);
+
+        Log.e(TAG, "Updating table from " + oldVersion + " to " + newVersion);
+        // You will not need to modify this unless you need to do some android specific things.
+        // When upgrading the database, all you need to do is add a file to the assets folder and name it:
+        // from_1_to_2.sql with the version that you are upgrading to as the last version.
+        for (int i = oldVersion; i < newVersion; ++i) {
+            String migrationName = String.format("from_%d_to_%d.sql", i, (i + 1));
+            Log.e(TAG, "Looking for migration file: " + migrationName);
+            readAndExecuteSQLScript(db, mContext, migrationName);
+        }
     }
+
+    //-----------
+    private void readAndExecuteSQLScript(SQLiteDatabase db, Context ctx, String fileName) {
+        if (TextUtils.isEmpty(fileName)) {
+            Log.e(TAG, "SQL script file name is empty");
+            return;
+        }
+
+        Log.e(TAG, "Script found. Executing...");
+        AssetManager assetManager = ctx.getAssets();
+        BufferedReader reader = null;
+
+        try {
+            InputStream is = assetManager.open(fileName);
+            InputStreamReader isr = new InputStreamReader(is);
+            reader = new BufferedReader(isr);
+            executeSQLScript(db, reader);
+        } catch (IOException e) {
+            Log.e(TAG, "IOException:", e);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.e(TAG, "IOException:", e);
+                }
+            }
+        }
+
+    }
+
+    private void executeSQLScript(SQLiteDatabase db, BufferedReader reader) throws IOException {
+        String line;
+        StringBuilder statement = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            statement.append(line);
+            statement.append("\n");
+            if (line.endsWith(";")) {
+                String s = statement.toString();
+                CommonMethods.Log(TAG, s);
+                db.execSQL(s);
+                statement = new StringBuilder();
+            }
+        }
+    }
+    //-----------
 
     public static synchronized AppDBHelper getInstance(Context context) {
         if (instance == null) {

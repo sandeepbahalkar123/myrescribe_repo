@@ -2,12 +2,10 @@ package com.rescribe.helpers.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -27,12 +25,10 @@ import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,20 +150,12 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // TODO Auto-generated method stub
         // db.execSQL("CREATE TABLE IF NOT EXISTS " + APP_DATA_TABLE + "(dataId integer, data text)");
         // db.execSQL("CREATE TABLE IF NOT EXISTS " + PREFERENCES_TABLE + "(userId integer, breakfastTime text, lunchTime text, dinnerTime text)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO Auto-generated method stub
-//        db.execSQL("DROP TABLE IF EXISTS " + APP_DATA_TABLE);
-//        db.execSQL("DROP TABLE IF EXISTS " + PREFERENCES_TABLE);
-        //  deleteDatabase();
-        //  copyDataBase();
-//        onCreate(db);
-
         Log.e(TAG, "Updating table from " + oldVersion + " to " + newVersion);
         // You will not need to modify this unless you need to do some android specific things.
         // When upgrading the database, all you need to do is add a file to the assets folder and name it:
@@ -175,55 +163,28 @@ public class AppDBHelper extends SQLiteOpenHelper {
         for (int i = oldVersion; i < newVersion; ++i) {
             String migrationName = String.format("from_%d_to_%d.sql", i, (i + 1));
             Log.e(TAG, "Looking for migration file: " + migrationName);
-            readAndExecuteSQLScript(db, mContext, migrationName);
+            if (!isFieldExist(db, INVESTIGATION_TABLE, INV_TYPE))
+                db.execSQL("ALTER TABLE `investigation_table` ADD `inv_type` TEXT");
         }
     }
 
-    //-----------
-    private void readAndExecuteSQLScript(SQLiteDatabase db, Context ctx, String fileName) {
-        if (TextUtils.isEmpty(fileName)) {
-            Log.e(TAG, "SQL script file name is empty");
-            return;
-        }
-
-        Log.e(TAG, "Script found. Executing...");
-        AssetManager assetManager = ctx.getAssets();
-        BufferedReader reader = null;
-
+    private boolean isFieldExist(SQLiteDatabase db, String tableName, String fieldName) {
+        boolean isExist = false;
+        Cursor res = null;
         try {
-            InputStream is = assetManager.open(fileName);
-            InputStreamReader isr = new InputStreamReader(is);
-            reader = new BufferedReader(isr);
-            executeSQLScript(db, reader);
-        } catch (IOException e) {
-            Log.e(TAG, "IOException:", e);
+            res = db.rawQuery("Select * from " + tableName + " limit 1", null);
+            int colIndex = res.getColumnIndex(fieldName);
+            if (colIndex != -1) {
+                isExist = true;
+            }
+
         } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    Log.e(TAG, "IOException:", e);
-                }
+            if (res != null) {
+                res.close();
             }
         }
-
+        return isExist;
     }
-
-    private void executeSQLScript(SQLiteDatabase db, BufferedReader reader) throws IOException {
-        String line;
-        StringBuilder statement = new StringBuilder();
-        while ((line = reader.readLine()) != null) {
-            statement.append(line);
-            statement.append("\n");
-            if (line.endsWith(";")) {
-                String s = statement.toString();
-                CommonMethods.Log(TAG, s);
-                db.execSQL(s);
-                statement = new StringBuilder();
-            }
-        }
-    }
-    //-----------
 
     public static synchronized AppDBHelper getInstance(Context context) {
         if (instance == null) {

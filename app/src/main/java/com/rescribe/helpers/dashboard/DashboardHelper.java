@@ -153,7 +153,6 @@ public class DashboardHelper implements ConnectionListener {
         if (currentCity != null) {
             String dateAndTime = CommonMethods.getFormattedDate(CommonMethods.getCurrentDate(), RescribeConstants.DATE_PATTERN.DD_MM_YYYY, RescribeConstants.DATE_PATTERN.YYYY_MM_DD) + "&time=" + CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.HH_mm);
             url = url + mContext.getString(R.string.city) + currentCity.trim() + "&date=" + dateAndTime + "&lastUpdatedDate=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, mContext) + "&appName=" + RescribeConstants.PATIENT;
-
         }
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DASHBOARD_API);

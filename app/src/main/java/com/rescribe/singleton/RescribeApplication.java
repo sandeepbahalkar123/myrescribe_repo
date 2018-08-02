@@ -31,6 +31,7 @@ import io.fabric.sdk.android.Fabric;
  * Created by Sandeep Bahalkar
  */
 public class RescribeApplication extends MultiDexApplication {
+    private static AppDBHelper appDBHelper;
     public final String TAG = this.getClass().getName();
     private static final Hashtable<String, Typeface> cache = new Hashtable<String, Typeface>();
 
@@ -38,7 +39,6 @@ public class RescribeApplication extends MultiDexApplication {
     private static HashMap<String, String> previousUserSelectedLocationInfo = new HashMap<>();
 
     public static ArrayList<UnreadSavedNotificationMessageData> appUnreadNotificationMessageList = new ArrayList<>();
-    private static AppDBHelper appDBHelper;
 
     public static Typeface get(Context c, String name) {
         synchronized (cache) {
@@ -55,19 +55,17 @@ public class RescribeApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        //------------
         MultiDex.install(this);
         AppDBHelper instance = AppDBHelper.getInstance(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         instance.doReadAllUnreadMessages();
-        appDBHelper = new AppDBHelper(this);
-        //--------------
+        appDBHelper = AppDBHelper.getInstance(getApplicationContext());
     }
 
     public static void setUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
         RescribePreferencesManager.putString(ctx.getString(R.string.location), locationText, ctx);
-        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, "", ctx);
+//        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, "", ctx);
         userSelectedLocationInfo.put(ctx.getString(R.string.location), locationText);
         if (data != null) {
             RescribePreferencesManager.putString(ctx.getString(R.string.latitude), "" + data.latitude, ctx);

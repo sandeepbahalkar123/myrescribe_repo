@@ -135,7 +135,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         String WAITING_PATIENT_COUNT = "waitingPatientCount";
     }
 
-    static AppDBHelper instance = null;
+    public static AppDBHelper instance = null;
     private Context mContext;
 
     public AppDBHelper(Context context) {

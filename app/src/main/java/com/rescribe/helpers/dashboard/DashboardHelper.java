@@ -36,7 +36,7 @@ public class DashboardHelper implements ConnectionListener {
     private String TAG = this.getClass().getName();
     private Context mContext;
     private HelperResponse mHelperResponseManager;
-    private String currentCity = "";
+//    private String currentCity = "";
     private AppDBHelper appDBHelper;
 
     public DashboardHelper(Context context, HelperResponse loginActivity) {
@@ -59,12 +59,12 @@ public class DashboardHelper implements ConnectionListener {
 
                         SQLiteDatabase writableDatabase = appDBHelper.getWritableDatabase();
 
-                        if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, mContext).isEmpty()) {
-                            int isDelete1 = writableDatabase.delete(AppDBHelper.DOC_DATA.DOCTOR_DATA_TABLE, "1", null);
-                            int isDelete2 = writableDatabase.delete(AppDBHelper.DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, "1", null);
-                            int isDelete3 = writableDatabase.delete(AppDBHelper.DOC_DATA.CLINIC_DATA_TABLE, "1", null);
-                            Log.d("DOCTOR_DELETED_ITEMS", isDelete1 + " " + isDelete2 + " " + isDelete3);
-                        }
+//                        if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, mContext).isEmpty()) {
+//                            int isDelete1 = writableDatabase.delete(AppDBHelper.DOC_DATA.DOCTOR_DATA_TABLE, "1", null);
+//                            int isDelete2 = writableDatabase.delete(AppDBHelper.DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE, "1", null);
+//                            int isDelete3 = writableDatabase.delete(AppDBHelper.DOC_DATA.CLINIC_DATA_TABLE, "1", null);
+//                            Log.d("DOCTOR_DELETED_ITEMS", isDelete1 + " " + isDelete2 + " " + isDelete3);
+//                        }
 
                         int isDelete1 = writableDatabase.delete(AppDBHelper.DOC_DATA.CARDVIEW_DATA_TABLE, "1", null);
                         int isDelete2 = writableDatabase.delete(AppDBHelper.DOC_DATA.APPOINTMENT_DATA_TABLE, "1", null);
@@ -144,7 +144,7 @@ public class DashboardHelper implements ConnectionListener {
     }
 
     public void doGetDashboard(String currentCity) {
-        this.currentCity = currentCity;
+//        this.currentCity = currentCity;
         String screenResolutionValue = CommonMethods.getDeviceResolution(mContext);
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DASHBOARD_API, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
@@ -162,16 +162,15 @@ public class DashboardHelper implements ConnectionListener {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_DOCTORLIST_API, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
 
-        String url = Config.GET_DOCTORLIST_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
-        if (currentCity != null) {
-            url = url + mContext.getString(R.string.city) + currentCity.trim() + "&lastUpdatedDate=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, mContext);
-        }
+        String url = Config.GET_DOCTORLIST_DATA + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext) + "&lastUpdatedDate=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, mContext);
+//        if (currentCity != null) {
+//            url = url + mContext.getString(R.string.city) + currentCity.trim();
+//        }
         mConnectionFactory.setUrl(url);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DOCTORLIST_API);
     }
 
     public void doGetSavedArticles() {
-
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_SAVED_ARTICLES, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         String url = Config.TO_GET_SAVED_ARTICLES + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);

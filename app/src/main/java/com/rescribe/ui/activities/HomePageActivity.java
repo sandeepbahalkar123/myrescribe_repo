@@ -523,6 +523,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         int currentItem = viewPagerDoctorItem.getCurrentItem();
         swipeToRefresh.setRefreshing(false);
         ArrayList<DoctorList> doctorLists = CommonMethods.getCategoryDoctorsFromDb(appDBHelper);
+
         // set doc
         mDashboardDataBuilder.setReceivedDoctorDataList(doctorLists);
 

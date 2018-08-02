@@ -224,15 +224,18 @@ public class ImageUtils {
      * @return
      */
     private String getRealPathFromURI(String contentURI) {
+        String value;
         Uri contentUri = Uri.parse(contentURI);
         Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
         if (cursor == null) {
-            return contentUri.getPath();
+            value = contentUri.getPath();
         } else {
             cursor.moveToFirst();
             int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(index);
+            value = cursor.getString(index);
+            cursor.close();
         }
+        return value;
     }
 
 
@@ -333,7 +336,7 @@ public class ImageUtils {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.select_file_dialog);
         dialog.setCanceledOnTouchOutside(false);
-        RelativeLayout relativeLayoutFiles = (RelativeLayout)dialog.findViewById(R.id.files);
+        RelativeLayout relativeLayoutFiles = (RelativeLayout) dialog.findViewById(R.id.files);
         relativeLayoutFiles.setVisibility(View.GONE);
         dialog.findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -573,7 +576,7 @@ public class ImageUtils {
 
 
     public void createImage(Bitmap bitmap, String filepath, boolean file_replace) {
-     //Function for creating Jpg image .
+        //Function for creating Jpg image .
         File path = new File(filepath);
 
         if (!path.exists()) {

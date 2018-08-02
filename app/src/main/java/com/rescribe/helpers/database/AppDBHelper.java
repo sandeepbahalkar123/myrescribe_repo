@@ -929,6 +929,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from " + DOC_DATA.CARDS_BACKGROUND_TABLE + " where " + DOC_DATA.CARD_TYPE + " = '" + cardType + "'", null);
         if (cursor.moveToFirst())
             cardBack = cursor.getString(cursor.getColumnIndex(DOC_DATA.IMAGE_URL));
+        cursor.close();
         return cardBack;
     }
 

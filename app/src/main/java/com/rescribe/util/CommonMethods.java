@@ -1258,6 +1258,7 @@ public class CommonMethods {
                         doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
                     }
                 }
+                appointmentByDoctorCursor.close();
 
                 ArrayList<ClinicData> clinicDataList = new ArrayList<>();
 

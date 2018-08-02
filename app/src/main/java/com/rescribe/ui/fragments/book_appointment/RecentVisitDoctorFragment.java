@@ -312,6 +312,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     specialities.add(specialitiesCursor.getString(specialitiesCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
                 } while (specialitiesCursor.moveToNext());
             }
+            specialitiesCursor.close();
             mReceivedDoctorServicesModel.setDoctorSpecialities(specialities);
 
             int currentItem = mViewpager.getCurrentItem();

@@ -392,6 +392,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 }
             } while (c.moveToNext());
         }
+
+        c.close();
     }
 
     private ChatHelper chatHelper;

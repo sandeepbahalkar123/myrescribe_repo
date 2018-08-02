@@ -404,13 +404,12 @@ public class RequestManager extends ConnectRequest implements Connector, Request
     }
 
     private String getOfflineData() {
-        if (dbHelper.dataTableNumberOfRows(this.mDataTag) > 0) {
+        String data = null;
             Cursor cursor = dbHelper.getData(this.mDataTag);
-            cursor.moveToFirst();
-            return cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
-        } else {
-            return null;
-        }
+            if (cursor.moveToFirst())
+                data = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
+            cursor.close();
+            return data;
     }
 
     /*private String fixEncoding(String response) {

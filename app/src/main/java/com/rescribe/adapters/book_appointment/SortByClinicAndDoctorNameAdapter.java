@@ -33,7 +33,6 @@ import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -322,43 +321,43 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
     @Override
     public Filter getFilter() {
-
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-
                 ArrayList<DoctorList> mList = new ArrayList<>();
 
-                if (charString.isEmpty()) {
+                if (charSequence.length() == 0) {
                     for (DoctorList doctorConnectModel : mArrayList) {
                         doctorConnectModel.setSpannable(null);
                         mList.add(doctorConnectModel);
                     }
                 } else {
-                    TreeSet<DoctorList> filteredList = new TreeSet<>();
-
+                    String charString = charSequence.toString().toLowerCase();
+                    ArrayList<DoctorList> filteredList = new ArrayList<>();
                     for (DoctorList doctorConnectModel : mArrayList) {
-                        String docName = doctorConnectModel.getDocName();
-                        //---
-                        if (docName.contains("Dr. ")) {
-                            docName = docName.replace("Dr. ", "");
-                        }
-                        //---
-                        if (docName.toLowerCase().contains(charString.toLowerCase())) {
+
+//                        if (doctorConnectModel.getDocName().contains("Dr. "))
+//                            doctorConnectModel.setDocName(doctorConnectModel.getDocName().replace("Dr. ", ""));
+
+                        if (doctorConnectModel.getDocName().toLowerCase().contains(charString)) {
                             doctorConnectModel.setSpannable(charString);
                             doctorConnectModel.setDoctorSearch(true);
                             filteredList.add(doctorConnectModel);
                         } else {
-                            for (ClinicData dataObj :
-                                    doctorConnectModel.getClinicDataList()) {
-                                if (dataObj.getClinicName().toLowerCase().contains(charString.toLowerCase())) {
-                                    doctorConnectModel.setSpannable(charString);
-                                    doctorConnectModel.setDoctorSearch(false);
+                            boolean isThere = false;
+                            for (ClinicData dataObj : doctorConnectModel.getClinicDataList()) {
+                                if (dataObj.getClinicName().toLowerCase().contains(charString)) {
                                     doctorConnectModel.setNameOfClinicString(dataObj.getClinicName());
                                     doctorConnectModel.setAddressOfDoctorString(dataObj.getClinicAddress());
-                                    filteredList.add(doctorConnectModel);
+                                    isThere = true;
+                                    break;
                                 }
+                            }
+
+                            if (isThere) {
+                                doctorConnectModel.setSpannable(charString);
+                                doctorConnectModel.setDoctorSearch(false);
+                                filteredList.add(doctorConnectModel);
                             }
                         }
                     }
@@ -367,6 +366,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
 
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = mList;
+                filterResults.count = mList.size();
                 return filterResults;
             }
 

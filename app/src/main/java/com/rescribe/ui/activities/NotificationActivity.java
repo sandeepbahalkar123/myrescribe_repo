@@ -339,14 +339,14 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                 List<AdapterNotificationData> adapterNotificationParentData = new ArrayList<>();
                 List<AdapterNotificationModel> adapterNotificationModelListForDinner = new ArrayList<>();
                 String notifyDate;
-                for (int i = 0; i < notificationListForAdapter.size(); i++) {
+                for (int index = 0; index < notificationListForAdapter.size(); index++) {
                     List<Medication> medications;
                     SlotModel slotModel = new SlotModel();
 
                     AdapterNotificationModel adapterNotificationModel = new AdapterNotificationModel();
 
-                    medications = notificationListForAdapter.get(i).getMedication();
-                    notifyDate = notificationListForAdapter.get(i).getPrescriptionDate();
+                    medications = notificationListForAdapter.get(index).getMedication();
+                    notifyDate = notificationListForAdapter.get(index).getPrescriptionDate();
                     List<Medication> dinnerList = new ArrayList<>();
                     List<Medication> lunchList = new ArrayList<>();
                     List<Medication> breakfastList = new ArrayList<>();
@@ -360,6 +360,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                             medicationDinner.setMedicineId(medications.get(j).getMedicineId());
                             medicationDinner.setMedicinSlot(medications.get(j).getMedicinSlot());
                             medicationDinner.setMedicineTypeName(medications.get(j).getMedicineTypeName());
+                            medicationDinner.setTabSelected(medications.get(j).isTabSelected());
                             medicationDinner.setDate(notifyDate);
                             dinnerList.add(medicationDinner);
                         } else if (medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.lunch_after)) || medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.lunch_before))) {
@@ -369,6 +370,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                             medicationLunch.setMedicineId(medications.get(j).getMedicineId());
                             medicationLunch.setMedicinSlot(medications.get(j).getMedicinSlot());
                             medicationLunch.setMedicineTypeName(medications.get(j).getMedicineTypeName());
+                            medicationLunch.setTabSelected(medications.get(j).isTabSelected());
                             medicationLunch.setDate(notifyDate);
                             lunchList.add(medicationLunch);
                         } else if (medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.breakfast_after)) || medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.breakfast_before))) {
@@ -378,6 +380,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                             medicationBreakfast.setMedicineId(medications.get(j).getMedicineId());
                             medicationBreakfast.setMedicinSlot(medications.get(j).getMedicinSlot());
                             medicationBreakfast.setMedicineTypeName(medications.get(j).getMedicineTypeName());
+                            medicationBreakfast.setTabSelected(medications.get(j).isTabSelected());
                             medicationBreakfast.setDate(notifyDate);
                             breakfastList.add(medicationBreakfast);
                         } else if (medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.snacks_after)) || medications.get(j).getMedicinSlot().equalsIgnoreCase(mContext.getString(R.string.snacks_before))) {
@@ -387,6 +390,7 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                             medicationSnack.setMedicineId(medications.get(j).getMedicineId());
                             medicationSnack.setMedicinSlot(medications.get(j).getMedicinSlot());
                             medicationSnack.setMedicineTypeName(medications.get(j).getMedicineTypeName());
+                            medicationSnack.setTabSelected(medications.get(j).isTabSelected());
                             medicationSnack.setDate(notifyDate);
                             snackList.add(medicationSnack);
                         }
@@ -397,10 +401,10 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                     slotModel.setLunch(lunchList);
                     adapterNotificationModel.setMedication(slotModel);
                     adapterNotificationModel.setPrescriptionDate(notifyDate);
-                    adapterNotificationModel.setBreakThere(!breakfastList.isEmpty());
-                    adapterNotificationModel.setDinnerThere(!dinnerList.isEmpty());
-                    adapterNotificationModel.setSnacksThere(!snackList.isEmpty());
-                    adapterNotificationModel.setLunchThere(!lunchList.isEmpty());
+                    adapterNotificationModel.setBreakThere(isThere(breakfastList));
+                    adapterNotificationModel.setDinnerThere(isThere(dinnerList));
+                    adapterNotificationModel.setSnacksThere(isThere(snackList));
+                    adapterNotificationModel.setLunchThere(isThere(lunchList));
                     adapterNotificationModelListForDinner.add(adapterNotificationModel);
                 }
 
@@ -442,6 +446,17 @@ public class NotificationActivity extends BottomMenuActivity implements HelperRe
                     mNoDataAvailable.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private boolean isThere(List<Medication> breakfastList) {
+        if (!breakfastList.isEmpty()) {
+            int isThere = 0;
+            for (Medication medication : breakfastList) {
+                if (medication.isTabSelected() == 1)
+                    isThere += 1;
+            }
+            return isThere != breakfastList.size();
+        } else return false;
     }
 
     private String[] getTimeArray() {

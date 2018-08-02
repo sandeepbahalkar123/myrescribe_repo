@@ -916,11 +916,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private void doCallDashBoardAPI() {
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-        if (userSelectedLocationInfo.get(getString(R.string.location)) != null) {
+        if (userSelectedLocationInfo.get(getString(R.string.location)) != null)
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-        } else {
+         else
             locationReceived = "";
-        }
+
         if (RescribeApplication.getPreviousUserSelectedLocationInfo() != null) {
             HashMap<String, String> userPreviousSelectedLocationInfo = RescribeApplication.getPreviousUserSelectedLocationInfo();
             previousLocationReceived = userPreviousSelectedLocationInfo.get(getString(R.string.location));

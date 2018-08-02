@@ -290,7 +290,6 @@ public class BookAppointListOnLocationSelectionFragment extends Fragment impleme
             mEmptyListView.setVisibility(View.GONE);
             mDoctorListView.setVisibility(View.GONE);
         }
-
     }
 
 }

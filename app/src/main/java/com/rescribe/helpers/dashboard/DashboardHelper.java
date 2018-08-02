@@ -56,7 +56,6 @@ public class DashboardHelper implements ConnectionListener {
                     if (dashboardModel.getCommon().getStatusCode().equals(SUCCESS)) {
                         // inset card doctors details in database
                         List<CategoryList> categoryList = dashboardModel.getData().getCategoryList();
-
                         SQLiteDatabase writableDatabase = appDBHelper.getWritableDatabase();
 
 //                        if (RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.LAST_UPDATED, mContext).isEmpty()) {

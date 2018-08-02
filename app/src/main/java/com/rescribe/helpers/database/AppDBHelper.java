@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AppDBHelper extends SQLiteOpenHelper {
@@ -883,11 +884,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + DOC_DATA.CARDVIEW_DATA_TABLE, null);
     }
 
-    public Cursor getCardDoctorData(int doctorId) {
-        SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select * from " + DOC_DATA.CARDVIEW_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
-    }
-
     public Cursor getAppointmentByDoctor(int doctorId) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
@@ -904,8 +900,9 @@ public class AppDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getDoctorsBySpeciality(String speciality) {
+        String query = "select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.SPECIALITY + " = '" + speciality + "'";
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.SPECIALITY + " = '" + speciality + "'", null);
+        return db.rawQuery(query, null);
     }
 
     public Cursor getDoctors() {
@@ -916,6 +913,15 @@ public class AppDBHelper extends SQLiteOpenHelper {
     public Cursor getDoctorVsClinicById(int doctorId, int clinicId) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId + " AND " + DOC_DATA.CLINIC_ID + " = " + clinicId, null);
+    }
+
+    public boolean isAvailableInCategory(int docId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "select * from " + DOC_DATA.CARDVIEW_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + docId;
+        Cursor cursor = db.rawQuery(query, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count > 0;
     }
 
     public Cursor getAllClinicsByDoctor(int doctorId) {

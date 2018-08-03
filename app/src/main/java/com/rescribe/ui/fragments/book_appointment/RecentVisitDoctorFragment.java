@@ -199,13 +199,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     ArrayList<DoctorList> sortedListByClinicNameOrDoctorName = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
                     for (int i = 0; i < sortedListByClinicNameOrDoctorName.size(); i++) {
                         DoctorList doctorList = sortedListByClinicNameOrDoctorName.get(i);
-                        if (doctorList.getClinicDataList().size() > 0) {
+                        if (!doctorList.getClinicDataList().isEmpty()) {
                             for (int j = 0; j < doctorList.getClinicDataList().size(); j++) {
-                                DoctorList doctorListByClinic = new DoctorList();
-                                doctorListByClinic = doctorList;
-                                doctorListByClinic.setNameOfClinicString(doctorList.getClinicDataList().get(j).getClinicName());
-                                doctorListByClinic.setAddressOfDoctorString(doctorList.getClinicDataList().get(j).getClinicAddress());
-                                doctorListByClinics.add(doctorListByClinic);
+                                doctorList.setNameOfClinicString(doctorList.getClinicDataList().get(j).getClinicName());
+                                doctorList.setAddressOfDoctorString(doctorList.getClinicDataList().get(j).getClinicAddress());
+                                doctorListByClinics.add(doctorList);
                             }
                         }
                     }

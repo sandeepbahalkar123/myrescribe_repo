@@ -58,7 +58,10 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, OnDataListViewVisible m, HelperResponse mHelperResponse) {
         this.mContext = mContext;
 
-        filterListToRemoveMyAppointments(dataList);
+//        filterListToRemoveMyAppointments(dataList);
+
+        this.mArrayList = dataList;
+        this.mDataList.addAll(mArrayList);
 
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mOnDataListViewVisibleListener = m;
@@ -374,7 +377,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
 
                 mDataList.clear();
-                mDataList.addAll((ArrayList<DoctorList>) filterResults.values);
+                mDataList.addAll(ServicesCardViewImpl.getDoctorListByUniqueDocIDs((ArrayList<DoctorList>) filterResults.values));
 
                 if (mDataList.isEmpty())
                     mOnDataListViewVisibleListener.doConfigureDataListViewVisibility(true, true);

@@ -277,12 +277,11 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
         return mReceivedDoctorDataList;
     }
 
-    //Sort Unique doctors by docId
+    // Sort Unique doctors by docId
     public static ArrayList<DoctorList> getDoctorListByUniqueDocIDs(ArrayList<DoctorList> mReceivedDoctorDataList) {
         ArrayList<DoctorList> dataList = new ArrayList<>();
         for (DoctorList listObject :
                 mReceivedDoctorDataList) {
-            if (dataList.size() > 0) {
                 boolean isAddItemToList = true;
                 for (DoctorList prevAddedObject :
                         dataList) {
@@ -291,12 +290,8 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                         break;
                     }
                 }
-                if (isAddItemToList) {
+                if (isAddItemToList)
                     dataList.add(listObject);
-                }
-            } else {
-                dataList.add(listObject);
-            }
         }
         return dataList;
     }

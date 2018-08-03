@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -77,6 +78,7 @@ import com.rescribe.util.RescribeConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -98,6 +100,7 @@ import static com.rescribe.util.RescribeConstants.APPOINTMENT_ID;
 import static com.rescribe.util.RescribeConstants.FROM;
 import static com.rescribe.util.RescribeConstants.RESHEDULE_TYPE;
 import static com.rescribe.util.RescribeConstants.SUCCESS;
+import static com.rescribe.util.RescribeConstants.USER_AUTHENTICATED;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
 
 /**
@@ -314,6 +317,100 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
 
     }
 
+    private DoctorList getDoctor(int docId) {
+        // get Card Data
+        Cursor docCursor = appDBHelper.getDoctor(docId);
+        DoctorList doctorList = new DoctorList();
+        if (docCursor.moveToFirst()) {
+            doctorList.setDocId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+            doctorList.setDocName(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_NAME)));
+            doctorList.setDocPhone(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PHONE_NUMBER)));
+            doctorList.setDoctorImageUrl(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ICON_URL)));
+            doctorList.setAboutDoctor(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ABOUT_DOCTOR)));
+
+            doctorList.setDocSpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
+            doctorList.setSpecialityId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY_ID)));
+
+            doctorList.setRating(docCursor.getDouble(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.RATING)));
+            doctorList.setCategorySpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_PREMIUM)));
+            doctorList.setDegree(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_DEGREE)));
+            doctorList.setExperience(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
+            doctorList.setPaidStatus(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
+            doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
+
+            Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(docId);
+            if (appointmentByDoctorCursor.moveToFirst()) {
+                // get from appointment table
+                doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
+                doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
+                doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
+                doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
+                doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
+                if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN)) {
+                    doctorList.setType("token");
+                    doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
+                }
+            }
+
+            ArrayList<ClinicData> clinicDataList = new ArrayList<>();
+
+            // loop start
+
+            Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+
+            boolean isFirst = true;
+            if (clinicCursor.moveToFirst()) {
+                do {
+
+                    ClinicData clinicData = new ClinicData();
+                    clinicData.setClinicName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_NAME)));
+                    clinicData.setLocationId(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
+                    clinicData.setAmount(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_FEES)));
+                    clinicData.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
+                    clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
+                    clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
+                    clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+                    clinicData.setLocationLat(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LATITUDE)));
+                    clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
+
+                    // set services
+                    String services = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE));
+                    if (!services.isEmpty()) {
+                        String[] split = services.split(",");
+                        ArrayList<String> servicesList = new ArrayList<>(Arrays.asList(split));
+                        clinicData.setDocServices(servicesList);
+                    }
+
+                    if (isFirst) {
+                        // set clinic appointment book type
+                        Cursor doctorVsClinic = appDBHelper.getDoctorVsClinicById(docId, clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
+                        if (doctorVsClinic.moveToFirst()) {
+                            // get from appointment table
+                            if (!RescribeConstants.TOKEN.equalsIgnoreCase(doctorList.getType())) {
+                                doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+                                clinicData.setAppointmentType(doctorList.getType());
+                            }
+                            clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
+                        }
+
+                        doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
+                        isFirst = false;
+                    }
+
+                    clinicDataList.add(clinicData);
+                } while (clinicCursor.moveToNext());
+            }
+
+            clinicCursor.close();
+            // loop end
+
+            doctorList.setClinicDataList(clinicDataList);
+        }
+        docCursor.close();
+
+        return doctorList;
+    }
+
     @SuppressLint("CheckResult")
     private void setDataInViews() {
         if (mClickedDoctorObject != null) {
@@ -452,7 +549,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                                 appointmentMessageTextView.setVisibility(View.GONE);
                                 noTimeSlotMessageTextView.setVisibility(View.GONE);
                                 if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
-                                    noTimeSlotMessageTextView.setVisibility(View.GONE);
                                     selectTimeDateExpandableView.setVisibility(View.VISIBLE);
                                     appointmentTypeIsBookButton.setVisibility(View.VISIBLE);
                                     mSelectSlotToBookAppointmentAdapter = new SelectSlotToBookAppointmentAdapter(getActivity(), selectSlotList.getTimeSlotsInfoList(), mSelectedTimeSlotDate);
@@ -461,16 +557,19 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                                     noTimeSlotMessageTextView.setVisibility(View.VISIBLE);
                                     selectTimeDateExpandableView.setVisibility(View.GONE);
                                     appointmentTypeIsBookButton.setVisibility(View.GONE);
+                                    if (!slotListBaseModel.getCommon().getStatusMessage().equalsIgnoreCase(USER_AUTHENTICATED))
+                                        noTimeSlotMessageTextView.setText(slotListBaseModel.getCommon().getStatusMessage());
                                 }
                             } else {
+                                noTimeSlotMessageTextView.setVisibility(View.GONE);
                                 selectTimeDateExpandableView.setVisibility(View.GONE);
                                 appointmentTypeIsBookButton.setVisibility(View.GONE);
                                 appointmentMessageTextView.setVisibility(View.VISIBLE);
+
+                                if (!slotListBaseModel.getCommon().getStatusMessage().equalsIgnoreCase(USER_AUTHENTICATED))
+                                    appointmentMessageTextView.setText(slotListBaseModel.getCommon().getStatusMessage());
                             }
                         }
-
-                        if (!slotListBaseModel.getCommon().getStatusMessage().equalsIgnoreCase(RescribeConstants.USER_AUTHENTICATED))
-                            CommonMethods.showToast(mContext, slotListBaseModel.getCommon().getStatusMessage());
                     }
                 }
                 break;
@@ -483,11 +582,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             if (selectSlotList.isAppointmentTaken() == 0 || from != null) {
                                 appointmentMessageTextView.setVisibility(View.GONE);
                                 noTimeSlotMessageTextView.setVisibility(View.GONE);
-                                mClickedDoctorObject = selectSlotList.getDoctorListData();
-                                ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
+                                if (selectSlotList.getDoctorListData() == null)
+                                    mClickedDoctorObject = getDoctor(mClickedDoctorObject.getDocId());
+                                else mClickedDoctorObject = selectSlotList.getDoctorListData();
 
+                                ServicesCardViewImpl.setUserSelectedDoctorListDataObject(mClickedDoctorObject);
                                 setDataInViews();
-                                //--------------------
                                 if (!selectSlotList.getTimeSlotsInfoList().isEmpty()) {
                                     noTimeSlotMessageTextView.setVisibility(View.GONE);
                                     selectTimeDateExpandableView.setVisibility(View.VISIBLE);
@@ -498,16 +598,19 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                                     selectTimeDateExpandableView.setVisibility(View.GONE);
                                     appointmentTypeIsBookButton.setVisibility(View.GONE);
                                     noTimeSlotMessageTextView.setVisibility(View.VISIBLE);
+                                    appointmentMessageTextView.setVisibility(View.GONE);
+                                    if (!slotListBase.getCommon().getStatusMessage().equalsIgnoreCase(USER_AUTHENTICATED))
+                                        noTimeSlotMessageTextView.setText(slotListBase.getCommon().getStatusMessage());
                                 }
                             } else {
                                 selectTimeDateExpandableView.setVisibility(View.GONE);
                                 appointmentTypeIsBookButton.setVisibility(View.GONE);
+                                noTimeSlotMessageTextView.setVisibility(View.GONE);
                                 appointmentMessageTextView.setVisibility(View.VISIBLE);
+                                if (!slotListBase.getCommon().getStatusMessage().equalsIgnoreCase(USER_AUTHENTICATED))
+                                    appointmentMessageTextView.setText(slotListBase.getCommon().getStatusMessage());
                             }
                         }
-
-                        if (!slotListBase.getCommon().getStatusMessage().equalsIgnoreCase(RescribeConstants.USER_AUTHENTICATED))
-                            CommonMethods.showToast(mContext, slotListBase.getCommon().getStatusMessage());
                     }
                 }
                 break;
@@ -521,41 +624,49 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 break;
             case RescribeConstants.TASK_GET_TOKEN_NUMBER_OTHER_DETAILS:
                 ClinicTokenDetailsBaseModel clinicTokenDetailsBaseModel = (ClinicTokenDetailsBaseModel) customResponse;
-                if (clinicTokenDetailsBaseModel != null) {
+                if (clinicTokenDetailsBaseModel.getCommon().getStatusCode().equals(SUCCESS)) {
                     Common common = clinicTokenDetailsBaseModel.getCommon();
                     ClinicTokenData clinicTokenDetails = clinicTokenDetailsBaseModel.getClinicTokenDetails();
                     if (clinicTokenDetails != null) {
+                        if (clinicTokenDetails.getTokenDetails() != null) {
+                            tokenMessageTextView.setVisibility(View.GONE);
+                            if (clinicTokenDetails.isTokenTaken() == 0) {
+                                TokenDetails tokenDetails = clinicTokenDetails.getTokenDetails();
 
-                        tokenMessageTextView.setVisibility(View.GONE);
+                                mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
+                                appointmentTypeIsTokenButton.setVisibility(View.VISIBLE);
 
-                        if (clinicTokenDetails.isTokenTaken() == 0) {
+                                mWaitingTime.setText("" + tokenDetails.getWaitingTime());
 
-                            TokenDetails tokenDetails = clinicTokenDetails.getTokenDetails();
+                                try {
+                                    Calendar cal = Calendar.getInstance();
+                                    SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.UTC_PATTERN, Locale.US);
+                                    SimpleDateFormat expected = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
+                                    cal.setTime(sdf.parse(tokenDetails.getApmtTime()));
+                                    //this is commented as aptTime from server, already added waiting time
+                                    //cal.add(Calendar.MINUTE, tokenDetails.getWaitingTime());
+                                    String timeToShow = expected.format(cal.getTime()).toLowerCase();
+                                    mScheduledAppointmentsTimeStamp.setText(timeToShow);
+                                    mSelectedTimeStampForNewToken = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
 
-                            mConfirmedTokenMainLayout.setVisibility(View.VISIBLE);
-                            appointmentTypeIsTokenButton.setVisibility(View.VISIBLE);
-
-                            mWaitingTime.setText("" + tokenDetails.getWaitingTime());
-
-                            try {
-                                Calendar cal = Calendar.getInstance();
-                                SimpleDateFormat sdf = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.UTC_PATTERN, Locale.US);
-                                SimpleDateFormat expected = new SimpleDateFormat(RescribeConstants.DATE_PATTERN.hh_mm_a, Locale.US);
-                                cal.setTime(sdf.parse(tokenDetails.getApmtTime()));
-                                //this is commented as aptTime from server, already added waiting time
-                                //cal.add(Calendar.MINUTE, tokenDetails.getWaitingTime());
-                                String timeToShow = expected.format(cal.getTime()).toLowerCase();
-                                mScheduledAppointmentsTimeStamp.setText(timeToShow);
-                                mSelectedTimeStampForNewToken = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                if (!clinicTokenDetailsBaseModel.getCommon().getStatusMessage().equalsIgnoreCase(USER_AUTHENTICATED)) {
+                                    mConfirmedTokenMainLayout.setVisibility(View.GONE);
+                                    appointmentTypeIsTokenButton.setVisibility(View.GONE);
+                                    tokenMessageTextView.setVisibility(View.VISIBLE);
+                                    tokenMessageTextView.setText(clinicTokenDetailsBaseModel.getCommon().getStatusMessage());
+                                }
                             }
-
                         } else {
-                            mConfirmedTokenMainLayout.setVisibility(View.GONE);
-                            appointmentTypeIsTokenButton.setVisibility(View.GONE);
-                            tokenMessageTextView.setVisibility(View.VISIBLE);
+                            if (!clinicTokenDetailsBaseModel.getCommon().getStatusMessage().equalsIgnoreCase(USER_AUTHENTICATED)) {
+                                mConfirmedTokenMainLayout.setVisibility(View.GONE);
+                                appointmentTypeIsTokenButton.setVisibility(View.GONE);
+                                tokenMessageTextView.setVisibility(View.VISIBLE);
+                                tokenMessageTextView.setText(clinicTokenDetailsBaseModel.getCommon().getStatusMessage());
+                            }
                         }
                     } else
                         showTokenStatusMessageBox(-1, common.getStatusMessage(), mSelectedTimeStampForNewToken, mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId());

@@ -941,20 +941,11 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         switch (view.getId()) {
 
             case R.id.bookAppointmentButton:
-                // call book appointment
-                Intent intent = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
-                intent.putExtra(RescribeConstants.TITLE, getString(R.string.doctor));
-                DoctorList doctorListData = new DoctorList();
-                doctorListData.setDocId(chatList.getId());
-                ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData);
-                intent.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
-                startActivity(intent);
-                break;
             case R.id.bookAppointmentGetTokenButton:
                 // call book appointment
                 Intent intent1 = new Intent(this, SelectSlotToBookAppointmentBaseActivity.class);
                 intent1.putExtra(RescribeConstants.ITEM_DATA_VALUE, getString(R.string.chats));
-                intent1.putExtra(RescribeConstants.TITLE, getString(R.string.book_appointment));
+                intent1.putExtra(RescribeConstants.TITLE, getString(R.string.doctor));
                 DoctorList doctorListData1 = new DoctorList();
                 doctorListData1.setDocId(chatList.getId());
                 ServicesCardViewImpl.setUserSelectedDoctorListDataObject(doctorListData1);
@@ -1597,7 +1588,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                     .addHeader(RescribeConstants.OS, device.getOS())
                     .addHeader(RescribeConstants.OSVERSION, device.getOSVersion())
                     .addHeader(RescribeConstants.DEVICE_TYPE, device.getDeviceType())
-
+                    .addHeader("patientId", patId)
                     .addFileToUpload(mqttMessage.getFileUrl(), "chatDoc");
 
             uploadRequest.startUpload();

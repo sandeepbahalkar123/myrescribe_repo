@@ -1310,6 +1310,7 @@ public class CommonMethods {
                                 clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
                             }
 
+                            doctorVsClinic.close();
                             doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
                             isFirst = false;
                         }
@@ -1420,7 +1421,7 @@ public class CommonMethods {
                                 }
                                 clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
                             }
-
+                            doctorVsClinic.close();
                             doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
                             isFirst = false;
                         }
@@ -1447,7 +1448,7 @@ public class CommonMethods {
 
     public static void uploadProfilePhoto(final String filepath, final Context mContext, final CustomProgressDialog mCustomProgressDialog) {
 
-        String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, mContext);
+        String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, mContext);
         try {
             mCustomProgressDialog.show();

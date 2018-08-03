@@ -35,7 +35,7 @@ import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAd
 
 @SuppressWarnings("unused")
 @SuppressLint("Registered")
-public class BottomMenuActivity extends AppCompatActivity implements BottomMenuAdapter.OnBottomMenuClickListener {
+public abstract class BottomMenuActivity extends AppCompatActivity implements BottomMenuAdapter.OnBottomMenuClickListener {
 
     private static final long ANIMATION_DUR = 300;
     private FrameLayout mFrame;
@@ -166,8 +166,8 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
         layout2.setOrientation(LinearLayout.HORIZONTAL);
         layout2.setPadding(padding, 0, padding, 0);
 
-        for (int i = 0; i < bottomSheetMenus.size(); i++) {
-            final BottomSheetMenu bottomSheetMenu = bottomSheetMenus.get(i);
+        for (int index = 0; index < bottomSheetMenus.size(); index++) {
+            final BottomSheetMenu bottomSheetMenu = bottomSheetMenus.get(index);
             View item = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_menu_item_list, layout2, false);
 
             TextView bottomMenuName = (TextView) item.findViewById(R.id.menuName);
@@ -175,13 +175,13 @@ public class BottomMenuActivity extends AppCompatActivity implements BottomMenuA
             TextView badgeView = (TextView) item.findViewById(R.id.showCount);
             LinearLayout bottomSheetLayout = (LinearLayout) item.findViewById(R.id.bottomSheetLayout);
             final int finali = mPosition;
-            bottomMenuName.setText(bottomSheetMenus.get(i).getName());
+            bottomMenuName.setText(bottomSheetMenus.get(index).getName());
 
-            if (bottomSheetMenus.get(i).getName().equalsIgnoreCase(getResources().getString(R.string.notifications))) {
+            if (bottomSheetMenus.get(index).getName().equalsIgnoreCase(getResources().getString(R.string.notifications))) {
                 this.bottomSheetBadgeView = badgeView;
-                if (bottomSheetMenus.get(i).getNotificationCount() > 0) {
+                if (bottomSheetMenus.get(index).getNotificationCount() > 0) {
                     badgeView.setVisibility(View.VISIBLE);
-                    badgeView.setText(String.valueOf(bottomSheetMenus.get(i).getNotificationCount()));
+                    badgeView.setText(String.valueOf(bottomSheetMenus.get(index).getNotificationCount()));
                 } else badgeView.setVisibility(View.GONE);
             } else badgeView.setVisibility(View.GONE);
 

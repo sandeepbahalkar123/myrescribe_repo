@@ -68,7 +68,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
     private SelectedImageAdapter selectedImageAdapter;
     private ArrayList<InvestigationData> investigation;
     private AppDBHelper appDBHelper;
-    private String patient_id = "";
+    private String patientId = "";
     private String mUnreadInvestigationMsgID;
 
     @Override
@@ -92,7 +92,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         customProgressDialog = new CustomProgressDialog(mContext);
         customProgressDialog.setCancelable(false);
 
-        patient_id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
 
         investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
 
@@ -190,7 +190,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                     photoPaths.clear();
                     for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)) {
                         Image image = new Image();
-                        image.setImageId(patient_id + "_" + UUID.randomUUID().toString());
+                        image.setImageId(patientId + "_" + UUID.randomUUID().toString());
                         image.setImagePath(imagePath);
                         image.setSelected(false);
                         photoPaths.add(image);
@@ -240,6 +240,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                                 .addHeader("imgId", image.getImageId())
                                 .addHeader("invIds", investigationIds.toString())
                                 .addHeader("types", investigationTypes.toString())
+                                .addHeader("patientId", patientId)
                                 .addFileToUpload(image.getImagePath(), "investigationDoc")
                                 .setDelegate(SelectedDocsActivity.this)
                                 .startUpload();

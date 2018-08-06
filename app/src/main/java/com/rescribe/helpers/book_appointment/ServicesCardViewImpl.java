@@ -67,7 +67,7 @@ public class ServicesCardViewImpl implements IServicesCardViewClickListener {
                 //for MyAppointment category doctor confirmAppointment page will open
                 if (userSelectedDoctorListDataObject.getType().equalsIgnoreCase(mContext.getString(R.string.token))) {
                     intent = new Intent(mContext, ConfirmTokenInfoActivity.class);
-                    bundleData.putString(RescribeConstants.LOCATION_ID, "" + userSelectedDoctorListDataObject.getClinicDataList().get(0).getLocationId());
+                    bundleData.putString(RescribeConstants.LOCATION_ID, "" + userSelectedDoctorListDataObject.getLocationId());
                     bundleData.putString(RescribeConstants.TOKEN_NO, userSelectedDoctorListDataObject.getTokenNumber());
                     bundleData.putString(RescribeConstants.WAITING_TIME, userSelectedDoctorListDataObject.getWaitingPatientTime());
                     bundleData.putString(RescribeConstants.WAITING_COUNT, userSelectedDoctorListDataObject.getWaitingPatientCount());

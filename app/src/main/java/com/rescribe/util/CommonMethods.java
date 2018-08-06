@@ -1153,6 +1153,7 @@ public class CommonMethods {
                         doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
                         doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
                         doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
+                        doctorList.setLocationId(appointmentByDoctorCursor.getInt(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
                         if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN)) {
                             doctorList.setType("token");
                             doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
@@ -1220,7 +1221,7 @@ public class CommonMethods {
         cardCursor.close();
 
         doctorLists.addAll(getDoctorByLocationAndNotInCard(appDBHelper));
-        
+
         return doctorLists;
     }
 

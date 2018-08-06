@@ -209,7 +209,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                 customProgressDialog.show();
                 StringBuilder investigationIds = new StringBuilder();
                 StringBuilder investigationTypes = new StringBuilder();
-                String opdId = "";
+                StringBuilder opdIds = new StringBuilder();
 
                 imageUploadedCount = 0;
                 imageUploadFailedCount = 0;
@@ -217,7 +217,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                 for (InvestigationData dataObject : investigation) {
                     if (dataObject.isSelected() && !dataObject.isUploaded()) {
                         investigationIds.append(dataObject.getId()).append(", ");
-                        opdId = String.valueOf(dataObject.getOpdId());
+                        opdIds.append(dataObject.getOpdId()).append(", ");
                         if (dataObject.getInvestigationType() != null)
                             investigationTypes.append(dataObject.getInvestigationType()).append(", ");
                     }
@@ -240,7 +240,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                                 .addHeader("imgId", image.getImageId())
                                 .addHeader("invIds", investigationIds.toString())
                                 .addHeader("types", investigationTypes.toString())
-                                .addHeader("opdId", opdId)
+                                .addHeader("opdId", opdIds.toString())
                                 .addHeader("patientId", patientId)
                                 .addFileToUpload(image.getImagePath(), "investigationDoc")
                                 .setDelegate(SelectedDocsActivity.this)

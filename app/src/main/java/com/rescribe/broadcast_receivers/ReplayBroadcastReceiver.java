@@ -94,6 +94,7 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             intentService.putExtra(SEND_MESSAGE, true);
             intentService.putExtra(MESSAGE_LIST, messageL);
             context.startService(intentService);
+
             MessageNotification.cancel(context, recievedMessage.getDocId());
             appDBHelper.deleteUnreadMessage(String.valueOf(recievedMessage.getDocId()));
 

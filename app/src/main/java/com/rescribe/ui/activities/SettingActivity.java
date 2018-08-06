@@ -35,35 +35,24 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.radioNotification, R.id.radioAlarm})
-    public void saveNotificationAlarmTypeSetting(RadioButton radioButton) {
-        // Is the button now checked?
-        boolean checked = radioButton.isChecked();
-
+    @OnClick({R.id.radioNotification, R.id.radioAlarm, R.id.backButton})
+    public void onClick(View view) {
         // Check which radio button was clicked
-        switch (radioButton.getId()) {
+        switch (view.getId()) {
             case R.id.radioNotification:
-                if (checked) {
+                // Is the button now checked?
+                if (radioNotification.isChecked())
                     // 1 clicked
                     RescribePreferencesManager.putString(getString(R.string.notificationAlarmTypeSetting), getString(R.string.notification), this);
-                }
                 break;
             case R.id.radioAlarm:
-                if (checked) {
+                if (radioAlarm.isChecked())
                     // 2 clicked
                     RescribePreferencesManager.putString(getString(R.string.notificationAlarmTypeSetting), getString(R.string.alarm), this);
-                }
                 break;
-        }
-    }
-
-    @OnClick(R.id.backButton)
-    public void onButtonClick(View v) {
-        switch (v.getId()) {
             case R.id.backButton:
                 finish();
                 break;
         }
     }
-
 }

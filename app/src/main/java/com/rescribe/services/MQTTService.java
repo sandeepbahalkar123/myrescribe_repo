@@ -429,12 +429,10 @@ public class MQTTService extends Service {
     private static class InternetState {
         final boolean isEnabled;
         final String state;
-
         InternetState(String state, boolean isEnabled) {
             this.isEnabled = isEnabled;
             this.state = state;
         }
-
     }
 // new code
 

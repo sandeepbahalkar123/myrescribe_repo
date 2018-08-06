@@ -3,6 +3,7 @@ package com.rescribe.broadcast_receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -93,7 +94,9 @@ public class ReplayBroadcastReceiver extends BroadcastReceiver implements Helper
             Intent intentService = new Intent(context, MQTTService.class);
             intentService.putExtra(SEND_MESSAGE, true);
             intentService.putExtra(MESSAGE_LIST, messageL);
-            context.startService(intentService);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                context.startForegroundService(intentService);
+            else context.startService(intentService);
 
             MessageNotification.cancel(context, recievedMessage.getDocId());
             appDBHelper.deleteUnreadMessage(String.valueOf(recievedMessage.getDocId()));

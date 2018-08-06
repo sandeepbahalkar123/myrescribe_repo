@@ -3,6 +3,7 @@ package com.rescribe.broadcast_receivers;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.google.gson.Gson;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -73,7 +74,9 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
                 Intent intentService = new Intent(context, MQTTService.class);
                 intentService.putExtra(SEND_MESSAGE, true);
                 intentService.putExtra(MESSAGE_LIST, mqttMessage);
-                context.startService(intentService);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    context.startForegroundService(intentService);
+                else context.startService(intentService);
             }
             instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
         } else

@@ -209,17 +209,28 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                 customProgressDialog.show();
                 StringBuilder investigationIds = new StringBuilder();
                 StringBuilder investigationTypes = new StringBuilder();
+                StringBuilder opdIds = new StringBuilder();
 
                 imageUploadedCount = 0;
                 imageUploadFailedCount = 0;
 
-                for (InvestigationData dataObject : investigation) {
+                for (int index = 0; index < investigation.size(); index++) {
+                    InvestigationData dataObject = investigation.get(index);
                     if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                        investigationIds.append(dataObject.getId()).append(", ");
+                        investigationIds.append(dataObject.getId());
+                        opdIds.append(dataObject.getOpdId());
                         if (dataObject.getInvestigationType() != null)
-                            investigationTypes.append(dataObject.getInvestigationType()).append(", ");
+                            investigationTypes.append(dataObject.getInvestigationType());
+
+                        investigationIds.append(",");
+                        opdIds.append(",");
+                        investigationTypes.append(",");
                     }
                 }
+
+                investigationIds.deleteCharAt(investigationIds.length() - 1);
+                opdIds.deleteCharAt(opdIds.length() - 1);
+                investigationTypes.deleteCharAt(investigationTypes.length() - 1);
 
                 for (Image image : photoPaths) {
                     try {
@@ -238,6 +249,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                                 .addHeader("imgId", image.getImageId())
                                 .addHeader("invIds", investigationIds.toString())
                                 .addHeader("types", investigationTypes.toString())
+                                .addHeader("opdId", opdIds.toString())
                                 .addHeader("patientId", patientId)
                                 .addFileToUpload(image.getImagePath(), "investigationDoc")
                                 .setDelegate(SelectedDocsActivity.this)
@@ -275,7 +287,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
     public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
         imageUploadedCount++;
 
-        CommonMethods.Log("Status", imageUploadedCount + " Completed " + uploadInfo.getUploadId());
+        CommonMethods.Log("Status", imageUploadedCount + " Completed " + uploadInfo.getUploadId() + " " + serverResponse.getBodyAsString());
 
         if ((imageUploadedCount + imageUploadFailedCount) == photoPaths.size())
             allUploaded();

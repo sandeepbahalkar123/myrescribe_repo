@@ -40,7 +40,6 @@ public class SettingActivity extends AppCompatActivity {
         // Check which radio button was clicked
         switch (view.getId()) {
             case R.id.radioNotification:
-                // Is the button now checked?
                 if (radioNotification.isChecked())
                     // 1 clicked
                     RescribePreferencesManager.putString(getString(R.string.notificationAlarmTypeSetting), getString(R.string.notification), this);

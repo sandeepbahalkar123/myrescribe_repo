@@ -310,7 +310,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                             if (chatAdapter != null) {
                                 mqttMessage.add(message);
                                 chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
-                                chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
+                                chatRecyclerView.scrollToPosition(mqttMessage.size() - 1);
                             }
                         } else {
                             // Other user message
@@ -1035,7 +1035,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                             messageType.setText("");
                             mqttMessage.add(messageL);
                             chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
-                            chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
+                            chatRecyclerView.scrollToPosition(mqttMessage.size() - 1);
                         }
                     } else
                         CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.internet));
@@ -1189,7 +1189,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 mqttService.passMessage(messageL);
                 mqttMessage.add(messageL);
                 chatAdapter.notifyItemInserted(mqttMessage.size() - 1);
-                chatRecyclerView.smoothScrollToPosition(mqttMessage.size() - 1);
+                chatRecyclerView.scrollToPosition(mqttMessage.size() - 1);
             }
         } else
             CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.internet));

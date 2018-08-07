@@ -304,7 +304,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             mServiceCardDataViewBuilder.setReceivedDoctorDataList(CommonMethods.getCategoryDoctorsFromDb(appDBHelper));
             ArrayList<String> specialities = new ArrayList<>();
             // get all specialities
-            Cursor specialitiesCursor = appDBHelper.getDoctorsSpecialities();
+            String city = "";
+            HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+            if (userSelectedLocationInfo.get("Location") != null)
+                city = userSelectedLocationInfo.get("Location").split(",")[1];
+
+            Cursor specialitiesCursor = appDBHelper.getDoctorsSpecialities(city);
             if (specialitiesCursor.moveToFirst()) {
                 do {
                     specialities.add(specialitiesCursor.getString(specialitiesCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));

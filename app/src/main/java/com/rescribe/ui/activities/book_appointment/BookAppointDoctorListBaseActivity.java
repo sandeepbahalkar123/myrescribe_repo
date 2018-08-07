@@ -107,8 +107,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
     private int PLACE_PICKER_REQUEST = 1;
 
-    private DrawerForFilterBookAppointmentFragment mDrawerLoadedFragment;
-
     private ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private Context mContext;
     private AppDBHelper appDBHelper;
@@ -133,7 +131,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
                         // User message
                         CommonMethods.Log(TAG, "User message");
-                        MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
+//                        MQTTMessage message = intent.getParcelableExtra(MQTTService.MESSAGE);
 
                         int unreadMessageCount = appDBHelper.unreadMessageCount();
                         setConnectBadgeCount(unreadMessageCount);
@@ -156,7 +154,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
 
         mContext = BookAppointDoctorListBaseActivity.this;
 
-        mDrawerLoadedFragment = DrawerForFilterBookAppointmentFragment.newInstance();
+        DrawerForFilterBookAppointmentFragment mDrawerLoadedFragment = DrawerForFilterBookAppointmentFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_view, mDrawerLoadedFragment).commit();
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
@@ -181,11 +179,8 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }
         //------
         locationTextView.setVisibility(View.VISIBLE);
-        //------
-        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
-        String locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
+//        HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
 
-        //-----
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
         if (intent != null) {
@@ -205,9 +200,9 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     //BottomMenu is Set here // BottomMenu is shown on Bookappointment page only i it opens from bottomMenuBar otherwise it is hidden
     private void setBottomMenu() {
 
-        int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-        int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-        int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+//        int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+//        int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+//        int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
         //int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
         /* START: Notification count is stored in shared-preferences now,
@@ -273,13 +268,11 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
         }
     }
 
-    @OnClick({R.id.bookAppointmentBackButton, R.id.title, R.id.locationTextView})
+    @OnClick({R.id.bookAppointmentBackButton, R.id.locationTextView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bookAppointmentBackButton:
                 onBackPressed();
-                break;
-            case R.id.title:
                 break;
             case R.id.locationTextView:
                 //User can choose location of his choice
@@ -300,8 +293,6 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                     Uri resultUri = result.getUri();
 //                String path = Environment.getExternalStorageDirectory() + File.separator + "DrRescribe" + File.separator + "ProfilePhoto" + File.separator;
                     imageUtils.callImageCropMethod(resultUri);
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception error = result.getError();
                 }
                 break;
 

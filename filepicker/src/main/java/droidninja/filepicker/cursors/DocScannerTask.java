@@ -14,7 +14,6 @@ import droidninja.filepicker.PickerManager;
 import droidninja.filepicker.cursors.loadercallbacks.FileResultCallback;
 import droidninja.filepicker.models.Document;
 import droidninja.filepicker.models.FileType;
-import droidninja.filepicker.utils.Utils;
 
 import static android.provider.BaseColumns._ID;
 import static android.provider.MediaStore.MediaColumns.DATA;
@@ -22,9 +21,9 @@ import static android.provider.MediaStore.MediaColumns.DATA;
 /**
  * Created by droidNinja on 01/08/16.
  */
-public class DocScannerTask extends AsyncTask<Void,Void,List<Document>> {
+public class DocScannerTask extends AsyncTask<Void, Void, List<Document>> {
 
-    final String[] DOC_PROJECTION = {
+    private final String[] DOC_PROJECTION = {
             MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DATA,
             MediaStore.Files.FileColumns.MIME_TYPE,
@@ -36,8 +35,7 @@ public class DocScannerTask extends AsyncTask<Void,Void,List<Document>> {
 
     private final Context context;
 
-    public DocScannerTask(Context context, FileResultCallback<Document> fileResultCallback)
-    {
+    public DocScannerTask(Context context, FileResultCallback<Document> fileResultCallback) {
         this.context = context;
         this.resultCallback = fileResultCallback;
     }
@@ -45,17 +43,16 @@ public class DocScannerTask extends AsyncTask<Void,Void,List<Document>> {
     @Override
     protected List<Document> doInBackground(Void... voids) {
         ArrayList<Document> documents = new ArrayList<>();
-        final String[] projection = DOC_PROJECTION;
         String selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "="
                 + MediaStore.Files.FileColumns.MEDIA_TYPE_NONE;
         final Cursor cursor = context.getContentResolver().query(MediaStore.Files.getContentUri("external"),
-                projection,
+                DOC_PROJECTION,
                 selection,
                 null,
                 MediaStore.Files.FileColumns.DATE_ADDED + " DESC");
 
-        if(cursor!=null) {
-           documents = getDocumentFromCursor(cursor);
+        if (cursor != null) {
+            documents = getDocumentFromCursor(cursor);
             cursor.close();
         }
 
@@ -71,19 +68,18 @@ public class DocScannerTask extends AsyncTask<Void,Void,List<Document>> {
         }
     }
 
-    private ArrayList<Document> getDocumentFromCursor(Cursor data)
-    {
+    private ArrayList<Document> getDocumentFromCursor(Cursor data) {
         ArrayList<Document> documents = new ArrayList<>();
         while (data.moveToNext()) {
 
-            int imageId  = data.getInt(data.getColumnIndexOrThrow(_ID));
+            int imageId = data.getInt(data.getColumnIndexOrThrow(_ID));
             String path = data.getString(data.getColumnIndexOrThrow(DATA));
             String title = data.getString(data.getColumnIndexOrThrow(MediaStore.Files.FileColumns.TITLE));
 
-            if(path!=null) {
+            if (path != null) {
 
-                FileType fileType = getFileType(PickerManager.getInstance().getFileTypes(),path);
-                if(fileType!=null && !(new File(path).isDirectory())) {
+                FileType fileType = getFileType(PickerManager.getInstance().getFileTypes(), path);
+                if (fileType != null && !(new File(path).isDirectory())) {
 
                     Document document = new Document(imageId, title, path);
                     document.setFileType(fileType);

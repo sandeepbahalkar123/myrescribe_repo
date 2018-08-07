@@ -79,12 +79,6 @@ public class CommonMethods {
 
     private static final String TAG = "Rescribe/CommonMethods";
     public static final String TODAY = "Today";
-    private static boolean encryptionIsOn = true;
-    private static String aBuffer = "";
-    private static CheckIpConnection mCheckIpConnection;
-
-    private int mYear, mMonth, mDay, mHour, mMinute;
-    private DatePickerDialogListener mDatePickerDialogListener;
 
     public static int getVersionCode(Context mContext) {
         int versionCode = -1;
@@ -190,14 +184,11 @@ public class CommonMethods {
         int month = calendar.get(Calendar.MONTH) + 1;
         int date = calendar.get(Calendar.DATE);
 
-        String Year = String.valueOf(year);
-        StringBuffer dString = new StringBuffer();
-        dString.append((date > 9) ? String.valueOf(date) : ("0" + date));
-        dString.append("-");
-        dString.append((month > 9) ? String.valueOf(month) : ("0" + month));
-        dString.append("-");
-        dString.append(year);
-        return dString.toString();
+        return ((date > 9) ? String.valueOf(date) : ("0" + date)) +
+                "-" +
+                ((month > 9) ? String.valueOf(month) : ("0" + month)) +
+                "-" +
+                year;
     }
 
     public static String getCurrentDateWithSlash() // for enrollmentId
@@ -207,14 +198,11 @@ public class CommonMethods {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int date = calendar.get(Calendar.DATE);
-        String Year = String.valueOf(year);
-        StringBuffer dString = new StringBuffer();
-        dString.append(date);
-        dString.append("/");
-        dString.append(month);
-        dString.append("/");
-        dString.append(year);
-        return dString.toString();
+        return String.valueOf(date) +
+                "/" +
+                month +
+                "/" +
+                year;
     }
 
     public static String getCurrentDate() // for enrollmentId
@@ -925,36 +913,10 @@ public class CommonMethods {
 
     }
 
-    //TODO : this is done for temp
     public static ArrayList<String> getYearForDoctorList() {
         ArrayList<String> a = new ArrayList<>();
         a.add("2017");
         return a;
-    }
-
-    public void datePickerDialog(Context context, DatePickerDialogListener datePickerDialogListener, Date dateToSet) {
-        // Get Current Date
-        final Calendar c = Calendar.getInstance();
-
-        if (dateToSet != null) {
-            c.setTime(dateToSet);
-        }
-
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        mDatePickerDialogListener = datePickerDialogListener;
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                    }
-                }, mYear, mMonth, mDay);
-
-        datePickerDialog.show();
     }
 
     public static String getExtension(String filePath) {
@@ -1160,6 +1122,7 @@ public class CommonMethods {
                         }
                     }
 
+                    appointmentByDoctorCursor.close();
                     ArrayList<ClinicData> clinicDataList = new ArrayList<>();
 
                     // loop start
@@ -1200,7 +1163,7 @@ public class CommonMethods {
                                     }
                                     clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
                                 }
-
+                                doctorVsClinic.close();
                                 doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
                                 isFirst = false;
                             }
@@ -1233,7 +1196,7 @@ public class CommonMethods {
         if (userSelectedLocationInfo.get("Location") != null)
             city = userSelectedLocationInfo.get("Location").split(",")[1];
 
-        Cursor allDoctorsCursor = appDBHelper.getDoctors();
+        Cursor allDoctorsCursor = appDBHelper.getNonCategoryDoctors();
 
         if (allDoctorsCursor.moveToFirst()) {
             do {
@@ -1318,7 +1281,7 @@ public class CommonMethods {
 
                         clinicDataList.add(clinicData);
 
-                        if (clinicData.getCityName().equalsIgnoreCase(city) && !appDBHelper.isAvailableInCategory(doctorList.getDocId()))
+                        if (clinicData.getCityName().equalsIgnoreCase(city))
                             isCityThere = true;
 
                     } while (clinicCursor.moveToNext());
@@ -1429,7 +1392,7 @@ public class CommonMethods {
 
                         clinicDataList.add(clinicData);
 
-                        if (clinicData.getCityName().equalsIgnoreCase(city) || appDBHelper.isAvailableInCategory(doctorList.getDocId()))
+                        if (clinicData.getCityName().equalsIgnoreCase(city))
                             isCityThere = true;
 
                     } while (clinicCursor.moveToNext());

@@ -155,7 +155,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ProfilePhotoUpload {
 
-    private static final String TAG = "HomePage";
     @BindView(R.id.custom_progress_bar)
     RelativeLayout custom_progress_bar;
     @BindView(R.id.viewpager)
@@ -164,46 +163,42 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     ViewPager viewPagerDoctorItem;
     @BindView(R.id.menuOptionsListView)
     RecyclerView mMenuOptionsListView;
-
     @BindView(R.id.locationImageView)
     ImageView locationImageView;
-
     @BindView(R.id.swipeToRefresh)
     SwipeRefreshLayout swipeToRefresh;
-
     @BindView(R.id.preloadView)
     ImageView preloadView;
 
+    private static final String TAG = "HomePage";
     private Context mContext;
-    String locationReceived = "";
-    String previousLocationReceived = "";
-    ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
+    private ArrayList<DoctorList> mDashboardDoctorListsToShowDashboardDoctor;
     private int widthPixels;
-    DashboardMenuData mDashboardMenuData;
+    private DashboardMenuData mDashboardMenuData;
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
-    ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
+    private ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private ServicesCardViewImpl mDashboardDataBuilder;
     private AppDBHelper appDBHelper;
     private DashboardHelper mDashboardHelper;
-    ArrayList<DoctorList> myAppoint;
-    ArrayList<DoctorList> sponsered;
-    ArrayList<DoctorList> recently_visit_doctor;
-    ArrayList<DoctorList> favoriteList;
     private static final long INTERVAL = 1000 * 50;
     private static final long FASTEST_INTERVAL = 1000 * 20;
-    LocationRequest mLocationRequest;
-    GoogleApiClient mGoogleApiClient;
-    Location mCurrentLocation;
-    String mLastUpdateTime;
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mCurrentLocation;
     private UpdateAppUnreadNotificationCount mUpdateAppUnreadNotificationCount = new UpdateAppUnreadNotificationCount();
 
-    String breakFast = "8:00 AM";
-    String lunchTime = "2:00 PM";
-    String dinnerTime = "8:00 PM";
-    String snacksTime = "5:00 PM";
+    private String breakFast = "8:00 AM";
+    private String lunchTime = "2:00 PM";
+    private String dinnerTime = "8:00 PM";
+    private String snacksTime = "5:00 PM";
 
     private String activityCreatedTimeStamp;
     private NotificationHelper mNotificationPrescriptionHelper;
+
+    private String patientId;
+    private boolean mIsAppOpenFromLogin;
+    private ImageUtils imageUtils;
+    private CustomProgressDialog mCustomProgressDialog;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -233,11 +228,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             }
         }
     };
-
-    private String patientId;
-    private boolean mIsAppOpenFromLogin;
-    private ImageUtils imageUtils;
-    private CustomProgressDialog mCustomProgressDialog;
 
     private void logUser() {
         // You can call any combination of these three methods
@@ -335,8 +325,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                     Uri resultUri = result.getUri();
 //                String path = Environment.getExternalStorageDirectory() + File.separator + "DrRescribe" + File.separator + "ProfilePhoto" + File.separator;
                     imageUtils.callImageCropMethod(resultUri);
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception error = result.getError();
                 }
                 break;
 
@@ -396,7 +384,6 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-
         switch (mOldDataTag) {
             case TASK_DASHBOARD_API:
 
@@ -458,9 +445,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     private void showUpdateDialog(final int versionCode, final String appURL) {
-
         final Dialog dialog = new Dialog(this);
-
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_update_app_layout);
         AppCompatButton skipButton = (AppCompatButton) dialog.findViewById(R.id.skipButton);
@@ -528,10 +513,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         mDashboardDataBuilder.setReceivedDoctorDataList(doctorLists);
 
         Map<String, Integer> dataMap = new LinkedHashMap<>();
-        myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);
-        sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1);
-        recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor), -1);
-        favoriteList = mDashboardDataBuilder.getFavouriteDocList(-1);
+        ArrayList<DoctorList> myAppoint = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.my_appointments), -1);
+        ArrayList<DoctorList> sponsered = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1);
+        ArrayList<DoctorList> recently_visit_doctor = mDashboardDataBuilder.getCategoryWiseDoctorList(getString(R.string.recently_visited_doctor), -1);
+        ArrayList<DoctorList> favoriteList = mDashboardDataBuilder.getFavouriteDocList(-1);
         dataMap.put(getString(R.string.my_appointments), myAppoint.size());
         dataMap.put(getString(R.string.sponsored_doctor), sponsered.size());
         dataMap.put(getString(R.string.recently_visited_doctor), recently_visit_doctor.size());
@@ -735,9 +720,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         }
 
 
-        int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
-        int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-        int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
+//        int appCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.APPOINTMENT_ALERT_COUNT);
+//        int invCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+//        int medCount = RescribeApplication.doGetUnreadNotificationCount(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT);
         // int tokCount = RescribePreferencesManager.getInt(RescribePreferencesManager.NOTIFICATION_COUNT_KEY.TOKEN_ALERT_COUNT, this);
 
         ArrayList<DashboardMenuList> dashboardMenuList = mDashboardMenuData.getDashboardMenuList();
@@ -850,17 +835,14 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     public void onLocationChanged(Location location) {
         Log.d(TAG, "Firing onLocationChanged..............................................");
 
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-
         if (mCurrentLocation != null) {
             if (!isSameLocation(location)) {
                 mCurrentLocation = location;
                 updateUI();
             } else mCurrentLocation = location;
-        } else {
+        } else
             mCurrentLocation = location;
             updateUI();
-        }
     }
 
     public boolean isSameLocation(Location location) {
@@ -916,17 +898,18 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
     private void doCallDashBoardAPI() {
         HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+        String locationReceived = "";
         if (userSelectedLocationInfo.get(getString(R.string.location)) != null)
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
          else
             locationReceived = "";
 
+        String previousLocationReceived = "";
         if (RescribeApplication.getPreviousUserSelectedLocationInfo() != null) {
             HashMap<String, String> userPreviousSelectedLocationInfo = RescribeApplication.getPreviousUserSelectedLocationInfo();
             previousLocationReceived = userPreviousSelectedLocationInfo.get(getString(R.string.location));
-        } else {
+        } else
             previousLocationReceived = "";
-        }
 
         if (locationReceived.equalsIgnoreCase(previousLocationReceived) && !swipeToRefresh.isRefreshing()) {
             Log.d(TAG, "DASHBOARD API NOT CALLED");
@@ -1285,12 +1268,9 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     }
 
     private void doStoreMedicationNotificationInDb(NotificationData notificationDataForHeader, String slot) {
-
-        //----
         NotificationData filteredData = mNotificationPrescriptionHelper.getFilteredData(notificationDataForHeader, slot);
         if (filteredData.getMedication() != null) {
             if (!filteredData.getMedication().isEmpty()) {
-                //----
 
                 int notification_id = 0;
                 String medicineSlot = null;
@@ -1310,15 +1290,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                 }
 
                 if (medicineSlot != null) {
-
                     String notificationTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
-
                     //---- Save notification in db---
                     String timeStamp = CommonMethods.getCurrentDate() + " " + notificationTime;
-                    int id = (int) System.currentTimeMillis(); // medication.getMedicineId();
-
                     String medicationDataDetails = getText(R.string.have_u_taken) + medicineSlot + "?";
-
                     appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(notification_id), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.MEDICATION_ALERT_COUNT, medicationDataDetails, new Gson().toJson(filteredData), timeStamp, false);
                 }
             }

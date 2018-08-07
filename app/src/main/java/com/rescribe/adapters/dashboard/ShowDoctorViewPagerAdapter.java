@@ -208,9 +208,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                             doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
                             clinicName.setVisibility(View.VISIBLE);
                             clinicName.setText(clinicDataList.get(0).getClinicName());
-
                         }
-
                     }
                 }
                 designLineLayout.setBackground(mContext.getResources().getDrawable(R.drawable.design_line));
@@ -219,10 +217,8 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 if (clinicDataList.size() > 0 && clinicDataList.get(0).getAmount() > 0) {
                     feesToPaid.setVisibility(View.VISIBLE);
                     feesToPaid.setText("" + clinicDataList.get(0).getAmount());
-
-                } else {
+                } else
                     feesToPaid.setVisibility(View.INVISIBLE);
-                }
 
                 //----------
                 if (clinicDataList.size() > 0) {
@@ -476,6 +472,7 @@ public class ShowDoctorViewPagerAdapter extends PagerAdapter {
                 mServicesCardViewClickListener.onClickOfTotalCount(b);
             }
         });
+
         doctorCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

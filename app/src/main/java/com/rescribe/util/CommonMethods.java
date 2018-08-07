@@ -1199,7 +1199,7 @@ public class CommonMethods {
 
         if (allDoctorsCursor.moveToFirst()) {
             do {
-                docCursorToObject(null, allDoctorsCursor, appDBHelper);
+                doctorLists.add(docCursorToObject(null, allDoctorsCursor, appDBHelper));
             } while (allDoctorsCursor.moveToNext());
         }
         allDoctorsCursor.close();

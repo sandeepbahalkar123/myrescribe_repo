@@ -44,6 +44,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
     private ArrayList<InvestigationData> investigationTemp;
     private InvestigationHelper investigationHelper;
     private String mUnreadInvestigationMsgID;
+    private String patientId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
 
         mContext = UploadedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         investigationHelper = new InvestigationHelper(mContext, this);
 
         ArrayList<InvestigationData> investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
@@ -104,7 +106,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
                 invTypes.append(",").append(dataObject.getInvestigationType());
             }
 
-            investigationHelper.uploadFromAlreadyUploaded(imageIds.toString(), invIds.toString(), invTypes.toString());
+            investigationHelper.uploadFromAlreadyUploaded(imageIds.toString(), invIds.toString(), invTypes.toString(), patientId);
 
         } else {
             CommonMethods.showToast(mContext, "Please select at least one document");

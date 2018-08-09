@@ -1582,7 +1582,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             MultipartUploadRequest uploadRequest = new MultipartUploadRequest(ChatActivity.this, String.valueOf(mqttMessage.getMsgId()), Url)
                     .setNotificationConfig(uploadNotificationConfig)
                     .setMaxRetries(RescribeConstants.MAX_RETRIES)
-
                     .addHeader(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
                     .addHeader(RescribeConstants.DEVICEID, device.getDeviceId())
                     .addHeader(RescribeConstants.OS, device.getOS())

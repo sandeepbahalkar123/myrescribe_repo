@@ -13,12 +13,15 @@ import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.maps.model.LatLng;
+import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
+import net.gotev.uploadservice.UploadService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +59,7 @@ public class RescribeApplication extends MultiDexApplication {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         MultiDex.install(this);
+        UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
         AppDBHelper instance = AppDBHelper.getInstance(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);

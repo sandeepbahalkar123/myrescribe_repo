@@ -350,6 +350,7 @@ public class RescribeConstants {
         public static final String INV_ID = "invIds";
         public static final String INV_TYPES = "types";
         public static final String PATIENT_ID = "patientId";
+        public static final String OPD_ID = "opdId";
     }
 
     public static final String[] SALUTATION_SOCIALMEDIA = {"Mr.", "Mrs.", "Miss", "Other"};

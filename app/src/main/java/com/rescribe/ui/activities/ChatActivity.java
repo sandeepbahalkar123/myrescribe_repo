@@ -569,7 +569,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 if (prePosition != positionView) {
                     MQTTMessage mqttMessage = ChatActivity.this.mqttMessage.get(positionView);
                     dateTextView.setText(CommonMethods.getDayFromDateTime(mqttMessage.getMsgTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.DD_MMMM_YYYY));
-
                     prePosition = positionView;
                 }
             }

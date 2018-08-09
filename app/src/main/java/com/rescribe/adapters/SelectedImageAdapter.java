@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.ui.activities.zoom_images.ZoomImageViewActivity;
+import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.File;
@@ -54,18 +55,22 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
     @Override
     public void onBindViewHolder(final SelectedImageAdapter.FileViewHolder holder, final int position) {
         final Image path = paths.get(position);
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.centerCrop();
-        requestOptions.dontAnimate();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
-        requestOptions.override(imageSize, imageSize);
-        requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
 
-        Glide.with(context)
-                .load(new File(path.getImagePath()))
-                .apply(requestOptions).thumbnail(0.5f)
-                .into(holder.imageView);
+        if (isDoc(CommonMethods.getExtension(path.getImagePath())))
+            holder.imageView.setImageResource(R.drawable.ic_file);
+        else {
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.centerCrop();
+            requestOptions.dontAnimate();
+            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+            requestOptions.skipMemoryCache(true);
+            requestOptions.override(imageSize, imageSize);
+            requestOptions.placeholder(droidninja.filepicker.R.drawable.image_placeholder);
+            Glide.with(context)
+                    .load(new File(path.getImagePath()))
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(holder.imageView);
+        }
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +88,14 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
                 notifyDataSetChanged();
             }
         });
+    }
+
+    private boolean isDoc(String extension) {
+        String[] documents = {"doc", "docx", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx"};
+        for (String type : documents)
+            if (type.equalsIgnoreCase(extension))
+                return true;
+        return false;
     }
 
     @Override

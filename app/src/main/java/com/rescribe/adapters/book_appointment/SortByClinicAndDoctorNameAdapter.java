@@ -53,7 +53,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
     private ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem;
     private boolean isListByClinicName;
     private ImageView mClickedItemFavImageView;
-    private String cityname;
 
     public SortByClinicAndDoctorNameAdapter(Context mContext, ArrayList<DoctorList> dataList, ServicesCardViewImpl mOnClinicAndDoctorNameSearchRowItem, OnDataListViewVisible m, HelperResponse mHelperResponse) {
         this.mContext = mContext;
@@ -66,12 +65,6 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
         this.mOnClinicAndDoctorNameSearchRowItem = mOnClinicAndDoctorNameSearchRowItem;
         this.mOnDataListViewVisibleListener = m;
         this.mHelperResponse = mHelperResponse;
-
-        String cityNameString = RescribeApplication.getUserSelectedLocationInfo().get(mContext.getString(R.string.location));
-        if (cityNameString != null) {
-            String[] split = cityNameString.split(",");
-            cityname = split[1].trim();
-        }
     }
 
     private void filterListToRemoveMyAppointments(ArrayList<DoctorList> dataList) {
@@ -153,7 +146,7 @@ public class SortByClinicAndDoctorNameAdapter extends RecyclerView.Adapter<SortB
             holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));
             boolean b = checkAllClinicAddressInSameCity(doctorObject.getClinicDataList());
             if (b) {
-                SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + cityname);
+                SpannableString locationString = new SpannableString(doctorObject.getClinicDataList().size() + " " + mContext.getString(R.string.locations) + " " + "in" + " " + CommonMethods.toCamelCase(doctorObject.getClinicDataList().get(0).getCityName()));
                 locationString.setSpan(new UnderlineSpan(), 0, locationString.length(), 0);
                 holder.doctorAddress.setText(locationString);
                 holder.doctorAddress.setTextColor(mContext.getResources().getColor(R.color.black));

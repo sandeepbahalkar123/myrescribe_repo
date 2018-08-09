@@ -69,9 +69,7 @@ public class InvestigationHelper implements ConnectionListener {
     public void getInvestigationList(boolean progressBar) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progressBar, RescribeConstants.INVESTIGATION_LIST, Request.Method.GET, false);
         mConnectionFactory.setHeaderParams();
-        // HardCoded
         mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=" + RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext));
-//        mConnectionFactory.setUrl(Config.INVESTIGATION_LIST + "?patientId=4092");
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_LIST);
     }
 
@@ -83,7 +81,7 @@ public class InvestigationHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_BY_GMAIL);
     }
 
-    public void uploadFromAlreadyUploaded(String imageIds, String invIds, String invTypes, String patientId) {
+    public void uploadFromAlreadyUploaded(String imageIds, String invIds, String invTypes, String patientId, String opdIds) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED, Request.Method.POST, false);
         Device device = Device.getInstance(mContext);
         Map<String, String> headerParams = new HashMap<>();
@@ -98,6 +96,7 @@ public class InvestigationHelper implements ConnectionListener {
         headerParams.put(RescribeConstants.INVESTIGATION_KEYS.INV_ID, invIds);
         headerParams.put(RescribeConstants.INVESTIGATION_KEYS.INV_TYPES, invTypes);
         headerParams.put(RescribeConstants.INVESTIGATION_KEYS.PATIENT_ID, patientId);
+        headerParams.put(RescribeConstants.INVESTIGATION_KEYS.OPD_ID, opdIds);
         mConnectionFactory.setHeaderParams(headerParams);
         mConnectionFactory.setUrl(Config.INVESTIGATION_UPLOAD);
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED);

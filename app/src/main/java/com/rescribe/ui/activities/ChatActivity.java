@@ -168,7 +168,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     // Audio End
 
     private static final int MAX_ATTACHMENT_COUNT = 10;
-    private static final String RESCRIBE_FILES = "/Rescribe/Files/";
+    public static final String RESCRIBE_FILES = "/Rescribe/Files/";
     private static final String RESCRIBE_PHOTOS = "/Rescribe/Photos/";
     private static final String RESCRIBE_AUDIO = "/Rescribe/Audios/";
     private static final String RESCRIBE_UPLOAD_FILES = "/Rescribe/SentFiles/";
@@ -194,12 +194,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     LinearLayout bookAppointmentLayout;
     @BindView(R.id.receiverName)
     CustomTextView receiverName;
-    //-------------
     @BindView(R.id.bookAppointmentButton)
     CustomTextView bookAppointmentButton;
     @BindView(R.id.bookAppointmentGetTokenButton)
     CustomTextView mBookAppointmentGetTokenButton;
-    //------------
     @BindView(R.id.dateTime)
     CustomTextView dateTime;
     @BindView(R.id.titleLayout)
@@ -1623,77 +1621,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
     @Override
     public void openFile(MQTTMessage message, ImageView senderFileIcon) {
-
-        Uri uriTemp = Uri.parse(message.getFileUrl());
-
         if (message.getFileType().equals(DOC)) {
-
-            File file;
-            if (uriTemp.toString().contains("file://"))
-                file = new File(uriTemp.getPath());
-            else file = new File(uriTemp.toString());
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            Uri uri = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".droidninja.filepicker.provider", file);
-            } else {
-                uri = Uri.fromFile(createImageFile(uriTemp));
-            }
-
-            // Check what kind of file you are trying to open, by comparing the uri with extensions.
-            // When the if condition is matched, plugin sets the correct intent (mime) type,
-            // so Android knew what application to use to open the file
-            if (uri.toString().contains(".doc") || uri.toString().contains(".docx")) {
-                // Word document
-                intent.setDataAndType(uri, "application/msword");
-            } else if (uri.toString().contains(".pdf")) {
-                // PDF file
-                intent.setDataAndType(uri, "application/pdf");
-            } else if (uri.toString().contains(".ppt") || uri.toString().contains(".pptx")) {
-                // Powerpoint file
-                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-            } else if (uri.toString().contains(".xls") || uri.toString().contains(".xlsx")) {
-                // Excel file
-                intent.setDataAndType(uri, "application/vnd.ms-excel");
-            } else if (uri.toString().contains(".zip") || uri.toString().contains(".rar")) {
-                // WAV audio file
-                intent.setDataAndType(uri, "application/x-wav");
-            } else if (uri.toString().contains(".rtf")) {
-                // RTF file
-                intent.setDataAndType(uri, "application/rtf");
-            } else if (uri.toString().contains(".wav") || uri.toString().contains(".mp3")) {
-                // WAV audio file
-                intent.setDataAndType(uri, "audio/x-wav");
-            } else if (uri.toString().contains(".gif")) {
-                // GIF file
-                intent.setDataAndType(uri, "image/gif");
-            } else if (uri.toString().contains(".jpg") || uri.toString().contains(".jpeg") || uri.toString().contains(".png")) {
-                // JPG file
-                intent.setDataAndType(uri, "image/jpeg");
-            } else if (uri.toString().contains(".txt")) {
-                // Text file
-                intent.setDataAndType(uri, "text/plain");
-            } else if (uri.toString().contains(".3gp") || uri.toString().contains(".mpg") || uri.toString().contains(".mpeg") || uri.toString().contains(".mpe") || uri.toString().contains(".mp4") || uri.toString().contains(".avi")) {
-                // Video files
-                intent.setDataAndType(uri, "video/*");
-            } else {
-                //if you want you can also define the intent type for any other file
-                //additionally use else clause below, to manage other unknown extensions
-                //in this case, Android will show all applications installed on the device
-                //so you can choose which application to use
-                intent.setDataAndType(uri, "*/*");
-            }
-
-            try {
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.doc_viewer_not_found));
-            }
+            CommonMethods.openDoc(ChatActivity.this, message.getFileUrl(), filesFolder);
         } else if (message.getFileType().equals(AUD)) {
 
             if (this.audioIcon != null) {
@@ -1712,10 +1641,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 startPlaying(message.getFileUrl());
             }
         }
-    }
-
-    private File createImageFile(Uri uriTemp) {
-        return new File(filesFolder, CommonMethods.getFileNameFromPath(uriTemp.toString()));
     }
 
     // Broadcast

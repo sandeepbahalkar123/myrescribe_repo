@@ -92,42 +92,49 @@ public class DoctorConnectChatFragment extends Fragment implements HelperRespons
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
         if (mOldDataTag.equalsIgnoreCase(RescribeConstants.CHAT_USERS)) {
             RecentChatDoctorModel mDoctorConnectChatBaseModel = (RecentChatDoctorModel) customResponse;
-            if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel() == null) {
-                emptyListView.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
-            } else {
-                if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel().getChatDoctor().isEmpty()) {
+            if (emptyListView != null) {
+                if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel() == null) {
                     emptyListView.setVisibility(View.VISIBLE);
-
                     mRecyclerView.setVisibility(View.GONE);
                 } else {
-                    emptyListView.setVisibility(View.GONE);
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                    if (mDoctorConnectChatBaseModel.getDoctorConnectDataModel().getChatDoctor().isEmpty()) {
+                        emptyListView.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
+                    } else {
+                        emptyListView.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                    }
+                    chatDoctors.addAll(mDoctorConnectChatBaseModel.getDoctorConnectDataModel().getChatDoctor());
+                    setAdapter();
                 }
-                chatDoctors.addAll(mDoctorConnectChatBaseModel.getDoctorConnectDataModel().getChatDoctor());
-                setAdapter();
             }
         }
     }
 
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
-        emptyListView.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        if (emptyListView != null) {
+            emptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
         CommonMethods.showToast(getActivity(), errorMessage);
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
-        emptyListView.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        if (emptyListView != null) {
+            emptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
         CommonMethods.showToast(getActivity(), serverErrorMessage);
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
-        emptyListView.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        if (emptyListView != null) {
+            emptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
     }
 
     public void setAdapter() {

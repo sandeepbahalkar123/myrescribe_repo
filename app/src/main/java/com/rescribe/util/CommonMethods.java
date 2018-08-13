@@ -3,7 +3,9 @@ package com.rescribe.util;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -14,9 +16,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -55,6 +59,7 @@ import net.gotev.uploadservice.UploadInfo;
 import net.gotev.uploadservice.UploadNotificationConfig;
 import net.gotev.uploadservice.UploadStatusDelegate;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
@@ -1292,6 +1297,83 @@ public class CommonMethods {
 
         } catch (FileNotFoundException | MalformedURLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean isDoc(String extension) {
+        String[] documents = {"doc", "docx", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx"};
+        for (String type : documents)
+            if (type.equalsIgnoreCase(extension))
+                return true;
+        return false;
+    }
+
+    public static File createImageFile(Uri uriTemp, String filesFolder) {
+        return new File(filesFolder, CommonMethods.getFileNameFromPath(uriTemp.toString()));
+    }
+
+    public static void openDoc(Context context, String fileUrl, String filesFolder) {
+        Uri uriTemp = Uri.parse(fileUrl);
+        File file;
+        if (uriTemp.toString().contains("file://"))
+            file = new File(uriTemp.getPath());
+        else file = new File(uriTemp.toString());
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".droidninja.filepicker.provider", file);
+        } else
+            uri = Uri.fromFile(createImageFile(uriTemp, filesFolder));
+
+        // Check what kind of file you are trying to open, by comparing the uri with extensions.
+        // When the if condition is matched, plugin sets the correct intent (mime) type,
+        // so Android knew what application to use to open the file
+        if (uri.toString().contains(".doc") || uri.toString().contains(".docx")) {
+            // Word document
+            intent.setDataAndType(uri, "application/msword");
+        } else if (uri.toString().contains(".pdf")) {
+            // PDF file
+            intent.setDataAndType(uri, "application/pdf");
+        } else if (uri.toString().contains(".ppt") || uri.toString().contains(".pptx")) {
+            // Powerpoint file
+            intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+        } else if (uri.toString().contains(".xls") || uri.toString().contains(".xlsx")) {
+            // Excel file
+            intent.setDataAndType(uri, "application/vnd.ms-excel");
+        } else if (uri.toString().contains(".zip") || uri.toString().contains(".rar")) {
+            // WAV audio file
+            intent.setDataAndType(uri, "application/x-wav");
+        } else if (uri.toString().contains(".rtf")) {
+            // RTF file
+            intent.setDataAndType(uri, "application/rtf");
+        } else if (uri.toString().contains(".wav") || uri.toString().contains(".mp3")) {
+            // WAV audio file
+            intent.setDataAndType(uri, "audio/x-wav");
+        } else if (uri.toString().contains(".gif")) {
+            // GIF file
+            intent.setDataAndType(uri, "image/gif");
+        } else if (uri.toString().contains(".jpg") || uri.toString().contains(".jpeg") || uri.toString().contains(".png")) {
+            // JPG file
+            intent.setDataAndType(uri, "image/jpeg");
+        } else if (uri.toString().contains(".txt")) {
+            // Text file
+            intent.setDataAndType(uri, "text/plain");
+        } else if (uri.toString().contains(".3gp") || uri.toString().contains(".mpg") || uri.toString().contains(".mpeg") || uri.toString().contains(".mpe") || uri.toString().contains(".mp4") || uri.toString().contains(".avi")) {
+            // Video files
+            intent.setDataAndType(uri, "video/*");
+        } else {
+            intent.setDataAndType(uri, "*/*");
+        }
+
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            CommonMethods.showToast(context, context.getResources().getString(R.string.doc_viewer_not_found));
         }
     }
 }

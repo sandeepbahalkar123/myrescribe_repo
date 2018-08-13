@@ -97,7 +97,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
         for (Image image : photoPaths) {
             if (image.isSelected()) {
                 selectedImageCount++;
-                imageIds.append(",").append(imageIds);
+                imageIds.append(image.getImageId()).append(",");
             }
         }
 
@@ -117,6 +117,11 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
                     investigationTypes.append(",");
                 }
             }
+
+            imageIds.deleteCharAt(imageIds.length() - 1);
+            investigationIds.deleteCharAt(investigationIds.length() - 1);
+            opdIds.deleteCharAt(opdIds.length() - 1);
+            investigationTypes.deleteCharAt(investigationTypes.length() - 1);
             investigationHelper.uploadFromAlreadyUploaded(imageIds.toString(), investigationIds.toString(), investigationTypes.toString(), patientId, opdIds.toString());
 
         } else {

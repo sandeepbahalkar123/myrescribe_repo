@@ -98,7 +98,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     LinearLayout mClinicNameSpinnerParentLayout;
     @BindView(R.id.allClinicPracticeLocationMainLayout)
     LinearLayout mAllClinicPracticeLocationMainLayout;
-    //-------------
     @BindView(R.id.aboutDoctorDescription)
     CustomTextView mAboutDoctorDescription;
     @BindView(R.id.countDoctorExperience)
@@ -123,7 +122,6 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
     View selectClinicLine;
     @BindView(R.id.yearsExperienceLine)
     View yearsExperienceLine;
-    //-------
     @BindView(R.id.servicesLine)
     View servicesLine;
     @BindView(R.id.ruppeeShadow)
@@ -285,6 +283,8 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                     clinicData = mClickedDoctorObject.getClinicDataList().get(position);
+                    bookAppointmentButton.setText(clinicData.getAppointmentType().equalsIgnoreCase(getString(R.string.book)) ? getText(R.string.book_appointment) : getText(R.string.get_token));
+
                     if (clinicData.getClinicName().equals("")) {
                         mClinicName.setVisibility(View.GONE);
                     } else {

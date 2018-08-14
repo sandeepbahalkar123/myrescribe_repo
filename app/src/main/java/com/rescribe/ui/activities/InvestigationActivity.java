@@ -74,7 +74,6 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
     private InvestigationHelper investigationHelper;
     private int patientId;
     private Intent gmailIntent;
-    private String doctorName;
     private String mUnreadInvestigationMsgID;
 
     @Override
@@ -205,7 +204,10 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                 ArrayList<InvestigationData> invest = data.getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
                 changeOriginalData(invest);
                 investigationTemp.addAll(invest);
-                mAdapter.notifyDataSetChanged();
+                if (investigationTemp.isEmpty())
+                    CommonMethods.showInfoDialog(getResources().getString(R.string.no_investigation), mContext, true);
+                else
+                    mAdapter.notifyDataSetChanged();
                 buttonEnable();
                 buttonManage(View.VISIBLE);
             }
@@ -330,6 +332,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
 
         mUnreadInvestigationMsgID = getIntent().getStringExtra(RescribeConstants.NOTIFICATION_ID);
         investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_LIST);
+        String doctorName;
         if (investigation.get(0).getDoctorName().toLowerCase().contains("dr.")) {
             doctorName = investigation.get(0).getDoctorName();
         } else {
@@ -345,6 +348,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             appDBHelper.insertInvestigationData(investigation);
 
             int isAlreadyUploadedButtonVisible = View.GONE;
+            int uploadedCount = 0;
 
             for (int i = 0; i < investigation.size(); i++) {
                 InvestigationData data = appDBHelper.getInvestigationData(investigation.get(i).getId());
@@ -363,6 +367,7 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
                     dataObject.setPhotos(imageArray);
                     investigationTemp.add(dataObject);
                 } else {
+                    uploadedCount += 1;
                     isAlreadyUploadedButtonVisible = View.VISIBLE;
                     investigation.get(i).setSelected(true);
                     investigation.get(i).setUploaded(true);
@@ -371,9 +376,11 @@ public class InvestigationActivity extends AppCompatActivity implements Investig
             }
 
             buttonManage(isAlreadyUploadedButtonVisible);
-
             mAdapter = new InvestigationViewAdapter(mContext, investigationTemp);
             mRecyclerView.setAdapter(mAdapter);
+
+            if (uploadedCount == (investigation.size()))
+                CommonMethods.showInfoDialog(getResources().getString(R.string.no_investigation), mContext, true);
         } else
             CommonMethods.showInfoDialog(getResources().getString(R.string.no_investigation), mContext, true);
     }

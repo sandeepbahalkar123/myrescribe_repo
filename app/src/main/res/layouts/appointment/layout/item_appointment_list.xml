@@ -76,7 +76,6 @@
                 android:id="@+id/doctorAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:textColor="@color/dose_completed"
                 android:textSize="@dimen/sp12"
                 android:textStyle="bold"

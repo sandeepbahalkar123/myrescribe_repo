@@ -44,7 +44,6 @@ public class DoctorDescriptionBaseActivity extends AppCompatActivity {
         setContentView(R.layout.select_slot_book_app_layout);
         ButterKnife.bind(this);
         initialize();
-
     }
 
     private void initialize() {

@@ -104,15 +104,11 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     LinearLayout viewDoctorPager;
     Unbinder unbinder;
 
-    DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
-    private ArrayList<DoctorList> doctorListByClinics;
     private DoctorDataHelper mDoctorDataHelper;
     private ServicesCardViewImpl mServiceCardDataViewBuilder;
     private DoctorServicesModel mReceivedDoctorServicesModel;
-    private ShowDoctorViewPagerAdapter mRecentVisitedDoctorPagerAdapter;
     private String mUserSelectedLocation;
-    private boolean isLocationChanged;
     private ArrayList<DoctorList> mPreviousLoadedDocList;
     private boolean isFilterApplied = false;
     private String mReceivedTitle = "";
@@ -195,7 +191,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     startActivity(intent);
                 } else {
                     // this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
-                    doctorListByClinics = new ArrayList<>();
+                    ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
                     ArrayList<DoctorList> sortedListByClinicNameOrDoctorName = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
                     for (int i = 0; i < sortedListByClinicNameOrDoctorName.size(); i++) {
                         DoctorList doctorList = sortedListByClinicNameOrDoctorName.get(i);
@@ -284,7 +280,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
 
             mBookAppointSpecialityListView.setNestedScrollingEnabled(false);
 
-            mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
+            DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
             mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
             pickSpeciality.setVisibility(View.VISIBLE);
             viewDoctorPager.setVisibility(View.VISIBLE);
@@ -351,7 +347,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (!isFavorite)
                     mViewpager.setVisibility(View.VISIBLE);
 
-                mRecentVisitedDoctorPagerAdapter = new ShowDoctorViewPagerAdapter(getActivity(), mergeList, mServiceCardDataViewBuilder, dataMap, this);
+                ShowDoctorViewPagerAdapter mRecentVisitedDoctorPagerAdapter = new ShowDoctorViewPagerAdapter(getActivity(), mergeList, mServiceCardDataViewBuilder, dataMap, this);
                 mViewpager.setAdapter(mRecentVisitedDoctorPagerAdapter);
                 mViewpager.setClipToPadding(false);
                 //------
@@ -394,7 +390,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @Override
     public void onResume() {
         super.onResume();
-        isLocationChanged = doGetLatestDoctorListOnLocationChange();
+        boolean isLocationChanged = doGetLatestDoctorListOnLocationChange();
         if (!isLocationChanged) {
             if (mReceivedDoctorServicesModel != null) {
                 if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE && mSortByClinicAndDoctorNameAdapter != null) {

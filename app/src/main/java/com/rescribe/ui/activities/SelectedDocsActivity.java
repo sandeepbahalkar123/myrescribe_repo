@@ -2,8 +2,12 @@ package com.rescribe.ui.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -46,6 +51,9 @@ import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+
+import static com.rescribe.util.RescribeConstants.FILE.DOC;
+import static com.rescribe.util.RescribeConstants.FILE.IMG;
 
 @RuntimePermissions
 public class SelectedDocsActivity extends AppCompatActivity implements UploadStatusDelegate {
@@ -104,7 +112,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         }
 
         if (media_id == -1) {
-            SelectedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedDocsActivity.this);
+            showPickerDialog();
             photoPaths = new ArrayList<>();
         } else {
             photoPaths = investigation.get(media_id).getPhotos();
@@ -130,11 +138,47 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_docs:
-                SelectedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(this);
+                // Show two options for user
+                showPickerDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showPickerDialog() {
+        final Dialog dialog = new Dialog(mContext);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.select_file_dialog);
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialog.findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                SelectedDocsActivityPermissionsDispatcher.onPickCameraPhotoWithCheck(SelectedDocsActivity.this);
+            }
+        });
+
+        dialog.findViewById(R.id.gallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                SelectedDocsActivityPermissionsDispatcher.onPickPhotoWithCheck(SelectedDocsActivity.this);
+            }
+        });
+
+        dialog.findViewById(R.id.files).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                SelectedDocsActivityPermissionsDispatcher.onPickDocWithCheck(SelectedDocsActivity.this);
+            }
+        });
+
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
     }
 
     @Override
@@ -169,6 +213,53 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
         }
     }
 
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void onPickCameraPhoto() {
+        if (photoPaths.size() == MAX_ATTACHMENT_COUNT)
+            Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
+        else {
+
+            ArrayList photos = new ArrayList();
+            for (Image photo : photoPaths)
+                photos.add(photo.getImagePath());
+
+            FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
+                    .setSelectedFiles(photos)
+                    .setActivityTheme(R.style.AppTheme)
+                    .enableVideoPicker(false)
+                    .enableCameraSupport(true)
+                    .enableCameraMultiplePhotos(false)
+                    .openCameraDirect(true)
+                    .showGifs(false)
+                    .showFolderView(true)
+                    .enableOrientation(true)
+                    .pickPhoto(this);
+        }
+    }
+
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void onPickDoc() {
+
+        String[] documents = {".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ods", ".ppt", ".pptx"};
+
+        if (photoPaths.size() == MAX_ATTACHMENT_COUNT)
+            Toast.makeText(this, "Cannot select more than " + MAX_ATTACHMENT_COUNT + " documents", Toast.LENGTH_SHORT).show();
+        else {
+
+            ArrayList photos = new ArrayList();
+            for (Image photo : photoPaths)
+                photos.add(photo.getImagePath());
+
+            FilePickerBuilder.getInstance().setMaxCount(MAX_ATTACHMENT_COUNT)
+                    .setSelectedFiles(photos)
+                    .setActivityTheme(R.style.AppTheme)
+                    .addFileSupport(documents)
+                    .enableDocSupport(false)
+                    .enableOrientation(true)
+                    .pickFile(this);
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -178,14 +269,7 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA) == null)
-            finish();
-        else if (data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA).size() == 0)
-            finish();
-        else {
             if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO) {
-//            int id = data.getIntExtra(FilePickerConst.MEDIA_ID, 0);
                 if (resultCode == Activity.RESULT_OK) {
                     photoPaths.clear();
                     for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)) {
@@ -197,8 +281,19 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                     }
                     selectedImageAdapter.notifyDataSetChanged();
                 }
+            } else if (requestCode == FilePickerConst.REQUEST_CODE_DOC){
+                if (resultCode == Activity.RESULT_OK) {
+                    photoPaths.clear();
+                    for (String imagePath : data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)) {
+                        Image image = new Image();
+                        image.setImageId(patientId + "_" + UUID.randomUUID().toString());
+                        image.setImagePath(imagePath);
+                        image.setSelected(false);
+                        photoPaths.add(image);
+                    }
+                    selectedImageAdapter.notifyDataSetChanged();
+                }
             }
-        }
     }
 
     @OnClick(R.id.uploadButton)
@@ -246,11 +341,11 @@ public class SelectedDocsActivity extends AppCompatActivity implements UploadSta
                                 .addHeader(RescribeConstants.OSVERSION, device.getOSVersion())
                                 .addHeader(RescribeConstants.DEVICE_TYPE, device.getDeviceType())
 
-                                .addHeader("imgId", image.getImageId())
-                                .addHeader("invIds", investigationIds.toString())
-                                .addHeader("types", investigationTypes.toString())
-                                .addHeader("opdId", opdIds.toString())
-                                .addHeader("patientId", patientId)
+                                .addHeader(RescribeConstants.INVESTIGATION_KEYS.IMAGE_ID, image.getImageId())
+                                .addHeader(RescribeConstants.INVESTIGATION_KEYS.INV_ID, investigationIds.toString())
+                                .addHeader(RescribeConstants.INVESTIGATION_KEYS.INV_TYPES, investigationTypes.toString())
+                                .addHeader(RescribeConstants.INVESTIGATION_KEYS.OPD_ID, opdIds.toString())
+                                .addHeader(RescribeConstants.INVESTIGATION_KEYS.PATIENT_ID, patientId)
                                 .addFileToUpload(image.getImagePath(), "investigationDoc")
                                 .setDelegate(SelectedDocsActivity.this)
                                 .startUpload();

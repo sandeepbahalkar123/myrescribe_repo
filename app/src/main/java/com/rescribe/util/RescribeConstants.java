@@ -62,19 +62,12 @@ public class RescribeConstants {
     public static final String DATE = "date";
     public static final String MEDICINE_SLOT = "edicine_slot";
     public static final String MEDICINE_TYPE = "medicine_type";
-    //------------
-    public static final String DINNER = "dinner";
-    public static final String LUNCH = "lunch";
-    public static final String BREAK_FAST = "breakfast";
-    public static final String SNACKS = "snacks";
-    //------------
+
     public static final String NOTIFICATION_ID = "notification_id";
     public static final String APPOINTMENT_NOTIFICATION_ID = "appointment_notification_id";
     public static final String APPOINTMENT_ID = "appointment_id";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
     public static final String BLANK = "";
-
-    public static final String DOCTOR_OBJECT = "services";
 
     public static final String DRAWABLE = "drawable";
 
@@ -350,6 +343,8 @@ public class RescribeConstants {
         public static final String IMAGE_ID = "imgId";
         public static final String INV_ID = "invIds";
         public static final String INV_TYPES = "types";
+        public static final String PATIENT_ID = "patientId";
+        public static final String OPD_ID = "opdId";
     }
 
     public static final String[] SALUTATION_SOCIALMEDIA = {"Mr.", "Mrs.", "Miss", "Other"};

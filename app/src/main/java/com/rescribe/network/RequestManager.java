@@ -90,10 +90,10 @@ import com.rescribe.util.RescribeConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import static com.rescribe.util.RescribeConstants.INVALID_LOGIN_PASSWORD;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
@@ -408,11 +408,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
     private String getOfflineData() {
         String data = null;
-            Cursor cursor = dbHelper.getData(this.mDataTag);
-            if (cursor.moveToFirst())
-                data = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
-            cursor.close();
-            return data;
+        Cursor cursor = dbHelper.getData(this.mDataTag);
+        if (cursor.moveToFirst())
+            data = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
+        cursor.close();
+        return data;
     }
 
     /*private String fixEncoding(String response) {
@@ -458,10 +458,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
                     mHeaderParams.put(RescribeConstants.AUTHORIZATION_TOKEN, loginModel.getLoginData().getAuthToken());
                     connect();
-                }else if (!loginModel.getCommon().isSuccess() && loginModel.getCommon().getStatusCode().equals(INVALID_LOGIN_PASSWORD)){
+                } else if (!loginModel.getCommon().isSuccess() && loginModel.getCommon().getStatusCode().equals(INVALID_LOGIN_PASSWORD)) {
                     CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
                     Intent intentObj = new Intent(mContext, LoginSignUpActivity.class);
                     mContext.startActivity(intentObj);
+                    ((AppCompatActivity) mContext).finishAffinity();
                 } else {
                     CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
                 }

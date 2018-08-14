@@ -6,6 +6,7 @@ package com.rescribe.network;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -79,6 +80,7 @@ import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTrackerBaseModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
+import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
@@ -92,6 +94,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import static com.rescribe.util.RescribeConstants.INVALID_LOGIN_PASSWORD;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
     private final String TAG = this.getClass().getName();
@@ -454,8 +457,13 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, String.valueOf(loginModel.getLoginData().getPatientDetail().getPatientId()), mContext);
 
                     mHeaderParams.put(RescribeConstants.AUTHORIZATION_TOKEN, loginModel.getLoginData().getAuthToken());
-
                     connect();
+                }else if (!loginModel.getCommon().isSuccess() && loginModel.getCommon().getStatusCode().equals(INVALID_LOGIN_PASSWORD)){
+                    CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
+                    Intent intentObj = new Intent(mContext, LoginSignUpActivity.class);
+                    mContext.startActivity(intentObj);
+                } else {
+                    CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
                 }
 
             } else {

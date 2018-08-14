@@ -176,6 +176,7 @@ public class RescribeConstants {
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
+    public static final Integer INVALID_LOGIN_PASSWORD = 404;
     public static final String TAKEN_DATE = "takenDate";
     public static final String TITLE = "title";
     public static final String DOCTORS_LIST = "doctors_list";

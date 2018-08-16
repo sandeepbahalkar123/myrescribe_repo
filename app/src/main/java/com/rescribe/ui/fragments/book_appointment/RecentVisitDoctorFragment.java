@@ -1,7 +1,9 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -65,6 +67,8 @@ import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 
 
 public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible {
+
+    public static final String DOCTOR_DATA_ACTION = "com.rescribe.DOC_DATA";
 
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
@@ -268,22 +272,26 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             viewDoctorPager.setVisibility(View.INVISIBLE);
             mBookAppointSpecialityListView.setVisibility(View.GONE);
         } else {
-            recyclerViewLinearLayout.setVisibility(View.VISIBLE);
-            mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
+            if (recyclerViewLinearLayout.getVisibility() != View.VISIBLE)
+                recyclerViewLinearLayout.setVisibility(View.VISIBLE);
+            if (mBookAppointSpecialityListView.getVisibility() != View.VISIBLE)
+                mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
             whiteUnderLine.setVisibility(View.VISIBLE);
-            searchView.setVisibility(View.VISIBLE);
+            if (searchView.getVisibility() != View.VISIBLE)
+                searchView.setVisibility(View.VISIBLE);
             mSpecialityEmptyListView.setVisibility(View.GONE);
 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
             mBookAppointSpecialityListView.setLayoutManager(layoutManager);
             mBookAppointSpecialityListView.setItemAnimator(new DefaultItemAnimator());
-
             mBookAppointSpecialityListView.setNestedScrollingEnabled(false);
 
             DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
             mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
-            pickSpeciality.setVisibility(View.VISIBLE);
-            viewDoctorPager.setVisibility(View.VISIBLE);
+            if (pickSpeciality.getVisibility() != View.VISIBLE)
+                pickSpeciality.setVisibility(View.VISIBLE);
+            if (viewDoctorPager.getVisibility() != View.VISIBLE)
+                viewDoctorPager.setVisibility(View.VISIBLE);
         }
         //---set data ---------
 
@@ -308,7 +316,9 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             Cursor specialitiesCursor = appDBHelper.getDoctorsSpecialities(city);
             if (specialitiesCursor.moveToFirst()) {
                 do {
-                    specialities.add(specialitiesCursor.getString(specialitiesCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
+                    String speciality = specialitiesCursor.getString(specialitiesCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)).trim();
+                    if (!speciality.isEmpty())
+                        specialities.add(speciality);
                 } while (specialitiesCursor.moveToNext());
             }
             specialitiesCursor.close();
@@ -388,6 +398,12 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         boolean isLocationChanged = doGetLatestDoctorListOnLocationChange();
@@ -398,13 +414,17 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 }
             }
         }
+        setViewPagerData();
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(DOCTOR_DATA_ACTION));
+    }
+
+    private void setViewPagerData() {
         if (searchView != null) {
             if (searchView.getText().toString().isEmpty()) {
                 setUpViewPager(false);
             }
         }
     }
-
 
     @Override
     public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
@@ -472,8 +492,16 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             recentDoctorLayout.setVisibility(View.VISIBLE);
             showDoctorsRecyclerView.setVisibility(View.GONE);
         }
-
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(DOCTOR_DATA_ACTION))
+                    setViewPagerData();
+            }
+        }
+    };
 }
 

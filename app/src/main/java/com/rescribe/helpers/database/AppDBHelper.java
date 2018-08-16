@@ -761,7 +761,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 contentValuesDoc.put(DOC_DATA.ICON_URL, doctor.getDoctorImageUrl());
                 contentValuesDoc.put(DOC_DATA.ABOUT_DOCTOR, doctor.getAboutDoctor());
                 contentValuesDoc.put(DOC_DATA.SPECIALITY_ID, doctor.getSpecialityId());
-                contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality());
+                contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality().trim());
                 contentValuesDoc.put(DOC_DATA.RATING, doctor.getRating());
                 contentValuesDoc.put(DOC_DATA.IS_PREMIUM, doctor.getCategorySpeciality());
                 contentValuesDoc.put(DOC_DATA.DOC_DEGREE, doctor.getDegree());

@@ -102,6 +102,7 @@ import com.rescribe.ui.activities.health_repository.HealthRepositoryActivity;
 import com.rescribe.ui.activities.saved_articles.SavedArticlesActivity;
 import com.rescribe.ui.activities.vital_graph.VitalGraphActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
+import com.rescribe.ui.fragments.book_appointment.RecentVisitDoctorFragment;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.GoogleSettingsApi;
 import com.rescribe.util.ImageUtils;
@@ -415,6 +416,11 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             case TASK_DOCTORLIST_API:
                 DoctorListModel doctorListModel = (DoctorListModel) customResponse;
                 if (doctorListModel.getCommon().getStatusCode().equals(SUCCESS)) {
+
+                    // notify Next Screen
+                    Intent intent = new Intent(RecentVisitDoctorFragment.DOCTOR_DATA_ACTION);
+                    sendBroadcast(intent);
+
                     setUpViewPager();
                     if (mIsAppOpenFromLogin) {
                         // hide progress

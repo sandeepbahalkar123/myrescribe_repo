@@ -323,69 +323,11 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
             activeRequest.setId(Integer.parseInt(patientId));
             new LoginHelper(this, SettingsActivity.this).doLogout(activeRequest);
-            logout();
+            CommonMethods.logout(this, appDBHelper);
         } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.HOW_IT_WORKS)) {
             Intent intentGuide = new Intent(mContext, GuideScreenActivity.class);
             startActivity(intentGuide);
         }
-    }
-
-    private void logout() {
-        RequestPool.getInstance(this.mContext).cancellAllPreviousRequestWithSameTag(TASK_DASHBOARD_API);
-        RequestPool.getInstance(this.mContext).cancellAllPreviousRequestWithSameTag(TASK_DOCTORLIST_API);
-
-        String mobileNoGmail = "";
-        String passwordGmail = "";
-        String mobileNoFacebook = "";
-        String passwordFacebook = "";
-        String gmailLogin = "";
-        String facebookLogin = "";
-        boolean appointmentAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.appointment_alert), mContext);
-        boolean investigationAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.investigation_alert), mContext);
-        boolean medicationAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.medication_alert), mContext);
-        boolean offersAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.offers_alert), mContext);
-        boolean allNotifyAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.all_notifications), mContext);
-        // Stop Uploads
-        UploadService.stopAllUploads();
-
-        //Logout functionality
-        if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_gmail))) {
-            gmailLogin = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext);
-            mobileNoGmail = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext);
-            passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
-
-        }
-        if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(getString(R.string.login_with_facebook))) {
-            facebookLogin = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext);
-            mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
-            passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
-
-        }
-
-        RescribePreferencesManager.clearSharedPref(mContext);
-        RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), allNotifyAlert, mContext);
-        RescribePreferencesManager.putBoolean(mContext.getString(R.string.appointment_alert), appointmentAlert, mContext);
-        RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), investigationAlert, mContext);
-        RescribePreferencesManager.putBoolean(mContext.getString(R.string.medication_alert), medicationAlert, mContext);
-        RescribePreferencesManager.putBoolean(mContext.getString(R.string.offers_alert), offersAlert, mContext);
-        RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, gmailLogin, mContext);
-        RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, facebookLogin, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mobileNoGmail, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, passwordGmail, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mobileNoFacebook, mContext);
-        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
-        RescribePreferencesManager.putString(getString(R.string.logout), "" + 1, mContext);
-
-        // Clear all notification
-        NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nMgr.cancelAll();
-
-        appDBHelper.deleteDatabase();
-        appUnreadNotificationMessageList.clear();
-
-        Intent intent = new Intent(mContext, LoginSignUpActivity.class);
-        startActivity(intent);
-        finishAffinity();
     }
 
     @Override

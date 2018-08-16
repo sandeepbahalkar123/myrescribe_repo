@@ -6,11 +6,6 @@ package com.rescribe.util;
  */
 public class RescribeConstants {
 
-    public static final String RESCRIBE_LOG_FOLDER = "Rescribe_LOG";
-    public static final String RESCRIBE_LOG_FILE = "Rescribe_LOG_FILE.txt";
-    public static final String MT_TABLET = "TABLET";
-    public static final String MT_SYRUP = "SYRUP";
-    public static final String MT_OINTMENT = "OINTMENT";
     public static final String DD_MM_YYYY = "dd-MM-yyyy";
     public static final String YES = "yes";
     public static final String ATTACHMENTS_LIST = "ATTACHMENTS_LIST";
@@ -107,8 +102,6 @@ public class RescribeConstants {
     public static final String TASK_DOCTOR_CONNECT_CHAT = RescribeConstants.BLANK + 25;
     public static final String TASK_DOCTOR_CONNECT = RescribeConstants.BLANK + 26;
     public static final String TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST = RescribeConstants.BLANK + 27;
-
-    public static final String SEND_MESSAGE = RescribeConstants.BLANK + 28;
     public static final String CHAT_HISTORY = RescribeConstants.BLANK + 29;
     public static final String TASK_BOOK_APPOINTMENT_SERVICES = RescribeConstants.BLANK + 30;
     public static final String TASK_GET_DOCTOR_DATA = RescribeConstants.BLANK + 31;

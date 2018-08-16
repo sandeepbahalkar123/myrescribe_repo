@@ -6,7 +6,6 @@ package com.rescribe.network;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +43,6 @@ import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
-import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
 import com.rescribe.model.dashboard_api.card_data.DashboardModel;
 import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
@@ -80,7 +78,6 @@ import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTrackerBaseModel;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
-import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.Config;
@@ -443,10 +440,6 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 e.printStackTrace();
             }
 
-            /*MessageModel messageModel = gson.fromJson(data, MessageModel.class);
-            if (!messageModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS))
-                CommonMethods.showToast(mContext, messageModel.getCommon().getStatusMessage());*/
-
             if (isTokenExpired) {
                 // This success response is for refresh token
                 // Need to Add
@@ -460,9 +453,7 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     connect();
                 } else if (!loginModel.getCommon().isSuccess() && loginModel.getCommon().getStatusCode().equals(INVALID_LOGIN_PASSWORD)) {
                     CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
-                    Intent intentObj = new Intent(mContext, LoginSignUpActivity.class);
-                    mContext.startActivity(intentObj);
-                    ((AppCompatActivity) mContext).finishAffinity();
+                    CommonMethods.logout(mContext, dbHelper);
                 } else {
                     CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
                 }
@@ -607,11 +598,6 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.CHAT_USERS: //This is for get archived list
                         RecentChatDoctorModel recentChatDoctorModel = new Gson().fromJson(data, RecentChatDoctorModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, recentChatDoctorModel, mOldDataTag);
-                        break;
-
-                    case RescribeConstants.SEND_MESSAGE: //This is for get archived list
-                        SendMessageModel sendMessageModel = new Gson().fromJson(data, SendMessageModel.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, sendMessageModel, mOldDataTag);
                         break;
 
                     case RescribeConstants.CHAT_HISTORY: //This is for get archived list

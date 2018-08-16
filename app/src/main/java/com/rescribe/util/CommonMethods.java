@@ -3,6 +3,7 @@ package com.rescribe.util;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -48,15 +49,18 @@ import com.rescribe.interfaces.profile_photo.ProfilePhotoUpload;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.profile_upload.ProfilePhotoResponse;
+import com.rescribe.network.RequestPool;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.singleton.RescribeApplication;
+import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
 import net.gotev.uploadservice.UploadInfo;
 import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadService;
 import net.gotev.uploadservice.UploadStatusDelegate;
 
 import java.io.File;
@@ -75,6 +79,10 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import static com.rescribe.singleton.RescribeApplication.appUnreadNotificationMessageList;
+import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
+import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 
 public class CommonMethods {
     private static final String TAG = "Rescribe/CommonMethods";
@@ -1375,6 +1383,63 @@ public class CommonMethods {
         } catch (ActivityNotFoundException e) {
             CommonMethods.showToast(context, context.getResources().getString(R.string.doc_viewer_not_found));
         }
+    }
+
+    public static void logout(Context mContext, AppDBHelper appDBHelper) {
+        RequestPool.getInstance(mContext).cancellAllPreviousRequestWithSameTag(TASK_DASHBOARD_API);
+        RequestPool.getInstance(mContext).cancellAllPreviousRequestWithSameTag(TASK_DOCTORLIST_API);
+
+        String mobileNoGmail = "";
+        String passwordGmail = "";
+        String mobileNoFacebook = "";
+        String passwordFacebook = "";
+        String gmailLogin = "";
+        String facebookLogin = "";
+        boolean appointmentAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.appointment_alert), mContext);
+        boolean investigationAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.investigation_alert), mContext);
+        boolean medicationAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.medication_alert), mContext);
+        boolean offersAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.offers_alert), mContext);
+        boolean allNotifyAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.all_notifications), mContext);
+        // Stop Uploads
+        UploadService.stopAllUploads();
+
+        //Logout functionality
+        if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(mContext.getString(R.string.login_with_gmail))) {
+            gmailLogin = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext);
+            mobileNoGmail = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext);
+            passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
+
+        }
+        if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(mContext.getString(R.string.login_with_facebook))) {
+            facebookLogin = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext);
+            mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
+            passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
+        }
+
+        RescribePreferencesManager.clearSharedPref(mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), allNotifyAlert, mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.appointment_alert), appointmentAlert, mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), investigationAlert, mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.medication_alert), medicationAlert, mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.offers_alert), offersAlert, mContext);
+        RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, gmailLogin, mContext);
+        RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, facebookLogin, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mobileNoGmail, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, passwordGmail, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mobileNoFacebook, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
+        RescribePreferencesManager.putString(mContext.getString(R.string.logout), "" + 1, mContext);
+
+        // Clear all notification
+        NotificationManager nMgr = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        nMgr.cancelAll();
+
+        appDBHelper.deleteDatabase();
+        appUnreadNotificationMessageList.clear();
+
+        Intent intent = new Intent(mContext, LoginSignUpActivity.class);
+        mContext.startActivity(intent);
+        ((AppCompatActivity) mContext).finishAffinity();
     }
 }
 

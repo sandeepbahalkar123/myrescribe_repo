@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Service;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,7 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -32,7 +30,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
@@ -75,7 +72,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
-import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.StatusInfo;
 import com.rescribe.model.chat.history.ChatHistory;
 import com.rescribe.model.chat.history.ChatHistoryModel;
@@ -144,7 +140,6 @@ import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.REACHED;
 import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SEEN;
 import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SENT;
 import static com.rescribe.util.RescribeConstants.PLACE_PICKER_REQUEST;
-import static com.rescribe.util.RescribeConstants.SEND_MESSAGE;
 import static com.rescribe.util.RescribeConstants.UPLOADING;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.IDLE;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.OFFLINE;
@@ -180,6 +175,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String filesUploadFolder;
     private String photosUploadFolder;
     private String audioUploadFolder;
+
     @BindView(R.id.backButton)
     ImageView backButton;
     @BindView(R.id.profilePhoto)
@@ -220,19 +216,14 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     ImageView sendButton;
     @BindView(R.id.messageTypeLayout)
     RelativeLayout messageTypeLayout;
-
     @BindView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
-
     @BindView(R.id.audioSlider)
     SlideView audioSlider;
-
     @BindView(R.id.dateTextView)
     TextView dateTextView;
-
     @BindView(R.id.reveal_items)
     CardView mRevealView;
-
     @BindView(R.id.exitRevealDialog)
     FrameLayout exitRevealDialog;
 
@@ -406,7 +397,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private TextDrawable mSelfDrawable;
     private TextDrawable mReceiverDrawable;
 
-
     // load more
     int next = 1;
 
@@ -415,7 +405,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String salutation;
     private String patientName;
     private String imageUrl = "";
-    private String fileUrl = "";
 
     private ChatDoctor chatList;
 
@@ -933,7 +922,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         UploadService.UPLOAD_POOL_SIZE = 10;
     }
 
-    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton, R.id.messageType, R.id.bookAppointmentGetTokenButton})
+    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton, R.id.bookAppointmentGetTokenButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -985,8 +974,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 break;
             case R.id.cameraButton:
                 ChatActivityPermissionsDispatcher.onPickPhotoWithCheck(ChatActivity.this);
-                break;
-            case R.id.messageType:
                 break;
             case R.id.sendButton:
                 // SendButton
@@ -1400,19 +1387,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (customResponse instanceof SendMessageModel) {
-            SendMessageModel sendMessageModel = (SendMessageModel) customResponse;
-            if (sendMessageModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
-                // message sent
-                messageType.setText("");
-            } else {
-                if (chatAdapter != null) {
-                    mqttMessage.remove(mqttMessage.size() - 1);
-                    chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
-                }
-                CommonMethods.showToast(ChatActivity.this, sendMessageModel.getCommon().getStatusMessage());
-            }
-        } else if (customResponse instanceof ChatHistoryModel) {
+      if (customResponse instanceof ChatHistoryModel) {
             ChatHistoryModel chatHistoryModel = (ChatHistoryModel) customResponse;
             if (chatHistoryModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
 
@@ -1540,34 +1515,16 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
         swipeLayout.setRefreshing(false);
-        if (mOldDataTag.equals(SEND_MESSAGE)) {
-            if (chatAdapter != null) {
-                mqttMessage.remove(mqttMessage.size() - 1);
-                chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
-            }
-        }
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
         swipeLayout.setRefreshing(false);
-        if (mOldDataTag.equals(SEND_MESSAGE)) {
-            if (chatAdapter != null) {
-                mqttMessage.remove(mqttMessage.size() - 1);
-                chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
-            }
-        }
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         swipeLayout.setRefreshing(false);
-        if (mOldDataTag.equals(SEND_MESSAGE)) {
-            if (chatAdapter != null) {
-                mqttMessage.remove(mqttMessage.size() - 1);
-                chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
-            }
-        }
     }
 
     // Uploading

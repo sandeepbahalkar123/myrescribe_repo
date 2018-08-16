@@ -44,7 +44,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Li
 
     public static final String DOCTOR_ID = "doctor_id";
     private final String TAG = getClass().getName();
-    Context mContext;
+    private Context mContext;
     private ArrayList<DoctorDetail> mDataList;
     private SimpleDateFormat mDateFormat;
     private int imageSize;

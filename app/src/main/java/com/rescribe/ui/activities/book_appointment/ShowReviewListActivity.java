@@ -99,7 +99,7 @@ public class ShowReviewListActivity extends AppCompatActivity implements HelperR
         if (mReviewListBaseModel.getReviewList().getReviews().getReviews().size() != 0) {
             listView.setVisibility(View.VISIBLE);
             emptyListView.setVisibility(View.GONE);
-            showReviewsAdapter = new ShowReviewsAdapter(this, mReviewListBaseModel.getReviewList().getReviews().getReviews());
+            showReviewsAdapter = new ShowReviewsAdapter(mReviewListBaseModel.getReviewList().getReviews().getReviews());
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             listView.setLayoutManager(layoutManager);
             listView.setHasFixedSize(true);

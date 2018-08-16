@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -98,7 +99,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @BindView(R.id.leftFab)
     FloatingActionButton leftFab;
     @BindView(R.id.viewDoctorPager)
-    LinearLayout viewDoctorPager;
+    FrameLayout viewDoctorPager;
     Unbinder unbinder;
 
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;

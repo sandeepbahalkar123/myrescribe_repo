@@ -21,8 +21,8 @@ import static com.rescribe.broadcast_receivers.ReplayBroadcastReceiver.MESSAGE_L
 import static com.rescribe.services.MQTTService.SEND_MESSAGE;
 
 public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
-    AppDBHelper instance;
-    Gson gson = new Gson();
+    private AppDBHelper instance;
+    private Gson gson = new Gson();
 
     @Override
     public void onProgress(Context context, UploadInfo uploadInfo) {

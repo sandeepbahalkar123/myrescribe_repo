@@ -119,16 +119,11 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
     @BindView(R.id.buttonLayout)
     LinearLayout buttonLayout;
     private DoctorList mDoctorObject;
-    private String mobileNo = "";
     private DoctorDataHelper mDoctorDataHelper;
-    String callType;
-    private boolean isCanceled;
-    private Intent intent;
     private int mTokenNo;
     private int mLocationId;
     private int mWaitingTime;
     private int mWaitingCount;
-    private AppDBHelper appDBHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,7 +136,6 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
 
     private void initialize() {
         mContext = ConfirmTokenInfoActivity.this;
-        appDBHelper = new AppDBHelper(mContext);
         mDoctorDataHelper = new DoctorDataHelper(this, this);
         SpannableString location = new SpannableString(getString(R.string.location) + ":");
         location.setSpan(new UnderlineSpan(), 0, location.length(), 0);
@@ -171,7 +165,6 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
             }
 
             mLocationId = Integer.parseInt(extras.getString(RescribeConstants.LOCATION_ID));
-            callType = extras.getString(RescribeConstants.CALL_FROM_DASHBOARD);
             tokenNumberTextView.setText(String.valueOf(mTokenNo));
             patientAheadTextView.setText(String.valueOf(mWaitingCount));
             timeInMinutesTextView.setText(String.valueOf(mWaitingTime));
@@ -335,7 +328,6 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
         textheading.setText(mContext.getString(R.string.token));
         messageView.setGravity(Gravity.CENTER);
         icon_get_token.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.token_icon));
-        isCanceled = type.equals(CANCEL_TYPE);
         messageView.setText(message);
 
         //-----------------

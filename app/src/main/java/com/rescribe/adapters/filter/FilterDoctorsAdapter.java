@@ -21,7 +21,6 @@ public class FilterDoctorsAdapter extends RecyclerView.Adapter<FilterDoctorsAdap
     private final ArrayList<DoctorData> doctorDetailArrayList;
     private final Context context;
     private ItemClickListener itemClickListener;
-    private String doctorName;
 
     public FilterDoctorsAdapter(Context context, ArrayList<DoctorData> doctorDetailArrayList) {
         this.context = context;
@@ -43,6 +42,7 @@ public class FilterDoctorsAdapter extends RecyclerView.Adapter<FilterDoctorsAdap
 
     @Override
     public void onBindViewHolder(final FilterDoctorsAdapter.FileViewHolder holder, final int position) {
+        String doctorName;
         if(doctorDetailArrayList.get(position).getDoctorName().contains("Dr.")) {
             doctorName = doctorDetailArrayList.get(position).getDoctorName();
         }else{

@@ -39,7 +39,6 @@ import static com.rescribe.util.RescribeConstants.DOCTOR_DATA_REQUEST_CODE;
 public class BookAppointmentServices extends AppCompatActivity implements IOnMenuClickListener {
 
     private static final String FOLDER_PATH = "images/dashboard/menu/healthservices/android/";
-    private String density;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -54,8 +53,6 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
     AppBarLayout appBarLayout;
     @BindView(R.id.title)
     CustomTextView title;
-    private Context mContext;
-    private int PLACE_PICKER_REQUEST = 10;
     String latitude = "";
     String longitude = "";
     String address;
@@ -93,9 +90,9 @@ public class BookAppointmentServices extends AppCompatActivity implements IOnMen
     }
 
     private void initialize() {
-        mContext = BookAppointmentServices.this;
+        Context mContext = BookAppointmentServices.this;
 
-        density = CommonMethods.getDeviceResolution(mContext) + "/";
+        String density = CommonMethods.getDeviceResolution(mContext) + "/";
 
         //------Load background image : START------
         ClickEvent clickEvent1 = mReceivedDashboardMenuListData.getClickEvent();

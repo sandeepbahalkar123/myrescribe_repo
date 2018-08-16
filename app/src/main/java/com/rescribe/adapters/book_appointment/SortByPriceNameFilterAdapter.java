@@ -34,12 +34,6 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
             "Doctor" + fees + lowToHigh,
             "Doctor" + fees + highToLow
     };
-    private Context mContext;
-
-    public SortByPriceNameFilterAdapter(Context mContext) {
-        this.mContext = mContext;
-
-    }
 
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

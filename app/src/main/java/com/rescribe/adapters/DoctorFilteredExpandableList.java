@@ -49,15 +49,12 @@ import butterknife.ButterKnife;
 public class DoctorFilteredExpandableList extends BaseExpandableListAdapter {
 
     private Context context;
-    private ArrayList<DoctorFilteredInfoAndCaseDetails> mOriginalList;
     private List<DoctorFilteredInfoAndCaseDetails> mListDataHeader;// header titles
     // child data in format of header title, child title
     private HashMap<DoctorFilteredInfoAndCaseDetails, ArrayList<String>> mListDataChild;
 
     public DoctorFilteredExpandableList(Context context, ArrayList<DoctorFilteredInfoAndCaseDetails> mOriginalList) {
         this.context = context;
-        this.mOriginalList = mOriginalList;
-
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
 

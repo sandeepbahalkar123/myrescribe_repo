@@ -93,7 +93,7 @@ public class ShowReviewsOnDoctorFragment extends Fragment implements HelperRespo
 
     private void setAdapter() {
         listView.setVisibility(View.VISIBLE);
-        showReviewsAdapter = new ShowReviewsAdapter(getActivity(), mReviewListBaseModel.getReviewList().getReviews().getReviews());
+        showReviewsAdapter = new ShowReviewsAdapter(mReviewListBaseModel.getReviewList().getReviews().getReviews());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         listView.setLayoutManager(layoutManager);
         listView.setHasFixedSize(true);

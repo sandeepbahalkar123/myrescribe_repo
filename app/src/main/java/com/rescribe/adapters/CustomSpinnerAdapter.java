@@ -17,8 +17,8 @@ import java.util.ArrayList;
  */
 public class CustomSpinnerAdapter extends BaseAdapter {
     private final int mTextColor;
-    Context mContext;
-    ArrayList<String> mSelectedOption;
+    private Context mContext;
+    private ArrayList<String> mSelectedOption;
 
     public CustomSpinnerAdapter(Context context, ArrayList<String> spinner_data, int textColor) {
         this.mContext = context;

@@ -22,7 +22,6 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
 
     private final ArrayList<CaseDetailsData> caseDetailsList;
     private final Context mContext;
-    private int vitalsPos = -1;
     private ItemClickListener itemClickListener;
 
     public FilterCaseDetailsAdapter(Context context, ArrayList<CaseDetailsData> caseDetailsList) {
@@ -33,13 +32,6 @@ public class FilterCaseDetailsAdapter extends RecyclerView.Adapter<FilterCaseDet
             this.itemClickListener = ((ItemClickListener) context);
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement ItemClickListener.");
-        }
-        
-        for (int inx = 0; inx < caseDetailsList.size(); inx++) {
-            if (caseDetailsList.get(inx).getName().equals("Vitals")) {
-                vitalsPos = inx;
-                break;
-            }
         }
     }
 

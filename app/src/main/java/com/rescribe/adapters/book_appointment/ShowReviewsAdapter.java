@@ -24,12 +24,10 @@ import butterknife.ButterKnife;
 
 public class ShowReviewsAdapter extends RecyclerView.Adapter<ShowReviewsAdapter.ListViewHolder> {
 
-    private Context mContext;
     private ArrayList<Review> mDataList;
 
-    public ShowReviewsAdapter(Context mContext, ArrayList<Review> dataList) {
+    public ShowReviewsAdapter(ArrayList<Review> dataList) {
         this.mDataList = dataList;
-        this.mContext = mContext;
     }
 
     @Override

@@ -29,7 +29,6 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
     private ArrayList<SpinnerDoctor> suggestions;
     private TextEnterListener textEnterListener;
     private ColorGenerator mColorGenerator;
-    private String doctorName;
 
     public DoctorSpinnerAdapter(Context context, int resource, int textViewResourceId, ArrayList<SpinnerDoctor> items) {
         super(context, resource, textViewResourceId, items);
@@ -62,6 +61,7 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<SpinnerDoctor> {
             TextView doctorSpecialist = (TextView) view.findViewById(R.id.doctorSpecialist);
             TextView doctorAddress = (TextView) view.findViewById(R.id.doctorAddress);
 
+            String doctorName;
             if (doctor_details.getDoctorName().contains("Dr. "))
                 doctorName = doctor_details.getDoctorName();
             else

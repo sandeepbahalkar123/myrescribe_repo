@@ -509,7 +509,7 @@ public class DrawerForFilterBookAppointmentFragment extends Fragment implements 
             case R.id.chooseOptionToSort:
                 hideMainLayout.setVisibility(View.GONE);
                 showSortLayout.setVisibility(View.VISIBLE);
-                mSortByPriceNameFilterAdapter = new SortByPriceNameFilterAdapter(getActivity());
+                mSortByPriceNameFilterAdapter = new SortByPriceNameFilterAdapter();
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 sortRecyclerView.setLayoutManager(linearlayoutManager);
                 sortRecyclerView.setHasFixedSize(true);

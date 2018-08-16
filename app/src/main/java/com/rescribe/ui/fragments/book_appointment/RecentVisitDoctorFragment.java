@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -82,8 +81,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     RelativeLayout mSpecialityEmptyListView;
     @BindView(R.id.fragmentContainer)
     RelativeLayout fragmentContainer;
-    @BindView(R.id.recyclerViewLinearLayout)
-    LinearLayout recyclerViewLinearLayout;
     @BindView(R.id.searchView)
     EditTextWithDeleteButton searchView;
     @BindView(R.id.searchBarLinearLayout)
@@ -92,10 +89,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     RecyclerView showDoctorsRecyclerView;
     @BindView(R.id.recentDoctorLayout)
     LinearLayout recentDoctorLayout;
-    @BindView(R.id.prevBtn)
-    ImageView prevBtn;
-    @BindView(R.id.nextBtn)
-    ImageView nextBtn;
     @BindView(R.id.bookAppointSpecialityListView)
     RecyclerView mBookAppointSpecialityListView;
     @BindView(R.id.whiteUnderLine)
@@ -180,7 +173,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         return fragment;
     }
 
-    @OnClick({R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
+    @OnClick({R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rightFab:
@@ -267,13 +260,9 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         if (mReceivedDoctorServicesModel.getDoctorSpecialities().isEmpty()) {
             pickSpeciality.setVisibility(View.GONE);
             mSpecialityEmptyListView.setVisibility(View.VISIBLE);
-            prevBtn.setVisibility(View.INVISIBLE);
-            nextBtn.setVisibility(View.INVISIBLE);
             viewDoctorPager.setVisibility(View.INVISIBLE);
             mBookAppointSpecialityListView.setVisibility(View.GONE);
         } else {
-            if (recyclerViewLinearLayout.getVisibility() != View.VISIBLE)
-                recyclerViewLinearLayout.setVisibility(View.VISIBLE);
             if (mBookAppointSpecialityListView.getVisibility() != View.VISIBLE)
                 mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
             whiteUnderLine.setVisibility(View.VISIBLE);

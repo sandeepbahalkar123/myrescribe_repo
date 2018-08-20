@@ -173,9 +173,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
                 requestOptions.centerCrop();
-//                requestOptions.override(480, 340);
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
 
                 String imageURL = Config.BASE_URL + FOLDER_PATH + density + clickEvent1.getBgImageUrl();
 

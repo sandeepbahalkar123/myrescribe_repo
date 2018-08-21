@@ -3,7 +3,7 @@ package com.rescribe.broadcast_receivers;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -22,8 +22,8 @@ import static com.rescribe.broadcast_receivers.ReplayBroadcastReceiver.MESSAGE_L
 import static com.rescribe.services.MQTTService.SEND_MESSAGE;
 
 public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
-    AppDBHelper instance;
-    Gson gson = new Gson();
+    private AppDBHelper instance;
+    private Gson gson = new Gson();
 
     @Override
     public void onProgress(Context context, UploadInfo uploadInfo) {
@@ -74,9 +74,7 @@ public class FileUploadReceiver extends UploadServiceBroadcastReceiver {
                 Intent intentService = new Intent(context, MQTTService.class);
                 intentService.putExtra(SEND_MESSAGE, true);
                 intentService.putExtra(MESSAGE_LIST, mqttMessage);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    context.startForegroundService(intentService);
-                else context.startService(intentService);
+                ContextCompat.startForegroundService(context, intentService);
             }
             instance.updateMessageUpload(uploadInfo.getUploadId(), RescribeConstants.COMPLETED);
         } else

@@ -20,15 +20,12 @@ import java.util.List;
 
 public class ShowDoctorComplaints extends ArrayAdapter<ComplaintList> {
 
-    Context context;
-    int resource, textViewResourceId;
-    List<ComplaintList> items, tempItems, suggestions;
+    private Context context;
+    private List<ComplaintList> items, tempItems, suggestions;
 
     public ShowDoctorComplaints(Context context, int resource, int textViewResourceId, List<ComplaintList> items) {
         super(context, resource, textViewResourceId, items);
         this.context = context;
-        this.resource = resource;
-        this.textViewResourceId = textViewResourceId;
         this.items = items;
         tempItems = new ArrayList<ComplaintList>(items); // this makes the difference.
         suggestions = new ArrayList<ComplaintList>();
@@ -87,7 +84,7 @@ public class ShowDoctorComplaints extends ArrayAdapter<ComplaintList> {
         protected void publishResults(CharSequence constraint, FilterResults results) {
            try {
                List<ComplaintList> filterList = (ArrayList<ComplaintList>) results.values;
-               if (results != null && results.count > 0) {
+               if (results.count > 0) {
                    clear();
                    for (ComplaintList names : filterList) {
                        add(names);

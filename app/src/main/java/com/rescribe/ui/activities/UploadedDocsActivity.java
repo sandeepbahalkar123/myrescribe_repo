@@ -29,6 +29,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.rescribe.util.RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED;
+import static com.rescribe.util.RescribeConstants.SUCCESS;
+
 public class UploadedDocsActivity extends AppCompatActivity implements HelperResponse {
 
     @BindView(R.id.toolbar)
@@ -44,6 +47,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
     private ArrayList<InvestigationData> investigationTemp;
     private InvestigationHelper investigationHelper;
     private String mUnreadInvestigationMsgID;
+    private String patientId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
 
         mContext = UploadedDocsActivity.this;
         appDBHelper = new AppDBHelper(mContext);
+        patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         investigationHelper = new InvestigationHelper(mContext, this);
 
         ArrayList<InvestigationData> investigation = getIntent().getParcelableArrayListExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA);
@@ -71,10 +76,10 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
         for (InvestigationData dataObject : investigation)
             photoPaths.addAll(dataObject.getPhotos());
 
-        UploadedImageAdapter uploadedImageAdapter = new UploadedImageAdapter(mContext, photoPaths);
-        recyclerView.setAdapter(uploadedImageAdapter);
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-        recyclerView.setLayoutManager(layoutManager);
+            UploadedImageAdapter uploadedImageAdapter = new UploadedImageAdapter(mContext, photoPaths);
+            recyclerView.setAdapter(uploadedImageAdapter);
+            GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
+            recyclerView.setLayoutManager(layoutManager);
 
         mUnreadInvestigationMsgID = getIntent().getStringExtra(RescribeConstants.NOTIFICATION_ID);
 
@@ -85,26 +90,39 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
 
         int selectedImageCount = 0;
         StringBuilder imageIds = new StringBuilder();
-        StringBuilder invIds = new StringBuilder();
-        StringBuilder invTypes = new StringBuilder();
+        StringBuilder investigationIds = new StringBuilder();
+        StringBuilder investigationTypes = new StringBuilder();
+        StringBuilder opdIds = new StringBuilder();
 
         for (Image image : photoPaths) {
             if (image.isSelected()) {
                 selectedImageCount++;
-                imageIds.append(",").append(imageIds);
+                imageIds.append(image.getImageId()).append(",");
             }
         }
 
         // Update server status with image id
 
         if (selectedImageCount > 0) {
-            for (InvestigationData dataObject : investigationTemp) {
-                if (dataObject.isSelected() && !dataObject.isUploaded())
-                    invIds.append(",").append(dataObject.getId());
-                invTypes.append(",").append(dataObject.getInvestigationType());
+            for (int index = 0; index < investigationTemp.size(); index++) {
+                InvestigationData dataObject = investigationTemp.get(index);
+                if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                    investigationIds.append(dataObject.getId());
+                    opdIds.append(dataObject.getOpdId());
+                    if (dataObject.getInvestigationType() != null)
+                        investigationTypes.append(dataObject.getInvestigationType());
+
+                    investigationIds.append(",");
+                    opdIds.append(",");
+                    investigationTypes.append(",");
+                }
             }
 
-            investigationHelper.uploadFromAlreadyUploaded(imageIds.toString(), invIds.toString(), invTypes.toString());
+            imageIds.deleteCharAt(imageIds.length() - 1);
+            investigationIds.deleteCharAt(investigationIds.length() - 1);
+            opdIds.deleteCharAt(opdIds.length() - 1);
+            investigationTypes.deleteCharAt(investigationTypes.length() - 1);
+            investigationHelper.uploadFromAlreadyUploaded(imageIds.toString(), investigationIds.toString(), investigationTypes.toString(), patientId, opdIds.toString());
 
         } else {
             CommonMethods.showToast(mContext, "Please select at least one document");
@@ -113,33 +131,38 @@ public class UploadedDocsActivity extends AppCompatActivity implements HelperRes
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (customResponse instanceof InvestigationUploadFromUploadedModel) {
+        switch (mOldDataTag) {
+            case INVESTIGATION_UPLOAD_FROM_UPLOADED:
+                if (customResponse instanceof InvestigationUploadFromUploadedModel) {
+                    InvestigationUploadFromUploadedModel investigationUploadFromUploadedModel = (InvestigationUploadFromUploadedModel) customResponse;
+                    if (investigationUploadFromUploadedModel.getCommon().getStatusCode().equals(SUCCESS)) {
+                        int selectedCount = 0;
+                        CommonMethods.showToast(mContext, investigationUploadFromUploadedModel.getCommon().getStatusMessage());
+                        for (InvestigationData dataObject : investigationTemp) {
+                            if (dataObject.isSelected() && !dataObject.isUploaded()) {
+                                dataObject.setUploaded(dataObject.isSelected());
+                                appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
+                            }
 
-            int selectedCount = 0;
+                            if (dataObject.isSelected())
+                                selectedCount += 1;
+                        }
 
-            CommonMethods.showToast(mContext, "Uploaded Successfully");
-            for (InvestigationData dataObject : investigationTemp) {
-                if (dataObject.isSelected() && !dataObject.isUploaded()) {
-                    dataObject.setUploaded(dataObject.isSelected());
-                    appDBHelper.updateInvestigationData(dataObject.getId(), dataObject.isSelected(), "");
+                        if (selectedCount == investigationTemp.size()) {
+                            AppDBHelper.getInstance(this).deleteUnreadReceivedNotificationMessage(mUnreadInvestigationMsgID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
+
+                            Intent intent = new Intent(this, HomePageActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent();
+                            intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
+                            setResult(RESULT_OK, intent);
+                        }
+                        finish();
+                    } else CommonMethods.showToast(mContext, investigationUploadFromUploadedModel.getCommon().getStatusMessage());
                 }
-
-                if (dataObject.isSelected())
-                    selectedCount += 1;
-            }
-
-            if (selectedCount == investigationTemp.size()) {
-                AppDBHelper.getInstance(this).deleteUnreadReceivedNotificationMessage(mUnreadInvestigationMsgID, RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
-
-                Intent intent = new Intent(this, HomePageActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_DATA, investigationTemp);
-                setResult(RESULT_OK, intent);
-            }
-            finish();
+                break;
         }
     }
 

@@ -22,15 +22,12 @@ import butterknife.ButterKnife;
 
 public class RecentPlacesAdapter extends RecyclerView.Adapter<RecentPlacesAdapter.ListViewHolder> {
 
-    private Context mContext;
-    OnRecentPlacesListener mOnRecentPlacesListener;
+    private OnRecentPlacesListener mOnRecentPlacesListener;
     private ArrayList<RecentlyVisitedAreaList> mDataList;
 
-    public RecentPlacesAdapter(Context mContext, ArrayList<RecentlyVisitedAreaList> dataList,OnRecentPlacesListener mOnRecentPlacesListener) {
+    public RecentPlacesAdapter(ArrayList<RecentlyVisitedAreaList> dataList,OnRecentPlacesListener mOnRecentPlacesListener) {
         this.mDataList = dataList;
-        this.mContext = mContext;
         this.mOnRecentPlacesListener = mOnRecentPlacesListener;
-
     }
 
     @Override

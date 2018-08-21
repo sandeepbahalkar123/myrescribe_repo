@@ -1,5 +1,6 @@
 package droidninja.filepicker.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -61,6 +62,7 @@ public class FolderGridAdapter extends SelectableAdapter<FolderGridAdapter.Photo
       return ITEM_TYPE_PHOTO;
   }
 
+  @SuppressLint("CheckResult")
   @Override
   public void onBindViewHolder(final PhotoViewHolder holder, int position) {
     if(getItemViewType(position) == ITEM_TYPE_PHOTO) {

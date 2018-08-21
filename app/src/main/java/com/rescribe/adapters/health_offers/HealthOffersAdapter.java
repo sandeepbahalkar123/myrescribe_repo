@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class HealthOffersAdapter extends RecyclerView.Adapter<HealthOffersAdapter.ListViewHolder> {
 
-    Integer[] mImageMenuICons = {
+    private Integer[] mImageMenuICons = {
             R.drawable.metropolis,
             R.drawable.dentist_health_offers,
             R.drawable.full_body_checkup,

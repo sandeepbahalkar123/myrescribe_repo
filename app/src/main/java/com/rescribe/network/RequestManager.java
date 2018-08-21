@@ -43,7 +43,6 @@ import com.rescribe.model.book_appointment.search_doctors.RecentVisitedBaseModel
 import com.rescribe.model.book_appointment.select_slot_book_appointment.TimeSlotListBaseModel;
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationBaseModel;
 import com.rescribe.model.case_details.CaseDetailsModel;
-import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.history.ChatHistoryModel;
 import com.rescribe.model.dashboard_api.card_data.DashboardModel;
 import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
@@ -88,10 +87,11 @@ import com.rescribe.util.RescribeConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.rescribe.util.RescribeConstants.INVALID_LOGIN_PASSWORD;
 
 public class RequestManager extends ConnectRequest implements Connector, RequestTimer.RequestTimerListener {
     private final String TAG = this.getClass().getName();
@@ -405,11 +405,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
 
     private String getOfflineData() {
         String data = null;
-            Cursor cursor = dbHelper.getData(this.mDataTag);
-            if (cursor.moveToFirst())
-                data = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
-            cursor.close();
-            return data;
+        Cursor cursor = dbHelper.getData(this.mDataTag);
+        if (cursor.moveToFirst())
+            data = cursor.getString(cursor.getColumnIndex(AppDBHelper.COLUMN_DATA));
+        cursor.close();
+        return data;
     }
 
     /*private String fixEncoding(String response) {
@@ -440,10 +440,6 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                 e.printStackTrace();
             }
 
-            /*MessageModel messageModel = gson.fromJson(data, MessageModel.class);
-            if (!messageModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS))
-                CommonMethods.showToast(mContext, messageModel.getCommon().getStatusMessage());*/
-
             if (isTokenExpired) {
                 // This success response is for refresh token
                 // Need to Add
@@ -454,8 +450,12 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, String.valueOf(loginModel.getLoginData().getPatientDetail().getPatientId()), mContext);
 
                     mHeaderParams.put(RescribeConstants.AUTHORIZATION_TOKEN, loginModel.getLoginData().getAuthToken());
-
                     connect();
+                } else if (!loginModel.getCommon().isSuccess() && loginModel.getCommon().getStatusCode().equals(INVALID_LOGIN_PASSWORD)) {
+                    CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
+                    CommonMethods.logout(mContext, dbHelper);
+                } else {
+                    CommonMethods.showToast(mContext, loginModel.getCommon().getStatusMessage());
                 }
 
             } else {
@@ -598,11 +598,6 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.CHAT_USERS: //This is for get archived list
                         RecentChatDoctorModel recentChatDoctorModel = new Gson().fromJson(data, RecentChatDoctorModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, recentChatDoctorModel, mOldDataTag);
-                        break;
-
-                    case RescribeConstants.SEND_MESSAGE: //This is for get archived list
-                        SendMessageModel sendMessageModel = new Gson().fromJson(data, SendMessageModel.class);
-                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, sendMessageModel, mOldDataTag);
                         break;
 
                     case RescribeConstants.CHAT_HISTORY: //This is for get archived list

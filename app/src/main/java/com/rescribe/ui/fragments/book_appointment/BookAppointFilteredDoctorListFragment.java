@@ -43,7 +43,6 @@ import butterknife.Unbinder;
 
 public class BookAppointFilteredDoctorListFragment extends Fragment implements HelperResponse {
 
-
     @BindView(R.id.listView)
     RecyclerView mDoctorListView;
     @BindView(R.id.emptyListView)
@@ -54,7 +53,7 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     FloatingActionButton mLocationFab;
     Unbinder unbinder;
 
-    BookAppointFilteredDocListAdapter mBookAppointFilteredDocListAdapterAdapter;
+    private BookAppointFilteredDocListAdapter mBookAppointFilteredDocListAdapterAdapter;
     private ArrayList<DoctorList> mReceivedList = new ArrayList<>();
     private DoctorDataHelper mDoctorDataHelper;
     private String mClickedItemDataTypeValue;
@@ -128,7 +127,6 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
 
     private void doGetReceivedListBasedOnClickedItemData() {
         if (getString(R.string.doctors_speciality).equalsIgnoreCase(mClickedItemDataTypeValue)) {
-//            mReceivedList = mServicesCardViewImpl.filterDocListBySpeciality(mClickedItemDataValue);
             mReceivedList = CommonMethods.getDoctorsBySpeciality(appDBHelper, mClickedItemDataValue);
 
             mLocationFab.setVisibility(View.VISIBLE);

@@ -31,11 +31,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class AppDBHelper extends SQLiteOpenHelper {
-
     private final String TAG = "Rescribe/AppDBHelper";
 
     private static final String MESSAGE_UPLOAD_ID = "message_upload_id";
@@ -638,7 +636,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATA, jsonDataObject);
         contentValues.put(TIME_STAMP, timeStamp);
 
-        if (isExist(id, type))
+        if (isExist(db, id, type))
             db.update(NOTIFICATION_MESSAGE_TABLE, contentValues, COLUMN_ID + " = ? AND " + NOTIFICATION_MSG_TYPE + " = ? ", new String[]{id, type});
         else {
             db.insert(NOTIFICATION_MESSAGE_TABLE, null, contentValues);
@@ -653,8 +651,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    private boolean isExist(String id, String type) {
-        SQLiteDatabase db = getReadableDatabase();
+    private boolean isExist(SQLiteDatabase db, String id, String type) {
         String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE + " where " + COLUMN_ID + " = " + id + " AND " + NOTIFICATION_MSG_TYPE + " = '" + type + "'";
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
@@ -718,7 +715,9 @@ public class AppDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String countQuery = "select * from " + NOTIFICATION_MESSAGE_TABLE;
         Cursor cursor = db.rawQuery(countQuery, null);
-        return cursor.getCount();
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 
 
@@ -744,7 +743,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
         ContentValues contentValuesClinicVSDoc = new ContentValues();
 
         for (DoctorList doctor : doctorList) {
-
             if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.REMOVE)) {
                 // delete doctor related data
                 db.delete(DOC_DATA.DOCTOR_DATA_TABLE,
@@ -755,9 +753,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 db.delete(DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE,
                         DOC_DATA.DOC_ID + " = ? ",
                         new String[]{String.valueOf(doctor.getDocId())});
-
             } else {
-
                 // insert doc data
                 contentValuesDoc.put(DOC_DATA.DOC_ID, doctor.getDocId());
                 contentValuesDoc.put(DOC_DATA.DOC_NAME, doctor.getDocName());
@@ -765,7 +761,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 contentValuesDoc.put(DOC_DATA.ICON_URL, doctor.getDoctorImageUrl());
                 contentValuesDoc.put(DOC_DATA.ABOUT_DOCTOR, doctor.getAboutDoctor());
                 contentValuesDoc.put(DOC_DATA.SPECIALITY_ID, doctor.getSpecialityId());
-                contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality());
+                contentValuesDoc.put(DOC_DATA.SPECIALITY, doctor.getSpeciality().trim());
                 contentValuesDoc.put(DOC_DATA.RATING, doctor.getRating());
                 contentValuesDoc.put(DOC_DATA.IS_PREMIUM, doctor.getCategorySpeciality());
                 contentValuesDoc.put(DOC_DATA.DOC_DEGREE, doctor.getDegree());
@@ -779,12 +775,10 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.ADD)) {
                     contentValuesDoc.put(DOC_DATA.CREATED_DATE, CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
                     long isInserted = db.insert(DOC_DATA.DOCTOR_DATA_TABLE, null, contentValuesDoc);
-                    Log.d(TAG, "DOCTOR_TABLE_ROW " + isInserted);
                 } else if (doctor.getDocInfoFlag().equalsIgnoreCase(RescribeConstants.DOC_STATUS.UPDATE)) {
                     // update doctor related info
                     db.update(DOC_DATA.DOCTOR_DATA_TABLE, contentValuesDoc, DOC_DATA.DOC_ID + " = ? ", new String[]{String.valueOf(doctor.getDocId())});
                 }
-
                 addClinics(db, contentValuesClinic, contentValuesClinicVSDoc, doctor);
             }
         }
@@ -810,10 +804,8 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
             // if clinic exist then update else insert
             long isInserted = db.insertWithOnConflict(DOC_DATA.CLINIC_DATA_TABLE, null, contentValuesClinic, SQLiteDatabase.CONFLICT_IGNORE);
-            Log.d(TAG, "CLINIC_TABLE_ROW " + isInserted);
             if (isInserted == -1) {
                 int isUpdated = db.update(DOC_DATA.CLINIC_DATA_TABLE, contentValuesClinic, DOC_DATA.CLINIC_ID + " = ?", new String[]{String.valueOf(clinic.getLocationId())});
-                Log.d(TAG, "CLINIC_TABLE_ROW_UPDATE " + isUpdated);
             }
 
             // insert clinic vs doctors
@@ -854,7 +846,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 contentValuesCardsBackground.put(DOC_DATA.CARD_TYPE, category.getCategoryName());
                 contentValuesCardsBackground.put(DOC_DATA.IMAGE_URL, category.getUrl());
                 long isInserted = db.insertWithOnConflict(DOC_DATA.CARDS_BACKGROUND_TABLE, null, contentValuesCardsBackground, SQLiteDatabase.CONFLICT_IGNORE);
-                Log.d(TAG, "CARDS_BACKGROUND_TABLE_ROW " + isInserted);
 
                 // insert appointment data
                 if (category.getCategoryName().equalsIgnoreCase(mContext.getString(R.string.my_appointments))) {
@@ -889,9 +880,9 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + DOC_DATA.APPOINTMENT_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
     }
 
-    public Cursor getDoctorsSpecialities() {
+    public Cursor getDoctorsSpecialities(String city) {
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery("select DISTINCT " + DOC_DATA.SPECIALITY + ", " + DOC_DATA.SPECIALITY_ID + " from " + DOC_DATA.DOCTOR_DATA_TABLE + " WHERE NOT (" + DOC_DATA.SPECIALITY + " = '') ", null);
+        return db.rawQuery("select DISTINCT " + DOC_DATA.SPECIALITY + ", " + DOC_DATA.SPECIALITY_ID + " from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " in (select " + DOC_DATA.DOC_ID + " from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.CLINIC_ID + " in (select " + DOC_DATA.CLINIC_ID + " from Clinic where " + DOC_DATA.CLINIC_CITY_NAME + " like '%" + city + "%'))", null);
     }
 
     public Cursor getDoctor(int doctorId) {
@@ -899,10 +890,9 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId, null);
     }
 
-    public Cursor getDoctorsBySpeciality(String speciality) {
-        String query = "select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.SPECIALITY + " = '" + speciality + "'";
+    public Cursor getDoctorsBySpecialityAndLocation(String speciality, String city) {
         SQLiteDatabase db = getReadableDatabase();
-        return db.rawQuery(query, null);
+        return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.SPECIALITY + " = '" + speciality + "' and " + DOC_DATA.DOC_ID + " in (select " + DOC_DATA.DOC_ID + " from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.CLINIC_ID + " in (select " + DOC_DATA.CLINIC_ID + " from " + DOC_DATA.CLINIC_DATA_TABLE + " where " + DOC_DATA.CLINIC_CITY_NAME + " like '%" + city + "%'))", null);
     }
 
     public Cursor getDoctors() {
@@ -910,18 +900,14 @@ public class AppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE, null);
     }
 
+    public Cursor getNonCategoryDoctorsByLocation(String city) {
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery("select * from " + DOC_DATA.DOCTOR_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " in (select " + DOC_DATA.DOC_ID + " from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.CLINIC_ID + " in (select " + DOC_DATA.CLINIC_ID + " from " + DOC_DATA.CLINIC_DATA_TABLE + " where " + DOC_DATA.CLINIC_CITY_NAME + " like '%" + city + "%')) and " + DOC_DATA.DOC_ID + " not in (select " + DOC_DATA.DOC_ID + " from " + DOC_DATA.CARDVIEW_DATA_TABLE + ")", null);
+    }
+
     public Cursor getDoctorVsClinicById(int doctorId, int clinicId) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("select * from " + DOC_DATA.DOCOTORVSCLINIC_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + doctorId + " AND " + DOC_DATA.CLINIC_ID + " = " + clinicId, null);
-    }
-
-    public boolean isAvailableInCategory(int docId) {
-        SQLiteDatabase db = getReadableDatabase();
-        String query = "select * from " + DOC_DATA.CARDVIEW_DATA_TABLE + " where " + DOC_DATA.DOC_ID + " = " + docId;
-        Cursor cursor = db.rawQuery(query, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count > 0;
     }
 
     public Cursor getAllClinicsByDoctor(int doctorId) {

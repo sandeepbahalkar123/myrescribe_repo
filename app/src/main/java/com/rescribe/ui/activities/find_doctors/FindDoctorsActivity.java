@@ -78,9 +78,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     AppBarLayout appBarLayout;
     @BindView(R.id.listView)
     RecyclerView listView;
-    ArrayList<DoctorList> sponsered;
-    ArrayList<DoctorList> recently_visit_doctor;
-    ArrayList<DoctorList> favoriteList;
+
     @BindView(R.id.recentlyViewPager)
     ViewPager recentlyViewPager;
     @BindView(R.id.recentlyVisitedFindDoctorLayout)
@@ -113,13 +111,17 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     CustomTextView favouriteDoctors;
     @BindView(R.id.title)
     CustomTextView title;
+
     private Context mContext;
-    int pager_padding;
-    int pager_margin;
+    private int pager_padding;
+    private int pager_margin;
     private FindDoctorCategoryAdapter mRecentlyVisitedDoctors;
     private ServicesCardViewImpl mServicesCardViewImpl;
     private DashboardMenuList mReceivedDashboardMenuListData;
     private AppDBHelper appDBHelper;
+    private ArrayList<DoctorList> sponsered;
+    private ArrayList<DoctorList> recently_visit_doctor;
+    private ArrayList<DoctorList> favoriteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,8 +142,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
 
             if (mReceivedDashboardMenuListData != null) {
                 title.setText(mReceivedDashboardMenuListData.getName());
-
-
             } else if (value != null)
                 title.setText(value);
         }
@@ -173,9 +173,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.dontAnimate();
                 requestOptions.centerCrop();
-//                requestOptions.override(480, 340);
-                requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-                requestOptions.skipMemoryCache(true);
 
                 String imageURL = Config.BASE_URL + FOLDER_PATH + density + clickEvent1.getBgImageUrl();
 
@@ -214,10 +211,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             FindDoctorsMenuListAdapter mFindDoctorsAdapter = new FindDoctorsMenuListAdapter(mContext, clickEvent.getClickOptions(), this);
             listView.setAdapter(mFindDoctorsAdapter);
         }
-        //-------------
-
-        setUpViewPager();
-
 
         ViewTreeObserver vto = bottomFrame.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -247,7 +240,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void setRecentlyVisitedPager() {
-        if (recently_visit_doctor.size() > 0) {
+        if (!recently_visit_doctor.isEmpty()) {
             recentlyVisitedFindDoctorLayout.setVisibility(View.VISIBLE);
             mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, recently_visit_doctor, mServicesCardViewImpl, this);
             recentlyViewPager.setAdapter(mRecentlyVisitedDoctors);
@@ -259,7 +252,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void setSponseredPager() {
-        if (sponsered.size() > 0) {
+        if (!sponsered.isEmpty()) {
             sponseredFindDoctorLayout.setVisibility(View.VISIBLE);
             mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, sponsered, mServicesCardViewImpl, this);
             sponseredViewPager.setAdapter(mRecentlyVisitedDoctors);
@@ -271,7 +264,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
     }
 
     private void setFavoritePager() {
-        if (favoriteList.size() > 0) {
+        if (!favoriteList.isEmpty()) {
             favoriteFindDoctorLayout.setVisibility(View.VISIBLE);
             mRecentlyVisitedDoctors = new FindDoctorCategoryAdapter(this, favoriteList, mServicesCardViewImpl, this);
             favoriteViewPager.setAdapter(mRecentlyVisitedDoctors);
@@ -288,12 +281,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         super.onResume();
         setUpViewPager();
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
 
     @OnClick({R.id.complaintsImageView, R.id.favouriteDoctors, R.id.recentlyvisitedTextView, R.id.sponsoredDoctors})
     public void onViewClicked(View view) {
@@ -322,17 +309,11 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
                 startActivity(viewAllRecentVisited);
                 break;
             case R.id.sponsoredDoctors:
-               /* if (mServicesCardViewImpl.getCategoryWiseDoctorList(getString(R.string.sponsored_doctor), -1).size() > 3) {*/
                 Intent viewAllSponsered = new Intent(mContext, ShowCategoryWiseDoctorActivity.class);
                 viewAllSponsered.putExtra(RescribeConstants.TITLE, getString(R.string.doctorss));
                 viewAllSponsered.putExtra(RescribeConstants.ITEM_DATA_VALUE, mContext.getString(R.string.sponsored_doctor));
                 startActivity(viewAllSponsered);
-               /* } else {
-
-                }
-*/
                 break;
-
         }
     }
 
@@ -348,9 +329,7 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             CommonBaseModelContainer temp = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, temp.getCommonRespose().getStatusMessage());
             if (temp.getCommonRespose().isSuccess()) {
-                //--------
                 ServicesCardViewImpl.updateFavStatusForDoctorDataObject(ServicesCardViewImpl.getUserSelectedDoctorListDataObject(), appDBHelper);
-                //--------
                 setUpViewPager();
             }
 
@@ -377,7 +356,6 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
         if (data.getName().equalsIgnoreCase(getString(R.string.book_appointment))) {
             Intent intent = new Intent(mContext, BookAppointDoctorListBaseActivity.class);
             Bundle bundle = new Bundle();
-            // TODO, THIS IS ADDED FOR NOW, OPEN ONLY IF clicked value == DOCTOR
             bundle.putString(RescribeConstants.ITEM_DATA, getString(R.string.doctorss));
             bundle.putString(RescribeConstants.CALL_FROM_DASHBOARD, "");
             intent.putExtras(bundle);

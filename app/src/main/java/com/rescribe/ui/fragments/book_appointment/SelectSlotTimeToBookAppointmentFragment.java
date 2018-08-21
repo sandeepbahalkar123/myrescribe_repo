@@ -352,8 +352,9 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 }
             }
 
-            ArrayList<ClinicData> clinicDataList = new ArrayList<>();
+            appointmentByDoctorCursor.close();
 
+            ArrayList<ClinicData> clinicDataList = new ArrayList<>();
             // loop start
 
             Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
@@ -393,6 +394,7 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                             clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
                         }
 
+                        doctorVsClinic.close();
                         doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
                         isFirst = false;
                     }
@@ -748,15 +750,6 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                     }
                 }
                 break;
-
-          /*  case TASK_CANCEL_RESCHEDULE_APPOINTMENT:
-                ResponseAppointmentConfirmationModel mResponseAppointmentConfirmationModel = (ResponseAppointmentConfirmationModel) customResponse;
-                if (mResponseAppointmentConfirmationModel.getCommon() != null)
-                    if (mResponseAppointmentConfirmationModel.getCommon().isSuccess())
-                        mDoctorDataHelper.doConfirmAppointmentRequest(mClickedDoctorObject.getDocId(), mSelectedClinicDataObject.getLocationId(), mSelectedTimeSlotDate, mSelectSlotToBookAppointmentAdapter.getSelectedTimeSlot(), mSelectSlotToBookAppointmentAdapter.getToTimeSlot(), Integer.parseInt(mSelectSlotToBookAppointmentAdapter.getSlotId()), null);
-                    else
-                        Toast.makeText(mContext, mResponseAppointmentConfirmationModel.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-                break;*/
         }
     }
 

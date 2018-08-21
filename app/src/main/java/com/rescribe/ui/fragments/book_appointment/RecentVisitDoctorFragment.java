@@ -1,7 +1,9 @@
 package com.rescribe.ui.fragments.book_appointment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,6 +68,8 @@ import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 
 public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecialistBookAppointmentAdapter.OnSpecialityClickListener, HelperResponse, SortByClinicAndDoctorNameAdapter.OnDataListViewVisible {
 
+    public static final String DOCTOR_DATA_ACTION = "com.rescribe.DOC_DATA";
+
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
     @BindView(R.id.filterListLayout)
@@ -78,8 +82,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     RelativeLayout mSpecialityEmptyListView;
     @BindView(R.id.fragmentContainer)
     RelativeLayout fragmentContainer;
-    @BindView(R.id.recyclerViewLinearLayout)
-    LinearLayout recyclerViewLinearLayout;
     @BindView(R.id.searchView)
     EditTextWithDeleteButton searchView;
     @BindView(R.id.searchBarLinearLayout)
@@ -88,10 +90,6 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     RecyclerView showDoctorsRecyclerView;
     @BindView(R.id.recentDoctorLayout)
     LinearLayout recentDoctorLayout;
-    @BindView(R.id.prevBtn)
-    ImageView prevBtn;
-    @BindView(R.id.nextBtn)
-    ImageView nextBtn;
     @BindView(R.id.bookAppointSpecialityListView)
     RecyclerView mBookAppointSpecialityListView;
     @BindView(R.id.whiteUnderLine)
@@ -101,18 +99,14 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     @BindView(R.id.leftFab)
     FloatingActionButton leftFab;
     @BindView(R.id.viewDoctorPager)
-    LinearLayout viewDoctorPager;
+    FrameLayout viewDoctorPager;
     Unbinder unbinder;
 
-    DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter;
     private SortByClinicAndDoctorNameAdapter mSortByClinicAndDoctorNameAdapter;
-    private ArrayList<DoctorList> doctorListByClinics;
     private DoctorDataHelper mDoctorDataHelper;
     private ServicesCardViewImpl mServiceCardDataViewBuilder;
     private DoctorServicesModel mReceivedDoctorServicesModel;
-    private ShowDoctorViewPagerAdapter mRecentVisitedDoctorPagerAdapter;
     private String mUserSelectedLocation;
-    private boolean isLocationChanged;
     private ArrayList<DoctorList> mPreviousLoadedDocList;
     private boolean isFilterApplied = false;
     private String mReceivedTitle = "";
@@ -180,7 +174,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         return fragment;
     }
 
-    @OnClick({R.id.prevBtn, R.id.nextBtn, R.id.rightFab, R.id.leftFab})
+    @OnClick({R.id.rightFab, R.id.leftFab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rightFab:
@@ -195,7 +189,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                     startActivity(intent);
                 } else {
                     // this list is sorted for plotting map for each clinic location, the values of clinicName and doctorAddress are set in string here, which are coming from arraylist.
-                    doctorListByClinics = new ArrayList<>();
+                    ArrayList<DoctorList> doctorListByClinics = new ArrayList<>();
                     ArrayList<DoctorList> sortedListByClinicNameOrDoctorName = mSortByClinicAndDoctorNameAdapter.getSortedListByClinicNameOrDoctorName();
                     for (int i = 0; i < sortedListByClinicNameOrDoctorName.size(); i++) {
                         DoctorList doctorList = sortedListByClinicNameOrDoctorName.get(i);
@@ -267,27 +261,27 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         if (mReceivedDoctorServicesModel.getDoctorSpecialities().isEmpty()) {
             pickSpeciality.setVisibility(View.GONE);
             mSpecialityEmptyListView.setVisibility(View.VISIBLE);
-            prevBtn.setVisibility(View.INVISIBLE);
-            nextBtn.setVisibility(View.INVISIBLE);
             viewDoctorPager.setVisibility(View.INVISIBLE);
             mBookAppointSpecialityListView.setVisibility(View.GONE);
         } else {
-            recyclerViewLinearLayout.setVisibility(View.VISIBLE);
-            mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
+            if (mBookAppointSpecialityListView.getVisibility() != View.VISIBLE)
+                mBookAppointSpecialityListView.setVisibility(View.VISIBLE);
             whiteUnderLine.setVisibility(View.VISIBLE);
-            searchView.setVisibility(View.VISIBLE);
+            if (searchView.getVisibility() != View.VISIBLE)
+                searchView.setVisibility(View.VISIBLE);
             mSpecialityEmptyListView.setVisibility(View.GONE);
 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
             mBookAppointSpecialityListView.setLayoutManager(layoutManager);
             mBookAppointSpecialityListView.setItemAnimator(new DefaultItemAnimator());
-
             mBookAppointSpecialityListView.setNestedScrollingEnabled(false);
 
-            mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
+            DoctorSpecialistBookAppointmentAdapter mDoctorConnectSearchAdapter = new DoctorSpecialistBookAppointmentAdapter(getActivity(), this, mReceivedDoctorServicesModel.getDoctorSpecialities());
             mBookAppointSpecialityListView.setAdapter(mDoctorConnectSearchAdapter);
-            pickSpeciality.setVisibility(View.VISIBLE);
-            viewDoctorPager.setVisibility(View.VISIBLE);
+            if (pickSpeciality.getVisibility() != View.VISIBLE)
+                pickSpeciality.setVisibility(View.VISIBLE);
+            if (viewDoctorPager.getVisibility() != View.VISIBLE)
+                viewDoctorPager.setVisibility(View.VISIBLE);
         }
         //---set data ---------
 
@@ -304,10 +298,17 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             mServiceCardDataViewBuilder.setReceivedDoctorDataList(CommonMethods.getCategoryDoctorsFromDb(appDBHelper));
             ArrayList<String> specialities = new ArrayList<>();
             // get all specialities
-            Cursor specialitiesCursor = appDBHelper.getDoctorsSpecialities();
+            String city = "";
+            HashMap<String, String> userSelectedLocationInfo = RescribeApplication.getUserSelectedLocationInfo();
+            if (userSelectedLocationInfo.get("Location") != null)
+                city = userSelectedLocationInfo.get("Location").split(",")[1];
+
+            Cursor specialitiesCursor = appDBHelper.getDoctorsSpecialities(city);
             if (specialitiesCursor.moveToFirst()) {
                 do {
-                    specialities.add(specialitiesCursor.getString(specialitiesCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
+                    String speciality = specialitiesCursor.getString(specialitiesCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)).trim();
+                    if (!speciality.isEmpty())
+                        specialities.add(speciality);
                 } while (specialitiesCursor.moveToNext());
             }
             specialitiesCursor.close();
@@ -346,7 +347,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 if (!isFavorite)
                     mViewpager.setVisibility(View.VISIBLE);
 
-                mRecentVisitedDoctorPagerAdapter = new ShowDoctorViewPagerAdapter(getActivity(), mergeList, mServiceCardDataViewBuilder, dataMap, this);
+                ShowDoctorViewPagerAdapter mRecentVisitedDoctorPagerAdapter = new ShowDoctorViewPagerAdapter(getActivity(), mergeList, mServiceCardDataViewBuilder, dataMap, this);
                 mViewpager.setAdapter(mRecentVisitedDoctorPagerAdapter);
                 mViewpager.setClipToPadding(false);
                 //------
@@ -387,9 +388,15 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        isLocationChanged = doGetLatestDoctorListOnLocationChange();
+        boolean isLocationChanged = doGetLatestDoctorListOnLocationChange();
         if (!isLocationChanged) {
             if (mReceivedDoctorServicesModel != null) {
                 if (showDoctorsRecyclerView.getVisibility() == View.VISIBLE && mSortByClinicAndDoctorNameAdapter != null) {
@@ -397,13 +404,17 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
                 }
             }
         }
+        setViewPagerData();
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(DOCTOR_DATA_ACTION));
+    }
+
+    private void setViewPagerData() {
         if (searchView != null) {
             if (searchView.getText().toString().isEmpty()) {
                 setUpViewPager(false);
             }
         }
     }
-
 
     @Override
     public void setOnClickOfDoctorSpeciality(Bundle bundleData) {
@@ -471,8 +482,16 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
             recentDoctorLayout.setVisibility(View.VISIBLE);
             showDoctorsRecyclerView.setVisibility(View.GONE);
         }
-
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(DOCTOR_DATA_ACTION))
+                    setViewPagerData();
+            }
+        }
+    };
 }
 

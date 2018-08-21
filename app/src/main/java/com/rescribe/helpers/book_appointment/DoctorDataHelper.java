@@ -180,8 +180,7 @@ public class DoctorDataHelper implements ConnectionListener {
     }
 
     public void doGetComplaintsList() {
-
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_GET_COMPLAINTS, Request.Method.GET, true);
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.TASK_GET_COMPLAINTS, Request.Method.GET, true);
         mConnectionFactory.setHeaderParams();
         mConnectionFactory.setUrl(Config.GET_COMPLAINTS_LIST);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_COMPLAINTS);

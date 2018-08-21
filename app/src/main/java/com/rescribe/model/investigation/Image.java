@@ -23,7 +23,6 @@ public class Image implements Parcelable {
             instance.childCaption = ((String) in.readValue((String.class.getClassLoader())));
             instance.uploading = ((int) in.readValue((boolean.class.getClassLoader())));
             instance.type = ((int) in.readValue((boolean.class.getClassLoader())));
-
             return instance;
         }
 
@@ -50,7 +49,6 @@ public class Image implements Parcelable {
     @SerializedName("uploading")
     @Expose
     private int uploading = -1;
-
     @SerializedName("type")
     @Expose
     private int type;
@@ -126,4 +124,8 @@ public class Image implements Parcelable {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return imagePath;
+    }
 }

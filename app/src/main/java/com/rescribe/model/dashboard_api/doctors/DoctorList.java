@@ -40,7 +40,7 @@ public class DoctorList implements Parcelable {
     private int specialityId;
     @SerializedName("speciality")
     @Expose
-    private String speciality;
+    private String speciality = "";
     @SerializedName("experience")
     @Expose
     private int experience;

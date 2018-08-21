@@ -1,15 +1,17 @@
 package com.rescribe.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
@@ -31,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.facebook.login.widget.ProfilePictureView.TAG;
 import static com.rescribe.notification.DosesAlarmTask.BREAKFAST_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.DINNER_NOTIFICATION_ID;
 import static com.rescribe.notification.DosesAlarmTask.EVENING_NOTIFICATION_ID;
@@ -51,17 +52,50 @@ import static com.rescribe.util.RescribeConstants.SAMSUNG;
  */
 public class NotificationService extends Service implements HelperResponse {
 
-    // Name of an intent extra we can use to identify if this service was started to create a notification
-    public static final String INTENT_NOTIFY = "com.rescribe";
+    public static final String MEDICATION_CHANNEL = "medication_notification";
+    private static final String TAG = "NotificationService";
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     Calendar c = Calendar.getInstance();
     int hour24 = c.get(Calendar.HOUR_OF_DAY);
 
     NotificationHelper mNotificationHelper;
+    private NotificationManager mNotificationManager;
 
     @Override
     public void onCreate() {
+        createChannel();
+    }
+
+    public void createChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Create the channel object with the unique ID CONNECT_CHANNEL
+            NotificationChannel connectChannel = new NotificationChannel(
+                    MEDICATION_CHANNEL, "Medication Notification",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            // Configure the channel's initial settings
+            connectChannel.setLightColor(Color.GREEN);
+            connectChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+            // Submit the notification channel object to the notification manager
+            getNotificationManager().createNotificationChannel(connectChannel);
+        }
+    }
+
+    /**
+     * Get the notification mNotificationManager.
+     * <p>
+     * <p>Utility method as this helper works with it a lot.
+     *
+     * @return The system service NotificationManager
+     */
+    public NotificationManager getNotificationManager() {
+        if (mNotificationManager == null) {
+            mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        return mNotificationManager;
     }
 
     @Override
@@ -154,7 +188,7 @@ public class NotificationService extends Service implements HelperResponse {
 
         // **********************************************************************************
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, MEDICATION_CHANNEL);
         builder.setSmallIcon(R.drawable.logosmall)
                 // Set Ticker Message
                 .setTicker(getString(R.string.customnotificationticker))

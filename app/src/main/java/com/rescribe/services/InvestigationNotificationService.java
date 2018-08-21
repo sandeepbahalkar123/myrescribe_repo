@@ -1,14 +1,17 @@
 package com.rescribe.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
@@ -30,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.rescribe.helpers.notification.NotificationHelper.CONNECT_CHANNEL;
 import static com.rescribe.notification.InvestigationAlarmTask.INVESTIGATION_NOTIFICATION_ID;
 import static com.rescribe.util.RescribeConstants.INVESTIGATION_NOTIFICATION_TAG;
 import static com.rescribe.util.RescribeConstants.SAMSUNG;
@@ -45,16 +49,48 @@ import static com.rescribe.util.RescribeConstants.SAMSUNG;
  */
 public class InvestigationNotificationService extends Service implements HelperResponse {
 
-//    static int mNotificationNoTextField = 0;
-
     // Name of an intent extra we can use to identify if this service was started to create a notification
     public static final String INTENT_NOTIFY = "com.rescribe";
+    public static final String INVESTIGATION_CHANNEL = "investigation_notification";
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     private int notification_id;
+    private NotificationManager mNotificationManager;
 
     @Override
     public void onCreate() {
+        createChannel();
+    }
+
+    public void createChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Create the channel object with the unique ID CONNECT_CHANNEL
+            NotificationChannel connectChannel = new NotificationChannel(
+                    INVESTIGATION_CHANNEL, "Investigation Notification",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            // Configure the channel's initial settings
+            connectChannel.setLightColor(Color.GREEN);
+            connectChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+            // Submit the notification channel object to the notification manager
+            getNotificationManager().createNotificationChannel(connectChannel);
+        }
+    }
+
+    /**
+     * Get the notification mNotificationManager.
+     * <p>
+     * <p>Utility method as this helper works with it a lot.
+     *
+     * @return The system service NotificationManager
+     */
+    public NotificationManager getNotificationManager() {
+        if (mNotificationManager == null) {
+            mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        return mNotificationManager;
     }
 
     @Override
@@ -122,7 +158,7 @@ public class InvestigationNotificationService extends Service implements HelperR
 
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyNoIntent, 0);
 
-        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, INVESTIGATION_CHANNEL)
                 // Set Icon
                 .setSmallIcon(R.drawable.logosmall)
                 // Set Ticker Message

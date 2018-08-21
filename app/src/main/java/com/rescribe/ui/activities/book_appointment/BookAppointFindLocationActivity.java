@@ -278,7 +278,7 @@ public class BookAppointFindLocationActivity extends AppCompatActivity implement
 
                 if (!recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList().isEmpty()) {
                     recentlyVisitedPlaces.setVisibility(View.VISIBLE);
-                    RecentPlacesAdapter mRecentPlacesAdapter = new RecentPlacesAdapter(mContext, recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
+                    RecentPlacesAdapter mRecentPlacesAdapter = new RecentPlacesAdapter(recentVisitedBaseModel.getRecentVisitedModel().getRecentlyVisitedAreaList(), this);
                     LinearLayoutManager linearlayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                     linearlayoutManager.setAutoMeasureEnabled(true);
                     recentlyVisitedRecyclerView.setNestedScrollingEnabled(false);

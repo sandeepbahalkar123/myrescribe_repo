@@ -2,9 +2,11 @@ package com.rescribe.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -15,9 +17,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -30,7 +34,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -42,23 +45,25 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
-import com.rescribe.interfaces.CheckIpConnection;
-import com.rescribe.interfaces.DatePickerDialogListener;
 import com.rescribe.interfaces.profile_photo.ProfilePhotoUpload;
 import com.rescribe.model.book_appointment.doctor_data.ClinicData;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.profile_upload.ProfilePhotoResponse;
+import com.rescribe.network.RequestPool;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.singleton.Device;
 import com.rescribe.singleton.RescribeApplication;
+import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.ServerResponse;
 import net.gotev.uploadservice.UploadInfo;
 import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadService;
 import net.gotev.uploadservice.UploadStatusDelegate;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
@@ -75,16 +80,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class CommonMethods {
+import static com.rescribe.singleton.RescribeApplication.appUnreadNotificationMessageList;
+import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
+import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 
+public class CommonMethods {
     private static final String TAG = "Rescribe/CommonMethods";
     public static final String TODAY = "Today";
-    private static boolean encryptionIsOn = true;
-    private static String aBuffer = "";
-    private static CheckIpConnection mCheckIpConnection;
-
-    private int mYear, mMonth, mDay, mHour, mMinute;
-    private DatePickerDialogListener mDatePickerDialogListener;
 
     public static int getVersionCode(Context mContext) {
         int versionCode = -1;
@@ -190,14 +192,11 @@ public class CommonMethods {
         int month = calendar.get(Calendar.MONTH) + 1;
         int date = calendar.get(Calendar.DATE);
 
-        String Year = String.valueOf(year);
-        StringBuffer dString = new StringBuffer();
-        dString.append((date > 9) ? String.valueOf(date) : ("0" + date));
-        dString.append("-");
-        dString.append((month > 9) ? String.valueOf(month) : ("0" + month));
-        dString.append("-");
-        dString.append(year);
-        return dString.toString();
+        return ((date > 9) ? String.valueOf(date) : ("0" + date)) +
+                "-" +
+                ((month > 9) ? String.valueOf(month) : ("0" + month)) +
+                "-" +
+                year;
     }
 
     public static String getCurrentDateWithSlash() // for enrollmentId
@@ -207,14 +206,11 @@ public class CommonMethods {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int date = calendar.get(Calendar.DATE);
-        String Year = String.valueOf(year);
-        StringBuffer dString = new StringBuffer();
-        dString.append(date);
-        dString.append("/");
-        dString.append(month);
-        dString.append("/");
-        dString.append(year);
-        return dString.toString();
+        return String.valueOf(date) +
+                "/" +
+                month +
+                "/" +
+                year;
     }
 
     public static String getCurrentDate() // for enrollmentId
@@ -925,36 +921,10 @@ public class CommonMethods {
 
     }
 
-    //TODO : this is done for temp
     public static ArrayList<String> getYearForDoctorList() {
         ArrayList<String> a = new ArrayList<>();
         a.add("2017");
         return a;
-    }
-
-    public void datePickerDialog(Context context, DatePickerDialogListener datePickerDialogListener, Date dateToSet) {
-        // Get Current Date
-        final Calendar c = Calendar.getInstance();
-
-        if (dateToSet != null) {
-            c.setTime(dateToSet);
-        }
-
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        mDatePickerDialogListener = datePickerDialogListener;
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        mDatePickerDialogListener.getSelectedDate(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                    }
-                }, mYear, mMonth, mDay);
-
-        datePickerDialog.show();
     }
 
     public static String getExtension(String filePath) {
@@ -1125,103 +1095,109 @@ public class CommonMethods {
 
                 // get Card Data
                 Cursor docCursor = appDBHelper.getDoctor(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                if (docCursor.moveToFirst()) {
+                if (docCursor.moveToFirst())
+                    doctorLists.add(docCursorToObject(cardCursor, docCursor, appDBHelper));
 
-                    DoctorList doctorList = new DoctorList();
-                    doctorList.setDocId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                    doctorList.setDocName(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_NAME)));
-                    doctorList.setDocPhone(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PHONE_NUMBER)));
-                    doctorList.setDoctorImageUrl(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ICON_URL)));
-                    doctorList.setAboutDoctor(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ABOUT_DOCTOR)));
-
-                    doctorList.setDocSpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
-                    doctorList.setSpecialityId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY_ID)));
-
-                    doctorList.setRating(docCursor.getDouble(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.RATING)));
-                    doctorList.setCategorySpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_PREMIUM)));
-                    doctorList.setDegree(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_DEGREE)));
-                    doctorList.setExperience(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
-                    doctorList.setPaidStatus(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
-                    doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
-                    doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
-
-                    Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                    if (appointmentByDoctorCursor.moveToFirst()) {
-                        // get from appointment table
-                        doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
-                        doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
-                        doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
-                        doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
-                        doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
-                        if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN)) {
-                            doctorList.setType("token");
-                            doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
-                        }
-                    }
-
-                    ArrayList<ClinicData> clinicDataList = new ArrayList<>();
-
-                    // loop start
-
-                    Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-
-                    boolean isFirst = true;
-                    if (clinicCursor.moveToFirst()) {
-                        do {
-
-                            ClinicData clinicData = new ClinicData();
-                            clinicData.setClinicName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_NAME)));
-                            clinicData.setLocationId(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
-                            clinicData.setAmount(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_FEES)));
-                            clinicData.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
-                            clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
-                            clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
-                            clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-                            clinicData.setLocationLat(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LATITUDE)));
-                            clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
-
-                            // set services
-                            String services = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE));
-                            if (!services.isEmpty()) {
-                                String[] split = services.split(",");
-                                ArrayList<String> servicesList = new ArrayList<>(Arrays.asList(split));
-                                clinicData.setDocServices(servicesList);
-                            }
-
-                            if (isFirst) {
-                                // set clinic appointment book type
-                                Cursor doctorVsClinic = appDBHelper.getDoctorVsClinicById(cardCursor.getInt(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)), clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
-                                if (doctorVsClinic.moveToFirst()) {
-                                    // get from appointment table
-                                    if (!RescribeConstants.TOKEN.equalsIgnoreCase(doctorList.getType())) {
-                                        doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-                                        clinicData.setAppointmentType(doctorList.getType());
-                                    }
-                                    clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
-                                }
-
-                                doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
-                                isFirst = false;
-                            }
-
-                            clinicDataList.add(clinicData);
-                        } while (clinicCursor.moveToNext());
-                    }
-
-                    clinicCursor.close();
-                    // loop end
-
-                    doctorList.setClinicDataList(clinicDataList);
-                    doctorLists.add(doctorList);
-                }
                 docCursor.close();
             } while (cardCursor.moveToNext());
         }
         cardCursor.close();
 
         doctorLists.addAll(getDoctorByLocationAndNotInCard(appDBHelper));
-        
+
         return doctorLists;
+    }
+
+    private static DoctorList docCursorToObject(Cursor cardCursor, Cursor docCursor, AppDBHelper appDBHelper) {
+        DoctorList doctorList = new DoctorList();
+        doctorList.setDocId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+        doctorList.setDocName(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_NAME)));
+        doctorList.setDocPhone(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PHONE_NUMBER)));
+        doctorList.setDoctorImageUrl(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ICON_URL)));
+        doctorList.setAboutDoctor(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ABOUT_DOCTOR)));
+
+        doctorList.setDocSpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
+        doctorList.setSpecialityId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY_ID)));
+
+        doctorList.setRating(docCursor.getDouble(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.RATING)));
+        doctorList.setCategorySpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_PREMIUM)));
+        doctorList.setDegree(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_DEGREE)));
+        doctorList.setExperience(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
+        doctorList.setPaidStatus(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
+        doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
+
+        if (cardCursor != null)
+            doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
+
+        Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+        if (appointmentByDoctorCursor.moveToFirst()) {
+            // get from appointment table
+            doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
+            doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
+            doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
+            doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
+            doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
+            doctorList.setLocationId(appointmentByDoctorCursor.getInt(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
+            if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN)) {
+                doctorList.setType("token");
+                doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
+            }
+        }
+
+        appointmentByDoctorCursor.close();
+        ArrayList<ClinicData> clinicDataList = new ArrayList<>();
+
+        // loop start
+        Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
+
+        boolean isFirst = true;
+        if (clinicCursor.moveToFirst()) {
+            do {
+
+                ClinicData clinicData = new ClinicData();
+                clinicData.setClinicName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_NAME)));
+                clinicData.setLocationId(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
+                clinicData.setAmount(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_FEES)));
+                clinicData.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
+                clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
+                clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
+                clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+                clinicData.setLocationLat(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LATITUDE)));
+                clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
+
+                // set services
+                String services = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE));
+                if (!services.isEmpty()) {
+                    String[] split = services.split(",");
+                    ArrayList<String> servicesList = new ArrayList<>(Arrays.asList(split));
+                    clinicData.setDocServices(servicesList);
+                }
+
+                if (isFirst) {
+                    // set clinic appointment book type
+                    Cursor doctorVsClinic = appDBHelper.getDoctorVsClinicById(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)), clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
+                    if (doctorVsClinic.moveToFirst()) {
+                        // get from appointment table
+                        if (!RescribeConstants.TOKEN.equalsIgnoreCase(doctorList.getType())) {
+                            doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
+                            clinicData.setAppointmentType(doctorList.getType());
+                        }
+                        clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
+                    }
+                    doctorVsClinic.close();
+                    doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
+                    isFirst = false;
+                }
+
+                clinicDataList.add(clinicData);
+            } while (clinicCursor.moveToNext());
+        }
+
+        clinicCursor.close();
+        // loop end
+
+        doctorList.setClinicDataList(clinicDataList);
+        return doctorList;
     }
 
     private static ArrayList<DoctorList> getDoctorByLocationAndNotInCard(AppDBHelper appDBHelper) {
@@ -1232,103 +1208,11 @@ public class CommonMethods {
         if (userSelectedLocationInfo.get("Location") != null)
             city = userSelectedLocationInfo.get("Location").split(",")[1];
 
-        Cursor allDoctorsCursor = appDBHelper.getDoctors();
+        Cursor allDoctorsCursor = appDBHelper.getNonCategoryDoctorsByLocation(city);
 
         if (allDoctorsCursor.moveToFirst()) {
             do {
-                DoctorList doctorList = new DoctorList();
-                doctorList.setDocId(allDoctorsCursor.getInt(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                doctorList.setDocName(allDoctorsCursor.getString(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_NAME)));
-                doctorList.setDocPhone(allDoctorsCursor.getString(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.PHONE_NUMBER)));
-                doctorList.setDoctorImageUrl(allDoctorsCursor.getString(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.ICON_URL)));
-                doctorList.setAboutDoctor(allDoctorsCursor.getString(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.ABOUT_DOCTOR)));
-
-                doctorList.setDocSpeciality(allDoctorsCursor.getString(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
-                doctorList.setSpecialityId(allDoctorsCursor.getInt(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY_ID)));
-
-                doctorList.setRating(allDoctorsCursor.getDouble(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.RATING)));
-                doctorList.setCategorySpeciality(allDoctorsCursor.getString(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_PREMIUM)));
-                doctorList.setDegree(allDoctorsCursor.getString(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_DEGREE)));
-                doctorList.setExperience(allDoctorsCursor.getInt(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
-                doctorList.setPaidStatus(allDoctorsCursor.getInt(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
-                doctorList.setFavourite(allDoctorsCursor.getInt(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
-//            doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
-
-                Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(allDoctorsCursor.getInt(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                if (appointmentByDoctorCursor.moveToFirst()) {
-                    // get from appointment table
-                    doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
-                    doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
-                    doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
-                    doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
-                    doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
-                    if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN)) {
-                        doctorList.setType("token");
-                        doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
-                    }
-                }
-                appointmentByDoctorCursor.close();
-
-                ArrayList<ClinicData> clinicDataList = new ArrayList<>();
-
-                // loop start
-                Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(allDoctorsCursor.getInt(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-
-                boolean isFirst = true;
-                boolean isCityThere = false;
-                if (clinicCursor.moveToFirst()) {
-                    do {
-
-                        ClinicData clinicData = new ClinicData();
-                        clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
-                        clinicData.setClinicName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_NAME)));
-                        clinicData.setLocationId(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
-                        clinicData.setAmount(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_FEES)));
-                        clinicData.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
-                        clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
-                        clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-                        clinicData.setLocationLat(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LATITUDE)));
-                        clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
-
-                        // set services
-                        String services = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE));
-                        if (!services.isEmpty()) {
-                            String[] split = services.split(",");
-                            ArrayList<String> servicesList = new ArrayList<>(Arrays.asList(split));
-                            clinicData.setDocServices(servicesList);
-                        }
-
-                        if (isFirst) {
-                            // set clinic appointment book type
-                            Cursor doctorVsClinic = appDBHelper.getDoctorVsClinicById(allDoctorsCursor.getInt(allDoctorsCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)), clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
-                            if (doctorVsClinic.moveToFirst()) {
-                                // get from appointment table
-                                if (!RescribeConstants.TOKEN.equalsIgnoreCase(doctorList.getType())) {
-                                    doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-                                    clinicData.setAppointmentType(doctorList.getType());
-                                }
-                                clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
-                            }
-
-                            doctorVsClinic.close();
-                            doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
-                            isFirst = false;
-                        }
-
-                        clinicDataList.add(clinicData);
-
-                        if (clinicData.getCityName().equalsIgnoreCase(city) && !appDBHelper.isAvailableInCategory(doctorList.getDocId()))
-                            isCityThere = true;
-
-                    } while (clinicCursor.moveToNext());
-                }
-
-                clinicCursor.close();
-                // loop end
-
-                doctorList.setClinicDataList(clinicDataList);
-                if (isCityThere)
-                    doctorLists.add(doctorList);
+                doctorLists.add(docCursorToObject(null, allDoctorsCursor, appDBHelper));
             } while (allDoctorsCursor.moveToNext());
         }
         allDoctorsCursor.close();
@@ -1345,101 +1229,10 @@ public class CommonMethods {
 
         ArrayList<DoctorList> doctorLists = new ArrayList<>();
         // get Card Data
-        Cursor docCursor = appDBHelper.getDoctorsBySpeciality(speciality);
+        Cursor docCursor = appDBHelper.getDoctorsBySpecialityAndLocation(speciality, city);
         if (docCursor.moveToFirst()) {
             do {
-                DoctorList doctorList = new DoctorList();
-                doctorList.setDocId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                doctorList.setDocName(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_NAME)));
-                doctorList.setDocPhone(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PHONE_NUMBER)));
-                doctorList.setDoctorImageUrl(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ICON_URL)));
-                doctorList.setAboutDoctor(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.ABOUT_DOCTOR)));
-
-                doctorList.setDocSpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY)));
-                doctorList.setSpecialityId(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.SPECIALITY_ID)));
-
-                doctorList.setRating(docCursor.getDouble(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.RATING)));
-                doctorList.setCategorySpeciality(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_PREMIUM)));
-                doctorList.setDegree(docCursor.getString(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_DEGREE)));
-                doctorList.setExperience(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.EXPERIANCE)));
-                doctorList.setPaidStatus(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.PAID_STATUS)));
-                doctorList.setFavourite(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.IS_FAVORITE)) == 1);
-//            doctorList.setCategoryName(cardCursor.getString(cardCursor.getColumnIndex(AppDBHelper.DOC_DATA.CARD_TYPE)));
-
-                Cursor appointmentByDoctorCursor = appDBHelper.getAppointmentByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-                if (appointmentByDoctorCursor.moveToFirst()) {
-                    // get from appointment table
-                    doctorList.setAptDate(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_DATE)));
-                    doctorList.setAptTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TIME)));
-                    doctorList.setAptId(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_ID)));
-                    doctorList.setWaitingPatientTime(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_TIME)));
-                    doctorList.setWaitingPatientCount(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.WAITING_PATIENT_COUNT)));
-                    if (appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_TYPE)).equalsIgnoreCase(RescribeConstants.TOKEN)) {
-                        doctorList.setType("token");
-                        doctorList.setTokenNumber(appointmentByDoctorCursor.getString(appointmentByDoctorCursor.getColumnIndex(AppDBHelper.DOC_DATA.TOKEN_NUMBER)));
-                    }
-                }
-                appointmentByDoctorCursor.close();
-
-                ArrayList<ClinicData> clinicDataList = new ArrayList<>();
-
-                // loop start
-                Cursor clinicCursor = appDBHelper.getAllClinicsByDoctor(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)));
-
-                boolean isFirst = true;
-                boolean isCityThere = false;
-                if (clinicCursor.moveToFirst()) {
-                    do {
-
-                        ClinicData clinicData = new ClinicData();
-                        clinicData.setCityName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_CITY_NAME)));
-                        clinicData.setClinicName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_NAME)));
-                        clinicData.setLocationId(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
-                        clinicData.setAmount(clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_FEES)));
-                        clinicData.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
-                        clinicData.setAreaName(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_AREA_NAME)));
-                        clinicData.setAppointmentType(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-                        clinicData.setLocationLat(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LATITUDE)));
-                        clinicData.setLocationLong(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_LONGITUDE)));
-
-                        // set services
-                        String services = clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_SERVICE));
-                        if (!services.isEmpty()) {
-                            String[] split = services.split(",");
-                            ArrayList<String> servicesList = new ArrayList<>(Arrays.asList(split));
-                            clinicData.setDocServices(servicesList);
-                        }
-
-                        if (isFirst) {
-                            // set clinic appointment book type
-                            Cursor doctorVsClinic = appDBHelper.getDoctorVsClinicById(docCursor.getInt(docCursor.getColumnIndex(AppDBHelper.DOC_DATA.DOC_ID)), clinicCursor.getInt(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ID)));
-                            if (doctorVsClinic.moveToFirst()) {
-                                // get from appointment table
-                                if (!RescribeConstants.TOKEN.equalsIgnoreCase(doctorList.getType())) {
-                                    doctorList.setType(doctorVsClinic.getString(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_APPOINTMENT_TYPE)));
-                                    clinicData.setAppointmentType(doctorList.getType());
-                                }
-                                clinicData.setApptScheduleLmtDays(doctorVsClinic.getInt(doctorVsClinic.getColumnIndex(AppDBHelper.DOC_DATA.APPOINTMENT_SCHEDULE_LIMIT_DAYS)));
-                            }
-                            doctorVsClinic.close();
-                            doctorList.setClinicAddress(clinicCursor.getString(clinicCursor.getColumnIndex(AppDBHelper.DOC_DATA.CLINIC_ADDRESS)));
-                            isFirst = false;
-                        }
-
-                        clinicDataList.add(clinicData);
-
-                        if (clinicData.getCityName().equalsIgnoreCase(city) || appDBHelper.isAvailableInCategory(doctorList.getDocId()))
-                            isCityThere = true;
-
-                    } while (clinicCursor.moveToNext());
-                }
-
-                clinicCursor.close();
-                // loop end
-
-                doctorList.setClinicDataList(clinicDataList);
-                if (isCityThere)
-                    doctorLists.add(doctorList);
+                doctorLists.add(docCursorToObject(null, docCursor, appDBHelper));
             } while (docCursor.moveToNext());
         }
         docCursor.close();
@@ -1513,6 +1306,140 @@ public class CommonMethods {
         } catch (FileNotFoundException | MalformedURLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isDoc(String extension) {
+        String[] documents = {"doc", "docx", "odt", "pdf", "xls", "xlsx", "ods", "ppt", "pptx"};
+        for (String type : documents)
+            if (type.equalsIgnoreCase(extension))
+                return true;
+        return false;
+    }
+
+    public static File createImageFile(Uri uriTemp, String filesFolder) {
+        return new File(filesFolder, CommonMethods.getFileNameFromPath(uriTemp.toString()));
+    }
+
+    public static void openDoc(Context context, String fileUrl, String filesFolder) {
+        Uri uriTemp = Uri.parse(fileUrl);
+        File file;
+        if (uriTemp.toString().contains("file://"))
+            file = new File(uriTemp.getPath());
+        else file = new File(uriTemp.toString());
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".droidninja.filepicker.provider", file);
+        } else
+            uri = Uri.fromFile(createImageFile(uriTemp, filesFolder));
+
+        // Check what kind of file you are trying to open, by comparing the uri with extensions.
+        // When the if condition is matched, plugin sets the correct intent (mime) type,
+        // so Android knew what application to use to open the file
+        if (uri.toString().contains(".doc") || uri.toString().contains(".docx")) {
+            // Word document
+            intent.setDataAndType(uri, "application/msword");
+        } else if (uri.toString().contains(".pdf")) {
+            // PDF file
+            intent.setDataAndType(uri, "application/pdf");
+        } else if (uri.toString().contains(".ppt") || uri.toString().contains(".pptx")) {
+            // Powerpoint file
+            intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+        } else if (uri.toString().contains(".xls") || uri.toString().contains(".xlsx")) {
+            // Excel file
+            intent.setDataAndType(uri, "application/vnd.ms-excel");
+        } else if (uri.toString().contains(".zip") || uri.toString().contains(".rar")) {
+            // WAV audio file
+            intent.setDataAndType(uri, "application/x-wav");
+        } else if (uri.toString().contains(".rtf")) {
+            // RTF file
+            intent.setDataAndType(uri, "application/rtf");
+        } else if (uri.toString().contains(".wav") || uri.toString().contains(".mp3")) {
+            // WAV audio file
+            intent.setDataAndType(uri, "audio/x-wav");
+        } else if (uri.toString().contains(".gif")) {
+            // GIF file
+            intent.setDataAndType(uri, "image/gif");
+        } else if (uri.toString().contains(".jpg") || uri.toString().contains(".jpeg") || uri.toString().contains(".png")) {
+            // JPG file
+            intent.setDataAndType(uri, "image/jpeg");
+        } else if (uri.toString().contains(".txt")) {
+            // Text file
+            intent.setDataAndType(uri, "text/plain");
+        } else if (uri.toString().contains(".3gp") || uri.toString().contains(".mpg") || uri.toString().contains(".mpeg") || uri.toString().contains(".mpe") || uri.toString().contains(".mp4") || uri.toString().contains(".avi")) {
+            // Video files
+            intent.setDataAndType(uri, "video/*");
+        } else {
+            intent.setDataAndType(uri, "*/*");
+        }
+
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            CommonMethods.showToast(context, context.getResources().getString(R.string.doc_viewer_not_found));
+        }
+    }
+
+    public static void logout(Context mContext, AppDBHelper appDBHelper) {
+        RequestPool.getInstance(mContext).cancellAllPreviousRequestWithSameTag(TASK_DASHBOARD_API);
+        RequestPool.getInstance(mContext).cancellAllPreviousRequestWithSameTag(TASK_DOCTORLIST_API);
+
+        String mobileNoGmail = "";
+        String passwordGmail = "";
+        String mobileNoFacebook = "";
+        String passwordFacebook = "";
+        String gmailLogin = "";
+        String facebookLogin = "";
+        boolean appointmentAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.appointment_alert), mContext);
+        boolean investigationAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.investigation_alert), mContext);
+        boolean medicationAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.medication_alert), mContext);
+        boolean offersAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.offers_alert), mContext);
+        boolean allNotifyAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.all_notifications), mContext);
+        // Stop Uploads
+        UploadService.stopAllUploads();
+
+        //Logout functionality
+        if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(mContext.getString(R.string.login_with_gmail))) {
+            gmailLogin = RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext);
+            mobileNoGmail = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mContext);
+            passwordGmail = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, mContext);
+
+        }
+        if (RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext).equalsIgnoreCase(mContext.getString(R.string.login_with_facebook))) {
+            facebookLogin = RescribePreferencesManager.getString(RescribeConstants.FACEBOOK_LOGIN, mContext);
+            mobileNoFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mContext);
+            passwordFacebook = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, mContext);
+        }
+
+        RescribePreferencesManager.clearSharedPref(mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.all_notifications), allNotifyAlert, mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.appointment_alert), appointmentAlert, mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.investigation_alert), investigationAlert, mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.medication_alert), medicationAlert, mContext);
+        RescribePreferencesManager.putBoolean(mContext.getString(R.string.offers_alert), offersAlert, mContext);
+        RescribePreferencesManager.putString(RescribeConstants.GMAIL_LOGIN, gmailLogin, mContext);
+        RescribePreferencesManager.putString(RescribeConstants.FACEBOOK_LOGIN, facebookLogin, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_GMAIL, mobileNoGmail, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_GMAIL, passwordGmail, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.MOBILE_NUMBER_FACEBOOK, mobileNoFacebook, mContext);
+        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PASSWORD_FACEBOOK, passwordFacebook, mContext);
+        RescribePreferencesManager.putString(mContext.getString(R.string.logout), "" + 1, mContext);
+
+        // Clear all notification
+        NotificationManager nMgr = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        nMgr.cancelAll();
+
+        appDBHelper.deleteDatabase();
+        appUnreadNotificationMessageList.clear();
+
+        Intent intent = new Intent(mContext, LoginSignUpActivity.class);
+        mContext.startActivity(intent);
+        ((AppCompatActivity) mContext).finishAffinity();
     }
 }
 

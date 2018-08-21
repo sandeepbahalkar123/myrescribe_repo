@@ -44,7 +44,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private String mAppointmentType;
     private Context mContext;
     private ArrayList<AptList> appointmentsList;
-    private int imageSize;
     private OnClickOfAppointmentClickListener mOnClickOfAppointmentClickListener;
 
 
@@ -54,15 +53,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.appointmentsList = appointmentsList;
         this.mContext = mContext;
         this.mOnClickOfAppointmentClickListener = mOnClickOfAppointmentClickListener;
-        setColumnNumber(mContext, 2);
-    }
-
-    private void setColumnNumber(Context context, int columnNum) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        int widthPixels = metrics.widthPixels;
-        imageSize = (widthPixels / columnNum) - mContext.getResources().getDimensionPixelSize(R.dimen.dp30);
     }
 
     @Override
@@ -156,7 +146,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         requestOptions.skipMemoryCache(true);
         requestOptions.placeholder(drawable);
         requestOptions.error(drawable);
-        requestOptions.override(imageSize, imageSize);
 
         Glide.with(mContext)
                 .load(appointment.getImageUrl())

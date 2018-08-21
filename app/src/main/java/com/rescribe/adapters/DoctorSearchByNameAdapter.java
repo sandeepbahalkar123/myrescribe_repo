@@ -44,11 +44,10 @@ import static com.rescribe.util.RescribeConstants.USER_STATUS.ONLINE;
  */
 
 public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearchByNameAdapter.ListViewHolder> implements Filterable {
-    private ColorGenerator mColorGenerator;
     private Context mContext;
     private ArrayList<ChatDoctor> appointmentsList;
     private ArrayList<ChatDoctor> mArrayList;
-    String searchString = "";
+    private String searchString = "";
 
     static class ListViewHolder extends RecyclerView.ViewHolder {
 
@@ -81,7 +80,6 @@ public class DoctorSearchByNameAdapter extends RecyclerView.Adapter<DoctorSearch
         this.appointmentsList = appointmentsList;
         mArrayList = appointmentsList;
         this.mContext = mContext;
-        mColorGenerator = ColorGenerator.MATERIAL;
     }
 
     @Override

@@ -505,8 +505,6 @@ public class DoctorConnectActivity extends BottomMenuActivity implements DoctorC
                     Uri resultUri = result.getUri();
 //                String path = Environment.getExternalStorageDirectory() + File.separator + "DrRescribe" + File.separator + "ProfilePhoto" + File.separator;
                     imageUtils.callImageCropMethod(resultUri);
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception error = result.getError();
                 }
                 break;
 

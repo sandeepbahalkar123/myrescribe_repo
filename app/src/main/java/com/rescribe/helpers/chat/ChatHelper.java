@@ -8,7 +8,6 @@ import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.chat.MQTTMessage;
-import com.rescribe.model.chat.MessageRequestModel;
 import com.rescribe.network.ConnectRequest;
 import com.rescribe.network.ConnectionFactory;
 import com.rescribe.util.CommonMethods;
@@ -69,22 +68,6 @@ public class ChatHelper implements ConnectionListener {
     @Override
     public void onTimeout(ConnectRequest request) {
 
-    }
-
-    public void sendMsgToPatient(MQTTMessage messageL){
-        MessageRequestModel messageRequestModel = new MessageRequestModel();
-        messageRequestModel.setMsg(messageL.getMsg());
-        // 2017-10-13 12:08:07
-        messageRequestModel.setMsgTime(CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.UTC_PATTERN));
-        messageRequestModel.setSender("user2");
-        messageRequestModel.setUser1id(messageL.getDocId());
-        messageRequestModel.setUser2id(messageL.getPatId());
-
-        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, false, RescribeConstants.SEND_MESSAGE, Request.Method.POST, false);
-        mConnectionFactory.setHeaderParams();
-        mConnectionFactory.setPostParams(messageRequestModel);
-        mConnectionFactory.setUrl(Config.SEND_MSG_TO_DOCTOR);
-        mConnectionFactory.createConnection(RescribeConstants.SEND_MESSAGE);
     }
 
     public void getChatHistory(int pgNmbr, int user1id, int user2id,String sender) {

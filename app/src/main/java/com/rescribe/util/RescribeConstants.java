@@ -6,11 +6,6 @@ package com.rescribe.util;
  */
 public class RescribeConstants {
 
-    public static final String RESCRIBE_LOG_FOLDER = "Rescribe_LOG";
-    public static final String RESCRIBE_LOG_FILE = "Rescribe_LOG_FILE.txt";
-    public static final String MT_TABLET = "TABLET";
-    public static final String MT_SYRUP = "SYRUP";
-    public static final String MT_OINTMENT = "OINTMENT";
     public static final String DD_MM_YYYY = "dd-MM-yyyy";
     public static final String YES = "yes";
     public static final String ATTACHMENTS_LIST = "ATTACHMENTS_LIST";
@@ -62,19 +57,12 @@ public class RescribeConstants {
     public static final String DATE = "date";
     public static final String MEDICINE_SLOT = "edicine_slot";
     public static final String MEDICINE_TYPE = "medicine_type";
-    //------------
-    public static final String DINNER = "dinner";
-    public static final String LUNCH = "lunch";
-    public static final String BREAK_FAST = "breakfast";
-    public static final String SNACKS = "snacks";
-    //------------
+
     public static final String NOTIFICATION_ID = "notification_id";
     public static final String APPOINTMENT_NOTIFICATION_ID = "appointment_notification_id";
     public static final String APPOINTMENT_ID = "appointment_id";
     public static final String APPOINTMENT_MESSAGE = "appointment_message";
     public static final String BLANK = "";
-
-    public static final String DOCTOR_OBJECT = "services";
 
     public static final String DRAWABLE = "drawable";
 
@@ -114,8 +102,6 @@ public class RescribeConstants {
     public static final String TASK_DOCTOR_CONNECT_CHAT = RescribeConstants.BLANK + 25;
     public static final String TASK_DOCTOR_CONNECT = RescribeConstants.BLANK + 26;
     public static final String TASK_DOCTOR__FILTER_DOCTOR_SPECIALITY_LIST = RescribeConstants.BLANK + 27;
-
-    public static final String SEND_MESSAGE = RescribeConstants.BLANK + 28;
     public static final String CHAT_HISTORY = RescribeConstants.BLANK + 29;
     public static final String TASK_BOOK_APPOINTMENT_SERVICES = RescribeConstants.BLANK + 30;
     public static final String TASK_GET_DOCTOR_DATA = RescribeConstants.BLANK + 31;
@@ -176,6 +162,7 @@ public class RescribeConstants {
 
     public static final String DATA = "DATA";
     public static final Integer SUCCESS = 200;
+    public static final Integer INVALID_LOGIN_PASSWORD = 404;
     public static final String TAKEN_DATE = "takenDate";
     public static final String TITLE = "title";
     public static final String DOCTORS_LIST = "doctors_list";
@@ -349,6 +336,8 @@ public class RescribeConstants {
         public static final String IMAGE_ID = "imgId";
         public static final String INV_ID = "invIds";
         public static final String INV_TYPES = "types";
+        public static final String PATIENT_ID = "patientId";
+        public static final String OPD_ID = "opdId";
     }
 
     public static final String[] SALUTATION_SOCIALMEDIA = {"Mr.", "Mrs.", "Miss", "Other"};

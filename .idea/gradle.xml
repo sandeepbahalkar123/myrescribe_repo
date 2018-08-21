@@ -17,7 +17,6 @@
             <option value="$PROJECT_DIR$/materialdrawer" />
             <option value="$PROJECT_DIR$/monthPicker" />
             <option value="$PROJECT_DIR$/slideview" />
-            <option value="$PROJECT_DIR$/uploadservice" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

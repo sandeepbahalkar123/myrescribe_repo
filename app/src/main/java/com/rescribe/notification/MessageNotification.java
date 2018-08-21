@@ -2,11 +2,14 @@ package com.rescribe.notification;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
@@ -22,6 +25,7 @@ import com.rescribe.util.RescribeConstants;
 import java.util.ArrayList;
 
 import static com.rescribe.broadcast_receivers.ReplayBroadcastReceiver.MESSAGE_LIST;
+import static com.rescribe.helpers.notification.NotificationHelper.CONNECT_CHANNEL;
 import static com.rescribe.services.MQTTService.REPLY_ACTION;
 import static com.rescribe.util.RescribeConstants.FILE.AUD;
 import static com.rescribe.util.RescribeConstants.FILE.DOC;
@@ -36,14 +40,22 @@ import static com.rescribe.util.RescribeConstants.FILE.VID;
  * This class makes heavy use of the {@link NotificationCompat.Builder} helper
  * class to create notifications in a backward-compatible way.
  */
-public class MessageNotification {
+public class MessageNotification extends ContextWrapper {
     /**
      * The unique identifier for this type of notification.
      */
     private static final String NOTIFICATION_TAG = "RescribeMessage";
     private static final String GROUP = "RescribeMessages";
+    private final Context context;
+    private NotificationManager mNotificationManager;
 
-    public static void notify(final Context context, final ArrayList<MQTTMessage> messageContent,
+    public MessageNotification(Context base) {
+        super(base);
+        context = getBaseContext();
+        createChannel();
+    }
+
+    public void notify(final ArrayList<MQTTMessage> messageContent,
                               String userName, Bitmap picture, final int unread, PendingIntent replyPendingIntent, final int notificationId) {
 
         MQTTMessage lastMessage = messageContent.get(messageContent.size() - 1);
@@ -88,7 +100,7 @@ public class MessageNotification {
                         .setAllowGeneratedReplies(true)
                         .build();
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CONNECT_CHANNEL)
 
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
@@ -153,7 +165,7 @@ public class MessageNotification {
         nm.cancel(NOTIFICATION_TAG, notificationId);
     }
 
-    private static String getContent(MQTTMessage mqttMessage) {
+    private String getContent(MQTTMessage mqttMessage) {
         String content;
 
         if (mqttMessage.getFileType() != null) {
@@ -180,5 +192,36 @@ public class MessageNotification {
         } else content = mqttMessage.getMsg();
 
         return content;
+    }
+
+    public void createChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Create the channel object with the unique ID CONNECT_CHANNEL
+            NotificationChannel connectChannel = new NotificationChannel(
+                    CONNECT_CHANNEL, "DrConnect",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            // Configure the channel's initial settings
+            connectChannel.setLightColor(Color.GREEN);
+            connectChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+            // Submit the notification channel object to the notification manager
+             getNotificationManager().createNotificationChannel(connectChannel);
+        }
+    }
+
+    /**
+     * Get the notification mNotificationManager.
+     * <p>
+     * <p>Utility method as this helper works with it a lot.
+     *
+     * @return The system service NotificationManager
+     */
+    public NotificationManager getNotificationManager() {
+        if (mNotificationManager == null) {
+            mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        return mNotificationManager;
     }
 }

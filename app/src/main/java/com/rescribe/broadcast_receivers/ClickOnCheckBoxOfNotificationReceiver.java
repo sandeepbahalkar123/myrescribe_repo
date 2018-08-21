@@ -36,8 +36,7 @@ import static com.rescribe.util.RescribeConstants.MEDICATIONS_NOTIFICATION_TAG;
  * Created by jeetal on 16/5/17.
  */
 public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver implements HelperResponse {
-    RespondToNotificationHelper respondToNotificationHelper;
-    Context mContext;
+    private Context mContext;
     private int notificationId;
 
     @Override
@@ -45,7 +44,7 @@ public class ClickOnCheckBoxOfNotificationReceiver extends BroadcastReceiver imp
         Integer medicineID = null;
         String medicineSlot = "";
         this.mContext = mContext;
-        respondToNotificationHelper = new RespondToNotificationHelper(mContext, this);
+        RespondToNotificationHelper respondToNotificationHelper = new RespondToNotificationHelper(mContext, this);
         int notificationId = intent.getIntExtra(RescribeConstants.NOTIFICATION_ID, -1);
         int investigation_notification_id = intent.getIntExtra(RescribeConstants.INVESTIGATION_KEYS.INVESTIGATION_NOTIFICATION_ID, -1);
         int appointment_notification_id = intent.getIntExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, -1);

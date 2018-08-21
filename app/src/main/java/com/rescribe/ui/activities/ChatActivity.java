@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Service;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,7 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -32,7 +30,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.content.res.AppCompatResources;
@@ -75,7 +72,6 @@ import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.chat.MQTTData;
 import com.rescribe.model.chat.MQTTMessage;
-import com.rescribe.model.chat.SendMessageModel;
 import com.rescribe.model.chat.StatusInfo;
 import com.rescribe.model.chat.history.ChatHistory;
 import com.rescribe.model.chat.history.ChatHistoryModel;
@@ -144,7 +140,6 @@ import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.REACHED;
 import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SEEN;
 import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SENT;
 import static com.rescribe.util.RescribeConstants.PLACE_PICKER_REQUEST;
-import static com.rescribe.util.RescribeConstants.SEND_MESSAGE;
 import static com.rescribe.util.RescribeConstants.UPLOADING;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.IDLE;
 import static com.rescribe.util.RescribeConstants.USER_STATUS.OFFLINE;
@@ -168,7 +163,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     // Audio End
 
     private static final int MAX_ATTACHMENT_COUNT = 10;
-    private static final String RESCRIBE_FILES = "/Rescribe/Files/";
+    public static final String RESCRIBE_FILES = "/Rescribe/Files/";
     private static final String RESCRIBE_PHOTOS = "/Rescribe/Photos/";
     private static final String RESCRIBE_AUDIO = "/Rescribe/Audios/";
     private static final String RESCRIBE_UPLOAD_FILES = "/Rescribe/SentFiles/";
@@ -180,6 +175,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String filesUploadFolder;
     private String photosUploadFolder;
     private String audioUploadFolder;
+
     @BindView(R.id.backButton)
     ImageView backButton;
     @BindView(R.id.profilePhoto)
@@ -194,12 +190,10 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     LinearLayout bookAppointmentLayout;
     @BindView(R.id.receiverName)
     CustomTextView receiverName;
-    //-------------
     @BindView(R.id.bookAppointmentButton)
     CustomTextView bookAppointmentButton;
     @BindView(R.id.bookAppointmentGetTokenButton)
     CustomTextView mBookAppointmentGetTokenButton;
-    //------------
     @BindView(R.id.dateTime)
     CustomTextView dateTime;
     @BindView(R.id.titleLayout)
@@ -222,19 +216,14 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     ImageView sendButton;
     @BindView(R.id.messageTypeLayout)
     RelativeLayout messageTypeLayout;
-
     @BindView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
-
     @BindView(R.id.audioSlider)
     SlideView audioSlider;
-
     @BindView(R.id.dateTextView)
     TextView dateTextView;
-
     @BindView(R.id.reveal_items)
     CardView mRevealView;
-
     @BindView(R.id.exitRevealDialog)
     FrameLayout exitRevealDialog;
 
@@ -408,7 +397,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private TextDrawable mSelfDrawable;
     private TextDrawable mReceiverDrawable;
 
-
     // load more
     int next = 1;
 
@@ -417,7 +405,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     private String salutation;
     private String patientName;
     private String imageUrl = "";
-    private String fileUrl = "";
 
     private ChatDoctor chatList;
 
@@ -569,7 +556,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 if (prePosition != positionView) {
                     MQTTMessage mqttMessage = ChatActivity.this.mqttMessage.get(positionView);
                     dateTextView.setText(CommonMethods.getDayFromDateTime(mqttMessage.getMsgTime(), RescribeConstants.DATE_PATTERN.UTC_PATTERN, RescribeConstants.DATE_PATTERN.DD_MMMM_YYYY));
-
                     prePosition = positionView;
                 }
             }
@@ -936,7 +922,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
         UploadService.UPLOAD_POOL_SIZE = 10;
     }
 
-    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton, R.id.messageType, R.id.bookAppointmentGetTokenButton})
+    @OnClick({R.id.backButton, R.id.attachmentButton, R.id.cameraButton, R.id.sendButton, R.id.exitRevealDialog, R.id.camera, R.id.document, R.id.location, R.id.bookAppointmentButton, R.id.bookAppointmentGetTokenButton})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -988,8 +974,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 break;
             case R.id.cameraButton:
                 ChatActivityPermissionsDispatcher.onPickPhotoWithCheck(ChatActivity.this);
-                break;
-            case R.id.messageType:
                 break;
             case R.id.sendButton:
                 // SendButton
@@ -1403,19 +1387,7 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
     @Override
     public void onSuccess(String mOldDataTag, CustomResponse customResponse) {
-        if (customResponse instanceof SendMessageModel) {
-            SendMessageModel sendMessageModel = (SendMessageModel) customResponse;
-            if (sendMessageModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
-                // message sent
-                messageType.setText("");
-            } else {
-                if (chatAdapter != null) {
-                    mqttMessage.remove(mqttMessage.size() - 1);
-                    chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
-                }
-                CommonMethods.showToast(ChatActivity.this, sendMessageModel.getCommon().getStatusMessage());
-            }
-        } else if (customResponse instanceof ChatHistoryModel) {
+      if (customResponse instanceof ChatHistoryModel) {
             ChatHistoryModel chatHistoryModel = (ChatHistoryModel) customResponse;
             if (chatHistoryModel.getCommon().getStatusCode().equals(RescribeConstants.SUCCESS)) {
 
@@ -1543,34 +1515,16 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
     @Override
     public void onParseError(String mOldDataTag, String errorMessage) {
         swipeLayout.setRefreshing(false);
-        if (mOldDataTag.equals(SEND_MESSAGE)) {
-            if (chatAdapter != null) {
-                mqttMessage.remove(mqttMessage.size() - 1);
-                chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
-            }
-        }
     }
 
     @Override
     public void onServerError(String mOldDataTag, String serverErrorMessage) {
         swipeLayout.setRefreshing(false);
-        if (mOldDataTag.equals(SEND_MESSAGE)) {
-            if (chatAdapter != null) {
-                mqttMessage.remove(mqttMessage.size() - 1);
-                chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
-            }
-        }
     }
 
     @Override
     public void onNoConnectionError(String mOldDataTag, String serverErrorMessage) {
         swipeLayout.setRefreshing(false);
-        if (mOldDataTag.equals(SEND_MESSAGE)) {
-            if (chatAdapter != null) {
-                mqttMessage.remove(mqttMessage.size() - 1);
-                chatAdapter.notifyItemRemoved(mqttMessage.size() - 1);
-            }
-        }
     }
 
     // Uploading
@@ -1582,7 +1536,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
             MultipartUploadRequest uploadRequest = new MultipartUploadRequest(ChatActivity.this, String.valueOf(mqttMessage.getMsgId()), Url)
                     .setNotificationConfig(uploadNotificationConfig)
                     .setMaxRetries(RescribeConstants.MAX_RETRIES)
-
                     .addHeader(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
                     .addHeader(RescribeConstants.DEVICEID, device.getDeviceId())
                     .addHeader(RescribeConstants.OS, device.getOS())
@@ -1625,77 +1578,8 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
 
     @Override
     public void openFile(MQTTMessage message, ImageView senderFileIcon) {
-
-        Uri uriTemp = Uri.parse(message.getFileUrl());
-
         if (message.getFileType().equals(DOC)) {
-
-            File file;
-            if (uriTemp.toString().contains("file://"))
-                file = new File(uriTemp.getPath());
-            else file = new File(uriTemp.toString());
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            Uri uri = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".droidninja.filepicker.provider", file);
-            } else {
-                uri = Uri.fromFile(createImageFile(uriTemp));
-            }
-
-            // Check what kind of file you are trying to open, by comparing the uri with extensions.
-            // When the if condition is matched, plugin sets the correct intent (mime) type,
-            // so Android knew what application to use to open the file
-            if (uri.toString().contains(".doc") || uri.toString().contains(".docx")) {
-                // Word document
-                intent.setDataAndType(uri, "application/msword");
-            } else if (uri.toString().contains(".pdf")) {
-                // PDF file
-                intent.setDataAndType(uri, "application/pdf");
-            } else if (uri.toString().contains(".ppt") || uri.toString().contains(".pptx")) {
-                // Powerpoint file
-                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-            } else if (uri.toString().contains(".xls") || uri.toString().contains(".xlsx")) {
-                // Excel file
-                intent.setDataAndType(uri, "application/vnd.ms-excel");
-            } else if (uri.toString().contains(".zip") || uri.toString().contains(".rar")) {
-                // WAV audio file
-                intent.setDataAndType(uri, "application/x-wav");
-            } else if (uri.toString().contains(".rtf")) {
-                // RTF file
-                intent.setDataAndType(uri, "application/rtf");
-            } else if (uri.toString().contains(".wav") || uri.toString().contains(".mp3")) {
-                // WAV audio file
-                intent.setDataAndType(uri, "audio/x-wav");
-            } else if (uri.toString().contains(".gif")) {
-                // GIF file
-                intent.setDataAndType(uri, "image/gif");
-            } else if (uri.toString().contains(".jpg") || uri.toString().contains(".jpeg") || uri.toString().contains(".png")) {
-                // JPG file
-                intent.setDataAndType(uri, "image/jpeg");
-            } else if (uri.toString().contains(".txt")) {
-                // Text file
-                intent.setDataAndType(uri, "text/plain");
-            } else if (uri.toString().contains(".3gp") || uri.toString().contains(".mpg") || uri.toString().contains(".mpeg") || uri.toString().contains(".mpe") || uri.toString().contains(".mp4") || uri.toString().contains(".avi")) {
-                // Video files
-                intent.setDataAndType(uri, "video/*");
-            } else {
-                //if you want you can also define the intent type for any other file
-                //additionally use else clause below, to manage other unknown extensions
-                //in this case, Android will show all applications installed on the device
-                //so you can choose which application to use
-                intent.setDataAndType(uri, "*/*");
-            }
-
-            try {
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                CommonMethods.showToast(ChatActivity.this, getResources().getString(R.string.doc_viewer_not_found));
-            }
+            CommonMethods.openDoc(ChatActivity.this, message.getFileUrl(), filesFolder);
         } else if (message.getFileType().equals(AUD)) {
 
             if (this.audioIcon != null) {
@@ -1714,10 +1598,6 @@ public class ChatActivity extends AppCompatActivity implements HelperResponse, C
                 startPlaying(message.getFileUrl());
             }
         }
-    }
-
-    private File createImageFile(Uri uriTemp) {
-        return new File(filesFolder, CommonMethods.getFileNameFromPath(uriTemp.toString()));
     }
 
     // Broadcast

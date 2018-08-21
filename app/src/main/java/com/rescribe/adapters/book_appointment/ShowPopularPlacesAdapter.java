@@ -24,7 +24,7 @@ public class ShowPopularPlacesAdapter extends RecyclerView.Adapter<ShowPopularPl
 
     private Context mContext;
     private ArrayList<AreaList> mDataList;
-    OnPopularPlacesListener mOnPopularPlacesListener;
+    private OnPopularPlacesListener mOnPopularPlacesListener;
 
     public ShowPopularPlacesAdapter(Context mContext, ArrayList<AreaList> dataList, OnPopularPlacesListener mOnPopularPlacesListener) {
         this.mDataList = dataList;

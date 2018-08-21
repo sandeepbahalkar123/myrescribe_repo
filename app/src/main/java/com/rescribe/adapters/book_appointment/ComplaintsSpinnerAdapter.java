@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by root on 22/6/16.
  */
 public class ComplaintsSpinnerAdapter extends BaseAdapter {
-    Context mContext;
+    private Context mContext;
     private ArrayList<ComplaintList> mComplaintLists;
 
 

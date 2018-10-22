@@ -18,6 +18,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
@@ -29,8 +30,10 @@ import com.rescribe.ui.activities.WebViewActivity;
 import com.rescribe.ui.activities.zoom_images.MultipleImageWithSwipeAndZoomActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -56,7 +59,21 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             List<VisitCommonData> commonData = listDataHeader.get(i).getCommonData();
             List<Vital> commonDatasVitals = listDataHeader.get(i).getVitals();
             if (!(commonData == null)) {
-                if (commonData.size() > 0) {
+                if (!commonData.isEmpty()) {
+                    mListDataHeader.add(listDataHeader.get(i));
+                } else if (listDataHeader.get(i).getCaseDetailName().toLowerCase().contains(CHILD_TYPE_ALLERGIES)) {
+                    List<VisitCommonData> common = new ArrayList<>();
+                    VisitCommonData visitCommonData = new VisitCommonData();
+                    visitCommonData.setDosage("");
+                    visitCommonData.setId(0);
+                    visitCommonData.setMedicineTypeName("");
+                    visitCommonData.setMedicinename("");
+                    visitCommonData.setName("No Allergies Found");
+                    visitCommonData.setRemarks("");
+                    visitCommonData.setVitalValue("");
+                    visitCommonData.setUrl("");
+                    common.add(visitCommonData);
+                    listDataHeader.get(i).setCommonData(common);
                     mListDataHeader.add(listDataHeader.get(i));
                 }
             } else if (!(commonDatasVitals == null)) {
@@ -70,6 +87,8 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                     mListDataHeader.add(listDataHeader.get(i));
                 }
             }
+
+
         }
     }
 
@@ -179,7 +198,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
 
             String textToShow = "";
             if (headerName.contains(CHILD_TYPE_ALLERGIES)) {
-                if(!childObject.get(childPosition).getName().isEmpty()) {
+                if (!childObject.get(childPosition).getName().isEmpty()) {
                     if (childObject.get(childPosition).getName().contains("food")) {
                         textToShow = childObject.get(childPosition).getName();
                         if (!childObject.get(childPosition).getRemarks().isEmpty())
@@ -191,7 +210,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                         if (!childObject.get(childPosition).getRemarks().isEmpty())
                             textToShow += "-" + childObject.get(childPosition).getRemarks();
                     }
-                }else{
+                } else {
                     textToShow = childObject.get(childPosition).getName();
                 }
 
@@ -577,7 +596,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                         } else {
                             groupViewHolder.mDetailFirstPoint.setText(mVisitDetailList.get(0).getName() + "...");
                         }
-                }else if (caseDetailName.contains(CHILD_TYPE_ALLERGIES)) {
+                } else if (caseDetailName.contains(CHILD_TYPE_ALLERGIES)) {
 
                     if (!mListDataHeader.get(groupPosition).getCommonData().isEmpty()) {
 
@@ -587,19 +606,19 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                         String medicineName = mListDataHeader.get(groupPosition).getCommonData().get(0).getMedicinename();
                         String remarks = mListDataHeader.get(groupPosition).getCommonData().get(0).getRemarks();
 
-                        if(!name.isEmpty()){
-                            if(name.contains("food")){
+                        if (!name.isEmpty()) {
+                            if (name.contains("food")) {
                                 textToShow += name;
                                 if (!remarks.isEmpty())
-                                    textToShow += "-" +remarks;
-                            }else{
+                                    textToShow += "-" + remarks;
+                            } else {
                                 textToShow += name;
                                 if (!medicineName.isEmpty())
-                                    textToShow += "-" +medicineName;
+                                    textToShow += "-" + medicineName;
                                 if (!remarks.isEmpty())
-                                    textToShow += "-" +remarks;
+                                    textToShow += "-" + remarks;
                             }
-                        }else{
+                        } else {
                             textToShow += name;
                         }
 
@@ -753,7 +772,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                             severeBpMaxRange.setText(severe);
 
                         }
-                    }else{
+                    } else {
                         if (noncategory.equals("")) {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                             noncategory += finalString;
@@ -798,7 +817,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                             severeSubTypeRange.setText(severeBpmin);
 
                         }
-                    }else{
+                    } else {
                         if (noncategoryBpMin.equals("")) {
                             String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                             noncategoryBpMin += finalString;
@@ -844,7 +863,7 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
                         severeSubTypeRange.setText(severeBpNull);
 
                     }
-                }else{
+                } else {
                     if (noncategoryBpNull.equals("")) {
                         String finalString = getSortedRangeValues(rangeList.get(i).getCategory(), rangeList.get(i).getOperator(), rangeList.get(i).getValue(), rangeList.get(i).getMin(), rangeList.get(i).getMax());
                         noncategoryBpNull += finalString;
@@ -1010,11 +1029,11 @@ public class SingleVisitAdapter extends BaseExpandableListAdapter {
             range = min + mContext.getString(R.string.dash) + max;
         } else if (category.equalsIgnoreCase(mContext.getString(R.string.severeRange)) && operator.equalsIgnoreCase(mContext.getString(R.string.greater))) {
             range = mContext.getString(R.string.greater_than_sign) + value;
-        } else if ( (!category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.severeRange)) )  && operator.equalsIgnoreCase(mContext.getString(R.string.less))) {
+        } else if ((!category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) && operator.equalsIgnoreCase(mContext.getString(R.string.less))) {
             range = mContext.getString(R.string.less_than_sign) + value;
-        } else if ((!category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.severeRange)) ) && operator.equalsIgnoreCase(mContext.getString(R.string.equal))) {
+        } else if ((!category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) && operator.equalsIgnoreCase(mContext.getString(R.string.equal))) {
             range = min + mContext.getString(R.string.dash) + max;
-        } else if ((!category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.severeRange)) ) && operator.equalsIgnoreCase(mContext.getString(R.string.greater))) {
+        } else if ((!category.equalsIgnoreCase(mContext.getString(R.string.normalRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.moderateRange)) || !category.equalsIgnoreCase(mContext.getString(R.string.severeRange))) && operator.equalsIgnoreCase(mContext.getString(R.string.greater))) {
             range = mContext.getString(R.string.greater_than_sign) + value;
         }
 

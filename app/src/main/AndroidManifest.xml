@@ -459,18 +459,6 @@
             android:label="@string/title_activity_add_tracker"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.rescribe.ui.activities.SnoozeAlarmNotifyActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" />
-
-        <service
-            android:name="com.rescribe.services.SnoozeAlarmPrescriptionService"
-            android:exported="false" />
-
-        <receiver android:name="com.rescribe.broadcast_receivers.SnoozeAlarmNotificationReceiver" />
 
         <!-- [START fcm_default_icon] -->
         <!--
@@ -519,6 +507,9 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8851ad6fd63975db848f308a0298d6c942f63d6b" />
+
+        <service android:name=".services.add_record_upload_Service.AddRecordService"/>
+        <service android:name=".services.connect_upload_service.ConnectUploadService"/>
     </application>
 
 </manifest>

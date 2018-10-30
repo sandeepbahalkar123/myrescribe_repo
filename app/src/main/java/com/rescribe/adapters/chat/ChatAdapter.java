@@ -134,7 +134,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.override(100, 100);
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);
-                requestOptions.transform(new CircleCrop(holder.senderProfilePhoto.getContext()));
+                requestOptions.transform(new CircleCrop());
                 requestOptions.placeholder(mSelfTextDrawable);
                 Glide.with(holder.senderProfilePhoto.getContext())
                         .load(message.getSenderImgUrl())
@@ -396,7 +396,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
                 requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
                 requestOptions.skipMemoryCache(true);
                 requestOptions.override(100, 100);
-                requestOptions.transform(new CircleCrop(holder.receiverProfilePhoto.getContext()));
+                requestOptions.transform(new CircleCrop());
                 requestOptions.placeholder(mReceiverTextDrawable);
                 Glide.with(holder.receiverProfilePhoto.getContext())
                         .load(message.getSenderImgUrl())

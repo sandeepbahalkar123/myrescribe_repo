@@ -6,22 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.maps.model.LatLng;
-import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
-import net.gotev.uploadservice.UploadService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,17 +53,21 @@ public class RescribeApplication extends MultiDexApplication {
         }
     }
 
+
+    private RequestQueue mRequestQueue;
+
+    private static RescribeApplication mInstance;
+
     @Override
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        MultiDex.install(this);
-        UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
         AppDBHelper instance = AppDBHelper.getInstance(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         instance.doReadAllUnreadMessages();
         appDBHelper = AppDBHelper.getInstance(getApplicationContext());
+        mInstance = this;
     }
 
     public static void setUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
@@ -175,4 +178,23 @@ public class RescribeApplication extends MultiDexApplication {
             e.printStackTrace();
         }
     }
+
+    public static synchronized RescribeApplication getInstance() {
+        return mInstance;
+    }
+
+    public RequestQueue getRequestQueue() {
+        if (mRequestQueue == null) {
+            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+
+        return mRequestQueue;
+    }
+
+    public <T> void addToRequestQueue(Request<T> req) {
+        req.setTag(TAG);
+        getRequestQueue().add(req);
+    }
+
+
 }

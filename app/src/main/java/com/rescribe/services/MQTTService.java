@@ -1,6 +1,7 @@
 package com.rescribe.services;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
 
@@ -25,6 +27,7 @@ import com.google.gson.JsonSyntaxException;
 import com.rescribe.R;
 import com.rescribe.broadcast_receivers.ReplayBroadcastReceiver;
 import com.rescribe.helpers.database.AppDBHelper;
+import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.model.chat.InternetConnect;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.chat.StatusInfo;
@@ -60,6 +63,8 @@ import static com.rescribe.util.RescribeConstants.MESSAGE_STATUS.SEEN;
 
 public class MQTTService extends Service {
 
+    private static final int CONNECT_FOREGROUND_ID = 98723731;
+
     public static final String KEY_REPLY = "key_replay";
     public static final String REPLY_ACTION = "com.rescribe.REPLY_ACTION";
     public static final String SEND_MESSAGE = "send_message";
@@ -93,13 +98,21 @@ public class MQTTService extends Service {
 
     private AppDBHelper appDBHelper;
     private MqttConnectOptions connOpts = new MqttConnectOptions();
+    private MessageNotification messageNotification;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        messageNotification = new MessageNotification(this);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            Notification notification = new NotificationCompat.Builder(this, NotificationHelper.CONNECT_CHANNEL)
+                    .setContentTitle("Doctor Connect")
+                    .setContentText("Chat with Doctor").build();
+            startForeground(CONNECT_FOREGROUND_ID, notification);
+        }
 
         initRxNetwork();
-
         appDBHelper = new AppDBHelper(this);
 
         //MQTT client id to use for the device. "" will generate a client id automatically
@@ -235,7 +248,7 @@ public class MQTTService extends Service {
                                                         messagesTemp.add(messages.get(index));
                                                 } else messagesTemp.addAll(messages);
 
-                                                MessageNotification.notify(MQTTService.this, messagesTemp, messageL.getSenderName(), getProfilePhotoBitmap(messageL), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
+                                                messageNotification.notify(messagesTemp, messageL.getSenderName(), getProfilePhotoBitmap(messageL), appDBHelper.unreadMessageCountById(messageL.getDocId()), getReplyPendingIntent(messageL), messageL.getDocId());
 
                                                 // change
                                                 statusInfo.setMessageStatus(REACHED);
@@ -429,12 +442,10 @@ public class MQTTService extends Service {
     private static class InternetState {
         final boolean isEnabled;
         final String state;
-
         InternetState(String state, boolean isEnabled) {
             this.isEnabled = isEnabled;
             this.state = state;
         }
-
     }
 // new code
 

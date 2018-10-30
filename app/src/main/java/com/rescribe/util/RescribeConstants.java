@@ -260,6 +260,10 @@ public class RescribeConstants {
         public static final String SEEN = "seen";
         public static final String REACHED = "reached";
         public static final String SENT = "sent";
+        public static final String PENDING = "pending";
+
+        int READ = 1;
+        int UNREAD = 0;
     }
 
     public static class FILE {

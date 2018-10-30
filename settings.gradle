@@ -1,1 +1,1 @@
-include ':app', ':filepicker', ':materialdrawer', ':monthPicker', ':uploadservice', ':fabmenu', ':crystalrangeseekbar', ':slideview', ':bottomsheetpickers', ':library'
+include ':app', ':filepicker', ':materialdrawer', ':monthPicker', ':fabmenu', ':crystalrangeseekbar', ':slideview', ':bottomsheetpickers', ':library'

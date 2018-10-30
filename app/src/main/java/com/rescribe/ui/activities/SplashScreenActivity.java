@@ -1,18 +1,14 @@
 package com.rescribe.ui.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.rescribe.R;
-import com.rescribe.broadcast_receivers.SnoozeAlarmNotificationReceiver;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.model.book_appointment.doctor_data.DoctorList;
 import com.rescribe.model.token.FCMData;
@@ -98,17 +94,5 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intentObj);
             }
         }, RescribeConstants.TIME_STAMPS.THREE_SECONDS);
-
-
-        //-----------
-        Intent alarm = new Intent(SplashScreenActivity.this, SnoozeAlarmNotificationReceiver.class);
-        boolean alarmRunning = (PendingIntent.getBroadcast(SplashScreenActivity.this, 0, alarm, PendingIntent.FLAG_NO_CREATE) != null);
-        if (!alarmRunning) {
-            int timeInterval = 1_000; // After every 1 minutes
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(SplashScreenActivity.this, 0, alarm, 0);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), timeInterval, pendingIntent);
-        }
-        //-----------
     }
 }

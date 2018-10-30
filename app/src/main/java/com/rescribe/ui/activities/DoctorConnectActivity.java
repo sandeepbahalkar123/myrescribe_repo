@@ -22,17 +22,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
-import com.google.gson.Gson;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView;
 import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -47,10 +44,8 @@ import com.rescribe.model.doctor_connect.ChatDoctor;
 import com.rescribe.model.doctor_connect_search.DoctorConnectSearchBaseModel;
 import com.rescribe.model.doctor_connect_search.SearchDataModel;
 import com.rescribe.model.investigation.Image;
-import com.rescribe.model.profile_upload.ProfilePhotoResponse;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
-import com.rescribe.singleton.Device;
 import com.rescribe.ui.activities.book_appointment.BookAppointDoctorListBaseActivity;
 import com.rescribe.ui.activities.dashboard.SettingsActivity;
 import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
@@ -66,20 +61,11 @@ import com.rescribe.ui.fragments.doctor_connect.DoctorConnectSearchContainerFrag
 import com.rescribe.ui.fragments.doctor_connect.SearchBySpecializationOfDoctorFragment;
 import com.rescribe.ui.fragments.doctor_connect.SearchDoctorByNameFragment;
 import com.rescribe.util.CommonMethods;
-import com.rescribe.util.Config;
 import com.rescribe.util.ImageUtils;
 import com.rescribe.util.RescribeConstants;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.ServerResponse;
-import net.gotev.uploadservice.UploadInfo;
-import net.gotev.uploadservice.UploadNotificationConfig;
-import net.gotev.uploadservice.UploadStatusDelegate;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 

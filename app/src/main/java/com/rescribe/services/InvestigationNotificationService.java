@@ -1,14 +1,17 @@
 package com.rescribe.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
@@ -45,16 +48,48 @@ import static com.rescribe.util.RescribeConstants.SAMSUNG;
  */
 public class InvestigationNotificationService extends Service implements HelperResponse {
 
-//    static int mNotificationNoTextField = 0;
-
     // Name of an intent extra we can use to identify if this service was started to create a notification
     public static final String INTENT_NOTIFY = "com.rescribe";
+    public static final String INVESTIGATION_CHANNEL = "investigation_notification";
     // This is the object that receives interactions from clients
     private final IBinder mBinder = new ServiceBinder();
     private int notification_id;
+    private NotificationManager mNotificationManager;
 
     @Override
     public void onCreate() {
+        createChannel();
+    }
+
+    public void createChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Create the channel object with the unique ID CONNECT_CHANNEL
+            NotificationChannel connectChannel = new NotificationChannel(
+                    INVESTIGATION_CHANNEL, "Investigation Notification",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            // Configure the channel's initial settings
+            connectChannel.setLightColor(Color.GREEN);
+            connectChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+            // Submit the notification channel object to the notification manager
+            getNotificationManager().createNotificationChannel(connectChannel);
+        }
+    }
+
+    /**
+     * Get the notification mNotificationManager.
+     * <p>
+     * <p>Utility method as this helper works with it a lot.
+     *
+     * @return The system service NotificationManager
+     */
+    public NotificationManager getNotificationManager() {
+        if (mNotificationManager == null) {
+            mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        return mNotificationManager;
     }
 
     @Override
@@ -122,7 +157,7 @@ public class InvestigationNotificationService extends Service implements HelperR
 
         PendingIntent mNoPendingIntent = PendingIntent.getBroadcast(this, value.get(0).getDrId(), mNotifyNoIntent, 0);
 
-        android.support.v4.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, INVESTIGATION_CHANNEL)
                 // Set Icon
                 .setSmallIcon(R.drawable.logosmall)
                 // Set Ticker Message
@@ -133,7 +168,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         // *************************************************************************************************************
 
         // Collapsed
-        
+
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViewCollapse = new RemoteViews(getPackageName(),
                 R.layout.investigation_notification_layout);
@@ -143,7 +178,7 @@ public class InvestigationNotificationService extends Service implements HelperR
         mRemoteViewCollapse.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
         mRemoteViewCollapse.setTextViewText(R.id.timeText, notificationTime);
 
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && Build.MANUFACTURER.contains(SAMSUNG)){
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && Build.MANUFACTURER.contains(SAMSUNG)) {
             mRemoteViewCollapse.setTextColor(R.id.showMedicineName, Color.WHITE);
             mRemoteViewCollapse.setTextColor(R.id.questionText, Color.WHITE);
             mRemoteViewCollapse.setTextColor(R.id.timeText, Color.WHITE);
@@ -162,14 +197,14 @@ public class InvestigationNotificationService extends Service implements HelperR
         mRemoteViewExpanded.setTextViewText(R.id.questionText, getText(R.string.investigation_msg) + doctorName + "?");
         mRemoteViewExpanded.setTextViewText(R.id.timeText, notificationTime);
 
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && android.os.Build.MANUFACTURER.contains(SAMSUNG)){
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && android.os.Build.MANUFACTURER.contains(SAMSUNG)) {
             mRemoteViewExpanded.setTextColor(R.id.showMedicineName, Color.WHITE);
             mRemoteViewExpanded.setTextColor(R.id.questionText, Color.WHITE);
             mRemoteViewExpanded.setTextColor(R.id.timeText, Color.WHITE);
         }
 
         // *************************************************************************************************************
-        
+
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         Notification notification = builder.build();

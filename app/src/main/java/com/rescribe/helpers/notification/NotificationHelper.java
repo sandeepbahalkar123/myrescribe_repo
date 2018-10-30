@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 public class NotificationHelper implements ConnectionListener {
 
+    public static final String CONNECT_CHANNEL = "drConnect";
     private final String TAG = this.getClass().getName();
     private Context mContext;
     private HelperResponse mHelperResponseManager;

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/selectMenuLayout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp56">
+
+    <ImageView
+        android:id="@+id/menuIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginStart="@dimen/dp8"
+        android:adjustViewBounds="true"
+        android:padding="@dimen/dp8"
+        tools:src="@drawable/select_doctor" />
+
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/menuOptionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/menuIcon"
+        android:layout_toLeftOf="@+id/arrowIcon1"
+        android:layout_toRightOf="@+id/menuIcon"
+        android:layout_toStartOf="@+id/arrowIcon1"
+        android:paddingEnd="@dimen/dp8"
+        android:paddingStart="@dimen/dp8"
+        android:textColor="@color/menu_option_on_dashboard_color"
+        android:textSize="@dimen/sp14"
+        app:customFont="@string/roboto_regular"
+        tools:text="@string/select_doctors" />
+
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/healthoffersTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/menuOptionName"
+        android:layout_toLeftOf="@+id/arrowIcon1"
+        android:layout_toRightOf="@+id/menuOptionName"
+        android:layout_toStartOf="@+id/arrowIcon1"
+        android:background="@drawable/health_offers_tag"
+        android:drawableLeft="@drawable/white_dot_health_offers"
+        android:drawablePadding="@dimen/dp3"
+        android:paddingBottom="@dimen/dp2"
+        android:paddingLeft="@dimen/dp6"
+        android:paddingTop="@dimen/dp2"
+        android:text="0 Offers"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp10"
+        app:customFont="@string/roboto_regular"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/dashboardArrowIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        app:srcCompat="@drawable/dashboard_arrow" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+</RelativeLayout>

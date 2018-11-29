@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.rescribe.ui.activities.vital_graph.VitalGraphDetailsActivity"
+    tools:showIn="@layout/activity_vital_graph_details">
+
+    <LinearLayout
+        android:id="@+id/layout0"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp14"
+        android:paddingTop="@dimen/dp8">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/dp14"
+            android:paddingLeft="@dimen/dp20"
+            android:paddingRight="@dimen/dp14"
+            android:paddingStart="@dimen/dp20">
+
+            <ImageView
+                android:id="@+id/ellipse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dp4"
+                app:srcCompat="@drawable/ellipse_3" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/weight"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp34"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/ellipse"
+                android:layout_toRightOf="@id/ellipse"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingStart="@dimen/dp10"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_bold"
+                tools:text="" />
+
+
+        </RelativeLayout>
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp46"
+            android:paddingStart="@dimen/dp46"
+            android:textSize="@dimen/sp13"
+            app:customFont="@string/roboto_medium"
+            tools:text="" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dp10"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/curve_edges_button"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/addNewTracker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:padding="@dimen/dp8"
+                        app:srcCompat="@drawable/icon_add_white" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/graphCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/dp5"
+                        android:layout_marginLeft="@dimen/dp5"
+                        android:layout_marginRight="@dimen/dp5">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/legendsDrawn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp34"
+                    android:layout_marginTop="@dimen/dp6"
+                    android:layout_marginBottom="@dimen/dp6"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/dp34">
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/dp6"
+                        android:paddingStart="@dimen/dp6"
+                        android:text="Added by doctor"
+                        android:textColor="@color/white" />
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="@dimen/dp6"
+                        android:layout_marginStart="@dimen/dp6"
+                        android:background="@color/black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/dp6"
+                        android:paddingStart="@dimen/dp6"
+                        android:text="Added by patient"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_weight="1"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_medium"
+                tools:text="@string/dummy_full" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

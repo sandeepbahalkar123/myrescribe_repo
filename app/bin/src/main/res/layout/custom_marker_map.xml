@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/markerIconLayout"
+        android:layout_width="@dimen/dp36"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp5"
+        android:background="@drawable/locator"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/dp36"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp4"
+            android:src="@drawable/layer_13" />
+
+        <ImageView
+            android:layout_width="@dimen/dp36"
+            android:layout_height="1dp"
+            android:paddingEnd="@dimen/dp5"
+            android:paddingStart="@dimen/dp5"
+            android:src="#636363" />
+
+        <TextView
+            android:id="@+id/ratingText"
+            android:layout_width="@dimen/dp36"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="@dimen/dp8"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            tools:text="4.5" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/doctorNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/markerIconLayout"
+        android:background="@drawable/text_back"
+        android:paddingEnd="3dp"
+        android:paddingStart="3dp"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        tools:text="Dr Shaha Samir" />
+</RelativeLayout>

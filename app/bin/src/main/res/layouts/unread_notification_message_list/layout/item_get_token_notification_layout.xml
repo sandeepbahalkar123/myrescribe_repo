@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/notification_bg_grey"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:background="@drawable/notification_bg"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp12"
+                android:layout_marginRight="@dimen/dp12"
+                app:srcCompat="@drawable/notifications_get_token_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/tokenMessageTimeStamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="@dimen/dp5"
+                    android:paddingTop="@dimen/dp4"
+                    android:textColor="@color/grey_shade"
+                    android:textSize="@dimen/sp11"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:customFont="@string/roboto_medium"
+                    tools:text="2:00 am" />
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/tokenMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="@dimen/dp5"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp13"
+                    app:customFont="@string/roboto_medium"
+                    tools:text="Do you want to confirm the token number available with Dr. Sachin Patil for 10:00 pm today?" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/dp8"
+                    android:paddingTop="@dimen/dp5">
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/yesTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/yes"
+                        android:textAllCaps="true"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/noTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginStart="@dimen/dp10"
+                        android:layout_toRightOf="@id/yesTextView"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/no"
+                        android:textAllCaps="true"
+                        android:textColor="@color/no_color"
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_medium" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/loadMoreUnreadTokenMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/more"
+                        android:textColor="@color/statusbar"
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_medium" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

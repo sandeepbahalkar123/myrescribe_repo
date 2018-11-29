@@ -1,0 +1,140 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical"
+    tools:background="@color/greyish">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/vitals_curve_grey_bg"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/textheading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dp28"
+                    android:text="@string/follow_up"
+                    android:textSize="@dimen/sp17"
+                    app:customFont="@string/roboto_bold" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/icon"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circular_shape_vital_bg"
+                android:padding="@dimen/dp8"
+                app:srcCompat="@drawable/followup_icon" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/already_booked"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp46"
+                android:background="@color/white">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/already_booked_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/already_booked"
+                    android:textColor="@color/follow_up_button"
+                    app:customFont="@string/roboto_regular" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/already_booked_text"
+                    android:layout_toRightOf="@+id/already_booked_text"
+                    android:padding="@dimen/dp8"
+                    app:srcCompat="@drawable/tick_mark_white" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/follow_up_complete"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp46"
+                android:background="@color/white">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/follow_up_complete_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/follow_up_button"
+                    android:text="@string/follow_up_complete"
+                    app:customFont="@string/roboto_regular" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/follow_up_complete_text"
+                    android:layout_toRightOf="@+id/follow_up_complete_text"
+                    android:padding="@dimen/dp8"
+                    app:srcCompat="@drawable/tick_mark_white" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/not_interested"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp46"
+                android:background="@drawable/not_intrested_back_white">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/not_interested_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/not_interested"
+                    app:customFont="@string/roboto_regular" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/follow_up_button"
+                    android:layout_toEndOf="@+id/not_interested_text"
+                    android:layout_toRightOf="@+id/not_interested_text"
+                    android:padding="@dimen/dp8"
+                    app:srcCompat="@drawable/tick_mark_white" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

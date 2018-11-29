@@ -1,0 +1,742 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainParentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/hideMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp56"
+            android:background="@color/tagColor">
+
+            <Button
+                android:id="@+id/applyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:focusable="true"
+                android:text="@string/done"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp19" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/filter"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp22"
+                app:customFont="@string/roboto_bold" />
+
+            <Button
+                android:id="@+id/resetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:text="@string/reset"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp19" />
+
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/sortingHeaderView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/drawer_filter_header_icon_layout"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/sorting_icon" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:text="@string/sorting"
+                            app:customFont="@string/roboto_medium" />
+
+                        <ImageView
+                            style="@style/drawer_filter_header_direction_icon_layout"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/down_arrow" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/chooseOptionToSort"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:background="@color/otp_background_layout"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:orientation="vertical">
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                style="@style/drawer_filter_header_layout"
+                                android:layout_marginLeft="@dimen/dp8"
+                                android:layout_marginStart="@dimen/dp8"
+                                android:text="@string/sort"
+                                android:textColor="@color/tagColor"
+                                android:textSize="@dimen/sp14"
+                                app:customFont="@string/roboto_regular" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical">
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/chooseOptionForSort"
+                                style="@style/drawer_filter_header_layout"
+                                android:drawablePadding="@dimen/dp16"
+                                android:drawableRight="@drawable/sorting_arrow"
+                                android:gravity="right|end|center_vertical"
+                                android:text="@string/choose_one_option"
+                                android:textColor="@color/choose_option_color"
+                                app:customFont="@string/roboto_regular" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/genderHeaderView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/drawer_filter_header_icon_layout"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/gender" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:text="@string/gender"
+                            app:customFont="@string/roboto_medium" />
+
+                        <ImageView
+                            android:id="@+id/arrowIcon1"
+                            style="@style/drawer_filter_header_direction_icon_layout"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/down_arrow" />
+
+                    </LinearLayout>
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        style="@style/drawer_filter_header_layout"
+                        android:background="@color/otp_background_layout"
+                        android:gravity="center"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/select_gender"
+                        app:customFont="@string/roboto_regular" />
+
+                    <LinearLayout
+                        android:id="@+id/genderContentView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/otp_background_layout"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/dp8"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:id="@+id/genderMaleLayout"
+                            android:layout_width="@dimen/dp0"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.AppCompatImageView
+                                android:id="@+id/genderMaleIcon"
+                                style="@style/drawer_filter_gender_icon"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                app:srcCompat="@drawable/icon_male_default" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/genderMaleText"
+                                style="@style/drawer_filter_gender_text"
+                                android:layout_gravity="center"
+                                android:text="@string/male"
+                                android:textColor="@color/gender_drawer"
+                                app:customFont="@string/roboto_regular" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/genderFemaleLayout"
+                            android:layout_width="@dimen/dp0"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.AppCompatImageView
+                                android:id="@+id/genderFemaleIcon"
+                                style="@style/drawer_filter_gender_icon"
+                                android:layout_gravity="center"
+                                app:srcCompat="@drawable/icon_female_default" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/genderFemaleText"
+                                style="@style/drawer_filter_gender_text"
+                                android:layout_gravity="center"
+                                android:text="@string/female"
+                                android:textColor="@color/gender_drawer"
+                                app:customFont="@string/roboto_regular" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/genderTransgenderLayout"
+                            android:layout_width="@dimen/dp0"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.AppCompatImageView
+                                android:id="@+id/genderTransgenderIcon"
+                                style="@style/drawer_filter_gender_icon"
+                                android:layout_gravity="center"
+                                app:srcCompat="@drawable/icon_transgender_default" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/genderTransgenderText"
+                                style="@style/drawer_filter_gender_text"
+                                android:layout_gravity="center"
+                                android:text="@string/transgender"
+                                android:textColor="@color/gender_drawer"
+                                app:customFont="@string/roboto_regular" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/clinicFeesView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/clinicFeesHeaderView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/drawer_filter_header_icon_layout"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/clinic_fees" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:text="@string/clinic_fees"
+                            app:customFont="@string/roboto_medium" />
+
+                        <ImageView
+                            style="@style/drawer_filter_header_direction_icon_layout"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/down_arrow" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/clinicFeesContentView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/otp_background_layout"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dp20"
+                        android:paddingLeft="@dimen/dp10"
+                        android:visibility="visible">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:background="@color/otp_background_layout"
+                            android:gravity="center"
+                            android:padding="@dimen/dp5"
+                            android:text="@string/price_range"
+                            app:customFont="@string/roboto_regular" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/clinicFeesSeekBarMinValue"
+                                style="@style/drawer_filter_header_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:text="250"
+                                android:textColor="@color/black"
+                                app:customFont="@string/roboto_bold" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/clinicFeesSeekBarMaxValue"
+                                style="@style/drawer_filter_header_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="2500"
+                                android:textColor="@color/black"
+                                app:customFont="@string/roboto_bold" />
+
+                        </RelativeLayout>
+
+                        <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                            android:id="@+id/clinicFeesSeekBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp40"
+                            android:minHeight="@dimen/dp40"
+                            app:max_value="2500"
+                            app:min_value="250" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/distanceHeaderView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/drawer_filter_header_icon_layout"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/distance" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:text="@string/distance"
+                            app:customFont="@string/roboto_medium" />
+
+                        <ImageView
+                            style="@style/drawer_filter_header_direction_icon_layout"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/down_arrow" />
+
+                    </LinearLayout>
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        style="@style/drawer_filter_header_layout"
+                        android:background="@color/otp_background_layout"
+                        android:gravity="center"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/distance_in_km"
+                        app:customFont="@string/roboto_regular" />
+
+                    <LinearLayout
+
+                        android:id="@+id/distanceContentView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/otp_background_layout"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp5"
+                        android:visibility="visible">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <com.rescribe.ui.customesViews.CustomTextView
+                                    android:id="@+id/distanceSeekBarValueIndicator"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/Gray"
+                                    app:customFont="@string/roboto_regular" />
+
+                                <SeekBar
+                                    android:id="@+id/distanceSeekBar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:max="100"
+                                    android:progressDrawable="@color/transparent"
+                                    android:thumb="@drawable/walk" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dp1"
+                                    android:layout_gravity="bottom"
+                                    android:layout_marginLeft="@dimen/dp6"
+                                    android:layout_marginRight="@dimen/dp6"
+                                    android:background="@color/distance_seek_bar"
+                                    android:text="asd" />
+                            </LinearLayout>
+
+                        </FrameLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/distanceSeekBarMinValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="@dimen/dp6"
+                                android:text="0"
+                                app:fontName="@string/roboto_regular" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/distanceSeekBarMaxValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="@dimen/dp6"
+                                android:text="100"
+                                app:fontName="@string/roboto_regular" />
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/availabilityHeaderView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/drawer_filter_header_icon_layout"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/availability" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:text="@string/availability"
+                            app:customFont="@string/roboto_medium" />
+
+                        <ImageView
+                            style="@style/drawer_filter_header_direction_icon_layout"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/down_arrow" />
+
+                    </LinearLayout>
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        style="@style/drawer_filter_header_layout"
+                        android:background="@color/otp_background_layout"
+                        android:gravity="center"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/select_days"
+                        app:customFont="@string/roboto_regular" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/otp_background_layout"
+                        android:fillViewport="true">
+
+                        <LinearLayout
+                            android:id="@+id/availabilityContentView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/dp20"
+                            android:paddingTop="@dimen/dp20"
+                            android:visibility="visible">
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/availSunday"
+                                style="@style/drawer_filter_header_icon_layout"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp2"
+                                android:background="@drawable/select_days_circle_default"
+                                android:gravity="center"
+                                android:text="S"
+                                android:textColor="@color/tagColor"
+                                app:customFont="@string/roboto_regular" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/availMonday"
+                                style="@style/drawer_filter_header_icon_layout"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp2"
+                                android:background="@drawable/select_days_circle_default"
+                                android:gravity="center"
+                                android:text="M"
+                                android:textColor="@color/tagColor"
+                                app:customFont="@string/roboto_regular" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/availTues"
+                                style="@style/drawer_filter_header_icon_layout"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp2"
+                                android:background="@drawable/select_days_circle_default"
+                                android:gravity="center"
+                                android:text="T"
+                                android:textColor="@color/tagColor"
+                                app:customFont="@string/roboto_regular" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/availWed"
+                                style="@style/drawer_filter_header_icon_layout"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp2"
+
+                                android:background="@drawable/select_days_circle_default"
+                                android:gravity="center"
+                                android:text="W"
+                                android:textColor="@color/tagColor"
+                                app:customFont="@string/roboto_regular" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/availThurs"
+                                style="@style/drawer_filter_header_icon_layout"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp2"
+
+                                android:background="@drawable/select_days_circle_default"
+                                android:gravity="center"
+                                android:text="T"
+                                android:textColor="@color/tagColor"
+                                app:customFont="@string/roboto_regular" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/availFri"
+                                style="@style/drawer_filter_header_icon_layout"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp2"
+                                android:background="@drawable/select_days_circle_default"
+                                android:gravity="center"
+                                android:text="F"
+                                android:textColor="@color/tagColor"
+                                app:customFont="@string/roboto_regular" />
+
+                            <com.rescribe.ui.customesViews.CustomTextView
+                                android:id="@+id/availSat"
+                                style="@style/drawer_filter_header_icon_layout"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/select_days_circle_default"
+                                android:gravity="center"
+                                android:text="S"
+                                android:textColor="@color/tagColor"
+                                app:customFont="@string/roboto_regular" />
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/locationView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/locationHeaderView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp40"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            style="@style/drawer_filter_header_icon_layout"
+                            app:srcCompat="@drawable/location_with_blue_bg" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            style="@style/drawer_filter_header_layout"
+                            android:text="@string/location"
+                            app:customFont="@string/roboto_medium" />
+
+                        <ImageView
+                            style="@style/drawer_filter_header_direction_icon_layout"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/down_arrow" />
+
+                    </LinearLayout>
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        style="@style/drawer_filter_header_layout"
+                        android:background="@color/otp_background_layout"
+                        android:gravity="center"
+                        android:padding="@dimen/dp5"
+                        android:text="@string/select_location"
+                        app:customFont="@string/roboto_regular" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/locationContentRecycleView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/otp_background_layout"
+                        android:focusable="false"
+                        android:paddingBottom="@dimen/dp20"
+                        android:paddingTop="@dimen/dp20"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/showSortLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp56"
+            android:background="@color/tagColor">
+
+            <Button
+                android:id="@+id/doneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:text="@string/done"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp19" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/sortingTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/filter"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp22"
+                app:customFont="@string/roboto_bold" />
+
+            <Button
+                android:id="@+id/resetSortingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@color/transparent"
+                android:text="@string/reset"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp19" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/sortingView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/drawer_filter_header_icon_layout"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/sorting_icon" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                style="@style/drawer_filter_header_layout"
+                android:text="@string/sorting"
+                app:customFont="@string/roboto_medium" />
+
+            <ImageView
+                style="@style/drawer_filter_header_direction_icon_layout"
+                android:visibility="gone"
+                app:srcCompat="@drawable/down_arrow" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/divider" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sortRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
+
+    </LinearLayout>
+</LinearLayout>

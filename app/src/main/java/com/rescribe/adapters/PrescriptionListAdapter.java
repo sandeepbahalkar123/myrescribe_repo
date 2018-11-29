@@ -6,12 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rescribe.R;
 import com.rescribe.model.prescription_response_model.PrescriptionModel;
+import com.rescribe.ui.activities.PrescriptionActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -33,10 +35,12 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     private List<PrescriptionModel> mPrescriptionData;
     private Context mContext;
+    private OnPrescriptionListener onPrescriptionListener;
 
-    public PrescriptionListAdapter(Context context, List<PrescriptionModel> dataSet) {
+    public PrescriptionListAdapter(Context context, List<PrescriptionModel> dataSet, OnPrescriptionListener onPrescriptionListener) {
         this.mPrescriptionData = dataSet;
         this.mContext = context;
+        this.onPrescriptionListener = onPrescriptionListener;
     }
 
     @Override
@@ -48,6 +52,20 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     @Override
     public void onBindViewHolder(final PrescriptionListAdapter.ListViewHolder holder, final int position) {
+
+        holder.descriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPrescriptionListener.descriptionButton();
+            }
+        });
+
+        holder.testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPrescriptionListener.testButton();
+            }
+        });
 
         final PrescriptionModel prescriptionDataObject = mPrescriptionData.get(position);
         if (prescriptionDataObject.getInstruction().equals("")) {
@@ -292,6 +310,12 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
         TextView mTextViewhightlightInstructions;
         @BindView(R.id.highlightedInstructionView)
         LinearLayout mHighlightedInstructionView;
+
+        @BindView(R.id.descriptionButton)
+        Button descriptionButton;
+        @BindView(R.id.testButton)
+        Button testButton;
+
         @BindView(R.id.days)
         TextView mDays;
         @BindView(R.id.morningDose)
@@ -367,4 +391,8 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<PrescriptionLi
 
     }
 
+    public interface OnPrescriptionListener {
+        void descriptionButton();
+        void testButton();
+    }
 }

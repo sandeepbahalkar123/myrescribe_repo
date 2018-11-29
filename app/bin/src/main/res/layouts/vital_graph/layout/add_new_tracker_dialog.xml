@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/tagColor"
+            android:gravity="center"
+            android:text="sdsasad"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp18"
+            app:customFont="@string/roboto_bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp40"
+            android:layout_marginLeft="@dimen/dp40"
+            android:layout_marginRight="@dimen/dp40"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/dp10"
+                android:text="@string/enter_date"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_medium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/Gray" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/addTrackerDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:hint="@string/dd_mm_yyy"
+                android:padding="@dimen/dp10"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_regular" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/Gray" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/dp10"
+                android:text="@string/enter_reading"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp14"
+                app:customFont="@string/roboto_medium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/Gray" />
+
+            <LinearLayout
+                android:id="@+id/bloodPressureReadingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/systolic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:gravity="center"
+                    tools:hint="Systolic"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:maxLength="3"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/dp10"
+                    android:textCursorDrawable="@drawable/cursor_black"
+                    android:textSize="@dimen/sp14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textColor="@color/Gray" />
+
+                <EditText
+                    android:id="@+id/dystolic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:inputType="numberDecimal"
+                    android:gravity="center"
+                    tools:hint="Diastolic"
+                    android:imeOptions="actionDone"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:maxLength="3"
+                    android:padding="@dimen/dp10"
+                    android:textCursorDrawable="@drawable/cursor_black"
+                    android:textSize="@dimen/sp14" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/reading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:gravity="center"
+                tools:hint="130/88"
+                android:textColor="@color/black"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/dp10"
+                android:textCursorDrawable="@drawable/cursor_black"
+                android:textSize="@dimen/sp14"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/Gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="?attr/actionBarSize">
+
+                <Button
+                    android:id="@+id/addTrackerButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp5"
+                    android:background="@drawable/curve_edges_button"
+                    android:gravity="center"
+                    android:hint="@string/enter_date"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp14"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+

@@ -1,0 +1,392 @@
+{
+  "cardBgImageUrlList": [
+    "myappointments.jpg",
+    "sponsored.jpg",
+    "recentlyvisited.jpg",
+    "favorite.jpg"
+  ],
+  "dashboardMenuList": [
+    {
+      "name": "Find Doctors",
+      "identifier": "dashboard_FindDoctors",
+      "iconImageUrl": "finddoctor",
+      "clickEvent": {
+        "bgImageUrl": "finddoctors_bg.png",
+        "clickOptions": [
+          {
+            "name": "Book Appointment",
+            "identifier": "findDoc_BookAppointment",
+            "iconImageUrl": "bookappointment"
+          },
+          {
+            "name": "Doctor Connect",
+            "identifier": "findDoc_DoctorConnect",
+            "iconImageUrl": "doctorconnect"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Ongoing Medication",
+      "identifier": "dashboard_OngoingMedication",
+      "iconImageUrl": "ongoingmedications"
+    },
+    {
+      "name": "Health Repository",
+      "identifier": "dashboard_HealthRepository",
+      "iconImageUrl": "healthrepository",
+      "clickEvent": {
+        "bgImageUrl": "healthrepository_bg.png",
+        "clickOptions": [
+          {
+            "name": "My Records",
+            "identifier": "healthRepo_MyRecords",
+            "iconImageUrl": "myrecords"
+          },
+          {
+            "name": "Vital Graphs",
+            "identifier": "healthRepo_VitalGraphs",
+            "iconImageUrl": "vitalgraph"
+          },
+          {
+            "name": "Doctor Visits",
+            "identifier": "healthRepo_DoctorVisits",
+            "iconImageUrl": "doctorvisit"
+          },
+          {
+            "name": "Saved Articles",
+            "identifier": "healthRepo_SavedArticle",
+            "iconImageUrl": "savedarticle"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Health Offers",
+      "identifier": "dashboard_HealthOffers",
+      "iconImageUrl": "healthoffers"
+    },
+    {
+      "name": "Health Education",
+      "identifier": "dashboard_HealthEdu",
+      "iconImageUrl": "healtheducation"
+    },
+    {
+      "name": "Health Services",
+      "identifier": "dashboard_HealthServices",
+      "iconImageUrl": "healthservices",
+      "clickEvent": {
+        "bgImageUrl": "healthservices_bg.png",
+        "clickOptions": [
+          {
+            "name": "Doctors",
+            "identifier": "healthServices_Doctor",
+            "iconImageUrl": "doctor"
+          },
+          {
+            "name": "Pharmacy",
+            "identifier": "healthServices_Pharmacy",
+            "iconImageUrl": "pharmacy"
+          },
+          {
+            "name": "Hospital",
+            "identifier": "healthServices_Hospital",
+            "iconImageUrl": "hospital"
+          },
+          {
+            "name": "Laboratory",
+            "identifier": "healthServices_Lab",
+            "iconImageUrl": "laboratory"
+          },
+          {
+            "name": "Palliative Care",
+            "identifier": "healthServices_Palliative",
+            "iconImageUrl": "palliative_care"
+          },
+          {
+            "name": "Diagnostic Center",
+            "identifier": "healthServices_Diagnostic",
+            "iconImageUrl": "diagnosticcenter"
+          },
+          {
+            "name": "Blood Bank",
+            "identifier": "healthServices_BloodBank",
+            "iconImageUrl": "bloodbank"
+          },
+          {
+            "name": "Ambulance",
+            "identifier": "healthServices_Ambulance",
+            "iconImageUrl": "ambulance"
+          }
+        ]
+      }
+    }
+  ],
+  "dashboardBottomMenuList": [
+    {
+      "name": "Home",
+      "identifier": "bottomMenu_Home",
+      "iconImageUrl": "home",
+      "selectedIconImageUrl": "home_selected"
+    },
+    {
+      "name": "Book",
+      "identifier": "bottomMenu_Appointment",
+      "iconImageUrl": "appointment",
+      "selectedIconImageUrl": "appointment_selected"
+    },
+    {
+      "name": "AppLogo",
+      "identifier": "bottomMenu_AppLogo",
+      "iconImageUrl": "applogo",
+      "selectedIconImageUrl": "applogo_selected",
+      "clickEvent": {
+        "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/android/xxhdpi/applogo_bg.png",
+        "clickOptions": [
+          {
+            "name": "Profile",
+            "identifier": "appLogo_Profile",
+            "iconImageUrl": "profile_logo",
+            "clickEvent": {
+              "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/android/xxhdpi/profile_bg.png",
+              "clickOptions": [
+                {
+                  "name": "Services",
+                  "identifier": "",
+                  "iconImageUrl": "services"
+                },
+                {
+                  "name": "Ongoing Medication",
+                  "identifier": "",
+                  "iconImageUrl": "ongoingmedications"
+                },
+                {
+                  "name": "Appointments",
+                  "identifier": "",
+                  "iconImageUrl": "appointments"
+                },
+                {
+                  "name": "Doctor Visits",
+                  "identifier": "",
+                  "iconImageUrl": "doctorvisits"
+                },
+                {
+                  "name": "Vital Graphs",
+                  "identifier": "",
+                  "iconImageUrl": "vitalgraph"
+                },
+                {
+                  "name": "Settings",
+                  "identifier": "",
+                  "iconImageUrl": "settings",
+                  "clickEvent": {
+                    "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/settings_bg.png",
+                    "clickOptions": [
+                      {
+                        "name": "Notifications",
+                        "identifier": "",
+                        "iconImageUrl": "notifications",
+                        "clickEvent": {
+                          "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/notifications/android/xxhdpi/notifications_bg.png",
+                          "clickOptions": [
+                            {
+                              "name": "All Notifications",
+                              "identifier": "",
+                              "iconImageUrl": "allnotifications"
+                            },
+                            {
+                              "name": "Appointment Alert",
+                              "identifier": "",
+                              "iconImageUrl": "appointmentalert"
+                            },
+                            {
+                              "name": "Investigation Alert",
+                              "identifier": "",
+                              "iconImageUrl": "investigationalert"
+                            },
+                            {
+                              "name": "Medication Alert",
+                              "identifier": "",
+                              "iconImageUrl": "medicationalert"
+                            },
+                            {
+                              "name": "Offers Alert",
+                              "identifier": "",
+                              "iconImageUrl": "offersalert"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "How it Works?",
+                        "identifier": "",
+                        "iconImageUrl": ""
+                      },
+                      {
+                        "name": "Terms of Use",
+                        "identifier": "",
+                        "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/termsofuse.png"
+                      },
+                      {
+                        "name": "Privacy Policy",
+                        "identifier": "",
+                        "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/privacypolicy.png"
+                      },
+                      {
+                        "name": "Support",
+                        "identifier": "setting_Support",
+                        "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/support.png"
+                      },
+                      {
+                        "name": "Log Out",
+                        "identifier": "",
+                        "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/logout.png"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "Vital Graphs",
+            "identifier": "appLogo_VitalGraphs",
+            "iconImageUrl": "vitalgraph"
+          },
+          {
+            "name": "Notifications",
+            "identifier": "appLogo_Notifications",
+            "iconImageUrl": "notifications",
+            "clickEvent": {
+              "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/notifications/android/xxhdpi/notifications_bg.png",
+              "clickOptions": [
+                {
+                  "name": "Chat Notifications",
+                  "identifier": "appLogoNotify_Chat",
+                  "iconImageUrl": "chatnotification"
+                },
+                {
+                  "name": "Ongoing Medication Notifications",
+                  "identifier": "appLogoNotify_Ongoing",
+                  "iconImageUrl": "ongoingtreatmentnotification"
+                },
+                {
+                  "name": "Appointment Notifications",
+                  "identifier": "appLogoNotify_Appointment",
+                  "iconImageUrl": "appointmentnotification"
+                },
+                {
+                  "name": "Pending Investigation Notifications",
+                  "identifier": "appLogoNotify_Pending",
+                  "iconImageUrl": "pendinginvestigationnotification"
+                }
+              ]
+            }
+          },
+          {
+            "name": "My Records",
+            "identifier": "appLogo_MyRecords",
+            "iconImageUrl": "myrecords"
+          },
+          {
+            "name": "My Appointments",
+            "identifier": "appLogo_Appointment",
+            "iconImageUrl": "myappointments"
+          },
+          {
+            "name": "Ongoing Medication",
+            "identifier": "appLogo_OngoingMedication",
+            "iconImageUrl": "ongoingmedications"
+          },
+          {
+            "name": "Doctor Visits",
+            "identifier": "appLogo_DoctorVisits",
+            "iconImageUrl": "doctorvisits"
+          },
+          {
+            "name": "Saved Articles",
+            "identifier": "appLogo_SavedArticle",
+            "iconImageUrl": "savedarticles"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Connect",
+      "identifier": "bottomMenu_Connect",
+      "iconImageUrl": "menu_connect",
+      "selectedIconImageUrl": "menu_connect_selected"
+    },
+    {
+      "name": "Settings",
+      "identifier": "bottomMenu_Settings",
+      "iconImageUrl": "settings",
+      "selectedIconImageUrl": "settings_selected",
+      "clickEvent": {
+        "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/settings_bg.png",
+        "clickOptions": [
+          {
+            "name": "Notifications",
+            "identifier": "setting_Notification",
+            "iconImageUrl": "notifications",
+            "clickEvent": {
+              "bgImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/notifications/android/xxhdpi/notifications_bg.png",
+              "clickOptions": [
+                {
+                  "name": "All Notifications",
+                  "identifier": "settingNotify_All",
+                  "iconImageUrl": "allnotifications"
+                },
+                {
+                  "name": "Appointment Alert",
+                  "identifier": "settingNotify_Appointment",
+                  "iconImageUrl": "appointmentalert"
+                },
+                {
+                  "name": "Investigation Alert",
+                  "identifier": "settingNotify_Investigation",
+                  "iconImageUrl": "investigationalert"
+                },
+                {
+                  "name": "Medication Alert",
+                  "identifier": "settingNotify_Medication",
+                  "iconImageUrl": "medicationalert"
+                },
+                {
+                  "name": "Offers Alert",
+                  "identifier": "settingNotify_Offers",
+                  "iconImageUrl": "offersalert"
+                }
+              ]
+            }
+          },
+          {
+            "name": "How it Works?",
+            "identifier": "",
+            "iconImageUrl": ""
+          },
+          {
+            "name": "Terms of Use",
+            "identifier": "setting_Terms",
+            "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/termsofuse.png"
+          },
+          {
+            "name": "Privacy Policy",
+            "identifier": "setting_Privacy",
+            "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/privacypolicy.png"
+          },
+          {
+            "name": "Support",
+            "identifier": "setting_Support",
+            "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/applogo/profile/settings/android/xxhdpi/support.png"
+          },
+          {
+            "name": "Log Out",
+            "identifier": "setting_Logout",
+            "iconImageUrl": "http://drrescribe.com:3003/images/dashboard/bottomMenu/settings/android/xxhdpi/logout.png"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -6,13 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.shell.MainReactPackage;
+import com.facebook.soloader.SoLoader;
 import com.google.android.gms.maps.model.LatLng;
+import com.rescribe.ActivityStarterReactPackage;
 import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -24,8 +29,10 @@ import com.rescribe.util.RescribeConstants;
 import net.gotev.uploadservice.UploadService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.TreeSet;
 
 import io.fabric.sdk.android.Fabric;
@@ -33,7 +40,32 @@ import io.fabric.sdk.android.Fabric;
 /**
  * Created by Sandeep Bahalkar
  */
-public class RescribeApplication extends MultiDexApplication {
+public class RescribeApplication extends MultiDexApplication implements ReactApplication {
+
+    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            return Arrays.asList(
+                    new ActivityStarterReactPackage(),
+                    new MainReactPackage()
+            );
+        }
+
+        @Override
+        protected String getJSMainModuleName() {
+            return "index";
+        }
+    };
+
+    @Override
+    public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
+    }
     private static AppDBHelper appDBHelper;
     public final String TAG = this.getClass().getName();
     private static final Hashtable<String, Typeface> cache = new Hashtable<String, Typeface>();
@@ -57,6 +89,7 @@ public class RescribeApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        SoLoader.init(this, /* native exopackage */ false);
         Fabric.with(this, new Crashlytics());
         UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
         AppDBHelper instance = AppDBHelper.getInstance(this);

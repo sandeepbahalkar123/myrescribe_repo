@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp14"
+        android:paddingTop="@dimen/dp8">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/dp14"
+            android:paddingLeft="@dimen/dp20"
+            android:paddingRight="@dimen/dp14"
+            android:paddingStart="@dimen/dp20">
+
+            <ImageView
+                android:id="@+id/ellipse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dp4"
+                app:srcCompat="@drawable/ellipse_3" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/ellipse"
+                android:layout_toLeftOf="@+id/weight"
+                android:layout_toRightOf="@id/ellipse"
+                android:layout_toStartOf="@+id/weight"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingStart="@dimen/dp10"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_medium"
+                tools:text="Blood Pressure" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/bar"
+                android:layout_toStartOf="@+id/bar"
+                android:textColor="@color/tagColor"
+                android:textSize="@dimen/sp16"
+                app:customFont="@string/roboto_bold"
+                tools:text="130/88 mm Hg" />
+
+            <View
+                android:id="@+id/bar"
+                android:layout_width="2.5dp"
+                android:layout_height="@dimen/dp34"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginStart="@dimen/dp10"
+                android:background="@color/tagColor"
+                android:textSize="@dimen/sp34"/>
+
+        </RelativeLayout>
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/date"
+            app:customFont="@string/roboto_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
+            android:paddingLeft="@dimen/dp46"
+            android:paddingStart="@dimen/dp46"
+            tools:text="23rd  Aug’17 " />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:visibility="gone"
+        android:background="@color/grey_300"/>
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp10"
+        android:paddingEnd="@dimen/dp14"
+        android:paddingLeft="@dimen/dp20"
+        android:paddingRight="@dimen/dp14"
+        android:paddingStart="@dimen/dp20"
+        android:paddingTop="@dimen/dp10"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/ellipse1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dp4"
+            app:srcCompat="@drawable/ellipse_3" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/ellipse1"
+            android:layout_toLeftOf="@+id/bar1"
+            android:layout_toRightOf="@id/ellipse1"
+            android:layout_toStartOf="@+id/bar1"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingStart="@dimen/dp10"
+            android:text="@string/add_tracker"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp16"
+            app:customFont="@string/roboto_bold" />
+
+        <ImageView
+            android:id="@+id/bar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/expand_button" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/clickOnDoctorVisitLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sideBarView"
+            android:layout_width="@dimen/dp4"
+            android:layout_height="match_parent"
+            android:background="@color/Red" />
+
+        <LinearLayout
+            android:id="@+id/parentDataContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp6">
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:text="12th\nJust\now"
+                android:textColor="@color/recentblue"
+                android:textSize="@dimen/sp16"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="@dimen/dp20"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/upperLine"
+                    android:layout_width="@dimen/dp1"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/recentblue" />
+
+                <ImageView
+                    android:id="@+id/circularBulletMainElement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp20"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/blue_dot" />
+
+                <ImageView
+                    android:id="@+id/circularBulletChildElement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp10"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/small_blue_dot" />
+
+                <TextView
+                    android:id="@+id/lowerLine"
+                    android:layout_width="@dimen/dp1"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/recentblue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_weight="0.9"
+                android:orientation="horizontal">
+                <!--  ListRow Left sied Thumbnail image -->
+                <LinearLayout
+                    android:id="@+id/thumbnail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="@dimen/dp5"
+                    android:padding="3dip">
+
+                    <com.rescribe.ui.customesViews.CircularImageView
+                        android:id="@+id/docProfileImage"
+                        android:layout_width="@dimen/dp50"
+                        android:layout_height="@dimen/dp50"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/layer_12" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@+id/thumbnail"
+                    android:gravity="center|left"
+                    android:orientation="vertical">
+
+                    <!-- Title Of Song-->
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/doctorType"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/thumbnail"
+                        android:layout_marginTop="1dip"
+                        android:text="Just gona stand there and  "
+                        android:textColor="@color/dose_completed"
+                        android:textSize="@dimen/sp16"
+                        android:textStyle="bold" />
+
+                    <!-- Artist Name -->
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/doctorName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/doctorType"
+                        android:layout_toRightOf="@+id/thumbnail"
+                        android:text="Rihanna Love the way lie"
+                        android:textColor="@color/recentblue"
+                        android:textSize="@dimen/sp18"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <!-- Rightend Duration -->
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/doctorAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/doctorName"
+                        android:layout_toRightOf="@+id/thumbnail"
+                        android:gravity="right"
+                        android:text="5:45asdasdasdasd"
+                        android:textColor="@color/dose_completed"
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/footerBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp1"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/footerSideBarView"
+            android:layout_width="@dimen/dp4"
+            android:layout_height="match_parent"
+            android:background="@color/Red" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.398"
+            android:background="@color/transparent" />
+
+        <TextView
+            android:layout_width="@dimen/dp1"
+            android:layout_height="match_parent"
+            android:background="@color/recentblue" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1.5"
+            android:background="@color/Red" />
+
+    </LinearLayout>
+
+</LinearLayout>

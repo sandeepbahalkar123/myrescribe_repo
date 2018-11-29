@@ -1,1 +1,3 @@
+rootProject.name = 'Patient Rescribe'
+
 include ':app', ':filepicker', ':materialdrawer', ':monthPicker', ':fabmenu', ':crystalrangeseekbar', ':slideview', ':bottomsheetpickers', ':library'

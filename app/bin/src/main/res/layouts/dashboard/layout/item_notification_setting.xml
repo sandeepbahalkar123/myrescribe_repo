@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/dp12"
+    android:paddingEnd="@dimen/dp26"
+    android:paddingLeft="@dimen/dp46"
+    android:paddingRight="@dimen/dp26"
+    android:paddingStart="@dimen/dp46"
+    android:paddingTop="@dimen/dp12">
+
+    <ImageView
+        android:id="@+id/menuIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/textName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="Appointment Alert"
+        android:textSize="@dimen/sp16" />
+
+    <com.rescribe.ui.customesViews.switch_button.SwitchButton
+        android:id="@+id/radioSwitch"
+        style="@style/SwitchButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        app:kswAnimationDuration="0"
+        app:kswThumbColor="@color/white"
+        app:kswTextOff="OFF"
+        app:kswTextOn="ON" />
+
+</RelativeLayout>
+

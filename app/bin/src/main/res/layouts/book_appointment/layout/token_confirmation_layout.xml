@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/action_bar_main" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonLayout"
+        android:layout_below="@+id/actionBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/dp28">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/your_token"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/tokenNumberTextView"
+                            android:layout_width="@dimen/dp28"
+                            android:layout_height="@dimen/dp28"
+                            android:layout_marginEnd="@dimen/dp8"
+                            android:layout_marginStart="@dimen/dp8"
+                            android:background="@drawable/circular_back"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp16"
+                            app:customFont="@string/roboto_bold"
+                            tools:text="10" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/is_confirm"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end|right"
+                        android:orientation="vertical">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/showTimedate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp22"
+                            app:customFont="@string/roboto_bold"
+                            tools:text="10 Dec 2018 @ 10:00 am" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/approx_time"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/patientAheadTextView"
+                            android:layout_width="@dimen/dp28"
+                            android:layout_height="@dimen/dp28"
+                            android:layout_marginBottom="@dimen/dp8"
+                            android:layout_marginEnd="@dimen/dp8"
+                            android:layout_marginRight="@dimen/dp8"
+                            android:layout_marginTop="@dimen/dp8"
+                            android:background="@drawable/circular_back"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp16"
+                            app:customFont="@string/roboto_bold"
+                            tools:text="6" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ahead_message"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/dp16">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/doctor_will_see_you_in"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/timeInMinutesTextView"
+                            android:layout_width="@dimen/dp28"
+                            android:layout_height="@dimen/dp28"
+                            android:layout_marginEnd="@dimen/dp8"
+                            android:layout_marginStart="@dimen/dp8"
+                            android:background="@drawable/circular_back"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp16"
+                            app:customFont="@string/roboto_bold"
+                            tools:text="10" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mins"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dp16">
+
+                <RelativeLayout
+                    android:id="@+id/doctorDetailLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/doctorImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/dp4"
+                        app:srcCompat="@drawable/doctor_icon" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginStart="@dimen/dp10"
+                        android:layout_toEndOf="@id/doctorImage"
+                        android:layout_toRightOf="@id/doctorImage"
+                        android:orientation="vertical">
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/clinicName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp14"
+                            app:customFont="@string/roboto_medium"
+                            tools:text="Neuro Clinic" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@id/doctorName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp16"
+                            app:customFont="@string/roboto_medium"
+                            tools:text="Dr. Rahul Kalyanpur" />
+
+                        <com.rescribe.ui.customesViews.CustomTextView
+                            android:id="@+id/aboutDoctor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp12"
+                            app:customFont="@string/roboto_regular"
+                            tools:text="MBBS, MD - Medicine, Neurology" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/phoneNumberLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp8"
+                    tools:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/phoneImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/dp4"
+                        app:srcCompat="@drawable/mobile_icon" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/mobileNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginStart="@dimen/dp10"
+                        android:layout_marginTop="@dimen/dp2"
+                        android:layout_toEndOf="@id/phoneImage"
+                        android:layout_toRightOf="@id/phoneImage"
+                        android:textColor="@color/clickHere"
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_medium"
+                        tools:text="+91-20-65789032" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/addressLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp8">
+
+                    <ImageView
+                        android:id="@+id/addressIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dp4"
+                        app:srcCompat="@drawable/location_with_bottom_blue_circle_" />
+
+                    <com.rescribe.ui.customesViews.CustomTextView
+                        android:id="@+id/clinicAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginStart="@dimen/dp10"
+                        android:layout_marginTop="@dimen/dp2"
+                        android:layout_toEndOf="@id/addressIcon"
+                        android:layout_toRightOf="@id/addressIcon"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp12"
+                        app:customFont="@string/roboto_regular"
+                        tools:text="@string/address_dummy" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.rescribe.ui.customesViews.CustomTextView
+                    android:id="@+id/locationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginStart="@dimen/dp10"
+                    android:layout_marginTop="@dimen/dp4"
+                    android:layout_toEndOf="@id/addressIcon"
+                    android:layout_toRightOf="@id/addressIcon"
+                    android:padding="@dimen/dp3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp14"
+                    app:customFont="@string/roboto_regular"
+                    tools:text="@string/location" />
+
+                <ImageView
+                    android:id="@+id/locationImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp34"
+                    android:adjustViewBounds="true"
+                    android:paddingTop="@dimen/dp13" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp40"
+        android:layout_alignParentBottom="true"
+        android:background="@color/partition_color"
+        android:gravity="center">
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/partition_color"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp4"
+            android:paddingTop="@dimen/dp4"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp18"
+            app:customFont="@string/roboto_medium" />
+
+        <ImageView
+            android:id="@+id/partitionLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/partition_color"
+            app:srcCompat="@drawable/partition_line" />
+
+        <com.rescribe.ui.customesViews.CustomTextView
+            android:id="@+id/rescheduleButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/partition_color"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp4"
+            android:paddingTop="@dimen/dp4"
+            android:text="@string/reschedule"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp18"
+            app:customFont="@string/roboto_medium" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clickOnDoctorVisitLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/childSideBarView"
+        android:layout_width="@dimen/dp4"
+        android:layout_height="match_parent"
+        android:background="@color/transparent" />
+
+    <LinearLayout
+        android:id="@+id/parentDataContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp6"
+        android:paddingStart="@dimen/dp6">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.14"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="@dimen/dp32"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/barView"
+                android:layout_width="@dimen/dp1"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/recentblue" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:orientation="horizontal">
+            <!-- Artist Name -->
+            <ImageView
+                android:id="@+id/secondLevelUpDownArrow"
+                android:layout_width="@dimen/dp16"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="@dimen/dp2"
+                android:paddingRight="@dimen/dp4"
+                android:paddingTop="@dimen/dp2"
+                android:visibility="gone"
+                app:srcCompat="@drawable/down_arrow"
+                tools:visibility="visible" />
+
+            <com.rescribe.ui.customesViews.CustomTextView
+                android:id="@+id/headerName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="@dimen/dp2"
+                android:paddingTop="@dimen/dp2"
+                android:textColor="@color/dose_completed"
+                android:textSize="@dimen/sp16"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <ImageView
+                android:id="@+id/secondLevelAttachmentIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="@dimen/dp2"
+                android:paddingRight="@dimen/dp30"
+                android:paddingTop="@dimen/dp2"
+                android:visibility="gone"
+                app:srcCompat="@drawable/attachment"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

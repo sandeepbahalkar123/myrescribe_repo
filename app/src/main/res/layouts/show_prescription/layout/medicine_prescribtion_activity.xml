@@ -66,23 +66,44 @@
             android:layout_toRightOf="@+id/medicineType"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp2"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/dp2">
 
                 <com.rescribe.ui.customesViews.CustomTextView
                     android:id="@+id/medicineName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/descriptionButton"
                     android:paddingTop="@dimen/dp2"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp16"
                     app:customFont="@string/roboto_bold" />
 
-            </LinearLayout>
+                <Button
+                    android:id="@+id/descriptionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_toLeftOf="@+id/testButton"
+                    android:textSize="@dimen/sp12"
+                    android:background="@color/transparent"
+                    android:text="Desc" />
+
+                <Button
+                    android:id="@+id/testButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:textSize="@dimen/sp12"
+                    android:background="@color/transparent"
+                    android:text="Test" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/showMedicineLayout"

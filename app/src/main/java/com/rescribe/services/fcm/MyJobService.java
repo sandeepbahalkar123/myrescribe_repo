@@ -1,7 +1,6 @@
 package com.rescribe.services.fcm;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;

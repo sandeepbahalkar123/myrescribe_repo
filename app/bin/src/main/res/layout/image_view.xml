@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dp120"
+    android:layout_height="@dimen/dp120"
+    android:layout_margin="@dimen/dp4"
+    android:background="@drawable/border"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:layout_width="match_parent">
+
+    <ImageView
+        android:id="@+id/attachmentImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_file" />
+
+</LinearLayout>

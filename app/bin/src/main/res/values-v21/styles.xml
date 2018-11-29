@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/recentblue</item>
+        <item name="colorPrimaryDark">@color/statusbar</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
+
+    <style name="AppLoginMainStyle">
+        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">bottom|left</item>
+        <item name="android:textColorHint">@color/Gray</item>
+        <item name="android:textColor">@color/recentblue</item>
+        <item name="android:textSize">@dimen/sp15</item>
+        <item name="android:paddingBottom">@dimen/dp4</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp38</item>
+    </style>
+
+    <style name="AppLoginNewMainStyle">
+        <item name="android:textCursorDrawable">@drawable/cursor_color_white</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingBottom">@dimen/dp4</item>
+        <item name="android:gravity">bottom|left</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/sp15</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp38</item>
+    </style>
+
+    <style name="AppLoginSocialStyle">
+        <item name="android:cursorVisible">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:gravity">bottom|left</item>
+        <item name="android:textSize">@dimen/sp15</item>
+        <item name="android:paddingBottom">@dimen/dp4</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp38</item>
+    </style>
+
+    <style name="CompalintStyle">
+        <item name="android:textCursorDrawable">@drawable/cursor_black</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">bottom|left</item>
+        <item name="android:textColorHint">@color/tagColor</item>
+        <item name="android:textColor">@color/tagColor</item>
+        <item name="android:paddingBottom">@dimen/dp4</item>
+        <item name="android:textSize">@dimen/sp14</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp38</item>
+    </style>
+</resources>

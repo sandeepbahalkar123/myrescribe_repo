@@ -4,6 +4,11 @@ buildscript {
     repositories {
         jcenter()
         google()
+        mavenLocal()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
     }
     dependencies {
         classpath 'com.google.gms:google-services:3.1.1'
@@ -22,9 +27,20 @@ allprojects {
         mavenCentral()
         maven { url "https://jitpack.io" }
         google()
+        mavenLocal()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+    distributionUrl = distributionUrl.replace("bin", "all")
+}
+

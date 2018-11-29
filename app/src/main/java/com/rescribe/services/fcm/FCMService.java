@@ -45,8 +45,6 @@ import static com.rescribe.util.RescribeConstants.TOKEN_NOTIFICATION_TAG;
 
 public class FCMService extends FirebaseMessagingService {
 
-
-
     private static final String TAG = "MyFirebaseMsgService";
     public static final String FCM_DATA = "fcm_data";
 

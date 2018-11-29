@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp">
+
+    <com.rescribe.ui.customesViews.CustomTextView
+        android:id="@+id/drNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_toLeftOf="@+id/selectCheckbox"
+        android:layout_marginStart="@dimen/dp8"
+        android:padding="@dimen/dp8"
+        android:textColor="@color/tagColor"
+        android:textSize="@dimen/sp16"
+        app:customFont="@string/roboto_medium" />
+
+    <CheckBox
+        android:id="@+id/selectCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dp30"
+        android:layout_marginRight="@dimen/dp30"
+        android:button="@drawable/checkboxselecter"
+        android:clickable="false" />
+
+</RelativeLayout>

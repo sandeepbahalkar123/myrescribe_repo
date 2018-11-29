@@ -1,7 +1,9 @@
 package com.rescribe.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,6 +15,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.rescribe.ActivityStarterModule;
+import com.rescribe.ExampleActivity;
+import com.rescribe.MainActivity;
 import com.rescribe.R;
 import com.rescribe.adapters.PrescriptionListAdapter;
 import com.rescribe.helpers.prescription.PrescriptionHelper;
@@ -32,8 +37,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.rescribe.MainActivity.LAUNCH_SCREEN;
+
 public class PrescriptionActivity extends AppCompatActivity
-        implements HelperResponse, View.OnClickListener {
+        implements HelperResponse, View.OnClickListener, PrescriptionListAdapter.OnPrescriptionListener {
 
     @BindView(R.id.title)
     CustomTextView title;
@@ -134,7 +141,7 @@ public class PrescriptionActivity extends AppCompatActivity
                         data.get(i).setMealTime(mGetMealTime);
                     }
 
-                    PrescriptionListAdapter prescriptionListAdapter = new PrescriptionListAdapter(this, data);
+                    PrescriptionListAdapter prescriptionListAdapter = new PrescriptionListAdapter(this, data, this);
                     mRecyclerView.setAdapter(prescriptionListAdapter);
                 }
             }
@@ -158,5 +165,19 @@ public class PrescriptionActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
+    }
+
+    @Override
+    public void descriptionButton() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(LAUNCH_SCREEN, "Home");
+        startActivity(intent);
+    }
+
+    @Override
+    public void testButton() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(LAUNCH_SCREEN, "Friends");
+        startActivity(intent);
     }
 }

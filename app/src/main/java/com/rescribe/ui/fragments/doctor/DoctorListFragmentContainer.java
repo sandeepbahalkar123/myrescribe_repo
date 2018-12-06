@@ -153,6 +153,14 @@ public class DoctorListFragmentContainer extends Fragment implements HelperRespo
             Fragment fragment = DoctorListFragment.createNewFragment(data); // pass data here
             mViewPagerAdapter.addFragment(fragment, data); // pass title here
         }
+        if (mTabLayout != null) {
+            if (mTimePeriodList.size() > 5) {
+                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            } else {
+                mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+            }
+        }
         mViewpager.setOffscreenPageLimit(0);
         mViewpager.setAdapter(mViewPagerAdapter);
 

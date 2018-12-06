@@ -407,6 +407,12 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
                             }
                         }
                     }
+
+
+                   if (dashboardModel.getData().isIsDocUpdated()){
+
+
+                   }
                 }
 
                 break;

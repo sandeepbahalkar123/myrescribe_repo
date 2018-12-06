@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.facebook.AccessToken;
@@ -111,7 +112,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements GoogleApiC
 
                     @Override
                     public void onError(FacebookException error) {
-                        // TODO Auto-generated method stub
+                        Log.e("FacebookException","--"+error);
                     }
                 });
     }

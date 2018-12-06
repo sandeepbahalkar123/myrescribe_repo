@@ -144,6 +144,14 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             Fragment fragment = MyRecordListFragment.createNewFragment(data); // pass data here
             mViewPagerAdapter.addFragment(fragment, data); // pass title here
         }
+        if (mTabLayout != null) {
+            if (mTimePeriodList.size() > 5) {
+                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            } else {
+                mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+            }
+        }
         mViewpager.setOffscreenPageLimit(0);
         mViewpager.setAdapter(mViewPagerAdapter);
 
@@ -343,15 +351,6 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             emptyListView.setVisibility(View.GONE);
             mYearSpinnerView.setVisibility(View.VISIBLE);
             mTabLayout.setVisibility(View.VISIBLE);
-        }
-
-        if (mTabLayout != null) {
-            if (mTabLayout.getTabCount() > 5) {
-                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            } else {
-                mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-            }
         }
 
         setupViewPager();

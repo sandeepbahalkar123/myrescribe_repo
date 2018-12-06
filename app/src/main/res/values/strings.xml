@@ -178,8 +178,16 @@
     <string name="login_with_gmail">Login with gmail</string>
     <string name="login_with_facebook">Login with facebook</string>
     <!--sandeep sir account credentials-->
-    <string name="facebook_app_id">1351340758298095</string>
-    <string name="fb_login_protocol_scheme">fb1351340758298095</string>
+   <!--<string name="facebook_app_id">1351340758298095</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb1351340758298095</string>-->
+
+
+    <!--account credentials-->
+   <!--FB ID:- scorgcrashlytics@gmail.com-->
+   <!--Pass:- scorg123-->
+    <string name="facebook_app_id">294690207746188</string>
+    <string name="fb_login_protocol_scheme">fb294690207746188</string>
+
     <string name="login_confirmation">Login Confirmation</string>
     <string name="dummy_full">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
     <string name="dummy_normal">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
@@ -419,7 +427,7 @@
     <string name="health_reminder">Health Reminder</string>
     <string name="guide_book_appointment">Find a location convenient doctor based on your complaints / speciality.</string>
     <string name="guide_health_reminder">Get timely alerts on your medications and advised investigations</string>
-    <string name="guide_health_repository">Access your medical records, doctor visits and articles penned by health experts.</string>
+    <string name="guide_health_repository">Access your medical records and doctor visits penned by health experts.</string>
     <string name="guide_vital_graph">Track your vitals and take necessary medical guidance.</string>
     <string name="guide_doctor_connect">Chat with doctors online and get answers to your health queries.</string>
     <string name="camera">Camera</string>

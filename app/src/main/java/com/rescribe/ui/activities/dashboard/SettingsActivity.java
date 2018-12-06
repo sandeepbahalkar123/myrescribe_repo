@@ -1,7 +1,6 @@
 package com.rescribe.ui.activities.dashboard;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,17 +16,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
-import com.google.gson.Gson;
 import com.heinrichreimersoftware.materialdrawer.app_logo.BottomSheetMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenu;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuActivity;
 import com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAdapter;
-import com.heinrichreimersoftware.materialdrawer.bottom_menu.CircularImageView;
 import com.rescribe.BuildConfig;
 import com.rescribe.R;
 import com.rescribe.adapters.settings.SettingsAdapter;
@@ -43,16 +39,10 @@ import com.rescribe.model.dashboard_api.ClickOption;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.model.login.ActiveRequest;
-import com.rescribe.model.profile_upload.ProfilePhotoResponse;
-import com.rescribe.network.RequestPool;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
-import com.rescribe.singleton.Device;
-import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.ConnectSplashActivity;
 import com.rescribe.ui.activities.GuideScreenActivity;
-import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.NotificationSettingActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
@@ -70,16 +60,7 @@ import com.rescribe.util.ImageUtils;
 import com.rescribe.util.RescribeConstants;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.ServerResponse;
-import net.gotev.uploadservice.UploadInfo;
-import net.gotev.uploadservice.UploadNotificationConfig;
-import net.gotev.uploadservice.UploadService;
-import net.gotev.uploadservice.UploadStatusDelegate;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -89,7 +70,6 @@ import static com.heinrichreimersoftware.materialdrawer.bottom_menu.BottomMenuAd
 import static com.rescribe.services.MQTTService.MESSAGE_TOPIC;
 import static com.rescribe.services.MQTTService.NOTIFY;
 import static com.rescribe.services.MQTTService.TOPIC;
-import static com.rescribe.singleton.RescribeApplication.appUnreadNotificationMessageList;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.APP_LOGO;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.BOOK;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.CONNECT;
@@ -98,8 +78,6 @@ import static com.rescribe.util.RescribeConstants.BOTTOM_MENU.SETTINGS;
 import static com.rescribe.util.RescribeConstants.BOTTOM_MENUS;
 import static com.rescribe.util.RescribeConstants.DRAWABLE;
 import static com.rescribe.util.RescribeConstants.SALUTATION;
-import static com.rescribe.util.RescribeConstants.TASK_DASHBOARD_API;
-import static com.rescribe.util.RescribeConstants.TASK_DOCTORLIST_API;
 import static com.rescribe.util.RescribeConstants.TITLE;
 
 /**
@@ -267,10 +245,11 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
         if (menuName.equalsIgnoreCase(HOME)) {
             finish();
         } else if (menuName.equalsIgnoreCase(CONNECT)) {
-            Intent intent = new Intent(this, ConnectSplashActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
-            finish();
+//            Intent intent = new Intent(this, ConnectSplashActivity.class);
+//            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+//            startActivity(intent);
+//            finish();
+            CommonMethods.showToast(mContext, "Coming Soon");
         } else if (menuName.equalsIgnoreCase(BOOK)) {
             Intent intent = new Intent(this, BookAppointDoctorListBaseActivity.class);
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
@@ -320,7 +299,7 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             startActivity(intentpri);
         } else if (clickedOption.getName().equalsIgnoreCase(RescribeConstants.SETTING_MENU.LOG_OUT)) {
             String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
-            if(!patientId.isEmpty()) {
+            if (!patientId.isEmpty()) {
                 ActiveRequest activeRequest = new ActiveRequest();
                 activeRequest.setId(Integer.parseInt(patientId));
                 new LoginHelper(this, SettingsActivity.this).doLogout(activeRequest);
@@ -439,7 +418,6 @@ public class SettingsActivity extends BottomMenuActivity implements BottomMenuAd
             } else CommonMethods.Log(TAG, "Other Broadcast");
         }
     }
-
 
 
     @Override

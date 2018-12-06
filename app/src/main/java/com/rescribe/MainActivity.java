@@ -14,8 +14,8 @@ import com.facebook.react.devsupport.interfaces.DevSupportManager;
 import com.rescribe.singleton.RescribeApplication;
 
 public class MainActivity extends ReactActivity {
-    public static final String LAUNCH_SCREEN = "launchscreen";
-    private String launchingScreen = "NavigatorPage";
+    public static final String LAUNCH_SCREEN = "screenIdentifier";
+    private String launchingScreen = "InitialScreen";
 
     @Override
     protected ReactActivityDelegate createReactActivityDelegate() {

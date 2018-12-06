@@ -112,10 +112,8 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -691,9 +689,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
             startActivity(intent);
         } else if (menuName.equalsIgnoreCase(CONNECT)) {
-            Intent intent = new Intent(HomePageActivity.this, ConnectSplashActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
+//            Intent intent = new Intent(HomePageActivity.this, ConnectSplashActivity.class);
+//            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+//            startActivity(intent);
+            CommonMethods.showToast(mContext, "Coming Soon");
         }
 
         super.onBottomMenuClick(bottomMenu);
@@ -848,7 +847,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             } else mCurrentLocation = location;
         } else
             mCurrentLocation = location;
-            updateUI();
+        updateUI();
     }
 
     public boolean isSameLocation(Location location) {
@@ -907,7 +906,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         String locationReceived = "";
         if (userSelectedLocationInfo.get(getString(R.string.location)) != null)
             locationReceived = userSelectedLocationInfo.get(getString(R.string.location));
-         else
+        else
             locationReceived = "";
 
         String previousLocationReceived = "";

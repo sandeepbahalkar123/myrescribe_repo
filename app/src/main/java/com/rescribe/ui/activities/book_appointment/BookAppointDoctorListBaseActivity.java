@@ -32,14 +32,11 @@ import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
 import com.rescribe.interfaces.profile_photo.ProfilePhotoUpload;
-import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.model.dashboard_api.DashboardBottomMenuList;
 import com.rescribe.model.investigation.Image;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.services.MQTTService;
-import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.AppointmentActivity;
-import com.rescribe.ui.activities.ConnectSplashActivity;
 import com.rescribe.ui.activities.HomePageActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
 import com.rescribe.ui.activities.PrescriptionActivity;
@@ -60,7 +57,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -353,10 +349,12 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
             startActivity(intent);
             finish();
         } else if (menuName.equalsIgnoreCase(CONNECT)) {
-            Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, ConnectSplashActivity.class);
-            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
-            startActivity(intent);
-            finish();
+//            Intent intent = new Intent(BookAppointDoctorListBaseActivity.this, ConnectSplashActivity.class);
+//            intent.putExtra(RescribeConstants.BOTTOM_MENUS, dashboardBottomMenuLists);
+//            startActivity(intent);
+//            finish();
+
+            CommonMethods.showToast(mContext, "Coming Soon");
         }
         super.onBottomMenuClick(bottomMenu);
     }

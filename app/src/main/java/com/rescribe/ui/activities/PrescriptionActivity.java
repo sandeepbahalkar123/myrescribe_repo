@@ -170,14 +170,14 @@ public class PrescriptionActivity extends AppCompatActivity
     @Override
     public void descriptionButton() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(LAUNCH_SCREEN, "Home");
+        intent.putExtra(LAUNCH_SCREEN, "FeedbackForm");
         startActivity(intent);
     }
 
     @Override
     public void testButton() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(LAUNCH_SCREEN, "Friends");
+        intent.putExtra(LAUNCH_SCREEN, "RatingForm");
         startActivity(intent);
     }
 }

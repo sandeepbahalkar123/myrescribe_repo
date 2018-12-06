@@ -42,6 +42,10 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
 import com.google.gson.Gson;
 import com.rescribe.R;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -56,12 +60,7 @@ import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.ServerResponse;
-import net.gotev.uploadservice.UploadInfo;
-import net.gotev.uploadservice.UploadNotificationConfig;
-import net.gotev.uploadservice.UploadService;
-import net.gotev.uploadservice.UploadStatusDelegate;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -417,6 +416,12 @@ public class CommonMethods {
         }
 
         return key;
+    }
+
+
+
+    public static String stripExtension(final String s) {
+        return s != null && s.lastIndexOf(".") > 0 ? s.substring(0, s.lastIndexOf(".")) : s;
     }
 
     public static void Log(String tag, String message) {
@@ -1243,69 +1248,109 @@ public class CommonMethods {
 
         String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, mContext);
-        try {
+
             mCustomProgressDialog.show();
-            MultipartUploadRequest uploadRequest = new MultipartUploadRequest(mContext, System.currentTimeMillis() + patientId, Config.BASE_URL + Config.PROFILE_UPLOAD)
-                    .setUtf8Charset()
-                    .setMaxRetries(RescribeConstants.MAX_RETRIES)
-                    .addHeader(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString)
-                    .addHeader(RescribeConstants.DEVICEID, Device.getInstance(mContext).getDeviceId())
-                    .addHeader(RescribeConstants.OS, Device.getInstance(mContext).getOS())
-                    .addHeader(RescribeConstants.OSVERSION, Device.getInstance(mContext).getOSVersion())
-                    .addHeader(RescribeConstants.DEVICE_TYPE, Device.getInstance(mContext).getDeviceType())
-                    .addHeader("patientId", patientId)
-                    .addFileToUpload(filepath, "patImage");
+        
+            HashMap<String,String> mapHeaders =new HashMap<String, String>();
+                    mapHeaders.put(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
+                    mapHeaders.put(RescribeConstants.DEVICEID, Device.getInstance(mContext).getDeviceId());
+                    mapHeaders.put(RescribeConstants.OS, Device.getInstance(mContext).getOS());
+                    mapHeaders.put(RescribeConstants.OSVERSION, Device.getInstance(mContext).getOSVersion());
+                    mapHeaders.put(RescribeConstants.DEVICE_TYPE, Device.getInstance(mContext).getDeviceType());
+                    mapHeaders.put("patientId", patientId);
+            SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, Config.BASE_URL + Config.PROFILE_UPLOAD,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.e("Response", response);
 
-            uploadRequest.setNotificationConfig(new UploadNotificationConfig());
+                            String bodyAsString = response;
+                            CommonMethods.Log(TAG, bodyAsString);
+                            ProfilePhotoResponse profilePhotoResponse = new Gson().fromJson(bodyAsString, ProfilePhotoResponse.class);
+                            if (profilePhotoResponse.getCommon().isSuccess()) {
+                                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, profilePhotoResponse.getData().getPatImgUrl(), mContext);
+                                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_UPDATE_TIME, profilePhotoResponse.getData().getModificationDate(), mContext);
+                                Toast.makeText(mContext, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                                if (mContext instanceof ProfilePhotoUpload) {
+                                    ProfilePhotoUpload profilePhotoUpload = (ProfilePhotoUpload) mContext;
+                                    profilePhotoUpload.setProfilePhoto(filepath, profilePhotoResponse.getData().getModificationDate());
+                                } else Log.e(TAG, "Activity Must implement ProfilePhotoUpload");
+                            } else
+                                Toast.makeText(mContext, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
 
-            uploadRequest.setDelegate(new UploadStatusDelegate() {
+
+                            mCustomProgressDialog.dismiss();
+
+
+                        }
+                    }, new Response.ErrorListener() {
                 @Override
-                public void onProgress(Context context, UploadInfo uploadInfo) {
-                    // your code here
-                    CommonMethods.Log(TAG, "Progress: " + uploadInfo.getProgressPercent());
-                }
-
-                @Override
-                public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse,
-                                    Exception exception) {
-                    // your code here
+                public void onErrorResponse(VolleyError error) {
                     mCustomProgressDialog.dismiss();
-                    Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-
-                @SuppressLint("CheckResult")
-                @Override
-                public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
-                    // On Profile Image Upload on Server is completed that event is captured in this function.
-                    String bodyAsString = serverResponse.getBodyAsString();
-                    CommonMethods.Log(TAG, bodyAsString);
-                    ProfilePhotoResponse profilePhotoResponse = new Gson().fromJson(bodyAsString, ProfilePhotoResponse.class);
-                    if (profilePhotoResponse.getCommon().isSuccess()) {
-                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, profilePhotoResponse.getData().getPatImgUrl(), mContext);
-                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_UPDATE_TIME, profilePhotoResponse.getData().getModificationDate(), mContext);
-                        Toast.makeText(context, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-                        if (mContext instanceof ProfilePhotoUpload) {
-                            ProfilePhotoUpload profilePhotoUpload = (ProfilePhotoUpload) mContext;
-                            profilePhotoUpload.setProfilePhoto(filepath, profilePhotoResponse.getData().getModificationDate());
-                        } else Log.e(TAG, "Activity Must implement ProfilePhotoUpload");
-                    } else
-                        Toast.makeText(context, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-
-                    mCustomProgressDialog.dismiss();
-                }
-
-                @Override
-                public void onCancelled(Context context, UploadInfo uploadInfo) {
-                    // your code here
-                    mCustomProgressDialog.dismiss();
+                    Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_LONG).show();
+                    String msg = "{\"common\":{\"success\":false,\"statusCode\":400,\"statusMessage\": \"Server Error \"} }";
                 }
             });
+            smr.setHeaders(mapHeaders);
+            smr.addFile("patImage", filepath);
+            RescribeApplication.getInstance().addToRequestQueue(smr);
+            
+            
+//
+//            MultipartUploadRequest uploadRequest = new MultipartUploadRequest(mContext, System.currentTimeMillis() + patientId, Config.BASE_URL + Config.PROFILE_UPLOAD)
+//                    .setUtf8Charset()
+//                    .setMaxRetries(RescribeConstants.MAX_RETRIES)
+//
+//                    .addFileToUpload(filepath, "patImage");
+//
+//            uploadRequest.setNotificationConfig(new UploadNotificationConfig());
+//
+//            uploadRequest.setDelegate(new UploadStatusDelegate() {
+//                @Override
+//                public void onProgress(Context context, UploadInfo uploadInfo) {
+//                    // your code here
+//                    CommonMethods.Log(TAG, "Progress: " + uploadInfo.getProgressPercent());
+//                }
+//
+//                @Override
+//                public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse,
+//                                    Exception exception) {
+//                    // your code here
+//                    mCustomProgressDialog.dismiss();
+//                    Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @SuppressLint("CheckResult")
+//                @Override
+//                public void onCompleted(Context context, UploadInfo uploadInfo, ServerResponse serverResponse) {
+//                    // On Profile Image Upload on Server is completed that event is captured in this function.
+//                    String bodyAsString = serverResponse.getBodyAsString();
+//                    CommonMethods.Log(TAG, bodyAsString);
+//                    ProfilePhotoResponse profilePhotoResponse = new Gson().fromJson(bodyAsString, ProfilePhotoResponse.class);
+//                    if (profilePhotoResponse.getCommon().isSuccess()) {
+//                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, profilePhotoResponse.getData().getPatImgUrl(), mContext);
+//                        RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_UPDATE_TIME, profilePhotoResponse.getData().getModificationDate(), mContext);
+//                        Toast.makeText(context, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+//                        if (mContext instanceof ProfilePhotoUpload) {
+//                            ProfilePhotoUpload profilePhotoUpload = (ProfilePhotoUpload) mContext;
+//                            profilePhotoUpload.setProfilePhoto(filepath, profilePhotoResponse.getData().getModificationDate());
+//                        } else Log.e(TAG, "Activity Must implement ProfilePhotoUpload");
+//                    } else
+//                        Toast.makeText(context, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+//
+//                    mCustomProgressDialog.dismiss();
+//                }
+//
+//                @Override
+//                public void onCancelled(Context context, UploadInfo uploadInfo) {
+//                    // your code here
+//                    mCustomProgressDialog.dismiss();
+//                }
+//            });
+//
+//            uploadRequest.startUpload();
 
-            uploadRequest.startUpload();
 
-        } catch (FileNotFoundException | MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 
     public static boolean isDoc(String extension) {
@@ -1401,7 +1446,7 @@ public class CommonMethods {
         boolean offersAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.offers_alert), mContext);
         boolean allNotifyAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.all_notifications), mContext);
         // Stop Uploads
-        UploadService.stopAllUploads();
+      //  UploadService.stopAllUploads();
 
         //Logout functionality
         if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(mContext.getString(R.string.login_with_gmail))) {

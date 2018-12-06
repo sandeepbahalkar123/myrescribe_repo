@@ -3,12 +3,9 @@ package com.rescribe.broadcast_receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 
 import com.rescribe.helpers.database.AppDBHelper;
-import com.rescribe.interfaces.CustomResponse;
-import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.chat.MQTTMessage;
 import com.rescribe.notification.MessageNotification;
 import com.rescribe.preference.RescribePreferencesManager;

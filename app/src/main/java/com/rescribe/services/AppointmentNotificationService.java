@@ -148,7 +148,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mNotifyYesIntent.putExtra(getString(R.string.unread_notification_update_received), subNotificationId);
 
         PendingIntent mYesPendingIntent = PendingIntent.getBroadcast(this, subNotificationId, mNotifyYesIntent, 0);
-        
+
 
         Intent mNotifyNoIntent = new Intent(this, ClickOnNotificationReceiver.class);
         mNotifyNoIntent.putExtra(RescribeConstants.APPOINTMENT_NOTIFICATION_ID, AppointmentAlarmTask.APPOINTMENT_NOTIFICATION_ID);
@@ -168,9 +168,9 @@ public class AppointmentNotificationService extends Service implements HelperRes
                 .setAutoCancel(true);
 
         // *************************************************************************************************************
-        
+
         // Collapsed
-        
+
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews mRemoteViewCollapse = new RemoteViews(getPackageName(),
                 R.layout.appointment_notification_layout);
@@ -180,14 +180,14 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mRemoteViewCollapse.setTextViewText(R.id.questionText, message);
         mRemoteViewCollapse.setTextViewText(R.id.timeText, notificationTime);
 
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && Build.MANUFACTURER.contains(SAMSUNG)){
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && Build.MANUFACTURER.contains(SAMSUNG)) {
             mRemoteViewCollapse.setTextColor(R.id.showMedicineName, Color.WHITE);
             mRemoteViewCollapse.setTextColor(R.id.questionText, Color.WHITE);
             mRemoteViewCollapse.setTextColor(R.id.timeText, Color.WHITE);
         }
 
         // *************************************************************************************************************
-        
+
         // Expanded
 
         // Using RemoteViews to bind custom layouts into Notification
@@ -199,7 +199,7 @@ public class AppointmentNotificationService extends Service implements HelperRes
         mRemoteViewExpanded.setTextViewText(R.id.questionText, message);
         mRemoteViewExpanded.setTextViewText(R.id.timeText, notificationTime);
 
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && android.os.Build.MANUFACTURER.contains(SAMSUNG)){
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP && android.os.Build.MANUFACTURER.contains(SAMSUNG)) {
             mRemoteViewExpanded.setTextColor(R.id.showMedicineName, Color.WHITE);
             mRemoteViewExpanded.setTextColor(R.id.questionText, Color.WHITE);
             mRemoteViewExpanded.setTextColor(R.id.timeText, Color.WHITE);

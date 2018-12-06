@@ -8,6 +8,9 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -25,8 +28,6 @@ import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadS
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
-
-import net.gotev.uploadservice.UploadService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,17 +87,22 @@ public class RescribeApplication extends MultiDexApplication implements ReactApp
         }
     }
 
+
+    private RequestQueue mRequestQueue;
+
+    private static RescribeApplication mInstance;
+
     @Override
     public void onCreate() {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
         Fabric.with(this, new Crashlytics());
-        UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
         AppDBHelper instance = AppDBHelper.getInstance(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         instance.doReadAllUnreadMessages();
         appDBHelper = AppDBHelper.getInstance(getApplicationContext());
+        mInstance = this;
     }
 
     public static void setUserSelectedLocationInfo(Context ctx, LatLng data, String locationText) {
@@ -207,4 +213,23 @@ public class RescribeApplication extends MultiDexApplication implements ReactApp
             e.printStackTrace();
         }
     }
+
+    public static synchronized RescribeApplication getInstance() {
+        return mInstance;
+    }
+
+    public RequestQueue getRequestQueue() {
+        if (mRequestQueue == null) {
+            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+
+        return mRequestQueue;
+    }
+
+    public <T> void addToRequestQueue(Request<T> req) {
+        req.setTag(TAG);
+        getRequestQueue().add(req);
+    }
+
+
 }

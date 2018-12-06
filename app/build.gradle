@@ -93,7 +93,15 @@ repositories {
  */
 
 project.ext.react = [
-        entryFile: "index.js"
+        entryFile: "index.js",
+        // the name of the generated asset file containing your JS bundle
+        bundleAssetName: "index.android.bundle",
+        // whether to bundle JS and assets in debug mode
+        bundleInDebug: true,
+        // whether to bundle JS and assets in release mode
+        bundleInRelease: true,
+        // the root of your RN project, i.e. where "package.json" lives
+        root: "../../"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"

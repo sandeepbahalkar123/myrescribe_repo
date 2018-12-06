@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:name=".singleton.RescribeApplication"
+        android:name="com.rescribe.singleton.RescribeApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,7 +39,7 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.rescribe.MainActivity"
             android:launchMode="singleInstance"
             android:exported="true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -50,7 +50,7 @@
 
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
         <activity
-            android:name=".ExampleActivity"
+            android:name="com.rescribe.ExampleActivity"
             android:label="@string/title_activity_example" />
 
         <activity

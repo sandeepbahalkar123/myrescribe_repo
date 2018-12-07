@@ -97,7 +97,7 @@ project.ext.react = [
         // the name of the generated asset file containing your JS bundle
         bundleAssetName: "index.android.bundle",
         // whether to bundle JS and assets in debug mode
-        bundleInDebug: true,
+        bundleInDebug: false,
         // whether to bundle JS and assets in release mode
         bundleInRelease: true,
         // the root of your RN project, i.e. where "package.json" lives

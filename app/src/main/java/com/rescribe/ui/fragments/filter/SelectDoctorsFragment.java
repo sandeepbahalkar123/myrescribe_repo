@@ -83,7 +83,7 @@ public class SelectDoctorsFragment extends Fragment {
             }
         };
 
-        Collections.sort(doctorList, Collections.reverseOrder(comparator));
+       // Collections.sort(doctorList, Collections.reverseOrder(comparator));
         // off recyclerView Animation
 
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();

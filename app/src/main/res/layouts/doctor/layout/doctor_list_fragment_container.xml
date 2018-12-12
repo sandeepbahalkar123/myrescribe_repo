@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             app:tabGravity="fill"
             app:tabMaxWidth="500dp"
-            app:tabMode="fixed" />
+            app:tabMode="scrollable" />
 
     </android.support.design.widget.AppBarLayout>
 

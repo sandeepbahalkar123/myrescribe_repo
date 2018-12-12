@@ -53,7 +53,7 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
     }
 
     public void loadFragment(String type, Serializable serializableExtra, String header) {
-          //When ever this activity will be called respective function fragement will be loaded for eg .Forgotpassword according to type set through intent
+        //When ever this activity will be called respective function fragement will be loaded for eg .Forgotpassword according to type set through intent
         mActionBar.setTitle(header);
 
         FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -78,8 +78,7 @@ public class AppGlobalContainerActivity extends AppCompatActivity {
             ForgotPasswordFragment forgotPasswordFragment = new ForgotPasswordFragment();
             forgotPasswordFragment.setArguments(bundle);
             fragmentTransaction.replace(R.id.blankContainer, forgotPasswordFragment);
-        }
-        else if(type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))){
+        } else if (type.equalsIgnoreCase(getString(R.string.enter_otp_for_login))) {
             OtpConfirmationForLogin otpConfirmationForLogin = new OtpConfirmationForLogin();
             if (from != null)
                 bundle.putString(FROM, from);

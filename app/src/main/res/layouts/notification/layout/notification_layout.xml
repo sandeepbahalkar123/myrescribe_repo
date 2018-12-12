@@ -17,7 +17,6 @@
         android:layout_marginLeft="@dimen/dp6"
         android:layout_marginStart="@dimen/dp6"
         android:adjustViewBounds="true"
-        android:padding="@dimen/dp2"
         android:src="@drawable/notification_icon" />
 
     <LinearLayout

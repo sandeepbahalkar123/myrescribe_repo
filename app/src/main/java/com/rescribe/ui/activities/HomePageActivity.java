@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -39,6 +40,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
@@ -64,6 +67,7 @@ import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.dashboard.DashboardHelper;
 import com.rescribe.helpers.database.AppDBHelper;
 import com.rescribe.helpers.database.MyRecordsData;
+import com.rescribe.helpers.investigation.InvestigationHelper;
 import com.rescribe.helpers.login.LoginHelper;
 import com.rescribe.helpers.notification.NotificationHelper;
 import com.rescribe.interfaces.CustomResponse;
@@ -79,6 +83,9 @@ import com.rescribe.model.dashboard_api.DashboardMenuList;
 import com.rescribe.model.dashboard_api.card_data.DashboardModel;
 import com.rescribe.model.dashboard_api.doctors.DoctorListModel;
 import com.rescribe.model.investigation.Image;
+import com.rescribe.model.investigation.InvestigationData;
+import com.rescribe.model.investigation.InvestigationListModel;
+import com.rescribe.model.investigation.InvestigationNotification;
 import com.rescribe.model.login.ActiveRequest;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
@@ -154,6 +161,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ProfilePhotoUpload {
 
+    private static final int PLACE_PICKER_REQUEST = 10;
     @BindView(R.id.custom_progress_bar)
     RelativeLayout custom_progress_bar;
     @BindView(R.id.viewpager)
@@ -199,6 +207,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     private ImageUtils imageUtils;
     private CustomProgressDialog mCustomProgressDialog;
 
+    InvestigationHelper investigationHelper ;
+    private ColorGenerator mColorGenerator;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -249,10 +259,10 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
         patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         logUser();
         activityCreatedTimeStamp = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.YYYY_MM_DD_HH_mm_ss);
-
+        mColorGenerator = ColorGenerator.MATERIAL;
         appDBHelper = new AppDBHelper(mContext);
         mDashboardHelper = new DashboardHelper(this, this);
-
+        investigationHelper= new InvestigationHelper(this, this);
         doConfigureMenuOptions();
 //        custom_progress_bar.setVisibility(View.VISIBLE);
 
@@ -276,6 +286,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             @Override
             public void onRefresh() {
                 checkAndroidVersion();
+                investigationHelper.getInvestigationList(false);
+                //notificationForMedicine();
             }
         });
 
@@ -451,7 +463,53 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             case RescribeConstants.TASK_NOTIFICATION:
                 doProcessReceivedMedicationNotificationData((NotificationModel) customResponse);
                 break;
+
+            case RescribeConstants.INVESTIGATION_LIST:
+                if (customResponse instanceof InvestigationListModel) {
+
+                    InvestigationListModel investigationListModel = (InvestigationListModel) customResponse;
+
+                    HashMap<Integer, ArrayList<InvestigationData>> sortedData = new HashMap<>();
+
+                    ArrayList<InvestigationData> investigation = investigationListModel.getInvestigationNotification().getNotifications();
+
+                    if (investigation.size() > 0) {
+                        for (InvestigationData dataObject : investigation) {
+                            if (!sortedData.containsKey(dataObject.getDrId()))
+                                sortedData.put(dataObject.getDrId(), new ArrayList<InvestigationData>());
+                            sortedData.get(dataObject.getDrId()).add(dataObject);
+                        }
+                    }
+
+                    for (Map.Entry entry : sortedData.entrySet()) {
+                        ArrayList<InvestigationData> value = (ArrayList<InvestigationData>) entry.getValue();
+                        insertInvestigestuonInDb(value);
+                    }
+                }
+
+
         }
+    }
+
+    private void insertInvestigestuonInDb(ArrayList<InvestigationData> value) {
+
+
+        String notificationTime = CommonMethods.getCurrentTimeStamp(RescribeConstants.DATE_PATTERN.hh_mm_a);
+
+        InvestigationNotification data = new InvestigationNotification();
+        data.setNotifications(value);
+
+        String doctorName;
+        if (value.get(0).getDoctorName().toLowerCase().contains("dr."))
+            doctorName = value.get(0).getDoctorName();
+        else
+            doctorName = "Dr. " + value.get(0).getDoctorName();
+
+        String time = CommonMethods.getCurrentDate() + " " + notificationTime;
+        String message = getText(R.string.investigation_msg) + doctorName + "?";
+        //--------------
+
+        appDBHelper.insertUnreadReceivedNotificationMessage(String.valueOf(value.get(0).getDrId()), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT, message, new Gson().toJson(data), time, true);
     }
 
     private void showUpdateDialog(final int versionCode, final String appURL) {
@@ -628,7 +686,7 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
             case R.id.locationImageView:
                 Intent start = new Intent(this, BookAppointFindLocationActivity.class);
                 start.putExtra(getString(R.string.opening_mode), getString(R.string.home));
-                int PLACE_PICKER_REQUEST = 10;
+
                 startActivityForResult(start, PLACE_PICKER_REQUEST);
                 break;
         }
@@ -747,6 +805,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         // add bottom menu : like home,setting,support
         dashboardBottomMenuLists = mDashboardMenuData.getDashboardBottomMenuList();
+
+
         for (int i = 0; i < dashboardBottomMenuLists.size(); i++) {
             DashboardBottomMenuList dashboardBottomMenuList = dashboardBottomMenuLists.get(i);
 
@@ -890,14 +950,30 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
     @SuppressLint("CheckResult")
     @Override
     public void setProfilePhoto(String filePath, String profilePhotoSignature) {
+        String patientName = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.USER_NAME, mContext);
+        int color2 = mColorGenerator.getColor(patientName);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(Math.round(getResources().getDimension(com.heinrichreimersoftware.materialdrawer.R.dimen.dp40))) // width in px
+                .height(Math.round(getResources().getDimension(com.heinrichreimersoftware.materialdrawer.R.dimen.dp40)))// height in px
+                .useFont(Typeface.defaultFromStyle(Typeface.BOLD))
+                .endConfig()
+                .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
+
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
         requestOptions.signature(new ObjectKey(profilePhotoSignature));
 
-        Glide.with(mContext)
-                .load(filePath)
-                .apply(requestOptions).thumbnail(0.5f)
-                .into(profileImageView);
+
+        if (!filePath.isEmpty()) {
+            Glide.with(this)
+                    .load(filePath)
+                    .apply(requestOptions).thumbnail(0.5f)
+                    .into(profileImageView);
+        } else {
+            profileImageView.setImageDrawable(drawable);
+        }
     }
 
     @Override
@@ -1085,6 +1161,8 @@ public class HomePageActivity extends BottomMenuActivity implements HelperRespon
 
         super.onBottomSheetMenuClick(bottomMenu);
     }
+
+
 
     private class UpdateAppUnreadNotificationCount extends BroadcastReceiver {
         @Override

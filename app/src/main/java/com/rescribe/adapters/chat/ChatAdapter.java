@@ -98,7 +98,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ListViewHolder
 
         String urlWithLatLong = "";
         if (message.getFileType().equals(LOC))
-            urlWithLatLong = "https://maps.googleapis.com/maps/api/staticmap?center=" + message.getFileUrl() + "&markers=color:red%7Clabel:" + (message.getSender().equals(PATIENT) ? "P" : "D") + "%7C" + message.getFileUrl() + "&zoom=14&size=300x300";
+            urlWithLatLong = "https://maps.googleapis.com/maps/api/staticmap?center=" + message.getFileUrl() + "&markers=color:red%7Clabel:" + (message.getSender().equals(PATIENT) ? "P" : "D") + "%7C" + message.getFileUrl() + "&zoom=14&size=300x300&key="+context.getString(R.string.google_maps_key);
 
         if (message.getSender().equals(PATIENT)) {
 

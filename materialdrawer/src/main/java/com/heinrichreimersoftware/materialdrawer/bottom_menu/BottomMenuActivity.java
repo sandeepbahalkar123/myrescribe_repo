@@ -125,8 +125,8 @@ public abstract class BottomMenuActivity extends AppCompatActivity implements Bo
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()
                 .width(Math.round(getResources().getDimension(R.dimen.dp40))) // width in px
-                .height(Math.round(getResources().getDimension(R.dimen.dp40)))
-                .useFont(Typeface.defaultFromStyle(Typeface.BOLD))// height in px
+                .height(Math.round(getResources().getDimension(R.dimen.dp40)))// height in px
+                .useFont(Typeface.defaultFromStyle(Typeface.BOLD))
                 .endConfig()
                 .buildRound(("" + patientName.charAt(0)).toUpperCase(), color2);
 
@@ -137,10 +137,14 @@ public abstract class BottomMenuActivity extends AppCompatActivity implements Bo
         requestOptions.placeholder(drawable);
         requestOptions.error(drawable);
 
-        Glide.with(this)
-                .load(patientImageUrl)
-                .apply(requestOptions)
-                .into(profileImageView);
+        if (!patientImageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(patientImageUrl)
+                    .apply(requestOptions)
+                    .into(profileImageView);
+        } else {
+            profileImageView.setImageDrawable(drawable);
+        }
 
         linearTableLayout.removeAllViews();
 

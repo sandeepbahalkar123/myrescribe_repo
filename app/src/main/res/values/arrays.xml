@@ -2,11 +2,11 @@
 <resources>
     <!-- Array of ColorStateList -->
     <array name="colors">
-        <item>@color/tagColor</item>
-        <item>@color/tagColor</item>
-        <item>@color/tagColor</item>
-        <item>@color/tagColor</item>
-        <item>@color/tagColor</item>
+        <item>@color/statusbar</item>
+        <item>@color/statusbar</item>
+        <item>@color/statusbar</item>
+        <item>@color/statusbar</item>
+        <item>@color/statusbar</item>
     </array>
 
     <array name="white_array">

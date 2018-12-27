@@ -361,8 +361,9 @@ public class FindDoctorsActivity extends AppCompatActivity implements HelperResp
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (data.getName().equalsIgnoreCase(getString(R.string.doctor_connect))) {
-            Intent intent = new Intent(mContext, ConnectSplashActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(mContext, ConnectSplashActivity.class);
+//            startActivity(intent);
+            CommonMethods.showToast(FindDoctorsActivity.this,"Coming Soon.. ");
         }
     }
 }

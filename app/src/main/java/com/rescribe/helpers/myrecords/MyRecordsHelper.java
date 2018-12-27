@@ -7,6 +7,7 @@ import com.rescribe.R;
 import com.rescribe.interfaces.ConnectionListener;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
+import com.rescribe.model.my_records.DeleteRecordModel;
 import com.rescribe.model.my_records.MyRecordBaseModel;
 import com.rescribe.model.my_records.MyRecordDataModel;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
@@ -140,6 +141,14 @@ public class MyRecordsHelper implements ConnectionListener {
         String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         mConnectionFactory.setUrl(Config.LIST_ALL_MY_RECORD + patientId + "&year=" + year);
         mConnectionFactory.createConnection(RescribeConstants.TASK_GET_ALL_MY_RECORDS);
+    }
+
+    public void deleteMyRecord(DeleteRecordModel deleteRecordModel) {
+        ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, true, RescribeConstants.TASK_DELETE_MY_RECORD, Request.Method.POST, false);
+        mConnectionFactory.setHeaderParams();
+        mConnectionFactory.setPostParams(deleteRecordModel);
+        mConnectionFactory.setUrl(Config.DELETE_MY_RECORD);
+        mConnectionFactory.createConnection(RescribeConstants.TASK_DELETE_MY_RECORD);
     }
 
     private class DateWiseComparator implements Comparator<MyRecordInfoAndReports> {

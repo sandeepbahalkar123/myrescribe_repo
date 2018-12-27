@@ -457,6 +457,7 @@
             android:name="com.rescribe.ui.activities.vital_graph.AddTrackerActivity"
             android:configChanges="orientation|keyboard|screenSize"
             android:label="@string/title_activity_add_tracker"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 

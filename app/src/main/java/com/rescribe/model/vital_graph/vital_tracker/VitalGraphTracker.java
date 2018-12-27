@@ -9,11 +9,23 @@ public class VitalGraphTracker implements CustomResponse {
     @Expose
     private String vitalName;
 
+    @SerializedName("vitalKey")
+    @Expose
+    private String vitalKey;
+
     public String getVitalName() {
         return vitalName;
     }
 
     public void setVitalName(String vitalName) {
         this.vitalName = vitalName;
+    }
+
+    public String getVitalKey() {
+        return vitalKey;
+    }
+
+    public void setVitalKey(String vitalKey) {
+        this.vitalKey = vitalKey;
     }
 }

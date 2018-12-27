@@ -102,18 +102,10 @@ public class InvestigationHelper implements ConnectionListener {
         mConnectionFactory.createConnection(RescribeConstants.INVESTIGATION_UPLOAD_FROM_UPLOADED);
     }
 
-    public void doSkipInvestigation(int invID, boolean progress, String type) {
+    public void doSkipInvestigation(InvestigationUploadByGmailRequest obj,int invID, boolean progress, String type) {
         ConnectionFactory mConnectionFactory = new ConnectionFactory(mContext, this, null, progress, RescribeConstants.TASK_DO_SKIP_INVESTIGATION, Request.Method.POST, false);
         mConnectionFactory.setHeaderParams();
-        String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
-        InvestigationUploadByGmailRequest obj = new InvestigationUploadByGmailRequest();
-        ArrayList<Integer> integers = new ArrayList<>();
-        integers.add(invID);
-        obj.setInvestigationId(integers);
-        ArrayList<String> types = new ArrayList<>();
-        types.add(type);
-        obj.setTypes(types);
-        obj.setPatientId(Integer.parseInt(id));
+
         mConnectionFactory.setPostParams(obj);
         mConnectionFactory.setUrl(Config.DO_SKIP_INVESTIGATION);
         mConnectionFactory.createConnection(RescribeConstants.TASK_DO_SKIP_INVESTIGATION);

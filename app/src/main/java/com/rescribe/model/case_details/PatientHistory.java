@@ -15,12 +15,20 @@ public class PatientHistory implements CustomResponse{
     @SerializedName("caseDetailName")
     @Expose
     private String caseDetailName = "";
+
     @SerializedName("caseDetailData")
     @Expose
     private List<VisitCommonData>  caseDetailData = null;
+
     @SerializedName("vitals")
     @Expose
     private List<Vital> vitals = null;
+
+
+    @SerializedName("comment")
+    @Expose
+    private String comment = "";
+
 
     public Integer getCaseDetailId() {
         return caseDetailId;
@@ -54,4 +62,11 @@ public class PatientHistory implements CustomResponse{
         this.vitals = vitals;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

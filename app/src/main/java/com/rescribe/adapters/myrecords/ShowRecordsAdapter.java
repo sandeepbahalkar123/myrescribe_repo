@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,24 +16,33 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.model.my_records.MyRecordReports;
 import com.rescribe.ui.activities.WebViewActivity;
 import com.rescribe.ui.activities.zoom_images.ZoomImageViewActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
+
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.FileViewHolder> {
 
-    private final String[] paths;
+    // private final String[] paths;
+    private  ArrayList<MyRecordReports.ImageListData> imageListData;
     private final Context context;
     private final String caption;
     private int imageSize;
+    private boolean mShowDeleteCheckbox = false;
+    private OnRecordsListener onRecordsListener;
+    // private HashSet<DeleteRecordModel> mSelectedRecordToDelete = new HashSet<>();
 
-    public ShowRecordsAdapter(Context context, String[] paths, String caption) {
+    public ShowRecordsAdapter(Context context, ArrayList<MyRecordReports.ImageListData> imageListData, String caption, OnRecordsListener onRecordsListener) {
         this.context = context;
-        this.paths = paths;
+        this.imageListData = imageListData;
         this.caption = caption;
+        this.onRecordsListener = onRecordsListener;
         setColumnNumber(context, 2);
     }
 
@@ -53,14 +63,16 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
 
     @Override
     public void onBindViewHolder(final ShowRecordsAdapter.FileViewHolder holder, final int position) {
-        final String urlString = paths[position];
+
+
+        final String urlString = imageListData.get(position).getImageUrl();
 
         String fileExtension = urlString.substring(urlString.lastIndexOf("."));
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.dontAnimate();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-        requestOptions.skipMemoryCache(true);
+       // requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
+       // requestOptions.skipMemoryCache(true);
         requestOptions.override(imageSize, imageSize);
         requestOptions.placeholder(CommonMethods.getDocumentIconByExtension(fileExtension));
         requestOptions.error(CommonMethods.getDocumentIconByExtension(fileExtension));
@@ -92,12 +104,43 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
             }
         });
 
-        holder.addCaptionText.setText(paths.length > 1 ? caption + "_" + (position + 1) : caption);
+        holder.removeCheckbox.setChecked(imageListData.get(position).isChecked());
+        if (mShowDeleteCheckbox)
+            holder.removeCheckbox.setVisibility(View.VISIBLE);
+         else
+            holder.removeCheckbox.setVisibility(View.GONE);
+
+        holder.removeCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox c = (CheckBox) v;
+                 imageListData.get(position).setChecked(c.isChecked());
+            }
+        });
+
+
+        holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                mShowDeleteCheckbox = !mShowDeleteCheckbox;
+                onRecordsListener.showDeleteButton(mShowDeleteCheckbox);
+                if (!mShowDeleteCheckbox) {
+                    for (MyRecordReports.ImageListData imageList : imageListData) {
+                        imageList.setChecked(false);
+                    }
+                }
+                notifyDataSetChanged();
+                return false;
+            }
+        });
+
+
+        holder.addCaptionText.setText(imageListData.size() > 1 ? caption + "_" + (position + 1) : caption);
     }
 
     @Override
     public int getItemCount() {
-        return paths.length;
+        return imageListData.size();
     }
 
     static class FileViewHolder extends RecyclerView.ViewHolder {
@@ -106,11 +149,40 @@ public class ShowRecordsAdapter extends RecyclerView.Adapter<ShowRecordsAdapter.
         ImageView imageView;
         @BindView(R.id.addCaptionText)
         TextView addCaptionText;
+        @BindView(R.id.removeCheckbox)
+        CheckBox removeCheckbox;
 
         FileViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+
+    public interface OnRecordsListener {
+        void showDeleteButton(boolean isShowButton);
+    }
+
+
+    public boolean isEmpty(){
+        if (imageListData.size()==0)
+            return true;
+        else
+            return false;
+    }
+    public void RemoveDeletedRecord() {
+
+        ArrayList< MyRecordReports.ImageListData> imageListDataArrayList = new ArrayList<>();
+        for (int i = 0; i <imageListData.size(); i++) {
+            MyRecordReports.ImageListData listData = imageListData.get(i);
+            if (listData.isChecked()) {
+                imageListDataArrayList.add(listData);
+            }
+        }
+        imageListData.removeAll(imageListDataArrayList);
+        mShowDeleteCheckbox = false;
+        notifyDataSetChanged();
+
     }
 
 

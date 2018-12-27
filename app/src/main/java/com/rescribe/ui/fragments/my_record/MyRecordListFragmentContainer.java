@@ -1,5 +1,6 @@
 package com.rescribe.ui.fragments.my_record;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.Spinner;
 
 import com.rescribe.R;
 import com.rescribe.adapters.CustomSpinnerAdapter;
+import com.rescribe.adapters.myrecords.ThreeLevelListAdapter;
 import com.rescribe.helpers.myrecords.MyRecordsHelper;
 import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
@@ -31,12 +33,14 @@ import com.rescribe.model.my_records.MyRecordBaseModel;
 import com.rescribe.model.my_records.MyRecordDataModel;
 import com.rescribe.model.my_records.MyRecordInfoAndReports;
 import com.rescribe.model.my_records.MyRecordInfoMonthContainer;
+import com.rescribe.model.my_records.MyRecordReports;
 import com.rescribe.model.my_records.new_pojo.NewMonth;
 import com.rescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
 import com.rescribe.model.my_records.new_pojo.NewMyRecordDataModel;
 import com.rescribe.model.my_records.new_pojo.NewOriginalData;
 import com.rescribe.ui.activities.AddRecordsActivity;
 import com.rescribe.ui.activities.MyRecordsActivity;
+import com.rescribe.ui.activities.ShowRecordsActivity;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
@@ -55,8 +59,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MyRecordListFragmentContainer extends Fragment implements HelperResponse {
+public class MyRecordListFragmentContainer extends Fragment implements HelperResponse, ThreeLevelListAdapter.OnInteractionListener {
 
+    private static final int ShowRecordRequstCode = 157;
     @BindView(R.id.backArrow)
     ImageView mBackArrow;
     @BindView(R.id.tabFragment)
@@ -232,6 +237,15 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
         //---------
     }
 
+    @Override
+    public void onShowRecordClick(ArrayList<MyRecordReports.ImageListData> imageList, String caption, String type) {
+        Intent intent = new Intent(getActivity(), ShowRecordsActivity.class);
+        intent.putExtra(RescribeConstants.DOCUMENTS, imageList);
+        intent.putExtra(RescribeConstants.CAPTION, caption);
+        intent.putExtra(RescribeConstants.TYPE, type);
+        startActivityForResult(intent, ShowRecordRequstCode);
+    }
+
     //---------------
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -383,6 +397,22 @@ public class MyRecordListFragmentContainer extends Fragment implements HelperRes
             if (yearWiseSortedMyRecordInfoAndReports.get(mCurrentSelectedTimePeriodTab.getYear()) == null) {
                 mMyRecordHelper.doGetAllMyRecords(mCurrentSelectedTimePeriodTab.getYear());
                 mGeneratedRequestForYearList.add(mCurrentSelectedTimePeriodTab.getYear());
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ShowRecordRequstCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                ArrayList<MyRecordReports.ImageListData> imageListData = (ArrayList<MyRecordReports.ImageListData>) data.getSerializableExtra(RescribeConstants.DOCUMENTS);
+                boolean isRecordDeleted = data.getBooleanExtra(RescribeConstants.RECORD_DELETED, false);
+                if (imageListData.isEmpty()) {
+                    mMyRecordHelper.doGetAllMyRecords(mCurrentSelectedTimePeriodTab.getYear());
+                } else if (isRecordDeleted) {
+                    mMyRecordHelper.doGetAllMyRecords(mCurrentSelectedTimePeriodTab.getYear());
+                }
             }
         }
     }

@@ -92,7 +92,7 @@ public class MyRecordListFragment extends Fragment {
                         } else {
                             mEmptyListView.setVisibility(View.GONE);
                             mExpandMyRecordListView.setVisibility(View.VISIBLE);
-                            ThreeLevelListAdapter mAdapter = new ThreeLevelListAdapter(mContext, formattedDoctorList);
+                            ThreeLevelListAdapter mAdapter = new ThreeLevelListAdapter(mContext, formattedDoctorList,parentFragment);
                             mExpandMyRecordListView.setAdapter(mAdapter);
                         }
                     } else {

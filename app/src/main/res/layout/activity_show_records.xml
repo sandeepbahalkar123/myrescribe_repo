@@ -20,6 +20,24 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_show_records" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_show_records" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp44"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp35"
+        android:background="@drawable/curve_edges_button"
+        android:paddingStart="@dimen/dp50"
+        android:paddingEnd="@dimen/dp50"
+        android:text="@string/delete"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        app:layout_anchor="@+id/include"
+        android:layout_marginBottom="@dimen/dp10"
+        app:layout_anchorGravity="bottom|center" />
 
 </android.support.design.widget.CoordinatorLayout>

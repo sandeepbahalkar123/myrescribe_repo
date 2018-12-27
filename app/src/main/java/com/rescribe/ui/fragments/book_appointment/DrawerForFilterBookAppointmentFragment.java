@@ -166,6 +166,7 @@ public class DrawerForFilterBookAppointmentFragment extends Fragment implements 
     View mLeftThumbView, mRightThumbView;
     private FilterSelectLocationsAdapter mFilterSelectLocationsAdapter;
     private SortByPriceNameFilterAdapter mSortByPriceNameFilterAdapter;
+    String sortByName="notSelected";
     //--------
 
     public DrawerForFilterBookAppointmentFragment() {
@@ -472,6 +473,7 @@ public class DrawerForFilterBookAppointmentFragment extends Fragment implements 
             case R.id.resetButton:
                 configureDrawerFieldsData();
                 setDataInDrawerFields();
+                sortByName="";
                 //mListener.onReset(true);
                 break;
             case R.id.applyButton:
@@ -509,7 +511,7 @@ public class DrawerForFilterBookAppointmentFragment extends Fragment implements 
             case R.id.chooseOptionToSort:
                 hideMainLayout.setVisibility(View.GONE);
                 showSortLayout.setVisibility(View.VISIBLE);
-                mSortByPriceNameFilterAdapter = new SortByPriceNameFilterAdapter();
+                mSortByPriceNameFilterAdapter = new SortByPriceNameFilterAdapter(sortByName);
                 LinearLayoutManager linearlayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 sortRecyclerView.setLayoutManager(linearlayoutManager);
                 sortRecyclerView.setHasFixedSize(true);
@@ -519,6 +521,7 @@ public class DrawerForFilterBookAppointmentFragment extends Fragment implements 
                 hideMainLayout.setVisibility(View.VISIBLE);
                 showSortLayout.setVisibility(View.GONE);
                 chooseOptionForSort.setText(mSortByPriceNameFilterAdapter.getSelectedSortedOptionLabel());
+                sortByName=mSortByPriceNameFilterAdapter.getSelectedSortedOptionLabel();
                 break;
         }
     }
@@ -538,19 +541,29 @@ public class DrawerForFilterBookAppointmentFragment extends Fragment implements 
         switch (view.getId()) {
             case R.id.genderMaleLayout:
                 mSelectedGender = mGenderMaleText.getText().toString();
-
+                mGenderMaleText.setTextColor(getResources().getColor(R.color.recentblue));
+                mGenderFemaleText.setTextColor(getResources().getColor(R.color.gender_drawer));
+                mGenderTransgenderText.setTextColor(getResources().getColor(R.color.gender_drawer));
                 mGenderTransgenderIcon.setImageResource(R.drawable.icon_transgender_default);
                 mGenderMaleIcon.setImageResource(R.drawable.icon_male_selected);
                 mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);
                 break;
             case R.id.genderFemaleLayout:
                 mSelectedGender = mGenderFemaleText.getText().toString();
+                mGenderFemaleText.setTextColor(getResources().getColor(R.color.recentblue));
+                mGenderMaleText.setTextColor(getResources().getColor(R.color.gender_drawer));
+                mGenderTransgenderText.setTextColor(getResources().getColor(R.color.gender_drawer));
+
                 mGenderTransgenderIcon.setImageResource(R.drawable.icon_transgender_default);
                 mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
                 mGenderFemaleIcon.setImageResource(R.drawable.icon_female_selected);
                 break;
             case R.id.genderTransgenderLayout:
                 mSelectedGender = mGenderTransgenderText.getText().toString();
+                mGenderTransgenderText.setTextColor(getResources().getColor(R.color.recentblue));
+                mGenderMaleText.setTextColor(getResources().getColor(R.color.gender_drawer));
+                mGenderFemaleText.setTextColor(getResources().getColor(R.color.gender_drawer));
+
                 mGenderTransgenderIcon.setImageResource(R.drawable.icon_transgender_selected);
                 mGenderMaleIcon.setImageResource(R.drawable.icon_male_default);
                 mGenderFemaleIcon.setImageResource(R.drawable.icon_female_default);

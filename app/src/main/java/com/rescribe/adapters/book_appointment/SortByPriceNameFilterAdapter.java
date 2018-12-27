@@ -35,6 +35,11 @@ public class SortByPriceNameFilterAdapter extends RecyclerView.Adapter<SortByPri
             "Doctor" + fees + highToLow
     };
 
+    public SortByPriceNameFilterAdapter(String sortByName) {
+        selectedSortedOptionLabel=sortByName;
+    }
+
+
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())

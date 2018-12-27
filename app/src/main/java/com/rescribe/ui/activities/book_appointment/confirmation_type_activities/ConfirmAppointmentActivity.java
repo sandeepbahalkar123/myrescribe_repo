@@ -175,7 +175,7 @@ public class ConfirmAppointmentActivity extends AppCompatActivity implements Hel
                     requestOptions.centerCrop();
 
                     Glide.with(mContext)
-                            .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getClinicAddress() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getClinicAddress() + "&zoom=12&size=640x300")
+                            .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getClinicAddress() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getClinicAddress() + "&zoom=12&size=640x300&key="+getString(R.string.google_maps_key))
                             .into(locationImageView);
                 }
             }

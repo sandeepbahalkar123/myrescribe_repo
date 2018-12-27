@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -40,7 +41,9 @@ import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookA
 import com.rescribe.model.book_appointment.unread_token_notification.UnreadBookAppointTokenNotificationData;
 import com.rescribe.model.dashboard_api.unread_notification_message_list.UnreadSavedNotificationMessageData;
 import com.rescribe.model.follow_up.FollowUpRequest;
+import com.rescribe.model.investigation.InvestigationData;
 import com.rescribe.model.investigation.InvestigationNotification;
+import com.rescribe.model.investigation.request.InvestigationUploadByGmailRequest;
 import com.rescribe.model.notification.Medication;
 import com.rescribe.model.notification.NotificationData;
 import com.rescribe.model.token.FCMData;
@@ -320,7 +323,21 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         this.mClickedUnreadInvestigationMessageData = unreadNotificationMessageData;
         InvestigationHelper mInvestigationHelper = new InvestigationHelper(this, this);
         InvestigationNotification data = new Gson().fromJson(unreadNotificationMessageData.getNotificationData(), InvestigationNotification.class);
-        mInvestigationHelper.doSkipInvestigation(data.getNotifications().get(0).getId(), true, data.getNotifications().get(0).getInvestigationType());
+
+
+        String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, UnreadNotificationMessageActivity.this);
+        InvestigationUploadByGmailRequest obj = new InvestigationUploadByGmailRequest();
+        ArrayList<Integer> integers = new ArrayList<>();
+        ArrayList<String> types = new ArrayList<>();
+        for (InvestigationData investigationData :data.getNotifications()){
+            integers.add(investigationData.getId());
+            types.add(investigationData.getInvestigationType());
+        }
+        obj.setInvestigationId(integers);
+        obj.setTypes(types);
+        obj.setPatientId(Integer.parseInt(id));
+
+        mInvestigationHelper.doSkipInvestigation(obj,data.getNotifications().get(0).getId(), true, data.getNotifications().get(0).getInvestigationType());
 
         clearNotification(this, INVESTIGATION_NOTIFICATION_TAG, unreadNotificationMessageData.getId());
     }
@@ -582,9 +599,13 @@ public class UnreadNotificationMessageActivity extends AppCompatActivity impleme
         } else if (RescribeConstants.TASK_DO_SKIP_INVESTIGATION.equals(mOldDataTag)) {
             CommonBaseModelContainer commonbject = (CommonBaseModelContainer) customResponse;
             CommonMethods.showToast(this, commonbject.getCommonRespose().getStatusMessage());
+
+
             AppDBHelper instance = AppDBHelper.getInstance(this);
 
             int unReadCount = instance.deleteUnreadReceivedNotificationMessage(mClickedUnreadInvestigationMessageData.getId(), mClickedUnreadInvestigationMessageData.getNotificationMessageType());
+
+            Log.e("unReadCount", String.valueOf(unReadCount));
 
             if (unReadCount == 0) {
                 isAllListEmpty = true;

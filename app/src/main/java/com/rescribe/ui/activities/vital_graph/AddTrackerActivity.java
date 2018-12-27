@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,6 +29,7 @@ import com.rescribe.model.vital_graph.vital_tracker.VitalGraphTrackerBaseModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.ui.customesViews.EditTextWithDeleteButton;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.KeyboardUtil;
 import com.rescribe.util.RescribeConstants;
 
 import java.text.DateFormat;
@@ -122,7 +122,7 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
             case RescribeConstants.TASK_ADD_VITAL_MANUALLY:
                 CommonBaseModelContainer common = (CommonBaseModelContainer) customResponse;
                 CommonMethods.showToast(this, "" + common.getCommonRespose().getStatusMessage());
-                Intent intent = new Intent(this,VitalGraphActivity.class);
+                Intent intent = new Intent(this, VitalGraphActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
@@ -193,16 +193,21 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
 
     //-- Add Tracker copied from addTrackerActivity.java
     private void openAddTrackerDialog(final VitalGraphTracker vitalList) {
+        CommonMethods.hideKeyboard(AddTrackerActivity.this);
         final View modalbottomsheet = getLayoutInflater().inflate(R.layout.add_new_tracker_dialog, null);
         final CustomTextView addTrackerDate = (CustomTextView) modalbottomsheet.findViewById(R.id.addTrackerDate);
         CustomTextView header = (CustomTextView) modalbottomsheet.findViewById(R.id.header);
         header.setText(vitalList.getVitalName());
         final EditText reading = (EditText) modalbottomsheet.findViewById(R.id.reading);
 
+        CommonMethods.addVitalEditTextValidation(vitalList.getVitalKey(), reading);
         //------
         final LinearLayout bloodPressureReadingLayout = (LinearLayout) modalbottomsheet.findViewById(R.id.bloodPressureReadingLayout);
         final EditText systolic = (EditText) modalbottomsheet.findViewById(R.id.systolic);
         final EditText dystolic = (EditText) modalbottomsheet.findViewById(R.id.dystolic);
+        CommonMethods.addVitalEditTextValidation(vitalList.getVitalKey(), systolic);
+        CommonMethods.addVitalEditTextValidation(vitalList.getVitalKey(), dystolic);
+
         //------
         Button addTrackerButton = (Button) modalbottomsheet.findViewById(R.id.addTrackerButton);
         //---------
@@ -225,8 +230,7 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
         dialog.setContentView(modalbottomsheet);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
+        new KeyboardUtil(AddTrackerActivity.this, modalbottomsheet);
         dialog.show();
 
         addTrackerDate.setOnClickListener(new View.OnClickListener() {
@@ -296,5 +300,9 @@ public class AddTrackerActivity extends AppCompatActivity implements AddTrackerA
                 }
             }
         });
+
+
     }
+
+
 }

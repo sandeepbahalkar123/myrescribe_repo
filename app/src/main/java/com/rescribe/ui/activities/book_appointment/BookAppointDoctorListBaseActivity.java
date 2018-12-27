@@ -101,7 +101,7 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
     private CustomProgressDialog mCustomProgressDialog;
 
     private RecentVisitDoctorFragment mRecentVisitDoctorFragment;
-    private int PLACE_PICKER_REQUEST = 1;
+    final int PLACE_PICKER_REQUEST = 10;
 
     private ArrayList<DashboardBottomMenuList> dashboardBottomMenuLists;
     private Context mContext;
@@ -291,11 +291,14 @@ public class BookAppointDoctorListBaseActivity extends BottomMenuActivity implem
                     imageUtils.callImageCropMethod(resultUri);
                 }
                 break;
+            case PLACE_PICKER_REQUEST:
 
+                break;
             case ImageUtils.CAMERA_REQUEST_CODE:
             case ImageUtils.GALLERY_REQUEST_CODE:
                 imageUtils.onActivityResult(requestCode, resultCode, data);
                 break;
+
         }
     }
 

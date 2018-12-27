@@ -84,7 +84,7 @@
         <com.rescribe.ui.customesViews.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rescribe is a unique product of"
+            android:text="Patient Rescribe is a unique product of"
             android:textSize="@dimen/sp13"
             app:customFont="@string/roboto_regular"
             app:srcCompat="@drawable/scrog_product" />

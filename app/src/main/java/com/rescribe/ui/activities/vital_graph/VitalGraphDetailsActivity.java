@@ -44,6 +44,7 @@ import com.rescribe.model.vital_graph.vital_description.VitalGraphInfoBaseModel;
 import com.rescribe.model.vital_graph.vital_tracker.VitalGraphAddNewTrackerRequestModel;
 import com.rescribe.ui.customesViews.CustomTextView;
 import com.rescribe.util.CommonMethods;
+import com.rescribe.util.KeyboardUtil;
 import com.rescribe.util.RescribeConstants;
 
 import java.io.IOException;
@@ -440,11 +441,13 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         CustomTextView header = (CustomTextView) modalbottomsheet.findViewById(R.id.header);
         header.setText(mClickedVitalGraphData.getVitalName());
         final EditText reading = (EditText) modalbottomsheet.findViewById(R.id.reading);
-
+         CommonMethods.addVitalEditTextValidation(mClickedVitalGraphData.getVitalKey(),reading);
         //------
         final LinearLayout bloodPressureReadingLayout = (LinearLayout) modalbottomsheet.findViewById(R.id.bloodPressureReadingLayout);
         final EditText systolic = (EditText) modalbottomsheet.findViewById(R.id.systolic);
         final EditText dystolic = (EditText) modalbottomsheet.findViewById(R.id.dystolic);
+        CommonMethods.addVitalEditTextValidation(mClickedVitalGraphData.getVitalKey(),systolic);
+        CommonMethods.addVitalEditTextValidation(mClickedVitalGraphData.getVitalKey(),dystolic);
         //------
         Button addTrackerButton = (Button) modalbottomsheet.findViewById(R.id.addTrackerButton);
         //---------
@@ -469,8 +472,8 @@ public class VitalGraphDetailsActivity extends AppCompatActivity implements Help
         dialog.setContentView(modalbottomsheet);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        new KeyboardUtil(VitalGraphDetailsActivity.this, modalbottomsheet);
         dialog.show();
 
         addTrackerDate.setOnClickListener(new View.OnClickListener() {

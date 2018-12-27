@@ -243,7 +243,13 @@ public class BookAppointFindLocationActivity extends AppCompatActivity implement
                     detectLocation.setText(locationString + "," + obj.getLocality());
                 }
                 finish();
-                openLocationSelectionScreen();
+
+                if (getString(R.string.book_appointment).equalsIgnoreCase(mOpeningMode)) {
+                    Intent i = new Intent();
+                    setResult(Activity.RESULT_OK);
+                }
+
+                //  openLocationSelectionScreen();
                 Log.d("AREA", getArea(obj));
             } else
                 Toast.makeText(mContext, "Address not found.", Toast.LENGTH_SHORT).show();

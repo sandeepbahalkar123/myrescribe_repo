@@ -157,6 +157,7 @@ public class RescribeConstants {
 
     public static final String FOLLOW_UP = RescribeConstants.BLANK + 65;
     public static final String TASK_DOCTORLIST_API = RescribeConstants.BLANK + 66;
+    public static final String TASK_DELETE_MY_RECORD = RescribeConstants.BLANK + 67;
 
     //-----------------
 
@@ -193,6 +194,7 @@ public class RescribeConstants {
     public static final String OPD_ID = "opd_id";
     public static final String MYRECORDDATAMODEL = "myrecorddatamodel";
     public static final String CAPTION = "caption";
+    public static final String TYPE = "type";
     public static final String TYPE_OF_LOGIN = "";
 
     public static final String SENDERID = "EMROTP";
@@ -245,6 +247,7 @@ public class RescribeConstants {
     public static final String PATIENT = "patient";
     public static final String USER_AUTHENTICATED = "USER AUTHENTICATED";
     public static final String TOKEN = "token";
+    public static final String RECORD_DELETED = "isRecordDelete";
 
     public static class USER_STATUS {
         public static final String ONLINE = "Online";

@@ -186,7 +186,7 @@ public class ConfirmTokenInfoActivity extends AppCompatActivity implements Helpe
                 requestOptions.centerCrop();
 
                 Glide.with(mContext)
-                        .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x300")
+                        .load("https://maps.googleapis.com/maps/api/staticmap?center=" + mDoctorObject.getAddressOfDoctorString() + "&markers=color:red%7Clabel:C%7C" + mDoctorObject.getAddressOfDoctorString() + "&zoom=12&size=640x300&key="+getString(R.string.google_maps_key))
                         .into(locationImageView);
             }
             if (!mDoctorObject.getNameOfClinicString().isEmpty()) {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,12 +51,15 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
 
+    private OnInteractionListener onInteractionListener;
+
     @SuppressLint("CheckResult")
-    public ThreeLevelListAdapter(Context context, ArrayList<MyRecordInfoAndReports> mOriginalList) {
+    public ThreeLevelListAdapter(Context context, ArrayList<MyRecordInfoAndReports> mOriginalList,OnInteractionListener onInteractionListener) {
         this.context = context;
 
         this.mListDataHeader = new ArrayList<>();
         this.mListDataChild = new HashMap<>();
+        this.onInteractionListener = onInteractionListener;
         mColorGenerator = ColorGenerator.MATERIAL;
 
         for (MyRecordInfoAndReports dataObject :
@@ -255,16 +259,17 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
 
                 SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
                 MyRecordReports childGroup = adapter.getGroup(groupPosition);
+                String type= childGroup.getType();
+                Log.e("type--",type);
                 if (!childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigation)) && !childGroup.getParentCaptionName().equalsIgnoreCase(context.getString(R.string.investigations))) {
                     secondLevelELV.collapseGroup(groupPosition);
-                    Intent intent = new Intent(context, ShowRecordsActivity.class);
                     ArrayList<MyRecordReports.MyRecordReportList> reportList = childGroup.getReportList();
                     MyRecordReports.MyRecordReportList myRecordReportList = reportList.get(0);
                     String caption = myRecordReportList.getChildCaptionName();
-                    String[] imageList = myRecordReportList.getImageList();
-                    intent.putExtra(RescribeConstants.DOCUMENTS, imageList);
-                    intent.putExtra(RescribeConstants.CAPTION, caption);
-                    context.startActivity(intent);
+
+                   ArrayList<MyRecordReports.ImageListData> imageList =myRecordReportList.getImageList();
+                    //String[] imageList = myRecordReportList.getImageList();
+                    onInteractionListener.onShowRecordClick(imageList,caption,type);
                 }
             }
         });
@@ -272,13 +277,23 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 SecondLevelAdapter adapter = (SecondLevelAdapter) secondLevelELV.getExpandableListAdapter();
+
+                MyRecordReports childGroup = adapter.getGroup(groupPosition);
+                String type= childGroup.getType();
+                Log.e("type--",type);
+
                 MyRecordReports.MyRecordReportList child = adapter.getChild(groupPosition, childPosition);
-                String[] imageList = child.getImageList();
+                ArrayList<MyRecordReports.ImageListData> imageList =child.getImageList();
+
+            //    String[] imageList = child.getImageList();
                 String caption = child.getChildCaptionName();
-                Intent intent = new Intent(context, ShowRecordsActivity.class);
-                intent.putExtra(RescribeConstants.DOCUMENTS, imageList);
-                intent.putExtra(RescribeConstants.CAPTION, caption);
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, ShowRecordsActivity.class);
+//                intent.putExtra(RescribeConstants.DOCUMENTS, imageList);
+//                intent.putExtra(RescribeConstants.CAPTION, caption);
+//                intent.putExtra(RescribeConstants.TYPE, type);
+//                context.startActivity(intent);
+                onInteractionListener.onShowRecordClick(imageList,caption,type);
+
                 return false;
             }
         });
@@ -340,4 +355,9 @@ public class ThreeLevelListAdapter extends BaseExpandableListAdapter {
             ButterKnife.bind(this, view);
         }
     }
+
+   public interface OnInteractionListener{
+
+        void onShowRecordClick(ArrayList<MyRecordReports.ImageListData> imageList, String caption, String type);
+   }
 }

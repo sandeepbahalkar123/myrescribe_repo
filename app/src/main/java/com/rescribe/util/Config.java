@@ -36,14 +36,14 @@ public class Config {
     public static boolean DEV_BUILD = true;
 
     // QA
-
-    public static final String BROKER = "tcp://drrescribe.com:1883"; // Dr Rescribe IP
-    public static String BASE_URL = "http://drrescribe.com:3003/";
+//
+//    public static final String BROKER = "tcp://drrescribe.com:1883"; // Dr Rescribe IP
+//    public static String BASE_URL = "http://drrescribe.com:3003/";
 
     // Live
 
-//    public static final String BROKER = "tcp://rescribe.in:1883"; // Dr Rescribe IP
-//    public static String BASE_URL = "http://rescribe.in:3003/";
+    public static final String BROKER = "tcp://rescribe.in:1883"; // Dr Rescribe IP
+    public static String BASE_URL = "http://rescribe.in:3003/";
 
 
     //---------------------
@@ -68,6 +68,7 @@ public class Config {
 
     public static final String MY_RECORDS_DOCTOR_LIST = "api/doctors/getDoctorsWithPatientVisits";
     public static final String LIST_ALL_MY_RECORD = "api/records/getRecordList?patientId=";
+    public static final String DELETE_MY_RECORD = "api/records/deletePatientRecords";
 
     public static final String MY_RECORDS_UPLOAD = "api/upload/myRecords";
     public static final String MY_RECORDS_ADD_DOCTOR = "api/doctors/addDoctor";

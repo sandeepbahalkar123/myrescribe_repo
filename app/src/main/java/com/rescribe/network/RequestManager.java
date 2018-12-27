@@ -67,6 +67,7 @@ import com.rescribe.model.login.LoginModel;
 import com.rescribe.model.login.LoginWithOtp;
 import com.rescribe.model.login.SignUpModel;
 import com.rescribe.model.my_records.AddDoctorModel;
+import com.rescribe.model.my_records.DeleteRecordResponseModel;
 import com.rescribe.model.my_records.MyRecordsDoctorListModel;
 import com.rescribe.model.my_records.new_pojo.NewMyRecordBaseModel;
 import com.rescribe.model.notification.AppointmentsNotificationModel;
@@ -714,6 +715,11 @@ public class RequestManager extends ConnectRequest implements Connector, Request
                     case RescribeConstants.TASK_TO_UNREAD_TOKEN_REMAINDER_CONFIRMATION://This is for to patient confirm received notifiation for specific time.
                         ConfirmTokenModel confirmTokenModel = new Gson().fromJson(data, ConfirmTokenModel.class);
                         this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, confirmTokenModel, mOldDataTag);
+                        break;
+
+                    case RescribeConstants.TASK_DELETE_MY_RECORD:
+                        DeleteRecordResponseModel recordDeleteModel = new Gson().fromJson(data, DeleteRecordResponseModel.class);
+                        this.mConnectionListener.onResponse(ConnectionListener.RESPONSE_OK, recordDeleteModel, mOldDataTag);
                         break;
 
                     //--- API whose reponse is ONLY COMMON CLASS BASE MODEL-------

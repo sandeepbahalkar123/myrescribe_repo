@@ -1,6 +1,5 @@
 package com.rescribe.util;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.NotificationManager;
@@ -23,6 +22,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -60,11 +61,7 @@ import com.rescribe.singleton.RescribeApplication;
 import com.rescribe.ui.activities.LoginSignUpActivity;
 import com.rescribe.ui.customesViews.CustomProgressDialog;
 
-
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -417,7 +414,6 @@ public class CommonMethods {
 
         return key;
     }
-
 
 
     public static String stripExtension(final String s) {
@@ -1249,53 +1245,53 @@ public class CommonMethods {
         String patientId = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
         String authorizationString = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.AUTHTOKEN, mContext);
 
-            mCustomProgressDialog.show();
-        
-            HashMap<String,String> mapHeaders =new HashMap<String, String>();
-                    mapHeaders.put(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
-                    mapHeaders.put(RescribeConstants.DEVICEID, Device.getInstance(mContext).getDeviceId());
-                    mapHeaders.put(RescribeConstants.OS, Device.getInstance(mContext).getOS());
-                    mapHeaders.put(RescribeConstants.OSVERSION, Device.getInstance(mContext).getOSVersion());
-                    mapHeaders.put(RescribeConstants.DEVICE_TYPE, Device.getInstance(mContext).getDeviceType());
-                    mapHeaders.put("patientId", patientId);
-            SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, Config.BASE_URL + Config.PROFILE_UPLOAD,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.e("Response", response);
+        mCustomProgressDialog.show();
 
-                            String bodyAsString = response;
-                            CommonMethods.Log(TAG, bodyAsString);
-                            ProfilePhotoResponse profilePhotoResponse = new Gson().fromJson(bodyAsString, ProfilePhotoResponse.class);
-                            if (profilePhotoResponse.getCommon().isSuccess()) {
-                                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, profilePhotoResponse.getData().getPatImgUrl(), mContext);
-                                RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_UPDATE_TIME, profilePhotoResponse.getData().getModificationDate(), mContext);
-                                Toast.makeText(mContext, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
-                                if (mContext instanceof ProfilePhotoUpload) {
-                                    ProfilePhotoUpload profilePhotoUpload = (ProfilePhotoUpload) mContext;
-                                    profilePhotoUpload.setProfilePhoto(filepath, profilePhotoResponse.getData().getModificationDate());
-                                } else Log.e(TAG, "Activity Must implement ProfilePhotoUpload");
-                            } else
-                                Toast.makeText(mContext, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+        HashMap<String, String> mapHeaders = new HashMap<String, String>();
+        mapHeaders.put(RescribeConstants.AUTHORIZATION_TOKEN, authorizationString);
+        mapHeaders.put(RescribeConstants.DEVICEID, Device.getInstance(mContext).getDeviceId());
+        mapHeaders.put(RescribeConstants.OS, Device.getInstance(mContext).getOS());
+        mapHeaders.put(RescribeConstants.OSVERSION, Device.getInstance(mContext).getOSVersion());
+        mapHeaders.put(RescribeConstants.DEVICE_TYPE, Device.getInstance(mContext).getDeviceType());
+        mapHeaders.put("patientId", patientId);
+        SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, Config.BASE_URL + Config.PROFILE_UPLOAD,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Response", response);
 
-
-                            mCustomProgressDialog.dismiss();
+                        String bodyAsString = response;
+                        CommonMethods.Log(TAG, bodyAsString);
+                        ProfilePhotoResponse profilePhotoResponse = new Gson().fromJson(bodyAsString, ProfilePhotoResponse.class);
+                        if (profilePhotoResponse.getCommon().isSuccess()) {
+                            RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_PHOTO, profilePhotoResponse.getData().getPatImgUrl(), mContext);
+                            RescribePreferencesManager.putString(RescribePreferencesManager.PREFERENCES_KEY.PROFILE_UPDATE_TIME, profilePhotoResponse.getData().getModificationDate(), mContext);
+                            Toast.makeText(mContext, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                            if (mContext instanceof ProfilePhotoUpload) {
+                                ProfilePhotoUpload profilePhotoUpload = (ProfilePhotoUpload) mContext;
+                                profilePhotoUpload.setProfilePhoto(filepath, profilePhotoResponse.getData().getModificationDate());
+                            } else Log.e(TAG, "Activity Must implement ProfilePhotoUpload");
+                        } else
+                            Toast.makeText(mContext, profilePhotoResponse.getCommon().getStatusMessage(), Toast.LENGTH_SHORT).show();
 
 
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    mCustomProgressDialog.dismiss();
-                    Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_LONG).show();
-                    String msg = "{\"common\":{\"success\":false,\"statusCode\":400,\"statusMessage\": \"Server Error \"} }";
-                }
-            });
-            smr.setHeaders(mapHeaders);
-            smr.addFile("patImage", filepath);
-            RescribeApplication.getInstance().addToRequestQueue(smr);
-            
-            
+                        mCustomProgressDialog.dismiss();
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mCustomProgressDialog.dismiss();
+                Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_LONG).show();
+                String msg = "{\"common\":{\"success\":false,\"statusCode\":400,\"statusMessage\": \"Server Error \"} }";
+            }
+        });
+        smr.setHeaders(mapHeaders);
+        smr.addFile("patImage", filepath);
+        RescribeApplication.getInstance().addToRequestQueue(smr);
+
+
 //
 //            MultipartUploadRequest uploadRequest = new MultipartUploadRequest(mContext, System.currentTimeMillis() + patientId, Config.BASE_URL + Config.PROFILE_UPLOAD)
 //                    .setUtf8Charset()
@@ -1446,7 +1442,7 @@ public class CommonMethods {
         boolean offersAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.offers_alert), mContext);
         boolean allNotifyAlert = RescribePreferencesManager.getBoolean(mContext.getString(R.string.all_notifications), mContext);
         // Stop Uploads
-      //  UploadService.stopAllUploads();
+        //  UploadService.stopAllUploads();
 
         //Logout functionality
         if (RescribePreferencesManager.getString(RescribeConstants.GMAIL_LOGIN, mContext).equalsIgnoreCase(mContext.getString(R.string.login_with_gmail))) {
@@ -1486,5 +1482,55 @@ public class CommonMethods {
         mContext.startActivity(intent);
         ((AppCompatActivity) mContext).finishAffinity();
     }
+
+
+    public static void addVitalEditTextValidation(String vitalKey, EditText editText) {
+
+        switch (vitalKey.toLowerCase()) {
+            case "blood pressure":
+            case "opd2":
+            case "opd6":
+            case "opd5":
+            case "opd7":
+            case "opd9":
+            case "pdweight":
+            case "ktv":
+            case "opd1":
+            case "opd10":
+
+                editText.setFilters(new InputFilter[]{new InputFilterDecimal(3, 2, false)});
+                break;
+
+            case "postbun":
+            case "weight":
+            case "height":
+
+                editText.setFilters(new InputFilter[]{new InputFilterDecimal(3, 2, true)});
+                break;
+
+            case "bmi":
+            case "opd3":
+            case "opd4":
+            case "srcr":
+
+                editText.setFilters(new InputFilter[]{new InputFilterDecimal(2, 2, true)});
+                break;
+
+            case "opd8":
+                editText.setFilters(new InputFilter[]{new InputFilterDecimal(2, 2, false)});
+                break;
+
+            case "ufv":
+                editText.setFilters(new InputFilter[]{new InputFilterDecimal(6, 2, false)});
+                break;
+
+
+            default:
+
+        }
+
+    }
+
+
 }
 

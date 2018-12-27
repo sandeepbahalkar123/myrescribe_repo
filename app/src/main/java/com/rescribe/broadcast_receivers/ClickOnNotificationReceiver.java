@@ -13,12 +13,14 @@ import com.rescribe.interfaces.CustomResponse;
 import com.rescribe.interfaces.HelperResponse;
 import com.rescribe.model.CommonBaseModelContainer;
 import com.rescribe.model.investigation.InvestigationData;
+import com.rescribe.model.investigation.request.InvestigationUploadByGmailRequest;
 import com.rescribe.notification.AppointmentAlarmTask;
 import com.rescribe.notification.DosesAlarmTask;
 import com.rescribe.notification.InvestigationAlarmTask;
 import com.rescribe.preference.RescribePreferencesManager;
 import com.rescribe.ui.activities.NotificationActivity;
 import com.rescribe.ui.activities.SplashScreenActivity;
+import com.rescribe.ui.activities.dashboard.UnreadNotificationMessageActivity;
 import com.rescribe.util.CommonMethods;
 import com.rescribe.util.RescribeConstants;
 
@@ -72,8 +74,22 @@ public class ClickOnNotificationReceiver extends BroadcastReceiver implements He
 
                 int invId = investigationData.get(0).getId();
                 String invType = investigationData.get(0).getInvestigationType();
+
+                String id = RescribePreferencesManager.getString(RescribePreferencesManager.PREFERENCES_KEY.PATIENT_ID, mContext);
+                InvestigationUploadByGmailRequest obj = new InvestigationUploadByGmailRequest();
+                ArrayList<Integer> integers = new ArrayList<>();
+                ArrayList<String> types = new ArrayList<>();
+                for (InvestigationData investigation:investigationData){
+                    integers.add(investigation.getId());
+                    types.add(investigation.getInvestigationType());
+                }
+                obj.setInvestigationId(integers);
+                obj.setTypes(types);
+                obj.setPatientId(Integer.parseInt(id));
+
+
                 InvestigationHelper mInvestigationHelper = new InvestigationHelper(mContext, this);
-                mInvestigationHelper.doSkipInvestigation(invId, false, invType);
+                mInvestigationHelper.doSkipInvestigation(obj,invId, false, invType);
 
                 AppDBHelper.getInstance(mContext).deleteUnreadReceivedNotificationMessage(String.valueOf(unreadMessNotificationID), RescribePreferencesManager.NOTIFICATION_COUNT_KEY.INVESTIGATION_ALERT_COUNT);
                 int notificationCount = RescribePreferencesManager.getInt(RescribeConstants.NOTIFICATION_COUNT, mContext);

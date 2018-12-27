@@ -13,10 +13,15 @@ import java.util.ArrayList;
 
 public class MyRecordReports implements CustomResponse, Serializable {
 
+    @SerializedName("type")
+    private String type;
+
     @SerializedName("parentCaptionName")
     private String parentCaptionName;
     @SerializedName("reportDetails")
     private ArrayList<MyRecordReportList> reportList;
+
+
 
     public String getParentCaptionName() {
         return parentCaptionName;
@@ -34,12 +39,20 @@ public class MyRecordReports implements CustomResponse, Serializable {
         this.reportList = reportList;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public class MyRecordReportList implements CustomResponse, Serializable {
         @SerializedName("childCaptionName")
         private String childCaptionName;
         @SerializedName("imageList")
         @Expose
-        private String[] imageList;
+        private ArrayList<ImageListData> imageList;
 
         public String getChildCaptionName() {
             return childCaptionName;
@@ -49,12 +62,46 @@ public class MyRecordReports implements CustomResponse, Serializable {
             this.childCaptionName = childCaptionName;
         }
 
-        public String[] getImageList() {
+        public ArrayList<ImageListData> getImageList() {
             return imageList;
         }
 
-        public void setImageList(String[] imageList) {
+        public void setImageList(ArrayList<ImageListData> imageList) {
             this.imageList = imageList;
+        }
+    }
+
+    public class ImageListData implements CustomResponse ,Serializable{
+        @SerializedName("id")
+        private String imageId;
+        @SerializedName("url")
+        @Expose
+        private String imageUrl;
+
+        boolean isChecked;
+
+        public String getImageId() {
+            return imageId;
+        }
+
+        public void setImageId(String imageId) {
+            this.imageId = imageId;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
         }
     }
 }

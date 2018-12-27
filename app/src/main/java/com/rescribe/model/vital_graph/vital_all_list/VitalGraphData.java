@@ -25,6 +25,10 @@ public class VitalGraphData implements Parcelable {
     @Expose
     private String vitalUnit;
 
+    @SerializedName("vitalKey")
+    @Expose
+    private String vitalKey;
+
     public String getVitalName() {
         return vitalName;
     }
@@ -49,6 +53,8 @@ public class VitalGraphData implements Parcelable {
         this.category = category;
     }
 
+
+
     public String getVitalDate() {
         if (vitalDate != null) {
             if (vitalDate.contains("T")) {
@@ -70,6 +76,15 @@ public class VitalGraphData implements Parcelable {
         this.vitalUnit = vitalUnit;
     }
 
+
+    public String getVitalKey() {
+        return vitalKey;
+    }
+
+    public void setVitalKey(String vitalKey) {
+        this.vitalKey = vitalKey;
+    }
+
     public final static Parcelable.Creator<VitalGraphData> CREATOR = new Creator<VitalGraphData>() {
 
 
@@ -83,6 +98,7 @@ public class VitalGraphData implements Parcelable {
             instance.category = ((String) in.readValue((String.class.getClassLoader())));
             instance.vitalDate = ((String) in.readValue((String.class.getClassLoader())));
             instance.vitalUnit = ((String) in.readValue((String.class.getClassLoader())));
+            instance.vitalKey = ((String) in.readValue((String.class.getClassLoader())));
             return instance;
         }
 
@@ -99,6 +115,7 @@ public class VitalGraphData implements Parcelable {
         dest.writeValue(getCategory());
         dest.writeValue(getVitalDate());
         dest.writeValue(getVitalUnit());
+        dest.writeValue(getVitalKey());
     }
 
     public int describeContents() {

@@ -46,6 +46,7 @@ import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
 import com.philliphsu.bottomsheetpickers.time.BottomSheetTimePickerDialog;
 import com.philliphsu.bottomsheetpickers.time.grid.GridTimePickerDialog;
 import com.rescribe.R;
+import com.rescribe.adapters.book_appointment.ClinicLocactionSpinnerAdapter;
 import com.rescribe.adapters.book_appointment.SelectSlotToBookAppointmentAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
@@ -498,8 +499,10 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
             if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
                 mClinicNameSpinnerParentLayout.setVisibility(View.VISIBLE);
 
-                ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
-                mClinicNameSpinner.setAdapter(arrayAdapter);
+                //ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_textview, mClickedDoctorObject.getClinicDataList());
+                ClinicLocactionSpinnerAdapter clinicLocactionSpinnerAdapter = new ClinicLocactionSpinnerAdapter(getActivity(),R.layout.global_item_textview,R.layout.global_item_textview, mClickedDoctorObject.getClinicDataList());
+
+                mClinicNameSpinner.setAdapter(clinicLocactionSpinnerAdapter);
                 mClinicNameSpinner.setSelection(mSelectedClinicDataPosition, false);
 
                 mClinicNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -735,7 +738,12 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                         mClickedDoctorObject.setAptDate(mResponseAppointmentConfirmationModel.getAptList().getAptDate());
                         mClickedDoctorObject.setNameOfClinicString(mResponseAppointmentConfirmationModel.getAptList().getClinic_name());
 //                        mClickedDoctorObject.setAddressOfDoctorString(mResponseAppointmentConfirmationModel.getAptList().getAddress());
-                        mClickedDoctorObject.setClinicAddress(mResponseAppointmentConfirmationModel.getAptList().getClinicAddress());
+
+                        if (mResponseAppointmentConfirmationModel.getAptList().getClinicAddress()!=null)
+                            mClickedDoctorObject.setClinicAddress(mResponseAppointmentConfirmationModel.getAptList().getClinicAddress());
+                        else
+                            mClickedDoctorObject.setClinicAddress(mResponseAppointmentConfirmationModel.getAptList().getClinic_name() + "," + mResponseAppointmentConfirmationModel.getAptList().getArea_name() + "," + mResponseAppointmentConfirmationModel.getAptList().getCity_name());
+
                         bundleData.putParcelable(RescribeConstants.ITEM_DATA, mClickedDoctorObject);
                         bundleData.putString(RescribeConstants.LOCATION_ID, "" + 0);
                         bundleData.putString(RescribeConstants.TOKEN_NO, "" + 0);
@@ -902,20 +910,22 @@ public class SelectSlotTimeToBookAppointmentFragment extends Fragment implements
                 mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
                 break;
             case R.id.doChat:
-                if (mClickedDoctorObject.getPaidStatus() == PAID)
-                    CommonMethods.showInfoDialog(getResources().getString(R.string.paid_doctor_message), getContext(), false);
-                else {
-                    ChatDoctor chatDoctor = new ChatDoctor();
-                    chatDoctor.setId(mClickedDoctorObject.getDocId());
-                    chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
-                    chatDoctor.setOnlineStatus(ONLINE);
-                    chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
-                    chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
 
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
-                    startActivity(intent);
-                }
+                CommonMethods.showToast(getActivity(),"Coming Soon..");
+//                if (mClickedDoctorObject.getPaidStatus() == PAID)
+//                    CommonMethods.showInfoDialog(getResources().getString(R.string.paid_doctor_message), getContext(), false);
+//                else {
+//                    ChatDoctor chatDoctor = new ChatDoctor();
+//                    chatDoctor.setId(mClickedDoctorObject.getDocId());
+//                    chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
+//                    chatDoctor.setOnlineStatus(ONLINE);
+//                    chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
+//                    chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
+//
+//                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+//                    intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+//                    startActivity(intent);
+//                }
                 break;
             case R.id.tokenNewTimeStamp:
                 GridTimePickerDialog grid = GridTimePickerDialog.newInstance(

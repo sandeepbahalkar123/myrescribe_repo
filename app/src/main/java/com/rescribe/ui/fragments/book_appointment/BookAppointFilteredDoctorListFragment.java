@@ -9,9 +9,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.rescribe.R;
@@ -190,6 +192,26 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
     }
 
 
+    private void setDoctorListAdapterFromFilter() {
+        mReceivedList = ServicesCardViewImpl.getDoctorListByUniqueDocIDs(ServicesCardViewImpl.getReceivedDoctorDataList());
+
+        if (mReceivedList.isEmpty()) {
+            isDataListViewVisible(false);
+        } else {
+            isDataListViewVisible(true);
+            mBookAppointFilteredDocListAdapterAdapter = new BookAppointFilteredDocListAdapter(getActivity(), mReceivedList, mServicesCardViewImpl, this, mClickedItemDataTypeValue, mReceivedTitle);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            mDoctorListView.setLayoutManager(layoutManager);
+            mDoctorListView.setHasFixedSize(true);
+            // off recyclerView Animation
+            RecyclerView.ItemAnimator animator = mDoctorListView.getItemAnimator();
+            if (animator instanceof SimpleItemAnimator)
+                ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+            mDoctorListView.setAdapter(mBookAppointFilteredDocListAdapterAdapter);
+        }
+    }
+
+
     public ArrayList<DoctorList> getReceivedPreviousDoctorList() {
         return mReceivedPreviousDoctorList;
     }
@@ -211,15 +233,20 @@ public class BookAppointFilteredDoctorListFragment extends Fragment implements H
                 }
                 break;
             case RescribeConstants.TASK_SERVICES_DOC_LIST_FILTER:
+
+                Log.e("DOC_LIST_FILTER",""+customResponse);
+
                 BookAppointmentBaseModel received = (BookAppointmentBaseModel) customResponse;
                 if (received != null) {
                     DoctorServicesModel doctorServices = received.getDoctorServicesModel();
                     if (doctorServices != null) {
                         new ServicesCardViewImpl(this.getContext(), activity).setReceivedDoctorDataList(doctorServices.getDoctorList());
-                        doGetReceivedListBasedOnClickedItemData();
+                        //doGetReceivedListBasedOnClickedItemData();
                     }
                 }
-                setDoctorListAdapter();
+               // setDoctorListAdapter();
+
+                setDoctorListAdapterFromFilter();
                 break;
             case RescribeConstants.TASK_GET_DOCTOR_DATA:
                 DoctorServicesModel receivedDoctorServicesModel = DoctorDataHelper.getReceivedDoctorServicesModel();

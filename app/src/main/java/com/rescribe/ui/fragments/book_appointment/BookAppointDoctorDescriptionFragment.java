@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rescribe.R;
+import com.rescribe.adapters.book_appointment.ClinicLocactionSpinnerAdapter;
 import com.rescribe.helpers.book_appointment.DoctorDataHelper;
 import com.rescribe.helpers.book_appointment.ServicesCardViewImpl;
 import com.rescribe.helpers.database.AppDBHelper;
@@ -267,8 +268,10 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
         }
 
         if (!mClickedDoctorObject.getClinicDataList().isEmpty()) {
-            ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
-            mClinicNameSpinner.setAdapter(arrayAdapter);
+           // ArrayAdapter<ClinicData> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.global_item_simple_spinner, mClickedDoctorObject.getClinicDataList());
+            ClinicLocactionSpinnerAdapter clinicLocactionSpinnerAdapter = new ClinicLocactionSpinnerAdapter(getActivity(),R.layout.global_item_textview,R.layout.global_item_textview, mClickedDoctorObject.getClinicDataList());
+
+            mClinicNameSpinner.setAdapter(clinicLocactionSpinnerAdapter);
 
             if (!mClickedDoctorObject.isDoctorSearch()) {
                 for (int i = 0; i < mClickedDoctorObject.getClinicDataList().size(); i++) {
@@ -437,21 +440,22 @@ public class BookAppointDoctorDescriptionFragment extends Fragment implements He
                 mDoctorDataHelper.setFavouriteDoctor(!mClickedDoctorObject.getFavourite(), mClickedDoctorObject.getDocId());
                 break;
             case R.id.doChat:
+                CommonMethods.showToast(getActivity(),"Coming Soon..");
 
-                if (mClickedDoctorObject.getPaidStatus() == PAID)
-                    CommonMethods.showInfoDialog(getResources().getString(R.string.paid_doctor_message), getContext(), false);
-                else {
-                    ChatDoctor chatDoctor = new ChatDoctor();
-                    chatDoctor.setId(mClickedDoctorObject.getDocId());
-                    chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
-                    chatDoctor.setOnlineStatus(ONLINE);
-                    chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
-                    chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
-
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
-                    startActivity(intent);
-                }
+//                if (mClickedDoctorObject.getPaidStatus() == PAID)
+//                    CommonMethods.showInfoDialog(getResources().getString(R.string.paid_doctor_message), getContext(), false);
+//                else {
+//                    ChatDoctor chatDoctor = new ChatDoctor();
+//                    chatDoctor.setId(mClickedDoctorObject.getDocId());
+//                    chatDoctor.setDoctorName(mClickedDoctorObject.getDocName());
+//                    chatDoctor.setOnlineStatus(ONLINE);
+//                    chatDoctor.setAddress(mClickedDoctorObject.getAddressOfDoctorString());
+//                    chatDoctor.setImageUrl(mClickedDoctorObject.getDoctorImageUrl());
+//
+//                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+//                    intent.putExtra(RescribeConstants.DOCTORS_INFO, chatDoctor);
+//                    startActivity(intent);
+//                }
 
                 break;
 

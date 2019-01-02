@@ -73,7 +73,7 @@ public class OTPConfirmationForSignUp extends Fragment implements HelperResponse
         View inflate = inflater.inflate(R.layout.enter_generated_otp, container, false);
         ButterKnife.bind(this, inflate);
 
-        OtpReader.bind(this);
+       // OtpReader.bind(this);
         mCountDownTimer = new MyCountDownTimer(mStartTime, mInterval);
         mCountDownTimer.start();
 

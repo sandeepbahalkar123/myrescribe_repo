@@ -133,7 +133,7 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         mDashboardHelper = new DashboardHelper(getContext(), this);
 //        pickSpeciality.setVisibility(View.INVISIBLE);
 //        recyclerViewLinearLayout.setVisibility(View.INVISIBLE);
-        recentDoctorLayout.setVisibility(View.INVISIBLE);
+     //   recentDoctorLayout.setVisibility(View.INVISIBLE);
 //        viewDoctorPager.setVisibility(View.INVISIBLE);
         doConfigureDataListViewVisibility(false, false);
         Bundle arguments = getArguments();
@@ -259,9 +259,9 @@ public class RecentVisitDoctorFragment extends Fragment implements DoctorSpecial
         showDoctorsRecyclerView.setAdapter(mSortByClinicAndDoctorNameAdapter);
 
         if (mReceivedDoctorServicesModel.getDoctorSpecialities().isEmpty()) {
-            pickSpeciality.setVisibility(View.GONE);
+         //   pickSpeciality.setVisibility(View.GONE);
             mSpecialityEmptyListView.setVisibility(View.VISIBLE);
-            viewDoctorPager.setVisibility(View.INVISIBLE);
+       //     viewDoctorPager.setVisibility(View.INVISIBLE);
             mBookAppointSpecialityListView.setVisibility(View.GONE);
         } else {
             if (mBookAppointSpecialityListView.getVisibility() != View.VISIBLE)

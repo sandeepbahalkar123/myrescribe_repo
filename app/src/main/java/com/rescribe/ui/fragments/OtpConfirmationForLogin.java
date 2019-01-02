@@ -77,7 +77,7 @@ public class OtpConfirmationForLogin extends Fragment implements HelperResponse,
         View inflate = inflater.inflate(R.layout.enter_generated_otp, container, false);
         ButterKnife.bind(this, inflate);
         // Read sms
-        OtpReader.bind(this);
+     //   OtpReader.bind(this);
         mCountDownTimer = new OtpConfirmationForLogin.MyCountDownTimer(mStartTime, mInterval);
         mCountDownTimer.start();
 
